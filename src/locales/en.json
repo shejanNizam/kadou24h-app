@@ -1,0 +1,158 @@
+{
+  "common": {
+    "appName": "Kadou24h",
+    "next": "Next",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "back": "Back",
+    "or": "or",
+    "optional": "optional",
+    "comingSoon": "Coming soon",
+    "comingSoonText": "This screen arrives in an upcoming step.",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "language": {
+    "title": "Choose your language",
+    "subtitle": "Select the app language. You can change it later in settings.",
+    "en": "English",
+    "enHint": "Use the app in English for browsing, orders, and support.",
+    "fr": "Français",
+    "frHint": "Utilisez l'application en français pour commander et communiquer."
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to keep shopping and track your orders.",
+      "identifier": "Phone or email",
+      "identifierPlaceholder": "6XX XX XX XX or name@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Your password",
+      "forgot": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "guest": "Continue without an account",
+      "verifyWithPhone": "This account is not verified yet. Sign in with your phone number to receive the code."
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Join Kadou24h: shopping, delivery and jobs in one place.",
+      "name": "Full name",
+      "namePlaceholder": "e.g. Mamadou Diallo",
+      "email": "Email",
+      "emailPlaceholder": "name@email.com",
+      "phone": "Phone number",
+      "password": "Password",
+      "passwordPlaceholder": "Create a password",
+      "referral": "Referral code",
+      "referralPlaceholder": "e.g. KADOU123",
+      "haveReferral": "I have a referral code",
+      "submit": "Create my account",
+      "continueAs": "or continue as",
+      "vendor": "Vendor",
+      "rider": "Rider",
+      "intentVendorHint": "After verification you'll complete your vendor application. An admin will review it.",
+      "intentRiderHint": "After verification you'll complete your rider application. An admin will review it.",
+      "haveAccount": "Already have an account?",
+      "terms": "By creating an account you accept the Kadou24h terms of use.",
+      "submitVendor": "Create my vendor account",
+      "submitRider": "Create my rider account"
+    },
+    "verify": {
+      "title": "Verify your number",
+      "subtitle": "Enter the 6-digit code sent to {{target}}.",
+      "subtitleBoth": "Enter the 6-digit code sent to {{phone}} and {{email}}.",
+      "submit": "Verify & continue",
+      "resendIn": "Resend code in {{time}}",
+      "resend": "Resend code",
+      "resent": "New code sent",
+      "wrongNumber": "Wrong number? Change it",
+      "missing": "Verification timed out. Please start again."
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "subtitle": "Enter your phone number. We'll send you a code to choose a new password.",
+      "submit": "Send code",
+      "remember": "Remember it?"
+    },
+    "reset": {
+      "title": "New password",
+      "subtitle": "Choose a strong password to keep your account safe.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "submit": "Save",
+      "done": "Password changed. Sign in with your new password.",
+      "expired": "Time is up. Request a new code."
+    },
+    "rules": {
+      "length": "At least 8 characters",
+      "letter": "At least one letter",
+      "digit": "At least one number"
+    },
+    "ended": {
+      "expired": "Your session expired. Please sign in again.",
+      "revoked": "You were signed out on this device."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "nameShort": "At least 2 characters",
+    "phone": "Invalid number. Example: 620 12 34 56",
+    "email": "Invalid email address",
+    "identifier": "Enter a valid phone number or email",
+    "password": "At least 8 characters, with a letter and a number",
+    "passwordMatch": "Passwords don't match",
+    "referral": "The code has 8 characters",
+    "otp": "Enter all 6 digits"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "No connection. Check your internet and try again.",
+    "server": "The server isn't responding right now. Try again in a moment.",
+    "tooManyRequests": "Too many attempts. Wait a little and try again.",
+    "attemptsLeft_one": "Wrong code. {{count}} attempt left.",
+    "attemptsLeft_other": "Wrong code. {{count}} attempts left.",
+    "tooManyAttempts": "Too many attempts. Request a new code.",
+    "codeExpired": "This code expired. Request a new one.",
+    "waitSeconds": "Wait {{count}}s before asking for a new code.",
+    "invalidCredentials": "Wrong phone/email or password.",
+    "phoneTaken": "An account already uses this number. Please sign in.",
+    "emailTaken": "This email is already in use.",
+    "invalidReferral": "Invalid referral code.",
+    "socialAccount": "This account uses Google or Apple. Continue with it, or reset your password.",
+    "accountBlocked": "Your account is blocked. {{reason}}"
+  },
+  "tabs": {
+    "home": "Home",
+    "search": "Search",
+    "orders": "Orders",
+    "chat": "Chat",
+    "profile": "Profile",
+    "products": "Products",
+    "earnings": "Earnings",
+    "deliveries": "Deliveries"
+  },
+  "guest": {
+    "title": "Sign in to continue",
+    "orders": "Sign in to see and track your orders.",
+    "chat": "Sign in to chat with sellers and riders.",
+    "profile": "Sign in to manage your account, addresses and preferences."
+  },
+  "profile": {
+    "language": "Language",
+    "guestName": "Guest",
+    "modeCustomer": "Customer",
+    "modeVendor": "Vendor",
+    "modeRider": "Rider"
+  },
+  "kyc": {
+    "vendorTitle": "Become a vendor",
+    "riderTitle": "Become a rider",
+    "placeholder": "The application form arrives in the next step. Your account is ready: you can already use Kadou24h as a customer.",
+    "goHome": "Explore as a customer"
+  }
+}

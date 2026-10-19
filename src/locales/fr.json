@@ -1,0 +1,158 @@
+{
+  "common": {
+    "appName": "Kadou24h",
+    "next": "Suivant",
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "or": "ou",
+    "optional": "facultatif",
+    "comingSoon": "Bientôt disponible",
+    "comingSoonText": "Cet écran arrive dans une prochaine étape.",
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
+  },
+  "language": {
+    "title": "Choisissez votre langue",
+    "subtitle": "Choisissez la langue de l'application. Vous pourrez la changer plus tard dans les paramètres.",
+    "en": "English",
+    "enHint": "Use the app in English for browsing, orders, and support.",
+    "fr": "Français",
+    "frHint": "Utilisez l'application en français pour commander et communiquer."
+  },
+  "auth": {
+    "login": {
+      "title": "Bon retour",
+      "subtitle": "Connectez-vous pour continuer vos achats et suivre vos commandes.",
+      "identifier": "Téléphone ou e-mail",
+      "identifierPlaceholder": "6XX XX XX XX ou nom@email.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Votre mot de passe",
+      "forgot": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "noAccount": "Pas encore de compte ?",
+      "signUp": "S'inscrire",
+      "guest": "Continuer sans compte",
+      "verifyWithPhone": "Ce compte n'est pas encore vérifié. Connectez-vous avec votre numéro de téléphone pour recevoir le code."
+    },
+    "register": {
+      "title": "Créer votre compte",
+      "subtitle": "Rejoignez Kadou24h : achats, livraisons et emplois au même endroit.",
+      "name": "Nom complet",
+      "namePlaceholder": "ex. Mamadou Diallo",
+      "email": "E-mail",
+      "emailPlaceholder": "nom@email.com",
+      "phone": "Numéro de téléphone",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Créez un mot de passe",
+      "referral": "Code de parrainage",
+      "referralPlaceholder": "ex. KADOU123",
+      "haveReferral": "J'ai un code de parrainage",
+      "submit": "Créer mon compte",
+      "continueAs": "ou continuer en tant que",
+      "vendor": "Vendeur",
+      "rider": "Livreur",
+      "intentVendorHint": "Après la vérification, vous compléterez votre dossier vendeur. Un administrateur le validera.",
+      "intentRiderHint": "Après la vérification, vous compléterez votre dossier livreur. Un administrateur le validera.",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "terms": "En créant un compte, vous acceptez les conditions d'utilisation de Kadou24h.",
+      "submitVendor": "Créer mon compte vendeur",
+      "submitRider": "Créer mon compte livreur"
+    },
+    "verify": {
+      "title": "Vérifiez votre numéro",
+      "subtitle": "Entrez le code à 6 chiffres envoyé au {{target}}.",
+      "subtitleBoth": "Entrez le code à 6 chiffres envoyé au {{phone}} et à {{email}}.",
+      "submit": "Vérifier et continuer",
+      "resendIn": "Renvoyer le code dans {{time}}",
+      "resend": "Renvoyer le code",
+      "resent": "Nouveau code envoyé",
+      "wrongNumber": "Mauvais numéro ? Modifier",
+      "missing": "La vérification a expiré. Recommencez, s'il vous plaît."
+    },
+    "forgot": {
+      "title": "Mot de passe oublié",
+      "subtitle": "Entrez votre numéro de téléphone. Nous vous enverrons un code pour choisir un nouveau mot de passe.",
+      "submit": "Envoyer le code",
+      "remember": "Vous vous en souvenez ?"
+    },
+    "reset": {
+      "title": "Nouveau mot de passe",
+      "subtitle": "Choisissez un mot de passe sûr pour protéger votre compte.",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "submit": "Enregistrer",
+      "done": "Mot de passe modifié. Connectez-vous avec le nouveau.",
+      "expired": "Le délai est dépassé. Demandez un nouveau code."
+    },
+    "rules": {
+      "length": "Au moins 8 caractères",
+      "letter": "Au moins une lettre",
+      "digit": "Au moins un chiffre"
+    },
+    "ended": {
+      "expired": "Votre session a expiré. Connectez-vous à nouveau.",
+      "revoked": "Vous avez été déconnecté de cet appareil."
+    }
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire",
+    "nameShort": "Au moins 2 caractères",
+    "phone": "Numéro invalide. Exemple : 620 12 34 56",
+    "email": "Adresse e-mail invalide",
+    "identifier": "Entrez un numéro de téléphone ou un e-mail valide",
+    "password": "8 caractères minimum, avec une lettre et un chiffre",
+    "passwordMatch": "Les mots de passe ne correspondent pas",
+    "referral": "Le code fait 8 caractères",
+    "otp": "Entrez les 6 chiffres"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite. Réessayez.",
+    "network": "Pas de connexion. Vérifiez votre internet et réessayez.",
+    "server": "Le serveur ne répond pas pour le moment. Réessayez dans un instant.",
+    "tooManyRequests": "Trop de tentatives. Patientez un peu puis réessayez.",
+    "attemptsLeft_one": "Code incorrect. Il reste {{count}} essai.",
+    "attemptsLeft_other": "Code incorrect. Il reste {{count}} essais.",
+    "tooManyAttempts": "Trop d'essais. Demandez un nouveau code.",
+    "codeExpired": "Ce code a expiré. Demandez-en un nouveau.",
+    "waitSeconds": "Patientez {{count}} s avant de demander un nouveau code.",
+    "invalidCredentials": "Téléphone/e-mail ou mot de passe incorrect.",
+    "phoneTaken": "Un compte existe déjà avec ce numéro. Connectez-vous.",
+    "emailTaken": "Cet e-mail est déjà utilisé.",
+    "invalidReferral": "Code de parrainage invalide.",
+    "socialAccount": "Ce compte utilise Google ou Apple. Continuez avec ce service ou réinitialisez votre mot de passe.",
+    "accountBlocked": "Votre compte est bloqué. {{reason}}"
+  },
+  "tabs": {
+    "home": "Accueil",
+    "search": "Recherche",
+    "orders": "Commandes",
+    "chat": "Messages",
+    "profile": "Profil",
+    "products": "Produits",
+    "earnings": "Gains",
+    "deliveries": "Livraisons"
+  },
+  "guest": {
+    "title": "Connectez-vous pour continuer",
+    "orders": "Connectez-vous pour voir et suivre vos commandes.",
+    "chat": "Connectez-vous pour discuter avec les vendeurs et les livreurs.",
+    "profile": "Connectez-vous pour gérer votre compte, vos adresses et vos préférences."
+  },
+  "profile": {
+    "language": "Langue",
+    "guestName": "Invité",
+    "modeCustomer": "Client",
+    "modeVendor": "Vendeur",
+    "modeRider": "Livreur"
+  },
+  "kyc": {
+    "vendorTitle": "Devenir vendeur",
+    "riderTitle": "Devenir livreur",
+    "placeholder": "Le formulaire de candidature arrive à la prochaine étape. Votre compte est prêt : vous pouvez déjà utiliser Kadou24h en tant que client.",
+    "goHome": "Explorer en tant que client"
+  }
+}

@@ -1,18 +1,66 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import {
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_600SemiBold,
+  DMSans_700Bold,
+  useFonts,
+} from '@expo-google-fonts/dm-sans';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { I18nextProvider } from 'react-i18next';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { SessionEffects } from '@/components/providers/SessionEffects';
+import { ToastProvider } from '@/components/ui/Toast';
+import { Colors } from '@/constants/theme';
+import { bootstrap } from '@/lib/bootstrap';
+import i18n from '@/lib/i18n';
+import { store } from '@/store';
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
+  const [fontsLoaded, fontError] = useFonts({
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_600SemiBold,
+    DMSans_700Bold,
+  });
+  const [booted, setBooted] = useState(false);
+
+  useEffect(() => {
+    bootstrap(store.dispatch).finally(() => setBooted(true));
+  }, []);
+
+  // A font failure must not block the app: it falls back to the system font
+  const ready = booted && (fontsLoaded || Boolean(fontError));
+
+  useEffect(() => {
+    if (ready) void SplashScreen.hideAsync();
+  }, [ready]);
+
+  if (!ready) return null;
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        <SafeAreaProvider>
+          <ToastProvider>
+            <SessionEffects />
+            <StatusBar style="dark" />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: Colors.background },
+                animation: 'slide_from_right',
+              }}
+            />
+          </ToastProvider>
+        </SafeAreaProvider>
+      </I18nextProvider>
+    </Provider>
   );
 }
