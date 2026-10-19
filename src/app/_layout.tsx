@@ -20,7 +20,7 @@ import { bootstrap } from '@/lib/bootstrap';
 import i18n from '@/lib/i18n';
 import { store } from '@/store';
 
-void SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -39,7 +39,9 @@ export default function RootLayout() {
   const ready = booted && (fontsLoaded || Boolean(fontError));
 
   useEffect(() => {
-    if (ready) void SplashScreen.hideAsync();
+    if (ready) {
+      void SplashScreen.hideAsync().catch(() => {});
+    }
   }, [ready]);
 
   if (!ready) return null;
