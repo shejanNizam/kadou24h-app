@@ -18,6 +18,7 @@ export interface PendingVerification {
 
 let pending: PendingVerification | null = null;
 let resetToken: { token: string; expiresAt: number } | null = null;
+let returnTo: string | null = null;
 
 export const pendingAuth = {
   setVerification(value: Omit<PendingVerification, 'sentAt'>) {
@@ -33,5 +34,14 @@ export const pendingAuth = {
   getResetToken: () => (resetToken && resetToken.expiresAt > Date.now() ? resetToken.token : null),
   clearResetToken() {
     resetToken = null;
+  },
+  /** Screen a guest was on when an action needed an account (back there after sign-in). */
+  setReturnTo(path: string | null) {
+    returnTo = path;
+  },
+  takeReturnTo() {
+    const path = returnTo;
+    returnTo = null;
+    return path;
   },
 };

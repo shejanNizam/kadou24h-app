@@ -13,7 +13,10 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "seeAll": "See all",
+    "close": "Close",
+    "clear": "Clear"
   },
   "language": {
     "title": "Choose your language",
@@ -124,7 +127,8 @@
     "emailTaken": "This email is already in use.",
     "invalidReferral": "Invalid referral code.",
     "socialAccount": "This account uses Google or Apple. Continue with it, or reset your password.",
-    "accountBlocked": "Your account is blocked. {{reason}}"
+    "accountBlocked": "Your account is blocked. {{reason}}",
+    "title": "Couldn't load"
   },
   "tabs": {
     "home": "Home",
@@ -140,19 +144,169 @@
     "title": "Sign in to continue",
     "orders": "Sign in to see and track your orders.",
     "chat": "Sign in to chat with sellers and riders.",
-    "profile": "Sign in to manage your account, addresses and preferences."
+    "profile": "Sign in to manage your account, addresses and preferences.",
+    "signInToContinue": "Sign in to continue."
   },
   "profile": {
     "language": "Language",
     "guestName": "Guest",
     "modeCustomer": "Customer",
     "modeVendor": "Vendor",
-    "modeRider": "Rider"
+    "modeRider": "Rider",
+    "signOutTitle": "Sign out?",
+    "signOutMessage": "Are you sure you want to sign out of your account?"
   },
   "kyc": {
     "vendorTitle": "Become a vendor",
     "riderTitle": "Become a rider",
     "placeholder": "The application form arrives in the next step. Your account is ready: you can already use Kadou24h as a customer.",
     "goHome": "Explore as a customer"
+  },
+  "cart": {
+    "title": "Cart",
+    "add": "Add",
+    "added": "Added to cart",
+    "inCart_one": "{{count}} in cart",
+    "inCart_other": "{{count}} in cart",
+    "decrease": "Remove one",
+    "increase": "Add one",
+    "view": "Cart",
+    "emptyTitle": "Your cart is empty",
+    "emptyText": "Add products to place an order.",
+    "startShopping": "Start shopping",
+    "summary_one": "{{count}} item · {{total}}",
+    "summary_other": "{{count}} items · {{total}}",
+    "checkoutSoon": "The full cart and checkout arrive in the next step."
+  },
+  "catalog": {
+    "noRating": "New",
+    "ratingA11y": "Rated {{value}} out of 5, {{count}} reviews",
+    "tag": {
+      "new": "New",
+      "popular": "Popular"
+    },
+    "storeClosed": "Store closed",
+    "outOfStock": "Out of stock",
+    "inStock": "In stock",
+    "lowStock_one": "Only {{count}} left",
+    "lowStock_other": "Only {{count}} left",
+    "perHour": "{{amount}}/h",
+    "noReviews": "No reviews yet. Reviews appear after a delivery.",
+    "customer": "Customer",
+    "addFavorite": "Add to favorites",
+    "removeFavorite": "Remove from favorites",
+    "visitStore": "Visit {{store}}",
+    "open": "Open",
+    "description": "Description",
+    "features": "Features",
+    "inTheBox": "What's in the box",
+    "reviewsTitle_one": "Reviews ({{count}})",
+    "reviewsTitle_other": "Reviews ({{count}})",
+    "storeProducts_one": "{{count}} product",
+    "storeProducts_other": "{{count}} products",
+    "chatSoon": "Messaging arrives in the next step."
+  },
+  "jobs": {
+    "salaryNegotiable": "Salary negotiable",
+    "per": {
+      "monthly": "month",
+      "weekly": "week",
+      "hourly": "hour"
+    },
+    "isHiring": "{{org}} is hiring",
+    "type": {
+      "full_time": "Full time",
+      "part_time": "Part time",
+      "contract": "Contract",
+      "internship": "Internship"
+    },
+    "workplace": {
+      "on_site": "On site",
+      "remote": "Remote",
+      "hybrid": "Hybrid"
+    },
+    "salary": "Salary",
+    "location": "Location",
+    "vacancies": "Openings",
+    "deadline": "Deadline",
+    "about": "About the job",
+    "responsibilities": "Responsibilities",
+    "requirements": "Requirements",
+    "benefits": "Benefits",
+    "aboutCompany": "About {{org}}",
+    "apply": "Apply",
+    "applySoon": "Applying with your CV arrives in an upcoming step."
+  },
+  "home": {
+    "deliverTo": "Deliver to",
+    "noAddress": "Add a delivery address",
+    "guestAddress": "Conakry",
+    "topCategories": "Categories",
+    "jobsNearYou": "Jobs near you",
+    "popularProducts": "Popular products",
+    "popularWorkers": "Popular workers"
+  },
+  "search": {
+    "placeholder": "Search products…",
+    "workersPlaceholder": "Search workers (e.g. electrician)",
+    "products": "Products",
+    "workers": "Workers",
+    "noResults": "No results",
+    "noResultsHint": "Try other words or remove some filters.",
+    "noWorkers": "No workers found"
+  },
+  "filters": {
+    "title": "Filters",
+    "category": "Category",
+    "all": "All",
+    "price": "Price",
+    "min": "Min",
+    "max": "Max",
+    "rating": "Rating",
+    "ratingAtLeast": "{{value}}★ & up",
+    "any": "Any",
+    "availability": "Availability",
+    "inStock": "In stock",
+    "distance": "Distance from my address",
+    "withinKm": "{{km}} km",
+    "sort": "Sort by",
+    "sorts": {
+      "newest": "Newest",
+      "popular": "Popular",
+      "rating": "Top rated",
+      "price_asc": "Price: low to high",
+      "price_desc": "Price: high to low"
+    },
+    "reset": "Reset",
+    "apply": "Apply",
+    "activeCount_one": "{{count}} active filter",
+    "activeCount_other": "{{count}} active filters"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "today": "Today",
+    "earlier": "Earlier",
+    "markAll": "Mark all read",
+    "unread": "Unread",
+    "emptyTitle": "No notifications",
+    "emptyText": "Your orders, messages and offers will show up here."
+  },
+  "worker": {
+    "experience": "Experience",
+    "years_one": "{{count}} year",
+    "years_other": "{{count}} years",
+    "location": "Area",
+    "languages": "Languages",
+    "skills": "Skills",
+    "message": "Send a message"
+  },
+  "days": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
   }
 }

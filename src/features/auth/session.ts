@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/store/hooks';
 import { signedIn } from '@/store/authSlice';
 import { AppMode, UserRole, type User } from '@/types/api';
 
+import { pendingAuth } from './pending';
 import type { Session, SignupIntent } from './types';
 
 /**
@@ -26,8 +27,11 @@ export function useCompleteSignIn() {
   return useCallback(
     (session: Session, intent: SignupIntent = 'customer') => {
       dispatch(signedIn(session));
+      const returnTo = pendingAuth.takeReturnTo();
       if (intent === 'vendor') router.replace('/kyc/vendor');
       else if (intent === 'rider') router.replace('/kyc/rider');
+      // Back to the product/worker the guest was looking at
+      else if (returnTo) router.dismissTo(returnTo as Href);
       else router.replace(homeFor(session.user));
     },
     [dispatch],

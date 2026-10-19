@@ -1,10 +1,12 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/ui/AppText';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { useLogoutMutation, useSwitchModeMutation } from '@/features/auth/api';
@@ -26,6 +28,7 @@ export function ProfileBasics() {
   const language = useAppSelector((s) => s.prefs.language);
   const [switchMode, { isLoading: switching }] = useSwitchModeMutation();
   const [logout] = useLogoutMutation();
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
 
   const modes = [
     { mode: AppMode.customer, label: t('profile.modeCustomer'), icon: 'shopping-cart' as const },
@@ -50,6 +53,7 @@ export function ProfileBasics() {
   };
 
   const onSignOut = () => {
+    setConfirmSignOut(false);
     void logout(); // best effort: the local session ends either way
     dispatch(signedOut());
     router.replace('/home');
@@ -111,7 +115,20 @@ export function ProfileBasics() {
         <Feather name="chevron-right" size={20} color={Colors.textSubtle} />
       </Pressable>
 
-      {user && <Button title={t('common.signOut')} variant="outline" icon="log-out" onPress={onSignOut} />}
+      {user && (
+        <Button title={t('common.signOut')} variant="outline" icon="log-out" onPress={() => setConfirmSignOut(true)} />
+      )}
+
+      <ConfirmDialog
+        visible={confirmSignOut}
+        destructive
+        icon="log-out"
+        title={t('profile.signOutTitle')}
+        message={t('profile.signOutMessage')}
+        confirmLabel={t('common.signOut')}
+        onConfirm={onSignOut}
+        onCancel={() => setConfirmSignOut(false)}
+      />
     </View>
   );
 }

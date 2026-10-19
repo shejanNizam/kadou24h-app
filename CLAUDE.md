@@ -36,6 +36,8 @@ cd ../kadou24h-server && npm run dev:local
 # 2) App on the web preview → http://localhost:8081 (F12 → Ctrl+Shift+M → Pixel 7)
 cd ../kadou24h-app && npm run web
 ```
+**Demo data:** `cd ../kadou24h-server && npm run seed:demo` fills a separate `kadou24h-demo` DB (4 stores, 48 products with photos, riders, workers, jobs, banners). Then run `npm run dev:demo` instead of `dev:local`. Demo logins: customer `620 00 00 01`, vendor `…02`, rider `…03`, bus driver `…04`, password `Kadou2026`. Never seed the `.env` database.
+
 The app reads `EXPO_PUBLIC_API_URL` (default `http://localhost:7000/api/v1`). On a real phone, use the PC's LAN IP instead of localhost.
 
 Never run tests or experiments against the user's real `.env` database. The server e2e (`npm run test:e2e`) uses its own throwaway DB.

@@ -13,7 +13,10 @@
     "signIn": "Se connecter",
     "signOut": "Se déconnecter",
     "showPassword": "Afficher le mot de passe",
-    "hidePassword": "Masquer le mot de passe"
+    "hidePassword": "Masquer le mot de passe",
+    "seeAll": "Voir tout",
+    "close": "Fermer",
+    "clear": "Effacer"
   },
   "language": {
     "title": "Choisissez votre langue",
@@ -124,7 +127,8 @@
     "emailTaken": "Cet e-mail est déjà utilisé.",
     "invalidReferral": "Code de parrainage invalide.",
     "socialAccount": "Ce compte utilise Google ou Apple. Continuez avec ce service ou réinitialisez votre mot de passe.",
-    "accountBlocked": "Votre compte est bloqué. {{reason}}"
+    "accountBlocked": "Votre compte est bloqué. {{reason}}",
+    "title": "Impossible de charger"
   },
   "tabs": {
     "home": "Accueil",
@@ -140,19 +144,169 @@
     "title": "Connectez-vous pour continuer",
     "orders": "Connectez-vous pour voir et suivre vos commandes.",
     "chat": "Connectez-vous pour discuter avec les vendeurs et les livreurs.",
-    "profile": "Connectez-vous pour gérer votre compte, vos adresses et vos préférences."
+    "profile": "Connectez-vous pour gérer votre compte, vos adresses et vos préférences.",
+    "signInToContinue": "Connectez-vous pour continuer."
   },
   "profile": {
     "language": "Langue",
     "guestName": "Invité",
     "modeCustomer": "Client",
     "modeVendor": "Vendeur",
-    "modeRider": "Livreur"
+    "modeRider": "Livreur",
+    "signOutTitle": "Se déconnecter ?",
+    "signOutMessage": "Voulez-vous vraiment vous déconnecter de votre compte ?"
   },
   "kyc": {
     "vendorTitle": "Devenir vendeur",
     "riderTitle": "Devenir livreur",
     "placeholder": "Le formulaire de candidature arrive à la prochaine étape. Votre compte est prêt : vous pouvez déjà utiliser Kadou24h en tant que client.",
     "goHome": "Explorer en tant que client"
+  },
+  "cart": {
+    "title": "Panier",
+    "add": "Ajouter",
+    "added": "Ajouté au panier",
+    "inCart_one": "{{count}} dans le panier",
+    "inCart_other": "{{count}} dans le panier",
+    "decrease": "Retirer un",
+    "increase": "Ajouter un",
+    "view": "Panier",
+    "emptyTitle": "Votre panier est vide",
+    "emptyText": "Ajoutez des produits pour passer commande.",
+    "startShopping": "Commencer mes achats",
+    "summary_one": "{{count}} article · {{total}}",
+    "summary_other": "{{count}} articles · {{total}}",
+    "checkoutSoon": "Le panier détaillé et la commande arrivent à l'étape suivante."
+  },
+  "catalog": {
+    "noRating": "Nouveau",
+    "ratingA11y": "Note {{value}} sur 5, {{count}} avis",
+    "tag": {
+      "new": "Nouveau",
+      "popular": "Populaire"
+    },
+    "storeClosed": "Boutique fermée",
+    "outOfStock": "Rupture de stock",
+    "inStock": "En stock",
+    "lowStock_one": "Plus que {{count}} en stock",
+    "lowStock_other": "Plus que {{count}} en stock",
+    "perHour": "{{amount}}/h",
+    "noReviews": "Pas encore d'avis. Les avis apparaissent après une livraison.",
+    "customer": "Client",
+    "addFavorite": "Ajouter aux favoris",
+    "removeFavorite": "Retirer des favoris",
+    "visitStore": "Voir la boutique {{store}}",
+    "open": "Ouvert",
+    "description": "Description",
+    "features": "Caractéristiques",
+    "inTheBox": "Contenu de la boîte",
+    "reviewsTitle_one": "Avis ({{count}})",
+    "reviewsTitle_other": "Avis ({{count}})",
+    "storeProducts_one": "{{count}} produit",
+    "storeProducts_other": "{{count}} produits",
+    "chatSoon": "La messagerie arrive à l'étape suivante."
+  },
+  "jobs": {
+    "salaryNegotiable": "Salaire à négocier",
+    "per": {
+      "monthly": "mois",
+      "weekly": "semaine",
+      "hourly": "heure"
+    },
+    "isHiring": "{{org}} recrute",
+    "type": {
+      "full_time": "Temps plein",
+      "part_time": "Temps partiel",
+      "contract": "Contrat",
+      "internship": "Stage"
+    },
+    "workplace": {
+      "on_site": "Sur place",
+      "remote": "À distance",
+      "hybrid": "Hybride"
+    },
+    "salary": "Salaire",
+    "location": "Lieu",
+    "vacancies": "Postes",
+    "deadline": "Date limite",
+    "about": "À propos de l'offre",
+    "responsibilities": "Missions",
+    "requirements": "Profil recherché",
+    "benefits": "Avantages",
+    "aboutCompany": "À propos de {{org}}",
+    "apply": "Postuler",
+    "applySoon": "La candidature avec votre CV arrive dans une prochaine étape."
+  },
+  "home": {
+    "deliverTo": "Livrer à",
+    "noAddress": "Ajoutez une adresse de livraison",
+    "guestAddress": "Conakry",
+    "topCategories": "Catégories",
+    "jobsNearYou": "Emplois près de chez vous",
+    "popularProducts": "Produits populaires",
+    "popularWorkers": "Prestataires populaires"
+  },
+  "search": {
+    "placeholder": "Rechercher un produit…",
+    "workersPlaceholder": "Rechercher un prestataire (ex. électricien)",
+    "products": "Produits",
+    "workers": "Prestataires",
+    "noResults": "Aucun résultat",
+    "noResultsHint": "Essayez d'autres mots ou retirez des filtres.",
+    "noWorkers": "Aucun prestataire trouvé"
+  },
+  "filters": {
+    "title": "Filtres",
+    "category": "Catégorie",
+    "all": "Tout",
+    "price": "Prix",
+    "min": "Min",
+    "max": "Max",
+    "rating": "Note",
+    "ratingAtLeast": "{{value}}★ et plus",
+    "any": "Tous",
+    "availability": "Disponibilité",
+    "inStock": "En stock",
+    "distance": "Distance de mon adresse",
+    "withinKm": "{{km}} km",
+    "sort": "Trier par",
+    "sorts": {
+      "newest": "Nouveautés",
+      "popular": "Populaires",
+      "rating": "Mieux notés",
+      "price_asc": "Prix croissant",
+      "price_desc": "Prix décroissant"
+    },
+    "reset": "Réinitialiser",
+    "apply": "Appliquer",
+    "activeCount_one": "{{count}} filtre actif",
+    "activeCount_other": "{{count}} filtres actifs"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "today": "Aujourd'hui",
+    "earlier": "Plus tôt",
+    "markAll": "Tout lire",
+    "unread": "Non lue",
+    "emptyTitle": "Aucune notification",
+    "emptyText": "Vos commandes, messages et offres apparaîtront ici."
+  },
+  "worker": {
+    "experience": "Expérience",
+    "years_one": "{{count}} an",
+    "years_other": "{{count}} ans",
+    "location": "Zone",
+    "languages": "Langues",
+    "skills": "Compétences",
+    "message": "Envoyer un message"
+  },
+  "days": {
+    "mon": "lun",
+    "tue": "mar",
+    "wed": "mer",
+    "thu": "jeu",
+    "fri": "ven",
+    "sat": "sam",
+    "sun": "dim"
   }
 }

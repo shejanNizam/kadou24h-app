@@ -37,11 +37,19 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] Social login (native only; needs Google/Apple client IDs → `EXPO_PUBLIC_GOOGLE_CLIENT_ID`)
 - [ ] Real KADOU 24H logo asset (BrandLogo is a temporary icon + wordmark)
 
-## Phase 3 — Customer: browse
-- [ ] Home (address bar, categories, ad banner, jobs, products, workers)
-- [ ] Search: Products | Workers, filters + sort, category pages
-- [ ] Product details, store page, reviews list, favorites
-- [ ] Notifications list
+## Phase 3 — Customer: browse ✅ (2026-10-19)
+- [x] Demo data: `npm run seed:demo` + `npm run dev:demo` in the server (separate `kadou24h-demo` DB)
+- [x] Home: deliver-to (default address), bell + cart badges, search, categories, home banner, jobs near you, popular products, popular workers; pull-to-refresh
+- [x] Search: Products | Workers tabs, debounced text, filter sheet (category, price, rating, stock, distance from the address, sort), infinite scroll, search banner; "See all" from Home switches the tab/sort
+- [x] Category page (+ category banner, same filters), all-categories page
+- [x] Product details: gallery, price/discount, stock, store card → store page, features, in the box, reviews, ❤ favorite (optimistic), add-to-cart / stepper
+- [x] Store page (info, hours, products), worker page (chat button → Phase 5), read-only job page (apply → Phase 10)
+- [x] Notifications list (today/earlier, unread, mark all read)
+- [x] Add-to-cart from cards (Add → stepper), guest → sign in → back to the same screen
+- [x] Contract test 26/26 against the demo DB (scratchpad `phase3-contract.mjs`)
+- [x] Server fix: product details and customer tracking no longer leak the store phone (e2e 129/129)
+- [ ] Notification tap → deep link (with orders/chat screens)
+- [ ] Ratings/reviews in the demo data (needs delivered orders: add to the seed in Phase 4)
 
 ## Phase 4 — Customer: buy
 - [ ] Addresses (map pin first, gate photo, default)
@@ -108,5 +116,6 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 
 ## Log
 - 2026-10-19 — Project created, all 3 roles' Figma reviewed, docs written.
+- 2026-10-19 — Phase 3 (customer browse) built on real demo data; sign-out confirmation dialog.
 - 2026-10-19 — Phase 1 foundation + Phase 2 auth built and wired to the API.
 - 2026-10-19 — Backend prep done (summary endpoint, PINs in order details, `deliveredAt`, vendor rider populate fix). Server e2e 126/126, jest 149/149.

@@ -60,6 +60,7 @@ src/app/
   rider/_layout.tsx           Stack + role guard → rider/(tabs): /rider/deliveries /rider/earnings /rider/chat /rider/profile
   kyc/vendor.tsx, kyc/rider.tsx
 ```
+Phase 3 added root screens: `product/[id]`, `store/[id]`, `worker/[id]`, `job/[id]`, `category/[id]`, `categories`, `cart` (placeholder until Phase 4), `notifications`.
 Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vendor/rider detail screens go inside `vendor/` / `rider/` so they push over that mode's tabs.
 
 ## SDK 58 gotchas (checked in node_modules)
@@ -76,6 +77,10 @@ Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vend
 - **Mode routing:** `src/app/index.tsx` reads `user.lastActiveMode` and `roles` → `router.replace('/(vendor)/orders')` etc. If the mode's role is missing (suspended), it falls back to customer.
 - **Guest gate:** tabs that need an account render `SignInPrompt`. Planned: a `useRequireAuth()` hook that opens a login bottom sheet and resumes the action.
 - **Auth hand-off:** `features/auth/pending.ts` keeps the phone to verify and the reset token in memory, never in route params (web URLs). `useCompleteSignIn(session, intent)` saves the session and routes.
+- **Infinite lists:** RTK Query `build.infiniteQuery` (`searchProducts`, `searchWorkers`) with `getNextPageParam` from `meta`. Flatten `data.pages`.
+- **Cart:** mutations return the whole cart → `upsertQueryData('getCart')` (no refetch). `useCartLine(productId)` powers every Add/stepper.
+- **Guest gate:** `useRequireAuth()(action)` → toast + login, and `pendingAuth.setReturnTo(pathname)` brings the user back after sign-in.
+- **Localized server text** (`{ fr, en }`): `useLocalized()`.
 - **Server errors** are English. `lib/api/errors.ts` maps the known ones (attempts left, wait Ns, invalid credentials, phone taken…) to i18n keys, and falls back to the server text.
 - **Socket → cache:** socket handlers call `api.util.invalidateTags([...])` or `updateQueryData`, never duplicate state.
 - **Payments:** `usePaymentFlow(purpose, refId)` → initiate → open the provider URL (`expo-web-browser`) → waiting screen (poll `GET /payments/me` + `payment:successful`) → result.
