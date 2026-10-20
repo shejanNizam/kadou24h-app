@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { Redirect, router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -20,6 +20,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import { useSwitchModeMutation } from '@/features/auth/api';
 import { homeFor } from '@/features/auth/session';
@@ -255,7 +256,7 @@ function ApplicationForm({ store }: { store?: MyStore }) {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         {store && (store.approvalStatus === 'needs_changes' || store.approvalStatus === 'rejected') && (
           <View style={styles.note}>
             <StatusPill label={t(`mode.status.${store.approvalStatus}`)} tone={APPLICATION_TONE[store.approvalStatus]} />
@@ -439,7 +440,7 @@ function ApplicationForm({ store }: { store?: MyStore }) {
             <Banner tone="info" message={t('kyc.reviewNote')} />
           </>
         )}
-      </ScrollView>
+      </KeyboardScroll>
 
       <View style={[styles.inner, styles.footer]}>
         {index > 0 && <Button title={t('common.back')} variant="outline" style={styles.flex} onPress={() => go(STEPS[index - 1])} />}

@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetPublicSettingsQuery } from '@/features/profile/api';
 import { useGetEarningsSummaryQuery, useGetWalletQuery, useRequestWithdrawalMutation } from '@/features/wallet/api';
@@ -92,7 +93,7 @@ export default function WithdrawScreen() {
         />
       ) : (
         <>
-          <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+          <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
             <View style={styles.available}>
               <AppText variant="small" color={Colors.textMuted}>
                 {t('earnings.withdrawable')}
@@ -157,7 +158,7 @@ export default function WithdrawScreen() {
             <AppText variant="caption" color={Colors.textMuted}>
               {t('withdraw.delayNote')}
             </AppText>
-          </ScrollView>
+          </KeyboardScroll>
           <View style={[styles.inner, styles.footer]}>
             <Button
               title={t('withdraw.submit')}

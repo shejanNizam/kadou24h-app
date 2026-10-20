@@ -1,12 +1,14 @@
 import Feather from '@expo/vector-icons/Feather';
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 
 import { AppText } from './AppText';
+import { KeyboardScroll } from './KeyboardScroll';
 
 /** Sheet from the bottom: title, ✕, scrollable body, fixed footer (actions). */
 export function BottomSheet({
@@ -28,7 +30,7 @@ export function BottomSheet({
   const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} onShow={onShow}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.backdrop}>
+      <KeyboardAvoidingView behavior="padding" style={styles.backdrop}>
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityLabel={t('common.close')} />
         <View style={[styles.sheet, { paddingBottom: insets.bottom + Spacing.lg }]}>
           <View style={styles.header}>
@@ -39,9 +41,9 @@ export function BottomSheet({
               <Feather name="x" size={22} color={Colors.textMuted} />
             </Pressable>
           </View>
-          <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <KeyboardScroll contentContainerStyle={styles.content} bottomOffset={Spacing.lg} showsVerticalScrollIndicator={false}>
             {children}
-          </ScrollView>
+          </KeyboardScroll>
           {footer && <View style={styles.footer}>{footer}</View>}
         </View>
       </KeyboardAvoidingView>

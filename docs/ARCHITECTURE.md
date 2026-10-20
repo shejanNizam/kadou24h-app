@@ -66,6 +66,7 @@ Typed routes list a folder's `index.tsx` as `/folder/index`, so screens without 
 Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vendor/rider detail screens go inside `vendor/` / `rider/` so they push over that mode's tabs.
 
 ## SDK 58 gotchas (checked in node_modules)
+- **Keyboard (Android is edge-to-edge, the window never shrinks):** every screen with text fields scrolls with `KeyboardScroll` (`components/ui/KeyboardScroll`, react-native-keyboard-controller), never a plain `ScrollView`. Fixed bottom bars use `KeyboardAvoidingView` from `react-native-keyboard-controller` with `behavior="padding"` (not the RN one with `undefined` on Android). `KeyboardProvider` is in the root layout. Native module: needs a new APK.
 - `Tabs` comes from `expo-router/js-tabs` (the `expo-router` export is deprecated). `Stack`, `Link`, `Redirect`, `router` still come from `expo-router`.
 - Input refs: `useRef<TextInputInstance>` (RN 0.88 type), not `TextInput`.
 - RHF's `handleSubmit` result is not assignable to `onSubmitEditing` → wrap it: `onSubmitEditing={() => void onSubmit()}`.

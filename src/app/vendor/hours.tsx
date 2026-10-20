@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useGetMyStoreQuery, useUpdateAvailabilityMutation } from '@/features/vendor/api';
 import { WEEK_DAYS, type MyStore, type WeekDay } from '@/features/vendor/types';
@@ -75,7 +76,7 @@ function HoursForm({ store }: { store: MyStore }) {
       <View style={styles.inner}>
         <StackHeader title={t('store.hours')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         <AppText variant="small" color={Colors.textMuted}>
           {t('store.hoursHint')}
         </AppText>
@@ -109,7 +110,7 @@ function HoursForm({ store }: { store: MyStore }) {
             )}
           </>
         )}
-      </ScrollView>
+      </KeyboardScroll>
       <View style={[styles.inner, styles.footer]}>
         <Button title={t('common.save')} loading={isLoading} disabled={enabled && (badTime || days.length === 0)} onPress={() => void save()} />
       </View>

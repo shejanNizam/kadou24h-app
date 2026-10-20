@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ import { Chip } from '@/components/ui/Chip';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useCreateTicketMutation, type TicketType, type TicketUrgency } from '@/features/profile/api';
 import { TICKET_TYPES, TICKET_URGENCIES } from '@/features/profile/ticketStatus';
@@ -76,7 +77,7 @@ export default function NewTicketScreen() {
       <View style={styles.inner}>
         <StackHeader title={t('support.new')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         <AppText variant="label">{t('support.typeLabel')}</AppText>
         <View style={styles.chips}>
           {TICKET_TYPES.map((x) => (
@@ -130,7 +131,7 @@ export default function NewTicketScreen() {
         </View>
 
         <Banner tone="danger" message={error} />
-      </ScrollView>
+      </KeyboardScroll>
       <View style={[styles.inner, styles.footer]}>
         <Button title={t('support.send')} loading={isLoading} disabled={!canSend} onPress={() => void submit()} />
       </View>

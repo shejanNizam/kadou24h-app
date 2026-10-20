@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -13,6 +13,7 @@ import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useUpdateMeMutation } from '@/features/auth/api';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
@@ -91,7 +92,7 @@ function Account() {
       <View style={styles.inner}>
         <StackHeader title={t('account.title')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         <Pressable onPress={() => setPhotoSheet(true)} disabled={uploading} accessibilityRole="button" accessibilityLabel={t('account.changePhoto')} style={styles.avatarWrap}>
           <View style={styles.avatar}>
             {uploading ? (
@@ -135,7 +136,7 @@ function Account() {
             </AppText>
           </View>
         )}
-      </ScrollView>
+      </KeyboardScroll>
 
       <BottomSheet visible={photoSheet} title={t('account.changePhoto')} onClose={() => setPhotoSheet(false)}>
         <Button title={t('upload.camera')} icon="camera" variant="outline" onPress={() => void changePhoto('camera')} />

@@ -120,6 +120,7 @@
     "otp": "Entrez les 6 chiffres"
   },
   "errors": {
+    "crashTitle": "Oups, cet écran a rencontré un problème",
     "generic": "Une erreur s'est produite. Réessayez.",
     "network": "Pas de connexion. Vérifiez votre internet et réessayez.",
     "server": "Le serveur ne répond pas pour le moment. Réessayez dans un instant.",
@@ -710,6 +711,8 @@
     }
   },
   "chat": {
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
     "title": "Messages",
     "emptyTitle": "Aucune conversation",
     "emptyCustomer": "Écrivez à une boutique, un travailleur ou votre livreur : vos conversations apparaîtront ici.",

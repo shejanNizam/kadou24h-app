@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +14,7 @@ import { OptionCard } from '@/components/ui/OptionCard';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
 import { AddressCard } from '@/features/address/components/AddressCard';
@@ -127,7 +128,7 @@ function Checkout() {
       <View style={styles.inner}>
         <StackHeader title={t('checkout.title')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         {/* 1. Address */}
         <Section title={t('checkout.address')} action={address ? t('common.change') : undefined} onAction={() => router.push({ pathname: '/addresses', params: { select: '1' } })}>
           {addresses.isLoading ? (
@@ -246,7 +247,7 @@ function Checkout() {
         </Section>
 
         <Banner tone="danger" message={placeError} />
-      </ScrollView>
+      </KeyboardScroll>
 
       <View style={[styles.inner, styles.footer]}>
         <Button

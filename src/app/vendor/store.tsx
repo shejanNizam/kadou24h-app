@@ -1,7 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +15,7 @@ import { PhoneField } from '@/components/ui/PhoneField';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import { useGetMyStoreQuery, useUpdateStoreMutation } from '@/features/vendor/api';
 import type { MyStore } from '@/features/vendor/types';
@@ -103,7 +104,7 @@ function StoreForm({ store }: { store: MyStore }) {
       <View style={styles.inner}>
         <StackHeader title={t('store.business')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         <Banner tone="danger" message={formError} />
         <View style={styles.row}>
           <ImageUploadBox value={logo} onChange={setLogo} title={t('kyc.logo')} icon="image" height={88} style={styles.logo} />
@@ -139,7 +140,7 @@ function StoreForm({ store }: { store: MyStore }) {
         <TextField label={t('address.city')} value={city} onChangeText={setCity} error={errors.city} maxLength={60} />
         <TextField label={t('kyc.addressText')} optional value={text} onChangeText={setText} maxLength={200} />
         <Banner tone="info" message={t('store.reviewFields')} />
-      </ScrollView>
+      </KeyboardScroll>
       <View style={[styles.inner, styles.footer]}>
         <Button title={t('common.save')} loading={isLoading} onPress={() => void save()} />
       </View>

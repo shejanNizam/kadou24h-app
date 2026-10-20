@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -11,6 +11,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { TextLink } from '@/components/ui/TextLink';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { PasswordChecklist } from '@/features/auth/components/PasswordChecklist';
 import { pendingAuth } from '@/features/auth/pending';
@@ -56,7 +57,7 @@ export default function ChangePasswordScreen() {
       <View style={styles.inner}>
         <StackHeader title={t('account.changePassword')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         <AppText variant="body" color={Colors.textMuted}>
           {t('account.passwordInfo')}
         </AppText>
@@ -76,7 +77,7 @@ export default function ChangePasswordScreen() {
         />
         <Banner tone="danger" message={error} />
         <Button title={t('account.savePassword')} loading={isLoading} disabled={!canSubmit} onPress={() => void submit()} />
-      </ScrollView>
+      </KeyboardScroll>
     </SafeAreaView>
   );
 }

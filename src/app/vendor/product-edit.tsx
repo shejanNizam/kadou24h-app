@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetCategoriesQuery } from '@/features/catalog/api';
 import type { Product } from '@/features/catalog/types';
@@ -203,7 +204,7 @@ function ProductEditor({ existing }: { existing?: EditableProduct }) {
         </AppText>
       </View>
 
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         {existing?.approvalStatus === 'rejected' && (
           <Banner tone="warning" message={`${t('products.rejectedNote')}${existing.adminReviewNote ? `\n« ${existing.adminReviewNote} »` : ''}`} />
         )}
@@ -408,7 +409,7 @@ function ProductEditor({ existing }: { existing?: EditableProduct }) {
             </View>
           </>
         )}
-      </ScrollView>
+      </KeyboardScroll>
 
       <View style={[styles.inner, styles.footer]}>
         {step === 2 && <Button title={t('common.back')} variant="outline" style={styles.flex} onPress={() => setStep(1)} />}

@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,7 @@ import { PhoneField } from '@/components/ui/PhoneField';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextLink } from '@/components/ui/TextLink';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useRequestPhoneChangeMutation, useVerifyPhoneChangeMutation } from '@/features/profile/api';
 import { getApiErrorMessage } from '@/lib/api/errors';
@@ -76,7 +77,7 @@ export default function ChangePhoneScreen() {
       <View style={styles.inner}>
         <StackHeader title={t('account.changePhone')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.content]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
         {!sentTo ? (
           <>
             <AppText variant="body" color={Colors.textMuted}>
@@ -117,7 +118,7 @@ export default function ChangePhoneScreen() {
             </View>
           </>
         )}
-      </ScrollView>
+      </KeyboardScroll>
     </SafeAreaView>
   );
 }

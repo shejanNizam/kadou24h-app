@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import type { TFunction } from 'i18next';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -20,6 +20,7 @@ import { PhoneField } from '@/components/ui/PhoneField';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import {
   useCreateAddressMutation,
@@ -221,7 +222,7 @@ function AddressEditor({ existing, isFirst }: { existing?: Address; isFirst: boo
       <View style={styles.inner}>
         <StackHeader title={existing ? t('address.editTitle') : t('address.newTitle')} />
       </View>
-      <ScrollView contentContainerStyle={[styles.inner, styles.form]} keyboardShouldPersistTaps="handled">
+      <KeyboardScroll contentContainerStyle={[styles.inner, styles.form]}>
         {/* Pin preview: key = new map when the pin moves */}
         <View>
           <AppMap
@@ -328,7 +329,7 @@ function AddressEditor({ existing, isFirst }: { existing?: Address; isFirst: boo
             </View>
           )}
         />
-      </ScrollView>
+      </KeyboardScroll>
       <View style={[styles.inner, styles.footer]}>
         <Button title={t('common.save')} loading={saving} disabled={uploading} onPress={() => void onSubmit()} />
       </View>

@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
@@ -24,6 +25,9 @@ import { store } from '@/store';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 void SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// A screen that throws shows "Something went wrong · Try again" instead of closing the app
+export { CrashScreen as ErrorBoundary } from '@/components/ui/CrashScreen';
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -54,18 +58,20 @@ export default function RootLayout() {
       <Provider store={store}>
         <I18nextProvider i18n={i18n}>
           <SafeAreaProvider>
-            <ToastProvider>
-              <SessionEffects />
-              <PushEffects />
-              <StatusBar style="dark" />
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  contentStyle: { backgroundColor: Colors.background },
-                  animation: 'slide_from_right',
-                }}
-              />
-            </ToastProvider>
+            <KeyboardProvider>
+              <ToastProvider>
+                <SessionEffects />
+                <PushEffects />
+                <StatusBar style="dark" />
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    contentStyle: { backgroundColor: Colors.background },
+                    animation: 'slide_from_right',
+                  }}
+                />
+              </ToastProvider>
+            </KeyboardProvider>
           </SafeAreaProvider>
         </I18nextProvider>
       </Provider>

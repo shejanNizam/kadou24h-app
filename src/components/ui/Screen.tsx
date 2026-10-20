@@ -1,8 +1,11 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+
+import { KeyboardScroll } from './KeyboardScroll';
 
 export interface ScreenProps {
   children: ReactNode;
@@ -29,15 +32,11 @@ export function Screen({
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: background }]} edges={edges}>
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView style={styles.flex} behavior="padding" enabled={!scroll}>
         {scroll ? (
-          <ScrollView
-            style={styles.flex}
-            contentContainerStyle={[styles.scrollContent, inner]}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
+          <KeyboardScroll style={styles.flex} contentContainerStyle={[styles.scrollContent, inner]} showsVerticalScrollIndicator={false}>
             {children}
-          </ScrollView>
+          </KeyboardScroll>
         ) : (
           <View style={[styles.flex, inner]}>{children}</View>
         )}

@@ -2,12 +2,13 @@ import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { BrandLogo } from '@/components/brand/BrandLogo';
 import { AppText } from '@/components/ui/AppText';
+import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 
 export interface AuthLayoutProps {
@@ -35,43 +36,37 @@ export function AuthLayout({ title, subtitle, children, back, onBack }: AuthLayo
 
   return (
     <LinearGradient colors={Colors.gradient} style={styles.flex}>
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView
-          contentContainerStyle={styles.scroll}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          bounces={false}>
-          <View style={[styles.hero, { paddingTop: insets.top + Spacing.lg }]}>
-            {back && (
-              <Pressable
-                onPress={goBack}
-                hitSlop={12}
-                accessibilityRole="button"
-                accessibilityLabel={t('common.back')}
-                style={[styles.back, { top: insets.top + Spacing.sm }]}>
-                <Feather name="arrow-left" size={24} color={Colors.textOnPrimary} />
-              </Pressable>
-            )}
-            <BrandLogo size={back ? 72 : 96} />
-          </View>
+      <KeyboardScroll contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false} bounces={false}>
+        <View style={[styles.hero, { paddingTop: insets.top + Spacing.lg }]}>
+          {back && (
+            <Pressable
+              onPress={goBack}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.back')}
+              style={[styles.back, { top: insets.top + Spacing.sm }]}>
+              <Feather name="arrow-left" size={24} color={Colors.textOnPrimary} />
+            </Pressable>
+          )}
+          <BrandLogo size={back ? 72 : 96} />
+        </View>
 
-          <View style={[styles.sheet, { paddingBottom: insets.bottom + Spacing.xxl }]}>
-            <View style={styles.sheetInner}>
-              <View style={styles.heading}>
-                <AppText variant="h2" accessibilityRole="header">
-                  {title}
+        <View style={[styles.sheet, { paddingBottom: insets.bottom + Spacing.xxl }]}>
+          <View style={styles.sheetInner}>
+            <View style={styles.heading}>
+              <AppText variant="h2" accessibilityRole="header">
+                {title}
+              </AppText>
+              {subtitle && (
+                <AppText variant="body" color={Colors.textMuted}>
+                  {subtitle}
                 </AppText>
-                {subtitle && (
-                  <AppText variant="body" color={Colors.textMuted}>
-                    {subtitle}
-                  </AppText>
-                )}
-              </View>
-              {children}
+              )}
             </View>
+            {children}
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </KeyboardScroll>
     </LinearGradient>
   );
 }
