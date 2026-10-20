@@ -93,6 +93,13 @@
             "extraProguardRules": "-keep class com.google.android.gms.maps.** { *; }\n-dontwarn com.google.android.gms.maps.**\n-keep class com.google.maps.android.** { *; }\n-dontwarn com.google.maps.android.**\n-keep class com.rnmaps.** { *; }\n-dontwarn com.rnmaps.**"
           }
         }
+      ],
+      "expo-audio",
+      [
+        "expo-notifications",
+        {
+          "color": "#8B5CF6"
+        }
       ]
     ],
     "experiments": {

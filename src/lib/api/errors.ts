@@ -39,6 +39,21 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/email is already in use/i.test(message)) return t('errors.emailTaken');
   if (/invalid referral code/i.test(message)) return t('errors.invalidReferral');
   if (/uses google or apple sign-in/i.test(message)) return t('errors.socialAccount');
+  // Account & settings
+  if (/old password does not match/i.test(message)) return t('errors.oldPasswordWrong');
+  if (/new password cannot be the same/i.test(message)) return t('errors.samePassword');
+  if (/no password set yet/i.test(message)) return t('errors.noPassword');
+  if (/already used by another account/i.test(message)) return t('errors.phoneTaken');
+  if (/already your verified phone/i.test(message)) return t('errors.samePhone');
+  if (/you have orders in progress/i.test(message)) return t('errors.deleteOrders');
+  if (/your store has orders in progress/i.test(message)) return t('errors.deleteStoreOrders');
+  if (/you have deliveries in progress/i.test(message)) return t('errors.deleteDeliveries');
+  if (/cash on delivery money/i.test(message)) return t('errors.deleteCash');
+  if (/wallet still has money/i.test(message)) return t('errors.deleteWallet');
+  // Chat
+  if (/no rider is assigned/i.test(message)) return t('errors.noRiderYet');
+  if (/not part of this/i.test(message)) return t('errors.notYourOrder');
+  if (/chat is temporarily restricted/i.test(message)) return t('errors.chatRestricted');
   const blocked = message.match(/your account is (suspended|banned)(?::\s*(.+))?/i);
   if (blocked) return t('errors.accountBlocked', { reason: blocked[2] ?? '' });
   if (status === 429) return t('errors.tooManyRequests');

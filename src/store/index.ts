@@ -3,14 +3,14 @@ import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/tool
 import { api } from '@/lib/api/api';
 import { StorageKeys, storage } from '@/lib/storage';
 
-import authReducer, { signedIn, signedOut, tokenRefreshed, userUpdated } from './authSlice';
+import authReducer, { signedIn, signedOut, tokenRefreshed, tokensRotated, userUpdated } from './authSlice';
 import prefsReducer, { languageChosen } from './prefsSlice';
 
 /** Saves the session and preferences to the device whenever they change. */
 const persistence = createListenerMiddleware();
 
 persistence.startListening({
-  matcher: isAnyOf(signedIn, tokenRefreshed, userUpdated),
+  matcher: isAnyOf(signedIn, tokenRefreshed, tokensRotated, userUpdated),
   effect: async (_action, listenerApi) => {
     const { auth } = listenerApi.getState() as RootState;
     if (!auth.user || !auth.accessToken || !auth.refreshToken) return;

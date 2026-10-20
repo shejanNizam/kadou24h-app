@@ -20,8 +20,7 @@
     "change": "Change",
     "delete": "Delete",
     "edit": "Edit",
-    "save": "Save",
-    "comingSoonPhase": "Coming soon."
+    "save": "Save"
   },
   "language": {
     "title": "Choose your language",
@@ -79,7 +78,8 @@
       "resend": "Resend code",
       "resent": "New code sent",
       "wrongNumber": "Wrong number? Change it",
-      "missing": "Verification timed out. Please start again."
+      "missing": "Verification timed out. Please start again.",
+      "codeLabel": "Code received by SMS"
     },
     "forgot": {
       "title": "Forgot password",
@@ -133,7 +133,19 @@
     "invalidReferral": "Invalid referral code.",
     "socialAccount": "This account uses Google or Apple. Continue with it, or reset your password.",
     "accountBlocked": "Your account is blocked. {{reason}}",
-    "title": "Couldn't load"
+    "title": "Couldn't load",
+    "oldPasswordWrong": "The current password is wrong.",
+    "samePassword": "The new password must be different from the old one.",
+    "noPassword": "This account doesn't have a password yet.",
+    "samePhone": "This is already your verified number.",
+    "deleteOrders": "You have orders in progress. Wait for delivery or cancel them before deleting your account.",
+    "deleteStoreOrders": "Your store has orders in progress. Finish or cancel them before deleting your account.",
+    "deleteDeliveries": "You have deliveries in progress. Finish them before deleting your account.",
+    "deleteCash": "You still hold cash-on-delivery money. Hand it over before deleting your account.",
+    "deleteWallet": "Your wallet still has money. Withdraw your balance before deleting your account.",
+    "noRiderYet": "No rider is assigned to this order yet.",
+    "notYourOrder": "You're not part of this order.",
+    "chatRestricted": "Your messaging is temporarily restricted."
   },
   "tabs": {
     "home": "Home",
@@ -161,7 +173,19 @@
     "modeVendor": "Vendor",
     "modeRider": "Rider",
     "signOutTitle": "Sign out?",
-    "signOutMessage": "Are you sure you want to sign out of your account?"
+    "signOutMessage": "Are you sure you want to sign out of your account?",
+    "guestTitle": "Welcome to Kadou24h",
+    "createAccount": "Create an account",
+    "editAccount": "Edit my account",
+    "myShopping": "My shopping",
+    "favorites": "My favourites",
+    "payments": "Payment history",
+    "myReviews": "My reviews",
+    "settings": "Settings",
+    "help": "Help",
+    "share": "Share the app",
+    "shareText": "I shop on Kadou24h: products, delivery and services near you. Get the app!",
+    "shareWithCode": "I shop on Kadou24h: products, delivery and services near you. Sign up with my code {{code}}!"
   },
   "kyc": {
     "vendorTitle": "Become a vendor",
@@ -227,7 +251,7 @@
     "reviewsTitle_other": "Reviews ({{count}})",
     "storeProducts_one": "{{count}} product",
     "storeProducts_other": "{{count}} products",
-    "chatSoon": "Messaging arrives in the next step."
+    "messageStore": "Message the store"
   },
   "jobs": {
     "salaryNegotiable": "Salary negotiable",
@@ -572,7 +596,8 @@
     "disputeInfo": "The Kadou24h team reviews your request and answers here. A refund may be granted.",
     "disputeSend": "Send",
     "disputeSent": "Report sent",
-    "adminReply": "Kadou24h reply: {{reply}}"
+    "adminReply": "Kadou24h reply: {{reply}}",
+    "chatRider": "Message the rider"
   },
   "track": {
     "title": "Delivery tracking",
@@ -625,6 +650,202 @@
       "open": "Open",
       "resolved": "Resolved",
       "rejected": "Rejected"
+    }
+  },
+  "chat": {
+    "title": "Messages",
+    "emptyTitle": "No conversations yet",
+    "emptyCustomer": "Message a store, a worker or your rider: your conversations will show up here.",
+    "emptyVendor": "Messages from your customers and riders will show up here.",
+    "emptyRider": "Messages from the customers and stores of your deliveries will show up here.",
+    "peer": {
+      "customer": "Customer",
+      "vendor": "Store",
+      "rider": "Rider"
+    },
+    "kind": {
+      "order": "Order",
+      "buyer_seller": "Product question",
+      "worker": "Service",
+      "job_application": "Application"
+    },
+    "aboutOrder": "Order {{number}}",
+    "unread_one": "{{count}} unread message",
+    "unread_other": "{{count}} unread messages",
+    "voiceNote": "Voice message",
+    "photo": "Photo",
+    "safetyShort": "Conversation started",
+    "safetyNotice": "For your safety, always pay through Kadou24h and never share your phone number, bank details or social accounts. They are hidden automatically.",
+    "maskedNotice": "Contact details hidden by Kadou24h",
+    "typing": "typing…",
+    "viewStore": "View the store",
+    "viewOrder": "View the order",
+    "placeholder": "Your message…",
+    "restrictedPlaceholder": "Messaging restricted",
+    "restricted": "Your messaging is restricted until {{until}} after sharing contact details. You can still read your messages.",
+    "send": "Send",
+    "sendPhoto": "Send a photo",
+    "recordVoice": "Record a voice message",
+    "micDenied": "Allow the microphone in settings to send a voice message.",
+    "preparing": "Getting ready…",
+    "voiceMax_one": "max {{count}} min",
+    "voiceMax_other": "max {{count}} min",
+    "play": "Play",
+    "pause": "Pause",
+    "longPressHint": "Long press to report",
+    "reportTitle": "Report this message",
+    "reportReason": {
+      "contact": "Sharing contact details",
+      "offPlatformPayment": "Payment outside Kadou24h",
+      "abuse": "Insults or harassment",
+      "scam": "Scam",
+      "other": "Other"
+    },
+    "reportDetails": "Details",
+    "reportInfo": "The Kadou24h team reviews every report. The person isn't told.",
+    "reportSend": "Report",
+    "reported": "Thanks, report sent"
+  },
+  "mode": {
+    "current": "Current",
+    "customerHint": "Shop and track your orders",
+    "vendorHint": "Manage your store",
+    "riderHint": "Your deliveries and earnings",
+    "becomeVendor": "Become a vendor",
+    "becomeVendorHint": "Open your store and sell on Kadou24h",
+    "becomeRider": "Become a rider",
+    "becomeRiderHint": "Deliver by moto or bus and earn money",
+    "vendorApplication": "Vendor application",
+    "riderApplication": "Rider application",
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "needs_changes": "To fix",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "suspended": "Suspended",
+      "draftHint": "Finish your application to send it",
+      "pendingHint": "Our team is reviewing your application",
+      "needs_changesHint": "Fix your application and send it again",
+      "approvedHint": "Your application is approved",
+      "rejectedHint": "Your application was rejected",
+      "suspendedHint": "Contact support"
+    }
+  },
+  "account": {
+    "title": "My account",
+    "saved": "Saved",
+    "changePhoto": "Change photo",
+    "name": "Full name",
+    "security": "Sign-in & security",
+    "phone": "Phone",
+    "noPhone": "Add",
+    "email": "Email",
+    "password": "Password",
+    "dangerZone": "Danger zone",
+    "delete": "Delete my account",
+    "deleteTitle": "Delete your account?",
+    "deleteMessage": "Your account, addresses and history won't be accessible anymore. This can't be undone.",
+    "deleteConfirm": "Delete permanently",
+    "changePhone": "Change number",
+    "phoneCurrent": "Current number: {{phone}}. We'll send a code to the new number.",
+    "phoneAdd": "Add your number: we'll send a code to verify it.",
+    "newPhone": "New number",
+    "sendCode": "Send code",
+    "codeSentTo": "Enter the code sent to {{phone}}.",
+    "confirmPhone": "Confirm",
+    "otherNumber": "Other number",
+    "phoneChanged": "Number updated",
+    "changePassword": "Change password",
+    "passwordInfo": "Your other devices will be signed out. This phone stays signed in.",
+    "oldPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm the new password",
+    "passwordMismatch": "Passwords don't match",
+    "savePassword": "Save",
+    "passwordChanged": "Password changed"
+  },
+  "notificationSettings": {
+    "title": "Notifications",
+    "intro": "Choose which notifications you get on this phone.",
+    "orderUpdates": "My orders",
+    "messages": "Messages",
+    "deliveryUpdates": "Deliveries",
+    "offers": "Offers and promotions",
+    "jobPosts": "Jobs and applications",
+    "accountAlerts": "Account and earnings",
+    "securityNote": "Security alerts (warnings, suspension) always arrive."
+  },
+  "favorites": {
+    "emptyTitle": "No favourites yet",
+    "emptyText": "Tap ❤ on a product to find it here."
+  },
+  "payments": {
+    "codNote": "Online payments. Cash on delivery is paid to the rider.",
+    "emptyTitle": "No payments yet",
+    "emptyText": "Your Orange Money, MoMo and card payments will show up here.",
+    "purpose": {
+      "order": "Order",
+      "subscription": "Subscription",
+      "job_publish": "Job post",
+      "cv_unlock": "CV unlock",
+      "spontaneous_application": "Spontaneous application"
+    },
+    "status": {
+      "pending": "Pending",
+      "success": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded"
+    }
+  },
+  "myReviews": {
+    "emptyTitle": "No reviews yet",
+    "emptyText": "After a delivery, rate the store from the order.",
+    "hidden": "Hidden by moderation"
+  },
+  "support": {
+    "title": "Help & support",
+    "intro": "A problem with an order, a payment or your account? Our team answers here.",
+    "whatsapp": "Message on WhatsApp",
+    "myRequests": "My requests",
+    "emptyTitle": "No requests yet",
+    "emptyText": "Your support requests will show up here.",
+    "new": "New request",
+    "typeLabel": "Topic",
+    "urgencyLabel": "Urgency",
+    "subject": "Title",
+    "description": "Describe the problem",
+    "descriptionHint": "Order number, what happened, when…",
+    "photos": "Screenshots",
+    "addPhoto": "Add a photo",
+    "send": "Send",
+    "sent": "Request {{number}} sent",
+    "answer": "Answer",
+    "you": "You",
+    "team": "Kadou24h team",
+    "waiting": "Our team will answer here. You'll get a notification.",
+    "stillNeedHelp": "I still need help",
+    "type": {
+      "order_issue": "Order",
+      "payment_dispute": "Payment",
+      "account_access": "Account access",
+      "rider_conduct": "Rider",
+      "vendor_inquiry": "Store",
+      "app_bug": "App bug",
+      "general": "Question",
+      "other": "Other"
+    },
+    "urgency": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "status": {
+      "open": "Open",
+      "in_progress": "In progress",
+      "resolved": "Resolved",
+      "closed": "Closed"
     }
   }
 }

@@ -89,6 +89,8 @@ Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vend
 - **Live order updates:** `SessionEffects` invalidates `Order`/`Delivery`/`Notification` on `new_notification`, `delivery:*`, `payment:successful`, `refund:issued`. Screens just use their queries. One-off listeners: `useSocketEvent(event, handler)`.
 - **Maps:** `<AppMap>` — react-native-maps on phones, Leaflet + OSM in an iframe on web. Picker mode (`onCenterChange`) shows a fixed centre pin. Location/geocoding: `lib/location.ts` (+ `.web.ts` using the browser + Nominatim).
 - **Uploads:** `pickImage()` + `uploadImage(uri)` (`lib/upload.ts`): resize to 1280 px, JPEG 70 %, multipart `files` → `{ url, publicId }`.
+- **Chat:** `useOpenChat().open(subject)` finds/creates the chat and opens `/chat/[id]`. Messages are an infinite query (page 1 = newest) shown in an inverted list; `addMessageToThread` merges socket echoes and send responses (dedupe by `_id`). The thread joins `conv:<id>` (`join_conversation`) for `new_message` / `typing`.
+- **Push:** `PushEffects` registers the FCM token (`lib/push.ts`, no-op on web) and routes taps (`data.conversationId` → chat, `data.orderId` → order). Needs `google-services.json` in the build; without it push is skipped silently.
 - **Sheets & dialogs:** `BottomSheet` (title, body, footer) for choices and forms; `ConfirmDialog` for destructive yes/no.
 - **Status UI:** `<StatusPill label={t(`status.subOrder.${s}`)} tone={SUB_ORDER_TONE[s]} />` — tones in `features/orders/status.ts` (APP_SPEC §9), labels in i18n `status.*`.
 - **Money:** always `<Money value={n} />` / `formatGNF(n)`. Values are integers.

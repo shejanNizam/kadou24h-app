@@ -3,6 +3,9 @@ import type { ComponentProps } from 'react';
 import type { ColorValue } from 'react-native';
 
 import { Colors, Fonts } from '@/constants/theme';
+import { useGetChatUnreadQuery } from '@/features/chat/api';
+import { useAppSelector } from '@/store/hooks';
+import type { AppMode } from '@/types/api';
 
 type IconName = ComponentProps<typeof Feather>['name'];
 
@@ -19,3 +22,11 @@ export const tabIcon = (name: IconName) =>
   function TabIcon({ color, size }: { color: ColorValue; size: number }) {
     return <Feather name={name} size={size - 2} color={color as string} />;
   };
+
+/** Unread chat messages for this mode → Chat tab badge (hidden at 0). */
+export function useChatBadge(mode: AppMode) {
+  const signedIn = useAppSelector((s) => s.auth.status === 'signedIn');
+  const { data } = useGetChatUnreadQuery(mode, { skip: !signedIn });
+  const count = data?.unreadCount ?? 0;
+  return count > 0 ? (count > 99 ? '99+' : count) : undefined;
+}

@@ -12,11 +12,10 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { Rating } from '@/components/ui/Rating';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
-import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetWorkerQuery } from '@/features/catalog/api';
+import { useOpenChat } from '@/features/chat/useOpenChat';
 import { useLocalized } from '@/hooks/useLocalized';
-import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { formatGNF } from '@/lib/format';
 
 /** Worker profile. Contact only through chat — no phone/email (client rule). */
@@ -24,8 +23,7 @@ export default function WorkerScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const l = useLocalized();
-  const toast = useToast();
-  const requireAuth = useRequireAuth();
+  const { open: openChat, opening } = useOpenChat();
   const { data: worker, isLoading, isError, error, refetch } = useGetWorkerQuery(id);
   const photo = worker?.photo?.url ?? worker?.userId.avatar?.url;
 
@@ -101,7 +99,8 @@ export default function WorkerScreen() {
                 title={t('worker.message')}
                 icon="message-circle"
                 disabled={!worker}
-                onPress={() => requireAuth(() => toast.show(t('catalog.chatSoon'), 'info'))}
+                loading={opening}
+                onPress={() => openChat({ type: 'worker', workerProfileId: id })}
               />
             </View>
           </View>

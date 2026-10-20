@@ -13,6 +13,7 @@ import { I18nextProvider } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
+import { PushEffects } from '@/components/providers/PushEffects';
 import { SessionEffects } from '@/components/providers/SessionEffects';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Colors } from '@/constants/theme';
@@ -55,6 +56,7 @@ export default function RootLayout() {
           <SafeAreaProvider>
             <ToastProvider>
               <SessionEffects />
+              <PushEffects />
               <StatusBar style="dark" />
               <Stack
                 screenOptions={{

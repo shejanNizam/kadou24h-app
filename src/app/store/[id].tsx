@@ -9,10 +9,11 @@ import { AppText } from '@/components/ui/AppText';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Rating } from '@/components/ui/Rating';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { StackHeader } from '@/components/ui/StackHeader';
+import { HeaderIconButton, StackHeader } from '@/components/ui/StackHeader';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetVendorQuery } from '@/features/catalog/api';
 import { ProductResults } from '@/features/catalog/components/ProductResults';
+import { useOpenChat } from '@/features/chat/useOpenChat';
 
 const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
@@ -21,6 +22,7 @@ export default function StoreScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
   const { data: store, isLoading, isError, error, refetch } = useGetVendorQuery(id);
+  const { open: openChat } = useOpenChat();
 
   const header = (
     <View style={styles.header}>
@@ -65,7 +67,10 @@ export default function StoreScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <View style={styles.inner}>
-        <StackHeader title={store?.storeName} />
+        <StackHeader
+          title={store?.storeName}
+          right={store ? <HeaderIconButton icon="message-circle" label={t('catalog.messageStore')} onPress={() => openChat({ type: 'buyer_seller', vendorId: id })} /> : undefined}
+        />
       </View>
       {isError ? <ErrorState error={error} onRetry={refetch} /> : <ProductResults query={{ vendorId: id, sort: 'popular' }} header={header} />}
     </SafeAreaView>

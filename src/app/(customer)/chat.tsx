@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 
-import { ComingSoon } from '@/components/ui/ComingSoon';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
+import { ConversationList } from '@/features/chat/components/ConversationList';
 import { useAppSelector } from '@/store/hooks';
+import { AppMode } from '@/types/api';
 
-// Phase 5: conversations
-export default function ChatScreen() {
+export default function ChatTab() {
   const { t } = useTranslation();
   const signedIn = useAppSelector((s) => s.auth.status === 'signedIn');
   if (!signedIn) return <SignInPrompt title={t('tabs.chat')} message={t('guest.chat')} />;
-  return <ComingSoon title={t('tabs.chat')} icon="message-circle" />;
+  return <ConversationList mode={AppMode.customer} emptyText={t('chat.emptyCustomer')} />;
 }

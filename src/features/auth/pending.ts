@@ -19,6 +19,7 @@ export interface PendingVerification {
 let pending: PendingVerification | null = null;
 let resetToken: { token: string; expiresAt: number } | null = null;
 let returnTo: string | null = null;
+let passwordChangedAt = 0;
 
 export const pendingAuth = {
   setVerification(value: Omit<PendingVerification, 'sentAt'>) {
@@ -39,6 +40,11 @@ export const pendingAuth = {
   setReturnTo(path: string | null) {
     returnTo = path;
   },
+  /** This phone just changed the password: the server's "session revoked" is meant for the OTHER devices. */
+  markPasswordChangedHere() {
+    passwordChangedAt = Date.now();
+  },
+  passwordChangedHereRecently: () => Date.now() - passwordChangedAt < 20_000,
   takeReturnTo() {
     const path = returnTo;
     returnTo = null;

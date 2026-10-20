@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 
-import { ComingSoon } from '@/components/ui/ComingSoon';
+import { ConversationList } from '@/features/chat/components/ConversationList';
+import { AppMode } from '@/types/api';
 
-// Phase 7: vendor chat
-export default function VendorChatScreen() {
+export default function VendorChatTab() {
   const { t } = useTranslation();
-  return <ComingSoon title={t('tabs.chat')} icon="message-circle" />;
+  return <ConversationList mode={AppMode.vendor} emptyText={t('chat.emptyVendor')} />;
 }

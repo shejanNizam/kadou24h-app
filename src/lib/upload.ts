@@ -39,13 +39,18 @@ async function compress(uri: string) {
 /** Compresses and uploads one image; returns { url, publicId }. */
 export async function uploadImage(uri: string): Promise<FileRef> {
   const compressed = await compress(uri).catch(() => uri);
+  return uploadFile(compressed, { name: 'photo.jpg', type: 'image/jpeg' });
+}
+
+/** Uploads any local file (voice note, document) as multipart `files`. */
+export async function uploadFile(uri: string, file: { name: string; type: string }): Promise<FileRef> {
   const form = new FormData();
   if (Platform.OS === 'web') {
-    const blob = await (await fetch(compressed)).blob();
-    form.append('files', blob, 'photo.jpg');
+    const blob = await (await fetch(uri)).blob();
+    form.append('files', blob, file.name);
   } else {
     // React Native's FormData takes { uri, name, type }
-    form.append('files', { uri: compressed, name: 'photo.jpg', type: 'image/jpeg' } as unknown as Blob);
+    form.append('files', { uri, name: file.name, type: file.type } as unknown as Blob);
   }
 
   const token = store.getState().auth.accessToken;

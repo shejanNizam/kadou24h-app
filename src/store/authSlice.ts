@@ -47,6 +47,11 @@ const authSlice = createSlice({
     tokenRefreshed(state, action: PayloadAction<string>) {
       state.accessToken = action.payload;
     },
+    /** New pair from the server (password changed: the old tokens are dead). */
+    tokensRotated(state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
     userUpdated(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
@@ -63,6 +68,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { sessionRestored, signedIn, tokenRefreshed, userUpdated, signedOut, endedReasonSeen } =
+export const { sessionRestored, signedIn, tokenRefreshed, tokensRotated, userUpdated, signedOut, endedReasonSeen } =
   authSlice.actions;
 export default authSlice.reducer;

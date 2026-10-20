@@ -216,6 +216,17 @@ GET    /reviews/product/:productId  [public]
 - `GET /orders/:id` (customer): `subOrders[].reviewed`, and `currentRiderId.userId { name, avatar }` (never the phone). `GET /deliveries/:id/track` has the same rider name.
 - Checkout: `intercity` and `station_pickup` require `destinationStationId` (clear 400 otherwise, and when that station is the store's own nearest station). Each split has `stationRoute { fromStationName, fromCity, toStationName, toCity, estimatedHours }`. Station pickup costs the intercity rate minus the last moto leg (min 10 000 GNF) — it used to be a flat 10 000 that left the bus driver 0.
 
+## Changed for the app, Phase 5 (2026-10-20)
+- `POST /conversations` takes the **subject**, never a recipient: `{ type: "buyer_seller", vendorId }` · `{ type: "worker", workerProfileId }` · `{ type: "order", subOrderId, with: "vendor" | "rider" | "customer" }` · `{ type: "job_application", applicationId }`. The server finds the other person and both modes; voice is allowed only for buyer ↔ rider of that order.
+- Conversations never contain a phone or email. Each one has `peer { userId, mode, name, avatar, vendorId? }` (a store shows as the store), `myMode`, `myUnread`, and `subOrderId { subOrderNumber }` for order chats.
+- `GET /conversations/unread-count?mode=` → `{ unreadCount }` (Chat tab badge).
+- `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
+- `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
+
+## Changed for the app, Phase 6 (2026-10-20)
+- `DELETE /user/me` → 409 with a clear message while the account has orders in progress (as buyer or store), deliveries in progress, COD cash to hand over, or money in a wallet.
+- `POST /auth/change-password` returns a new `{ accessToken, refreshToken }` and emits `session:revoked { reason: "password_changed" }` to every socket of the user. The app ignores that event on the phone that made the change (`pendingAuth.markPasswordChangedHere()`).
+
 ## Missing on the backend (to add when the app needs them)
 | Need | Proposed endpoint | For |
 |---|---|---|

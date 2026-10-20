@@ -8,8 +8,8 @@ import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
 import { StatusPill } from '@/components/ui/StatusPill';
-import { useToast } from '@/components/ui/Toast';
 import { Colors, Radius, Spacing } from '@/constants/theme';
+import { useOpenChat } from '@/features/chat/useOpenChat';
 import { formatGNF } from '@/lib/format';
 
 import { SUB_ORDER_STEPS, SUB_ORDER_TONE, TRACKABLE_LEG } from '../status';
@@ -28,7 +28,7 @@ export function SubOrderCard({
   onReview: (subOrder: SubOrder) => void;
 }) {
   const { t } = useTranslation();
-  const toast = useToast();
+  const { open: openChat, opening } = useOpenChat();
   const store = subOrder.vendorId;
   const legs = subOrder.deliveries ?? [];
   const activeLeg = legs.find((l) => TRACKABLE_LEG.includes(l.status));
@@ -138,8 +138,20 @@ export function SubOrderCard({
           size="sm"
           variant="outline"
           style={styles.flex}
-          onPress={() => toast.show(t('common.comingSoonPhase', { phase: 5 }), 'info')}
+          disabled={opening}
+          onPress={() => openChat({ type: 'order', subOrderId: subOrder._id, with: 'vendor' })}
         />
+        {subOrder.currentRiderId && !cancelled && !delivered && (
+          <Button
+            title={t('order.chatRider')}
+            icon="mic"
+            size="sm"
+            variant="outline"
+            style={styles.flex}
+            disabled={opening}
+            onPress={() => openChat({ type: 'order', subOrderId: subOrder._id, with: 'rider' })}
+          />
+        )}
         {delivered && !subOrder.reviewed && (
           <Button title={t('order.review')} icon="star" size="sm" variant="soft" style={styles.flex} onPress={() => onReview(subOrder)} />
         )}

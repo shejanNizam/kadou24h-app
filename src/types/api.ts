@@ -81,6 +81,26 @@ export interface User {
   status: UserStatus;
   statusReason?: string;
   referralCode?: string;
+  notificationPrefs?: NotificationPrefs;
+  /** Vendor / rider applications (GET /user/me): drives the mode card */
+  applications?: {
+    vendor: { status: ApplicationStatus; reviewNote?: string } | null;
+    rider: { status: ApplicationStatus; reviewNote?: string; partnerType?: 'moto' | 'transit' } | null;
+  };
+  /** Chat moderation: while chatRestrictedUntil is in the future, sending is blocked */
+  moderation?: { violationCount: number; chatRestrictedUntil?: string };
   lastLoginAt?: string;
   createdAt?: string;
+}
+
+export type ApplicationStatus = 'draft' | 'pending' | 'needs_changes' | 'approved' | 'rejected' | 'suspended';
+
+/** user.interface.ts INotificationPrefs: one switch per kind of notification */
+export interface NotificationPrefs {
+  orderUpdates: boolean;
+  messages: boolean;
+  deliveryUpdates: boolean;
+  offers: boolean;
+  jobPosts: boolean;
+  accountAlerts: boolean;
 }

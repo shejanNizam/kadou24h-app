@@ -19,7 +19,8 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Shared types (`types/api.ts`)
 - [x] `formatGNF`, phone helpers (`toE164`, `formatNationalPhone`), countdown
 - [x] UI kit v1: AppText, Button, TextField, PhoneField, OtpInput, Banner, Divider, TextLink, OptionCard, Screen, PageHeader, EmptyState, ComingSoon, Toast
-- [ ] UI kit, still to add when first needed: StatusBadge, Money, Skeleton, BottomSheet, ConfirmDialog, Toggle, OfflineBanner (needs NetInfo), status labels map
+- [x] UI kit v2 (added in Phases 3–6): Money, Skeleton, BottomSheet, ConfirmDialog, StatusPill + status maps, Switch rows
+- [ ] OfflineBanner (needs NetInfo)
 - [x] Route groups + 3 tab bars (customer/vendor/rider) with placeholder screens; vendor/rider guarded by role
 - [x] Boot redirect by `lastActiveMode` + mode switch (`PATCH /user/me/mode`) in ProfileBasics
 - [x] Socket session effects (connect after login, `session:revoked` → sign out)
@@ -32,7 +33,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Forgot password → OTP → reset (reset token kept in memory, never in the URL)
 - [x] Guest mode: "Continue without an account"; orders/chat/profile show a sign-in prompt
 - [x] API contract checked against a throwaway server: 21/21 (scratchpad `app-auth-flow.mjs`)
-- [ ] `useRequireAuth` login bottom sheet (add with the first guarded action: add to cart, Phase 4)
+- [x] `useRequireAuth` guard (toast → login → back to the same screen; used by cart, favorite, chat, apply)
 - [ ] Suspended screen (now: the login error shows the reason; session:revoked signs out)
 - [ ] Social login (native only; needs Google/Apple client IDs → `EXPO_PUBLIC_GOOGLE_CLIENT_ID`)
 - [ ] Real KADOU 24H logo asset (BrandLogo is a temporary icon + wordmark)
@@ -48,8 +49,8 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Add-to-cart from cards (Add → stepper), guest → sign in → back to the same screen
 - [x] Contract test 26/26 against the demo DB (scratchpad `phase3-contract.mjs`)
 - [x] Server fix: product details and customer tracking no longer leak the store phone (e2e 129/129)
-- [ ] Notification tap → deep link (with orders/chat screens)
-- [ ] Ratings/reviews in the demo data (needs delivered orders: add to the seed in Phase 4)
+- [x] Notification tap → deep link (done in Phases 4–5: order, chat)
+- [x] Ratings/reviews in the demo data (done in the Phase 4 seed)
 
 ## Phase 4 — Customer: buy ✅ (2026-10-19)
 - [x] Addresses: list (= "Livrer à" picker: tap → default), add/edit in 2 steps (map pin + my location → details, gate photo upload, receiver), delete with confirm
@@ -67,18 +68,26 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] "Customers also bought" in the cart (no endpoint yet)
 - [ ] Android release: Google Maps API key in app.json
 
-## Phase 5 — Chat + notifications + push
-- [ ] Conversation list + thread (text, image; voice only customer↔rider)
-- [ ] Moderation warnings + restriction banner
-- [ ] Report
-- [ ] Push notifications (native) + deep links
+## Phase 5 — Chat + notifications + push ✅ (2026-10-20)
+- [x] Conversation list per mode (customer / vendor / rider tabs) with unread badges
+- [x] Thread: text, photo, voice notes (customer ↔ rider only), day separators, typing…, read, older pages on scroll-up, masked-contact notice, safety notice
+- [x] Start chats from: store page, worker page, order card (store / rider)
+- [x] Moderation: restriction banner + composer locked (from `/user/me` moderation)
+- [x] Report a message (long press)
+- [x] Push: FCM token registered after sign-in, removed on logout; tap → chat / order / notifications; no banner for the chat on screen
+- [x] Server: chats start by subject (no free recipient, no mode spoofing), no phone/email in chats, store shown as the store, newest-first messages, unread-count endpoint
+- [x] Contract test 26/26 (scratchpad `phase5-contract.mjs`), server jest 149/149, e2e 129/129
+- [ ] **Firebase setup (user):** google-services.json in the app + FIREBASE_SERVICE_ACCOUNT_BASE64 on the server, then rebuild the APK
 
-## Phase 6 — Profile & settings (shared)
-- [ ] Account, phone change (OTP), change password, delete account
-- [ ] Language, notification prefs, share/referral, logout
-- [ ] Support tickets (list, detail with admin reply, create)
-- [ ] Mode card + KYC status card
-- [ ] Payment history, favorites, my reviews
+## Phase 6 — Profile & settings (shared) ✅ (2026-10-20)
+- [x] One profile screen for all modes (`features/profile/components/ProfileScreen`): account header, mode card, customer extras, settings, help, sign out, version
+- [x] Mode card: switch to a mode I hold, or vendor / rider application status (draft, pending, to fix + admin note, rejected, suspended) → KYC (Phase 7/8)
+- [x] Account: photo (upload), name, phone change with SMS code, change password (this phone stays signed in, others signed out), delete account with confirm + clear blockers
+- [x] Notification settings (6 switches, saved instantly), language, share with referral code
+- [x] Support: my requests, new request (topic, urgency, details, 3 screenshots), detail with the team's answer, WhatsApp if configured, live `ticket_update`
+- [x] Favorites, payment history (online payments), my reviews
+- [x] Server: delete-account guard (orders/deliveries in progress, COD cash, wallet money)
+- [x] Contract test 25/25 (scratchpad `phase6-contract.mjs`), server jest 149/149, e2e 129/129
 
 ## Phase 7 — Vendor
 - [ ] KYC application (multi-step engine, payout method required)
@@ -116,6 +125,15 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] App icon, splash (purple), app name "Kadou24h"
 - [ ] EAS builds (Android first), OTA updates
 
+### Carry-over from Phases 1–6 (do all of these before release; user asked 2026-10-20)
+- [ ] Suspended account full screen (reason + Contact support), instead of the login error
+- [ ] OfflineBanner (NetInfo)
+- [ ] "Customers also bought" in the cart (needs a server endpoint)
+- [ ] Social login (needs Google/Apple client IDs from the user)
+- [ ] Real logo asset → BrandLogo, app icon, splash
+- [ ] User setup: deploy server to pagla7000, Firebase (google-services.json + FIREBASE_SERVICE_ACCOUNT_BASE64), real Google Maps key, then rebuild the APK
+- [ ] Client answers for APP_SPEC §10 (#1–9); **#8 COD above the rider cash limit** and **#9 unpaid online orders** are real bugs, so fix them once the client picks an option
+
 ## Backend tasks found while planning
 - [x] `GET /wallets/me/summary` (today/period earnings, counts, chart series) for vendor and rider — 2026-10-19
 - [x] PIN exposure verified + fixed: `deliveryPin` / `pickupPin` added to the order details; middle-leg station PINs no longer leak to the customer or store — 2026-10-19
@@ -123,6 +141,8 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 
 ## Log
 - 2026-10-19 — Project created, all 3 roles' Figma reviewed, docs written.
+- 2026-10-20 — Phase 6 (profile & settings). Server: delete-account guard. App: password change keeps this phone signed in.
+- 2026-10-20 — Phase 5 (chat + push). Server: chat start by subject, phone leak in chats fixed, newest-first messages, unread count, push channel, own-token delete.
 - 2026-10-19 — Phase 4 (customer buy): addresses + map, cart, checkout, payment, orders, tracking, reviews, disputes. Server: payment polling + dev confirm, station route/ETA at checkout, multi-status filter, reviewed flag, rider name on orders.
 - 2026-10-19 — Phase 3 (customer browse) built on real demo data; sign-out confirmation dialog.
 - 2026-10-19 — Phase 1 foundation + Phase 2 auth built and wired to the API.
