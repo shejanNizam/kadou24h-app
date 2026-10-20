@@ -60,7 +60,9 @@ src/app/
   rider/_layout.tsx           Stack + role guard → rider/(tabs): /rider/deliveries /rider/earnings /rider/chat /rider/profile
   kyc/vendor.tsx, kyc/rider.tsx
 ```
-Phase 3 added root screens: `product/[id]`, `store/[id]`, `worker/[id]`, `job/[id]`, `category/[id]`, `categories`, `cart` (placeholder until Phase 4), `notifications`.
+Phase 3 added root screens: `product/[id]`, `store/[id]`, `worker/[id]`, `job/[id]`, `category/[id]`, `categories`, `cart`, `notifications`.
+Phase 4 added: `addresses` (`?select=1` = deliver-to picker), `address-edit` (`?id=`), `checkout`, `payment/[id]` (`?orderId=`), `order-placed/[id]`, `order/[id]`, `track/[id]` (delivery leg id).
+Typed routes list a folder's `index.tsx` as `/folder/index`, so screens without children are plain files (`addresses.tsx`, not `addresses/index.tsx`).
 Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vendor/rider detail screens go inside `vendor/` / `rider/` so they push over that mode's tabs.
 
 ## SDK 58 gotchas (checked in node_modules)
@@ -83,8 +85,12 @@ Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vend
 - **Localized server text** (`{ fr, en }`): `useLocalized()`.
 - **Server errors** are English. `lib/api/errors.ts` maps the known ones (attempts left, wait Ns, invalid credentials, phone taken…) to i18n keys, and falls back to the server text.
 - **Socket → cache:** socket handlers call `api.util.invalidateTags([...])` or `updateQueryData`, never duplicate state.
-- **Payments:** `usePaymentFlow(purpose, refId)` → initiate → open the provider URL (`expo-web-browser`) → waiting screen (poll `GET /payments/me` + `payment:successful`) → result.
-- **Status UI:** always `<StatusBadge domain="subOrder" value={status} />`, with labels and colours from `lib/labels.ts`.
+- **Payments:** `initiatePayment({ purpose, refId, method, idempotencyKey: newIdempotencyKey() })` → `/payment/[id]` polls `GET /payments/:id` (4 s) + `payment:successful` → success screen per purpose. No gateway yet: in `__DEV__` the screen shows "Simulate paid / failed" (`POST /payments/:id/dev-confirm`, 404 in production). When a gateway is chosen, open its URL/USSD between initiate and the waiting screen.
+- **Live order updates:** `SessionEffects` invalidates `Order`/`Delivery`/`Notification` on `new_notification`, `delivery:*`, `payment:successful`, `refund:issued`. Screens just use their queries. One-off listeners: `useSocketEvent(event, handler)`.
+- **Maps:** `<AppMap>` — react-native-maps on phones, Leaflet + OSM in an iframe on web. Picker mode (`onCenterChange`) shows a fixed centre pin. Location/geocoding: `lib/location.ts` (+ `.web.ts` using the browser + Nominatim).
+- **Uploads:** `pickImage()` + `uploadImage(uri)` (`lib/upload.ts`): resize to 1280 px, JPEG 70 %, multipart `files` → `{ url, publicId }`.
+- **Sheets & dialogs:** `BottomSheet` (title, body, footer) for choices and forms; `ConfirmDialog` for destructive yes/no.
+- **Status UI:** `<StatusPill label={t(`status.subOrder.${s}`)} tone={SUB_ORDER_TONE[s]} />` — tones in `features/orders/status.ts` (APP_SPEC §9), labels in i18n `status.*`.
 - **Money:** always `<Money value={n} />` / `formatGNF(n)`. Values are integers.
 - **Errors:** `getApiErrorMessage(err)` (the same idea as the dashboard `utils/apiError.ts`) → toast or inline.
 

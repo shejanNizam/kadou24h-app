@@ -81,14 +81,25 @@ export default function HomeScreen() {
       <LinearGradient colors={Colors.gradient} style={[styles.hero, { paddingTop: insets.top + Spacing.sm }]}>
         <View style={styles.inner}>
           <View style={styles.topRow}>
-            <View style={styles.flex}>
+            <Pressable
+              style={styles.flex}
+              onPress={() =>
+                requireAuth(() =>
+                  address ? router.push({ pathname: '/addresses', params: { select: '1' } }) : router.push('/address-edit'),
+                )
+              }
+              accessibilityRole="button"
+              accessibilityHint={t('address.changeHint')}>
               <AppText variant="caption" color="rgba(255,255,255,0.8)">
                 {t('home.deliverTo')}
               </AppText>
-              <AppText variant="title" color={Colors.textOnPrimary} numberOfLines={1}>
-                {deliverTo ?? (signedIn ? t('home.noAddress') : t('home.guestAddress'))}
-              </AppText>
-            </View>
+              <View style={styles.addressRow}>
+                <AppText variant="title" color={Colors.textOnPrimary} numberOfLines={1} style={styles.shrink}>
+                  {deliverTo ?? (signedIn ? t('home.noAddress') : t('home.guestAddress'))}
+                </AppText>
+                <Feather name="chevron-down" size={18} color={Colors.textOnPrimary} />
+              </View>
+            </Pressable>
             <HeaderIconButton
               icon="bell"
               color={Colors.textOnPrimary}
@@ -175,6 +186,8 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  addressRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
+  shrink: { flexShrink: 1 },
   flex: { flex: 1, backgroundColor: Colors.background },
   scroll: { paddingBottom: Spacing.xxxl },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },

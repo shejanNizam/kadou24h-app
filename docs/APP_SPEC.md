@@ -392,3 +392,5 @@ Keep the labels in i18n files (`status.subOrder.new`, …), never inline.
 5. Tax in the future? (0 now, line hidden)
 6. CV paywall position (recommended: free to build, pay for visibility)
 7. WhatsApp support number for Help & Support?
+8. **COD vs the rider cash limit** (found 2026-10-19): a rider may carry at most 1 000 000 GNF of COD cash, so a COD order above that can be placed but no rider can accept it. Options: hide COD above the limit at checkout, or let the store/admin raise the limit per order.
+9. **Unpaid online orders** (found 2026-10-19): an Orange Money / MoMo / card order is created before payment, so the store gets "new order" and the stock is held while it is still unpaid. Options: show it to the store only once paid, and auto-cancel (stock back) after N minutes unpaid.

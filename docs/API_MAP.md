@@ -208,6 +208,14 @@ GET    /reviews/product/:productId  [public]
 - `subOrder.deliveredAt`.
 - Fix: the customer and the store no longer receive station PINs of middle intercity legs from `/deliveries/:id/track`.
 
+## Added for the app, Phase 4 (2026-10-19)
+- `GET /payments/:id` — my payment (the waiting screen polls it).
+- `POST /payments/:id/dev-confirm` `{ status: "success" | "failed" }` — **development only** (404 in production): finishes my pending payment like the gateway webhook.
+- `POST /payments/initiate` now refuses COD orders and cancelled orders.
+- `GET /orders/my-orders?status=` accepts several statuses, comma-separated (`cancelled,partially_cancelled`).
+- `GET /orders/:id` (customer): `subOrders[].reviewed`, and `currentRiderId.userId { name, avatar }` (never the phone). `GET /deliveries/:id/track` has the same rider name.
+- Checkout: `intercity` and `station_pickup` require `destinationStationId` (clear 400 otherwise, and when that station is the store's own nearest station). Each split has `stationRoute { fromStationName, fromCity, toStationName, toCity, estimatedHours }`. Station pickup costs the intercity rate minus the last moto leg (min 10 000 GNF) — it used to be a flat 10 000 that left the bus driver 0.
+
 ## Missing on the backend (to add when the app needs them)
 | Need | Proposed endpoint | For |
 |---|---|---|

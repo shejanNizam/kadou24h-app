@@ -51,14 +51,21 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] Notification tap → deep link (with orders/chat screens)
 - [ ] Ratings/reviews in the demo data (needs delivered orders: add to the seed in Phase 4)
 
-## Phase 4 — Customer: buy
-- [ ] Addresses (map pin first, gate photo, default)
-- [ ] Cart (grouped by store)
-- [ ] Checkout (delivery type + station picker, payment, summary from the backend)
-- [ ] Payment waiting flow (shared)
-- [ ] Orders list, order details (per-store blocks, delivery PIN, cancel rule, modified notice)
-- [ ] Live tracking (native map + web fallback), intercity 3-leg timeline
-- [ ] Reviews per store, dispute ("Signaler un problème")
+## Phase 4 — Customer: buy ✅ (2026-10-19)
+- [x] Addresses: list (= "Livrer à" picker: tap → default), add/edit in 2 steps (map pin + my location → details, gate photo upload, receiver), delete with confirm
+- [x] Map: `components/map/AppMap` (react-native-maps native, Leaflet/OSM iframe on web) with picker pin + markers
+- [x] Cart grouped by store: steppers, unavailable items, closed-store block, clear with confirm
+- [x] Checkout: address, local / intercity / station pickup (+ station sheet, route + ETA), instructions, 4 payment methods, server summary per store, COD notes
+- [x] Payment waiting screen (shared, polls + socket, retry, pay later; dev-only simulate buttons)
+- [x] Order placed screen; Orders tab (All / Ongoing / Delivered / Cancelled, infinite)
+- [x] Order details: per-store card (progress, PIN, rider without phone, legs timeline, modified notice, COD amount), pay now, cancel sheet (rule), dispute sheet + replies, review sheet
+- [x] Live tracking screen (join_delivery + rider:location_updated)
+- [x] Live refresh: order/payment/delivery socket events invalidate the cache (SessionEffects)
+- [x] Notification tap → order
+- [x] Demo seed: 2 delivered + reviewed orders, 1 on its way with the demo rider
+- [x] Contract test 37/37 (scratchpad `phase4-contract.mjs`), server jest 149/149, e2e 129/129
+- [ ] "Customers also bought" in the cart (no endpoint yet)
+- [ ] Android release: Google Maps API key in app.json
 
 ## Phase 5 — Chat + notifications + push
 - [ ] Conversation list + thread (text, image; voice only customer↔rider)
@@ -116,6 +123,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 
 ## Log
 - 2026-10-19 — Project created, all 3 roles' Figma reviewed, docs written.
+- 2026-10-19 — Phase 4 (customer buy): addresses + map, cart, checkout, payment, orders, tracking, reviews, disputes. Server: payment polling + dev confirm, station route/ETA at checkout, multi-status filter, reviewed flag, rider name on orders.
 - 2026-10-19 — Phase 3 (customer browse) built on real demo data; sign-out confirmation dialog.
 - 2026-10-19 — Phase 1 foundation + Phase 2 auth built and wired to the API.
 - 2026-10-19 — Backend prep done (summary endpoint, PINs in order details, `deliveredAt`, vendor rider populate fix). Server e2e 126/126, jest 149/149.

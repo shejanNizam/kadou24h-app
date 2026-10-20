@@ -1,5 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
-import { Redirect } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -56,8 +56,11 @@ export default function NotificationsScreen() {
   ].filter((s) => s.data.length > 0);
   const hasUnread = items.some((n) => !n.isRead);
 
+  // Deep link: order notifications open the order (chat/withdrawal links come with their screens)
   const open = (n: AppNotification) => {
     if (!n.isRead) void markRead(n._id);
+    const orderId = n.data?.orderId;
+    if (orderId && mode === AppMode.customer) router.push({ pathname: '/order/[id]', params: { id: orderId } });
   };
 
   return (

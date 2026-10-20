@@ -16,7 +16,12 @@
     "hidePassword": "Hide password",
     "seeAll": "See all",
     "close": "Close",
-    "clear": "Clear"
+    "clear": "Clear",
+    "change": "Change",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "comingSoonPhase": "Coming soon."
   },
   "language": {
     "title": "Choose your language",
@@ -145,7 +150,9 @@
     "orders": "Sign in to see and track your orders.",
     "chat": "Sign in to chat with sellers and riders.",
     "profile": "Sign in to manage your account, addresses and preferences.",
-    "signInToContinue": "Sign in to continue."
+    "signInToContinue": "Sign in to continue.",
+    "cart": "Sign in to see your cart and order.",
+    "address": "Sign in to manage your delivery addresses."
   },
   "profile": {
     "language": "Language",
@@ -176,7 +183,23 @@
     "startShopping": "Start shopping",
     "summary_one": "{{count}} item · {{total}}",
     "summary_other": "{{count}} items · {{total}}",
-    "checkoutSoon": "The full cart and checkout arrive in the next step."
+    "titleCount_one": "Cart ({{count}})",
+    "titleCount_other": "Cart ({{count}})",
+    "clear": "Empty cart",
+    "clearTitle": "Empty the cart?",
+    "clearMessage": "All items will be removed from your cart.",
+    "multiStore": "Your cart has {{count}} stores: each store is delivered separately.",
+    "storeItems_one": "{{count}} item",
+    "storeItems_other": "{{count}} items",
+    "storeSubtotal": "Store subtotal",
+    "maxStock": "Maximum stock reached ({{count}})",
+    "unavailableTitle": "Unavailable items",
+    "unavailableText": "These items are no longer for sale or out of stock. They won't be ordered.",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "feesAtCheckout": "Delivery and service fees are calculated at the next step.",
+    "closedBlocksCheckout": "Store closed: {{stores}}. Remove these items to order.",
+    "checkout": "Checkout"
   },
   "catalog": {
     "noRating": "New",
@@ -308,5 +331,300 @@
     "fri": "Fri",
     "sat": "Sat",
     "sun": "Sun"
+  },
+  "upload": {
+    "camera": "Take a photo",
+    "library": "Choose from gallery",
+    "failed": "The photo couldn't be sent. Try again."
+  },
+  "address": {
+    "title": "My addresses",
+    "deliverTo": "Deliver to",
+    "selectHint": "Tap an address to deliver there.",
+    "changeHint": "Change the delivery address",
+    "add": "Add an address",
+    "emptyTitle": "No address yet",
+    "emptyText": "Add your address so we deliver to the right place.",
+    "default": "Default",
+    "defaultSet": "Delivery address updated",
+    "makeDefault": "Default address",
+    "defaultHint": "Used for your deliveries.",
+    "options": "Address options",
+    "max": "Up to {{count}} addresses.",
+    "deleteTitle": "Delete this address?",
+    "deleteMessage": "This address will be removed from your account.",
+    "deleteDefaultMessage": "This is your default address. Another address will become the default.",
+    "deleted": "Address deleted",
+    "saved": "Address saved",
+    "pinTitle": "Where should we deliver?",
+    "pinHint": "Move the map so the pin sits right at your door or gate.",
+    "useMyLocation": "My location",
+    "locationDenied": "Location unavailable. Move the map to your address.",
+    "confirmPin": "Confirm this location",
+    "movePin": "Move the pin",
+    "newTitle": "New address",
+    "editTitle": "Edit address",
+    "label": {
+      "home": "Home",
+      "office": "Office",
+      "other": "Other"
+    },
+    "customLabel": "Name of this address",
+    "customLabelHint": "e.g. Mum's place",
+    "city": "City",
+    "cityRequired": "Enter the city",
+    "commune": "Commune",
+    "neighborhood": "Neighbourhood",
+    "landmark": "Landmark",
+    "landmarkHint": "e.g. opposite the mosque, blue gate",
+    "directions": "Directions for the rider",
+    "directionsHint": "e.g. 2nd street after the pharmacy, house on the left",
+    "gatePhoto": "Photo of the gate or house",
+    "gatePhotoHint": "Riders recognise your house faster.",
+    "addPhoto": "Add a photo",
+    "changePhoto": "Change the photo",
+    "removePhoto": "Remove the photo",
+    "receiver": "Who receives the parcel?",
+    "fullName": "Full name",
+    "phone": "Phone"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "address": "Delivery address",
+    "pickupContact": "Name and phone of the person collecting the parcel at the station.",
+    "deliveryMethod": "Delivery method",
+    "type": {
+      "local": "Home delivery",
+      "intercity": "Delivery to another city",
+      "station_pickup": "Pickup at a bus station"
+    },
+    "typeHint": {
+      "local": "A moto rider brings your order.",
+      "intercity": "Moto → bus → moto, right to your door.",
+      "station_pickup": "You collect the parcel at the chosen station."
+    },
+    "destinationStation": "Destination station",
+    "pickupStation": "Pickup station",
+    "chooseStation": "Choose a station",
+    "noStations": "No station available right now.",
+    "eta_one": "about {{count}} h",
+    "eta_other": "about {{count}} h",
+    "legsIntercity": "3 legs: moto → bus → moto. Each leg is tracked in the order.",
+    "legsPickup": "2 legs: moto → bus. We'll let you know when it reaches the station.",
+    "instructions": "Special instructions",
+    "instructionsHint": "e.g. call when you arrive, ring at the gate",
+    "payment": "Payment",
+    "paymentHint": {
+      "cod": "Pay the rider in cash on delivery.",
+      "orange_money": "Approve the payment on your phone.",
+      "mobile_money": "MTN Mobile Money: approve on your phone.",
+      "card": "Visa / Mastercard."
+    },
+    "summary": "Summary",
+    "needAddress": "Add an address to see the delivery fee.",
+    "needStation": "Choose a station to see the delivery fee.",
+    "deliveryShort": "Delivery",
+    "subtotal": "Subtotal",
+    "delivery": "Delivery",
+    "deliveryStores_one": "Delivery ({{count}} store)",
+    "deliveryStores_other": "Delivery ({{count}} stores)",
+    "tax": "Tax",
+    "platformFee": "Service fee",
+    "discount": "Discount",
+    "total": "Total",
+    "codSingle": "Have {{total}} in cash ready for the rider.",
+    "codMultiple": "{{count}} riders (one per store): each collects their store's amount, shown in the order.",
+    "place": "Place order · {{total}}",
+    "placeShort": "Place order"
+  },
+  "payment": {
+    "method": {
+      "cod": "Cash on delivery",
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN Mobile Money",
+      "card": "Card"
+    },
+    "pendingTitle": "Payment pending",
+    "pendingHint": {
+      "orange_money": "Approve the payment on your phone with your Orange Money code.",
+      "mobile_money": "Approve the payment on your phone with your MTN MoMo code.",
+      "card": "Finish the payment on your bank's page.",
+      "cod": ""
+    },
+    "keepOpen": "Keep this screen open: it updates by itself.",
+    "successTitle": "Payment received",
+    "successText": "{{amount}} paid. Thank you!",
+    "failedTitle": "Payment failed",
+    "failedText": "The payment didn't go through. Nothing was charged.",
+    "tryAgain": "Try again",
+    "payLater": "Pay later",
+    "devOnly": "Development: no gateway connected",
+    "devSuccess": "Simulate: paid",
+    "devFail": "Simulate: failed"
+  },
+  "orderPlaced": {
+    "title": "Order placed!",
+    "number": "Order no. {{number}}",
+    "next": "The store will confirm your order. We'll notify you at every step.",
+    "nextMulti_one": "The store will confirm your order.",
+    "nextMulti_other": "{{count}} stores will confirm your order. Each one is delivered separately.",
+    "cod": "A delivery code appears in the order: give it to the rider only when you have the parcel.",
+    "track": "Track my order",
+    "continue": "Continue shopping"
+  },
+  "orders": {
+    "tab": {
+      "all": "All",
+      "active": "Ongoing",
+      "completed": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "empty": {
+      "all": "No orders yet",
+      "active": "No ongoing orders",
+      "completed": "No delivered orders",
+      "cancelled": "No cancelled orders"
+    },
+    "emptyText": "Your orders will show up here.",
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items"
+  },
+  "order": {
+    "title": "Order",
+    "number": "Order #{{number}}",
+    "placedOn": "Placed on {{date}}",
+    "unpaid": "This order isn't paid yet. Stores prepare it once it's paid.",
+    "payNow": "Pay now",
+    "pinTitle": "Delivery code",
+    "pinTitlePickup": "Pickup code",
+    "pinHint": "Give this code to the rider only once the parcel is in your hands.",
+    "pinA11y": "Delivery code: {{pin}}",
+    "modified": "Your order was changed ({{items}}). New total: {{total}}.",
+    "cancelledBy": "Cancelled by {{by}}: {{reason}}",
+    "by": {
+      "customer": "you",
+      "vendor": "the store",
+      "admin": "the Kadou24h team"
+    },
+    "rider": "Rider",
+    "partner": {
+      "moto": "Moto rider",
+      "transit": "Bus driver"
+    },
+    "leg": {
+      "local": "Moto",
+      "first_mile": "Moto",
+      "line_haul": "Bus",
+      "last_mile": "Moto"
+    },
+    "storeTotal": "Store total (delivery included)",
+    "payRider": "To pay the rider: {{amount}}",
+    "track": "Track",
+    "chatStore": "Message the store",
+    "review": "Rate this store",
+    "reviewed": "Review sent",
+    "deliverTo": "Delivery to",
+    "pickupBy": "Pickup by",
+    "cancel": "Cancel order",
+    "cannotCancel": "Can't cancel: a store is already preparing your order. Report a problem if needed.",
+    "reportProblem": "Report a problem",
+    "cancelTitle": "Cancel the order?",
+    "cancelText": "The whole order will be cancelled. If you paid online, you will be refunded.",
+    "cancelReason": {
+      "changedMind": "I changed my mind",
+      "tooLong": "Takes too long",
+      "wrongItems": "Mistake in my order",
+      "betterPrice": "Found it cheaper elsewhere",
+      "other": "Other reason"
+    },
+    "reason": "Reason",
+    "reasonMore": "Tell us more",
+    "cancelConfirm": "Yes, cancel",
+    "keepOrder": "Keep my order",
+    "cancelled": "Order cancelled",
+    "reviewTitle": "Your review of {{store}}",
+    "stars_one": "{{count}} star",
+    "stars_other": "{{count}} stars",
+    "rating": {
+      "1": "Very bad",
+      "2": "Bad",
+      "3": "OK",
+      "4": "Good",
+      "5": "Excellent"
+    },
+    "reviewComment": "Comment",
+    "reviewCommentHint": "Product, packaging, delivery…",
+    "reviewSend": "Send my review",
+    "reviewThanks": "Thanks for your review!",
+    "disputeTitle": "Report a problem",
+    "disputeStore": "Which store?",
+    "wholeOrder": "Whole order",
+    "disputeWhat": "What happened?",
+    "disputeReason": {
+      "notReceived": "Parcel not received",
+      "damaged": "Damaged product",
+      "wrongItem": "Wrong product",
+      "missingItem": "Missing item",
+      "charged": "Payment problem"
+    },
+    "disputeDetails": "Details",
+    "disputeDetailsHint": "Explain what's wrong",
+    "disputeInfo": "The Kadou24h team reviews your request and answers here. A refund may be granted.",
+    "disputeSend": "Send",
+    "disputeSent": "Report sent",
+    "adminReply": "Kadou24h reply: {{reply}}"
+  },
+  "track": {
+    "title": "Delivery tracking",
+    "status": {
+      "pending_assignment": "Waiting for a rider",
+      "assigned": "Rider assigned",
+      "accepted": "The rider accepted",
+      "going_to_pickup": "The rider is picking up your parcel",
+      "picked_up": "Parcel picked up",
+      "in_transit": "On the way to you",
+      "delivered": "Delivered"
+    },
+    "noPosition": "The rider's position appears as soon as they share their location.",
+    "openMaps": "Open in Google Maps"
+  },
+  "status": {
+    "order": {
+      "active": "Ongoing",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "partially_cancelled": "Partly cancelled"
+    },
+    "subOrder": {
+      "new": "New",
+      "accepted": "Accepted",
+      "preparing": "Preparing",
+      "ready_for_pickup": "Ready",
+      "in_delivery": "Out for delivery",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "payment": {
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "partially_refunded": "Partly refunded",
+      "refunded": "Refunded"
+    },
+    "delivery": {
+      "pending_assignment": "Waiting",
+      "assigned": "Assigned",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "going_to_pickup": "Going to pickup",
+      "picked_up": "Picked up",
+      "in_transit": "On the way",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "dispute": {
+      "open": "Open",
+      "resolved": "Resolved",
+      "rejected": "Rejected"
+    }
   }
 }

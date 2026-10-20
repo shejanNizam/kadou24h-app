@@ -16,7 +16,12 @@
     "hidePassword": "Masquer le mot de passe",
     "seeAll": "Voir tout",
     "close": "Fermer",
-    "clear": "Effacer"
+    "clear": "Effacer",
+    "change": "Modifier",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "comingSoonPhase": "Bientôt disponible."
   },
   "language": {
     "title": "Choisissez votre langue",
@@ -145,7 +150,9 @@
     "orders": "Connectez-vous pour voir et suivre vos commandes.",
     "chat": "Connectez-vous pour discuter avec les vendeurs et les livreurs.",
     "profile": "Connectez-vous pour gérer votre compte, vos adresses et vos préférences.",
-    "signInToContinue": "Connectez-vous pour continuer."
+    "signInToContinue": "Connectez-vous pour continuer.",
+    "cart": "Connectez-vous pour voir votre panier et commander.",
+    "address": "Connectez-vous pour gérer vos adresses de livraison."
   },
   "profile": {
     "language": "Langue",
@@ -176,7 +183,23 @@
     "startShopping": "Commencer mes achats",
     "summary_one": "{{count}} article · {{total}}",
     "summary_other": "{{count}} articles · {{total}}",
-    "checkoutSoon": "Le panier détaillé et la commande arrivent à l'étape suivante."
+    "titleCount_one": "Panier ({{count}})",
+    "titleCount_other": "Panier ({{count}})",
+    "clear": "Vider le panier",
+    "clearTitle": "Vider le panier ?",
+    "clearMessage": "Tous les articles seront retirés de votre panier.",
+    "multiStore": "Votre panier contient {{count}} boutiques : chaque boutique est livrée séparément.",
+    "storeItems_one": "{{count}} article",
+    "storeItems_other": "{{count}} articles",
+    "storeSubtotal": "Sous-total boutique",
+    "maxStock": "Stock maximum atteint ({{count}})",
+    "unavailableTitle": "Articles indisponibles",
+    "unavailableText": "Ces articles ne sont plus en vente ou en rupture de stock. Ils ne seront pas commandés.",
+    "remove": "Retirer",
+    "subtotal": "Sous-total",
+    "feesAtCheckout": "Livraison et frais de service calculés à l’étape suivante.",
+    "closedBlocksCheckout": "Boutique fermée : {{stores}}. Retirez ces articles pour commander.",
+    "checkout": "Passer la commande"
   },
   "catalog": {
     "noRating": "Nouveau",
@@ -308,5 +331,300 @@
     "fri": "ven",
     "sat": "sam",
     "sun": "dim"
+  },
+  "upload": {
+    "camera": "Prendre une photo",
+    "library": "Choisir dans la galerie",
+    "failed": "La photo n'a pas pu être envoyée. Réessayez."
+  },
+  "address": {
+    "title": "Mes adresses",
+    "deliverTo": "Livrer à",
+    "selectHint": "Touchez une adresse : elle devient l'adresse de livraison.",
+    "changeHint": "Changer l'adresse de livraison",
+    "add": "Ajouter une adresse",
+    "emptyTitle": "Aucune adresse",
+    "emptyText": "Ajoutez votre adresse pour être livré au bon endroit.",
+    "default": "Par défaut",
+    "defaultSet": "Adresse de livraison mise à jour",
+    "makeDefault": "Adresse par défaut",
+    "defaultHint": "Utilisée pour vos livraisons.",
+    "options": "Options de l'adresse",
+    "max": "Maximum {{count}} adresses.",
+    "deleteTitle": "Supprimer cette adresse ?",
+    "deleteMessage": "Cette adresse sera supprimée de votre compte.",
+    "deleteDefaultMessage": "C'est votre adresse par défaut. Une autre adresse deviendra l'adresse par défaut.",
+    "deleted": "Adresse supprimée",
+    "saved": "Adresse enregistrée",
+    "pinTitle": "Où devons-nous livrer ?",
+    "pinHint": "Déplacez la carte pour placer le repère exactement devant votre porte ou portail.",
+    "useMyLocation": "Ma position",
+    "locationDenied": "Position indisponible. Déplacez la carte jusqu'à votre adresse.",
+    "confirmPin": "Confirmer cette position",
+    "movePin": "Déplacer le repère",
+    "newTitle": "Nouvelle adresse",
+    "editTitle": "Modifier l'adresse",
+    "label": {
+      "home": "Maison",
+      "office": "Bureau",
+      "other": "Autre"
+    },
+    "customLabel": "Nom de cette adresse",
+    "customLabelHint": "Ex. : Chez maman",
+    "city": "Ville",
+    "cityRequired": "Indiquez la ville",
+    "commune": "Commune",
+    "neighborhood": "Quartier",
+    "landmark": "Point de repère",
+    "landmarkHint": "Ex. : en face de la mosquée, portail bleu",
+    "directions": "Indications pour le livreur",
+    "directionsHint": "Ex. : 2e rue après la pharmacie, maison à gauche",
+    "gatePhoto": "Photo du portail ou de la maison",
+    "gatePhotoHint": "Le livreur reconnaît plus vite votre maison.",
+    "addPhoto": "Ajouter une photo",
+    "changePhoto": "Changer la photo",
+    "removePhoto": "Retirer la photo",
+    "receiver": "Qui reçoit le colis ?",
+    "fullName": "Nom complet",
+    "phone": "Téléphone"
+  },
+  "checkout": {
+    "title": "Commande",
+    "address": "Adresse de livraison",
+    "pickupContact": "Nom et téléphone de la personne qui récupère le colis à la gare.",
+    "deliveryMethod": "Mode de livraison",
+    "type": {
+      "local": "Livraison à domicile",
+      "intercity": "Livraison dans une autre ville",
+      "station_pickup": "Retrait en gare routière"
+    },
+    "typeHint": {
+      "local": "Un livreur moto vous apporte la commande.",
+      "intercity": "Moto → bus → moto jusqu’à votre porte.",
+      "station_pickup": "Vous récupérez le colis à la gare choisie."
+    },
+    "destinationStation": "Gare d'arrivée",
+    "pickupStation": "Gare de retrait",
+    "chooseStation": "Choisir une gare",
+    "noStations": "Aucune gare disponible pour le moment.",
+    "eta_one": "environ {{count}} h",
+    "eta_other": "environ {{count}} h",
+    "legsIntercity": "3 étapes : moto → bus → moto. Suivi de chaque étape dans la commande.",
+    "legsPickup": "2 étapes : moto → bus. Nous vous prévenons à l’arrivée en gare.",
+    "instructions": "Instructions spéciales",
+    "instructionsHint": "Ex. : appeler en arrivant, sonner au portail",
+    "payment": "Paiement",
+    "paymentHint": {
+      "cod": "Payez en espèces au livreur à la réception.",
+      "orange_money": "Validez le paiement sur votre téléphone.",
+      "mobile_money": "MTN Mobile Money : validez sur votre téléphone.",
+      "card": "Visa / Mastercard."
+    },
+    "summary": "Récapitulatif",
+    "needAddress": "Ajoutez une adresse pour voir les frais de livraison.",
+    "needStation": "Choisissez une gare pour voir les frais de livraison.",
+    "deliveryShort": "Livraison",
+    "subtotal": "Sous-total",
+    "delivery": "Livraison",
+    "deliveryStores_one": "Livraison ({{count}} boutique)",
+    "deliveryStores_other": "Livraison ({{count}} boutiques)",
+    "tax": "Taxes",
+    "platformFee": "Frais de service",
+    "discount": "Réduction",
+    "total": "Total",
+    "codSingle": "Préparez {{total}} en espèces pour le livreur.",
+    "codMultiple": "{{count}} livreurs (un par boutique) : chacun encaisse le montant de sa boutique, affiché dans la commande.",
+    "place": "Commander · {{total}}",
+    "placeShort": "Commander"
+  },
+  "payment": {
+    "method": {
+      "cod": "Paiement à la livraison",
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN Mobile Money",
+      "card": "Carte bancaire"
+    },
+    "pendingTitle": "Paiement en attente",
+    "pendingHint": {
+      "orange_money": "Validez le paiement sur votre téléphone avec votre code Orange Money.",
+      "mobile_money": "Validez le paiement sur votre téléphone avec votre code MTN MoMo.",
+      "card": "Terminez le paiement sur la page de votre banque.",
+      "cod": ""
+    },
+    "keepOpen": "Gardez cet écran ouvert : il se met à jour tout seul.",
+    "successTitle": "Paiement reçu",
+    "successText": "{{amount}} payés. Merci !",
+    "failedTitle": "Paiement échoué",
+    "failedText": "Le paiement n'a pas abouti. Aucun montant n'a été débité.",
+    "tryAgain": "Réessayer",
+    "payLater": "Payer plus tard",
+    "devOnly": "Développement : aucune passerelle connectée",
+    "devSuccess": "Simuler : payé",
+    "devFail": "Simuler : échec"
+  },
+  "orderPlaced": {
+    "title": "Commande passée !",
+    "number": "Commande n° {{number}}",
+    "next": "La boutique va confirmer votre commande. Vous serez notifié à chaque étape.",
+    "nextMulti_one": "La boutique va confirmer votre commande.",
+    "nextMulti_other": "{{count}} boutiques vont confirmer votre commande. Chacune est livrée séparément.",
+    "cod": "Un code de livraison apparaît dans la commande : donnez-le au livreur seulement à la réception.",
+    "track": "Suivre ma commande",
+    "continue": "Continuer mes achats"
+  },
+  "orders": {
+    "tab": {
+      "all": "Toutes",
+      "active": "En cours",
+      "completed": "Livrées",
+      "cancelled": "Annulées"
+    },
+    "empty": {
+      "all": "Aucune commande",
+      "active": "Aucune commande en cours",
+      "completed": "Aucune commande livrée",
+      "cancelled": "Aucune commande annulée"
+    },
+    "emptyText": "Vos commandes apparaîtront ici.",
+    "items_one": "{{count}} article",
+    "items_other": "{{count}} articles"
+  },
+  "order": {
+    "title": "Commande",
+    "number": "Commande #{{number}}",
+    "placedOn": "Passée le {{date}}",
+    "unpaid": "Cette commande n'est pas encore payée. Les boutiques la préparent après le paiement.",
+    "payNow": "Payer maintenant",
+    "pinTitle": "Code de livraison",
+    "pinTitlePickup": "Code de retrait",
+    "pinHint": "Donnez ce code au livreur uniquement quand vous avez le colis en main.",
+    "pinA11y": "Code de livraison : {{pin}}",
+    "modified": "Votre commande a été modifiée ({{items}}). Nouveau total : {{total}}.",
+    "cancelledBy": "Annulée par {{by}} : {{reason}}",
+    "by": {
+      "customer": "vous",
+      "vendor": "la boutique",
+      "admin": "l'équipe Kadou24h"
+    },
+    "rider": "Livreur",
+    "partner": {
+      "moto": "Livreur moto",
+      "transit": "Chauffeur de bus"
+    },
+    "leg": {
+      "local": "Moto",
+      "first_mile": "Moto",
+      "line_haul": "Bus",
+      "last_mile": "Moto"
+    },
+    "storeTotal": "Total boutique (livraison incluse)",
+    "payRider": "À payer au livreur : {{amount}}",
+    "track": "Suivre",
+    "chatStore": "Écrire à la boutique",
+    "review": "Donner mon avis",
+    "reviewed": "Avis envoyé",
+    "deliverTo": "Livraison à",
+    "pickupBy": "Retrait par",
+    "cancel": "Annuler la commande",
+    "cannotCancel": "Annulation impossible : une boutique prépare déjà votre commande. Signalez un problème si besoin.",
+    "reportProblem": "Signaler un problème",
+    "cancelTitle": "Annuler la commande ?",
+    "cancelText": "Toute la commande sera annulée. Si vous avez payé en ligne, vous serez remboursé.",
+    "cancelReason": {
+      "changedMind": "J'ai changé d'avis",
+      "tooLong": "Délai trop long",
+      "wrongItems": "Erreur dans ma commande",
+      "betterPrice": "Trouvé moins cher ailleurs",
+      "other": "Autre raison"
+    },
+    "reason": "Raison",
+    "reasonMore": "Précisez",
+    "cancelConfirm": "Oui, annuler",
+    "keepOrder": "Garder ma commande",
+    "cancelled": "Commande annulée",
+    "reviewTitle": "Votre avis sur {{store}}",
+    "stars_one": "{{count}} étoile",
+    "stars_other": "{{count}} étoiles",
+    "rating": {
+      "1": "Très mauvais",
+      "2": "Mauvais",
+      "3": "Correct",
+      "4": "Bien",
+      "5": "Excellent"
+    },
+    "reviewComment": "Commentaire",
+    "reviewCommentHint": "Produit, emballage, livraison…",
+    "reviewSend": "Envoyer mon avis",
+    "reviewThanks": "Merci pour votre avis !",
+    "disputeTitle": "Signaler un problème",
+    "disputeStore": "Quelle boutique ?",
+    "wholeOrder": "Toute la commande",
+    "disputeWhat": "Que s’est-il passé ?",
+    "disputeReason": {
+      "notReceived": "Colis non reçu",
+      "damaged": "Produit abîmé",
+      "wrongItem": "Mauvais produit",
+      "missingItem": "Article manquant",
+      "charged": "Problème de paiement"
+    },
+    "disputeDetails": "Détails",
+    "disputeDetailsHint": "Expliquez ce qui ne va pas",
+    "disputeInfo": "L'équipe Kadou24h étudie votre demande et vous répond ici. Un remboursement peut être accordé.",
+    "disputeSend": "Envoyer",
+    "disputeSent": "Signalement envoyé",
+    "adminReply": "Réponse de Kadou24h : {{reply}}"
+  },
+  "track": {
+    "title": "Suivi de livraison",
+    "status": {
+      "pending_assignment": "En attente d’un livreur",
+      "assigned": "Livreur assigné",
+      "accepted": "Le livreur a accepté",
+      "going_to_pickup": "Le livreur va chercher votre colis",
+      "picked_up": "Colis récupéré",
+      "in_transit": "En route vers vous",
+      "delivered": "Livré"
+    },
+    "noPosition": "La position du livreur apparaîtra dès qu’il partage sa localisation.",
+    "openMaps": "Ouvrir dans Google Maps"
+  },
+  "status": {
+    "order": {
+      "active": "En cours",
+      "completed": "Terminée",
+      "cancelled": "Annulée",
+      "partially_cancelled": "Partiellement annulée"
+    },
+    "subOrder": {
+      "new": "Nouvelle",
+      "accepted": "Acceptée",
+      "preparing": "En préparation",
+      "ready_for_pickup": "Prête",
+      "in_delivery": "En livraison",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    },
+    "payment": {
+      "unpaid": "Non payée",
+      "paid": "Payée",
+      "partially_refunded": "Part. remboursée",
+      "refunded": "Remboursée"
+    },
+    "delivery": {
+      "pending_assignment": "En attente",
+      "assigned": "Assignée",
+      "accepted": "Acceptée",
+      "declined": "Refusée",
+      "going_to_pickup": "En route vers le colis",
+      "picked_up": "Récupérée",
+      "in_transit": "En route",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    },
+    "dispute": {
+      "open": "En cours",
+      "resolved": "Résolu",
+      "rejected": "Refusé"
+    }
   }
 }
