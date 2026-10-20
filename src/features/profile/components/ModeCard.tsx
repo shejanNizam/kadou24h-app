@@ -4,24 +4,16 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/ui/AppText';
-import { StatusPill, type StatusTone } from '@/components/ui/StatusPill';
+import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { useSwitchModeMutation } from '@/features/auth/api';
 import { homeFor } from '@/features/auth/session';
+import { APPLICATION_TONE } from '@/features/vendor/status';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { AppMode, UserRole, type ApplicationStatus } from '@/types/api';
-
-const STATUS_TONE: Record<ApplicationStatus, StatusTone> = {
-  draft: 'grey',
-  pending: 'amber',
-  needs_changes: 'orange',
-  approved: 'green',
-  rejected: 'red',
-  suspended: 'red',
-};
 
 /**
  * Top of every profile: switch to another mode I hold, or see / start my
@@ -102,7 +94,7 @@ export function ModeCard() {
             </AppText>
           </View>
           {r.status ? (
-            <StatusPill label={t(`mode.status.${r.status}`)} tone={STATUS_TONE[r.status]} />
+            <StatusPill label={t(`mode.status.${r.status}`)} tone={APPLICATION_TONE[r.status]} />
           ) : r.active ? (
             <AppText variant="caption" color={Colors.primary}>
               {t('mode.current')}

@@ -25,9 +25,10 @@ import {
 import { CancelSheet, DisputeSheet, ReviewSheet } from '@/features/orders/components/OrderSheets';
 import { PriceSummary } from '@/features/orders/components/PriceSummary';
 import { SubOrderCard } from '@/features/orders/components/SubOrderCard';
-import { DISPUTE_TONE, ORDER_TONE, PAYMENT_TONE } from '@/features/orders/status';
+import { DISPUTE_TONE, ORDER_TONE, PAYMENT_TONE, REFUND_TONE } from '@/features/orders/status';
 import type { SubOrder } from '@/features/orders/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
+import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
 
 /**
@@ -155,6 +156,31 @@ export default function OrderScreen() {
         <View style={styles.card}>
           <PriceSummary pricing={order} storeCount={subOrders.length} />
         </View>
+
+        {data.refunds?.map((r) => (
+          <View key={r._id} style={styles.card}>
+            <View style={styles.row}>
+              <Feather name="rotate-ccw" size={16} color={Colors.primary} />
+              <AppText variant="title" style={styles.flex}>
+                {t('refund.title')}
+              </AppText>
+              <StatusPill label={t(`refund.status.${r.status}`)} tone={REFUND_TONE[r.status]} />
+            </View>
+            <AppText variant="small">
+              {r.status === 'completed'
+                ? t('refund.completed', { amount: formatGNF(r.amount) })
+                : r.status === 'pending'
+                  ? t('refund.pending', { amount: formatGNF(r.amount) })
+                  : t('refund.rejected', { amount: formatGNF(r.requestedAmount ?? r.amount) })}
+            </AppText>
+            {r.status === 'completed' && r.transactionId ? (
+              <AppText variant="caption" color={Colors.textMuted}>
+                {t('refund.reference', { ref: r.transactionId })}
+              </AppText>
+            ) : null}
+            {r.status === 'rejected' && r.rejectionReason ? <Banner tone="info" message={r.rejectionReason} /> : null}
+          </View>
+        ))}
 
         {myDisputes.map((d) => (
           <View key={d._id} style={styles.card}>

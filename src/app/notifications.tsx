@@ -1,5 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
-import { Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,6 +18,7 @@ import {
   type AppNotification,
   type NotificationType,
 } from '@/features/notifications/api';
+import { openNotification } from '@/features/notifications/open';
 import { useLocalized } from '@/hooks/useLocalized';
 import { useAppSelector } from '@/store/hooks';
 import { AppMode } from '@/types/api';
@@ -28,6 +29,7 @@ const ICONS: Partial<Record<NotificationType, ComponentProps<typeof Feather>['na
   rider_on_the_way: 'truck',
   order_delivered: 'package',
   order_cancelled: 'x-circle',
+  refund_update: 'rotate-ccw',
   feedback_request: 'star',
   new_message: 'message-circle',
   special_offer: 'gift',
@@ -56,11 +58,10 @@ export default function NotificationsScreen() {
   ].filter((s) => s.data.length > 0);
   const hasUnread = items.some((n) => !n.isRead);
 
-  // Deep link: order notifications open the order (chat/withdrawal links come with their screens)
+  // Deep link: order, store order, chat, withdrawal, application (features/notifications/open.ts)
   const open = (n: AppNotification) => {
     if (!n.isRead) void markRead(n._id);
-    const orderId = n.data?.orderId;
-    if (orderId && mode === AppMode.customer) router.push({ pathname: '/order/[id]', params: { id: orderId } });
+    openNotification({ type: n.type, ...n.data }, n.mode ?? mode);
   };
 
   return (

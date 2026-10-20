@@ -89,14 +89,28 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Server: delete-account guard (orders/deliveries in progress, COD cash, wallet money)
 - [x] Contract test 25/25 (scratchpad `phase6-contract.mjs`), server jest 149/149, e2e 129/129
 
-## Phase 7 — Vendor
-- [ ] KYC application (multi-step engine, payout method required)
-- [ ] Products: list with approval chips, add/edit (2 steps), stock quick edit, commission notice once
-- [ ] Orders: tabs, details, status actions, assign rider, pickup PIN, modify order, new-order alert
-- [ ] My delivery partners (invite/requests/linked)
-- [ ] Earnings + withdraw + payout methods (shared wallet module)
-- [ ] Store profile: open toggle, business info, availability
-- [ ] Received applications
+## Phase 7 — Vendor ✅ (2026-10-20)
+- [x] "Become a vendor" (`app/kyc/vendor.tsx`): 5 steps (store, map pin, documents, payout, review), draft saved per step, then pending / approved (→ switch to vendor mode) / suspended screens; admin note shown when sent back
+- [x] Products tab: All / Live / To review / Out of stock, approval chips + admin note, low-stock badge, "for sale" switch, quick stock sheet
+- [x] Add/edit product (`app/vendor/product-edit.tsx`): 2 steps, ≤ 5 photos (first = cover), category + subcategory, price/promo with live "you get ≈" line, stock, alert, prep time, features, in the box, delete; commission notice on new products
+- [x] Orders tab: New (count badge) / In progress / Delivered / Cancelled, payment chip (COD / paid / payment pending), open/closed switch in the header
+- [x] Order details (`app/vendor/order/[id].tsx`): pickup PIN card, customer (call + chat), address map + gate photo, legs with assign / chat / track, items + modify sheet (reduce only), money (commission, you get, COD note), refuse/cancel sheet with reasons, next step button
+- [x] New-order banner in vendor mode (socket) + push tap → the order
+- [x] My riders (`app/vendor/riders.tsx`): linked / requests / invite (search by name or number), accept, decline, remove
+- [x] Earnings (shared `features/wallet`): withdrawable hero, in escrow / awaiting rider cash / total / commission with explanations, 7d–12m bar chart, today; withdraw (fee + "you receive" live), withdrawals history, payout methods, wallet history — all take `?mode=` for the rider later
+- [x] Store profile: store card (open switch, rating, today), store details (`/vendor/store`), opening hours (`/vendor/hours`), riders, reviews, payout methods
+- [x] Server: vendor order tabs (multi-status + payment info), modify order (reduce only, never empty, settings commission, customer notified), available riders only for the order's store, rejected product → back to review when fixed, unapproved products hidden from others, products follow the store's map pin, `/products/my-products?statusTab=in_review`
+- [x] Demo seed: TechHub has 1 new + 1 preparing order, 1 pending + 1 rejected product; 4 more store types
+- [x] Contract test 61/61 (scratchpad `phase7-contract.mjs`), server jest 149/149, e2e 129/129
+- [ ] Received job applications → Phase 10 (jobs)
+
+## Refunds with admin approval ✅ (2026-10-20, between Phase 7 and 8)
+- [x] Server: cancellations (store / customer / admin) and store item changes of online-paid orders open ONE pending refund request per order (lines add up; whole order cancelled → service fee + tax too); never more than paid − refunded − requested; COD / unpaid → nothing
+- [x] Server: `PATCH /payments/admin/refunds/:id` approve (amount ≤ requested, transfer reference) or reject (reason); atomic; customer notified (`refund_update`); order → refunded / partially refunded
+- [x] Dashboard: Payments → "Refunds to approve" card + tab (default filter), reason lines, Decide modal; manual refund takes a reference
+- [x] App: refund card on the order (being checked / refunded + reference / declined + reason); cancel texts no longer promise an instant refund
+- [x] Fixed: the payment lookup never matched (order id stored as a string), so refunds fell back to the order total, which shrinks after store changes
+- [ ] Contract test (scratchpad `refunds-contract.mjs`): first run 24/30, the failures were the payment-lookup bug above, now fixed; re-run blocked today by the OTP daily limit in the shared cloud Redis (see memory)
 
 ## Phase 8 — Rider (moto)
 - [ ] KYC (partner type, vehicle, ID)
@@ -126,7 +140,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] EAS builds (Android first), OTA updates
 
 ### Carry-over from Phases 1–6 (do all of these before release; user asked 2026-10-20)
-- [ ] Suspended account full screen (reason + Contact support), instead of the login error
+- [x] Suspended account full screen (`app/suspended.tsx`: reason, WhatsApp / call / e-mail) from sign-in and live from the socket — done in Phase 7
 - [ ] OfflineBanner (NetInfo)
 - [ ] "Customers also bought" in the cart (needs a server endpoint)
 - [ ] Social login (needs Google/Apple client IDs from the user)
@@ -141,6 +155,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 
 ## Log
 - 2026-10-19 — Project created, all 3 roles' Figma reviewed, docs written.
+- 2026-10-20 — Phase 7 (vendor). Server: modify order reduce-only, rider list only for the order's store, rejected products can be fixed, unapproved products hidden, product locations follow the store. App: suspended screen.
 - 2026-10-20 — Phase 6 (profile & settings). Server: delete-account guard. App: password change keeps this phone signed in.
 - 2026-10-20 — Phase 5 (chat + push). Server: chat start by subject, phone leak in chats fixed, newest-first messages, unread count, push channel, own-token delete.
 - 2026-10-19 — Phase 4 (customer buy): addresses + map, cart, checkout, payment, orders, tracking, reviews, disputes. Server: payment polling + dev confirm, station route/ETA at checkout, multi-status filter, reviewed flag, rider name on orders.

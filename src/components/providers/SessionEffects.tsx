@@ -3,8 +3,9 @@
  * - keeps the socket connected with the current token
  * - server ended the session (suspension, password reset, logout-all) → sign out
  * - refreshes the cached user once per launch
- * - order / payment / delivery events → refetch what is on screen (orders, tracking)
+ * - order / payment / delivery / wallet / rider-link / application events → refetch what is on screen
  */
+import { router } from 'expo-router';
 import { useEffect } from 'react';
 
 import { useGetMeQuery } from '@/features/auth/api';
@@ -14,7 +15,8 @@ import { connectSocket, disconnectSocket } from '@/lib/socket';
 import { signedOut, userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-const ORDER_EVENTS = ['new_notification', 'delivery:status_changed', 'delivery:assigned', 'payment:successful', 'refund:issued'];
+const WALLET_EVENTS = ['wallet:earning_released', 'withdrawal:requested', 'withdrawal:completed', 'withdrawal:rejected'];
+const ORDER_EVENTS = ['new_notification', 'delivery:status_changed', 'delivery:assigned', 'payment:successful', 'refund:requested', 'refund:issued'];
 
 export function SessionEffects() {
   const dispatch = useAppDispatch();
@@ -36,23 +38,39 @@ export function SessionEffects() {
       // Password changed on this phone: we already hold the new tokens
       if (reason === 'password_changed' && pendingAuth.passwordChangedHereRecently()) return;
       dispatch(signedOut({ reason: reason ?? 'revoked' }));
+      // Suspended / banned by the team: say so clearly, with a way to contact support
+      if (reason === 'account_suspended' || reason === 'account_banned') {
+        router.replace({ pathname: '/suspended', params: { status: reason.replace('account_', '') } });
+      }
     };
     // Vendor status changes arrive as notifications; riders send delivery events
-    const refreshOrders = () => dispatch(api.util.invalidateTags(['Order', 'Delivery', 'Notification']));
+    const refreshOrders = () => dispatch(api.util.invalidateTags(['Order', 'SubOrder', 'Delivery', 'Notification', 'Wallet']));
     const refreshChats = () => dispatch(api.util.invalidateTags(['Conversation']));
     const refreshTickets = () => dispatch(api.util.invalidateTags(['Ticket']));
     const refreshDisputes = () => dispatch(api.util.invalidateTags(['Dispute', 'Order']));
+    const refreshWallet = () => dispatch(api.util.invalidateTags(['Wallet']));
+    const refreshLinks = () => dispatch(api.util.invalidateTags(['RiderLink']));
+    // Vendor / rider application reviewed: roles and status change
+    const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store']));
     socket.on('session:revoked', onRevoked);
     ORDER_EVENTS.forEach((e) => socket.on(e, refreshOrders));
     socket.on('dispute:resolved', refreshDisputes);
     socket.on('conversation_unread', refreshChats);
     socket.on('ticket_update', refreshTickets);
+    WALLET_EVENTS.forEach((e) => socket.on(e, refreshWallet));
+    socket.on('delivery:declined', refreshOrders);
+    socket.on('rider_link:updated', refreshLinks);
+    socket.on('application:reviewed', refreshApplication);
     return () => {
       socket.off('session:revoked', onRevoked);
       ORDER_EVENTS.forEach((e) => socket.off(e, refreshOrders));
       socket.off('dispute:resolved', refreshDisputes);
       socket.off('conversation_unread', refreshChats);
       socket.off('ticket_update', refreshTickets);
+      WALLET_EVENTS.forEach((e) => socket.off(e, refreshWallet));
+      socket.off('delivery:declined', refreshOrders);
+      socket.off('rider_link:updated', refreshLinks);
+      socket.off('application:reviewed', refreshApplication);
     };
   }, [signedIn, accessToken, dispatch]);
 

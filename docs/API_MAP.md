@@ -223,6 +223,19 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Refunds (2026-10-20)
+- `GET /orders/:id` now also returns `refunds: [{ amount, requestedAmount, status: pending | completed | rejected, source, transactionId, rejectionReason, processedAt, createdAt }]`.
+- Socket `refund:requested` (customer) when a request opens or grows; `refund:issued` when approved. Notification type `refund_update` (data `orderId`).
+
+## Changed for the app, Phase 7 (2026-10-20)
+- `GET /orders/vendor/sub-orders?status=a,b` takes several statuses (unknown → 400) and populates `orderId { orderNumber, deliveryType, paymentMethod, paymentStatus }` and `currentRiderId { userId { name, avatar }, vehicle.type }`.
+- `PATCH /orders/vendor/sub-orders/:id/modify` only **reduces** (`newQty` < ordered, or `remove`); an unknown item or removing every item → 400 ("cancel instead"). Commission minimum from settings. The customer gets an "Order changed" notification.
+- `GET /deliveries/:id/available-riders` → 404 unless the leg belongs to the caller's store.
+- `GET /products/my-products?statusTab=in_review` (pending + rejected). Editing a rejected product's content (not stock) sets it back to `pending`.
+- `GET /products/:idOrSlug`: a product that isn't approved is 404 except for its store and admins.
+- `PATCH /vendors/me` with `address.location` also moves the store's products (`vendorLocation`) for "near me" search.
+- New notification for vendors: `order_placed` socket `new_notification` → in-app banner; push data `{ mode: "vendor", subOrderId }` → `/vendor/order/[id]`.
+
 ## Changed for the app, Phase 6 (2026-10-20)
 - `DELETE /user/me` → 409 with a clear message while the account has orders in progress (as buyer or store), deliveries in progress, COD cash to hand over, or money in a wallet.
 - `POST /auth/change-password` returns a new `{ accessToken, refreshToken }` and emits `session:revoked { reason: "password_changed" }` to every socket of the user. The app ignores that event on the phone that made the change (`pendingAuth.markPasswordChangedHere()`).

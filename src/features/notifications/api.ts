@@ -21,6 +21,7 @@ export type NotificationType =
   | 'collect_payment'
   | 'earnings_updated'
   | 'withdrawal_update'
+  | 'refund_update'
   | 'application_update'
   | 'profile_approved'
   | 'moderation_warning'

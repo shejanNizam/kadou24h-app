@@ -20,7 +20,9 @@
     "change": "Change",
     "delete": "Delete",
     "edit": "Edit",
-    "save": "Save"
+    "save": "Save",
+    "add": "Add",
+    "loading": "Loading…"
   },
   "language": {
     "title": "Choose your language",
@@ -191,7 +193,58 @@
     "vendorTitle": "Become a vendor",
     "riderTitle": "Become a rider",
     "placeholder": "The application form arrives in the next step. Your account is ready: you can already use Kadou24h as a customer.",
-    "goHome": "Explore as a customer"
+    "goHome": "Explore as a customer",
+    "step": "Step {{current}} of {{total}}",
+    "steps": {
+      "store": "Store",
+      "location": "Location",
+      "documents": "Documents",
+      "payout": "Payout",
+      "review": "Review"
+    },
+    "logo": "Store logo",
+    "logoHint": "A clear, square photo of your logo or shopfront.",
+    "storeName": "Store name",
+    "storeNameRequired": "Enter the store name",
+    "category": "Store type",
+    "categoryRequired": "Choose the store type",
+    "market": "Market or shopping centre",
+    "marketHint": "E.g. Madina Market",
+    "businessPhone": "Store phone",
+    "phonePrivate": "Customers never see this number: they message you in the app.",
+    "businessEmail": "Store e-mail",
+    "locationHint": "Put the pin on your store: nearby customers find you by this point, and riders come here.",
+    "fillFromPin": "Fill the city from the pin",
+    "addressText": "Address",
+    "addressTextHint": "Area, street, landmark",
+    "documentsHint": "Optional, but stores with documents are approved faster. Clear photos, no glare.",
+    "doc": {
+      "business_license": "Business registration / licence",
+      "national_id": "ID card"
+    },
+    "docRejected": "Rejected",
+    "payoutHint": "Where we send your money when you withdraw. Required to submit.",
+    "noPayout": "No payout method",
+    "docsCount_one": "{{count}} document",
+    "docsCount_other": "{{count}} documents",
+    "reviewNote": "The Kadou24h team checks your store, usually within 24–48 h. You’ll get a notification.",
+    "submit": "Submit my application",
+    "submitted": "Application sent",
+    "openVendorMode": "Switch to Vendor mode",
+    "state": {
+      "pending": {
+        "title": "Application under review",
+        "text": "Thank you! The Kadou24h team is checking “{{store}}”. You’ll get a notification as soon as it’s decided."
+      },
+      "approved": {
+        "title": "Store approved 🎉",
+        "text": "“{{store}}” is ready. Add your products and get your first orders."
+      },
+      "suspended": {
+        "title": "Store suspended",
+        "text": "Your store is suspended. Contact support to learn more."
+      }
+    }
   },
   "cart": {
     "title": "Cart",
@@ -359,7 +412,11 @@
   "upload": {
     "camera": "Take a photo",
     "library": "Choose from gallery",
-    "failed": "The photo couldn't be sent. Try again."
+    "failed": "The photo couldn't be sent. Try again.",
+    "add": "Add a photo",
+    "change": "change",
+    "remove": "Remove",
+    "cameraDenied": "Allow the camera in your phone settings."
   },
   "address": {
     "title": "My addresses",
@@ -553,7 +610,7 @@
     "cannotCancel": "Can't cancel: a store is already preparing your order. Report a problem if needed.",
     "reportProblem": "Report a problem",
     "cancelTitle": "Cancel the order?",
-    "cancelText": "The whole order will be cancelled. If you paid online, you will be refunded.",
+    "cancelText": "The whole order will be cancelled. If you paid online, a refund is requested automatically: the Kadou24h team checks it and sends your money back.",
     "cancelReason": {
       "changedMind": "I changed my mind",
       "tooLong": "Takes too long",
@@ -846,6 +903,386 @@
       "in_progress": "In progress",
       "resolved": "Resolved",
       "closed": "Closed"
+    },
+    "contact": "Contact support"
+  },
+  "vehicle": {
+    "motorbike": "Motorbike",
+    "bicycle": "Bicycle",
+    "car": "Car",
+    "bus": "Bus"
+  },
+  "suspended": {
+    "title": "Account suspended",
+    "text": "The Kadou24h team has suspended your account. You can’t sign in for now.",
+    "bannedTitle": "Account blocked",
+    "bannedText": "The Kadou24h team has blocked your account.",
+    "reason": "Reason",
+    "call": "Call support",
+    "email": "Send an e-mail",
+    "back": "Back to home"
+  },
+  "payout": {
+    "type": {
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN Mobile Money",
+      "bank": "Bank account"
+    },
+    "typeHint": {
+      "orange_money": "Paid to your Orange Money number",
+      "mobile_money": "Paid to your MTN MoMo number",
+      "bank": "Transfer to your account"
+    },
+    "accountName": "Account holder",
+    "accountNameHint": "As shown on the account",
+    "phone": "{{type}} number",
+    "bankName": "Bank name",
+    "bankRequired": "Enter the bank name",
+    "accountNumber": "Account number",
+    "accountRequired": "Enter the account number",
+    "add": "Add a payout method",
+    "addAnother": "Add another",
+    "edit": "Edit payout method",
+    "default": "Default",
+    "makeDefault": "Make default",
+    "deleteTitle": "Delete this payout method?",
+    "emptyTitle": "No payout method",
+    "emptyText": "Add Orange Money, MTN MoMo or a bank account to receive your withdrawals."
+  },
+  "products": {
+    "add": "Add",
+    "addFirst": "Add my first product",
+    "tab": {
+      "all": "All",
+      "active": "Live",
+      "in_review": "To review",
+      "out_of_stock": "Out of stock"
+    },
+    "empty": {
+      "all": "No products",
+      "active": "No live products",
+      "in_review": "Nothing to review",
+      "out_of_stock": "Nothing out of stock"
+    },
+    "emptyText": "Add your products: the team checks them, then customers can see them.",
+    "approval": {
+      "pending": "Pending",
+      "approved": "Live",
+      "rejected": "Rejected"
+    },
+    "soldOut": "Out of stock",
+    "lowStock": "Low stock",
+    "stock_one": "Stock: {{count}}",
+    "stock_other": "Stock: {{count}}",
+    "editStock": "Edit stock",
+    "forSale": "For sale",
+    "forSaleHint": "Turn off to hide the product without deleting it.",
+    "stockQty": "Quantity in stock",
+    "stockRequired": "Enter the quantity",
+    "minStockAlert": "Low-stock alert",
+    "minStockAlertHint": "We flag the product when this many or fewer are left.",
+    "stockSaved": "Stock updated",
+    "newTitle": "New product",
+    "editTitle": "Edit product",
+    "step1": "Photos and price",
+    "step2": "Stock and details",
+    "photos": "Photos",
+    "photosHint": "Up to 5 photos. The first one is the cover: tap a photo to move it first.",
+    "photoRequired": "Add at least one photo",
+    "cover": "Cover",
+    "makeCover": "Make cover",
+    "name": "Product name",
+    "nameRequired": "Enter the product name",
+    "description": "Description",
+    "category": "Category",
+    "categoryRequired": "Choose a category",
+    "subcategory": "Subcategory",
+    "price": "Price",
+    "priceRequired": "Enter the price",
+    "discountPrice": "Sale price",
+    "discountInvalid": "The sale price must be lower than the price",
+    "earnLine": "Customer pays {{pays}} · You get about {{get}} ({{rate}}% commission, min. {{min}})",
+    "prepTime": "Preparation time (minutes)",
+    "prepTimeHint": "Time to get the parcel ready once you accept the order.",
+    "features": "Key features",
+    "featuresHint": "E.g. 1-year warranty, Dual SIM",
+    "inTheBox": "What's in the box",
+    "inTheBoxHint": "E.g. Charger, USB-C cable",
+    "approvalNotice": "Each new product is checked by the team before it is visible. Kadou24h commission: {{rate}}% per sale (minimum {{min}}).",
+    "rejectedNote": "This product was rejected. Fix it and save: it goes back for review.",
+    "publish": "Send for review",
+    "created": "Product sent for review",
+    "saved": "Product saved",
+    "resubmitted": "Product sent back for review",
+    "delete": "Delete",
+    "deleteTitle": "Delete this product?",
+    "deleteText": "It disappears from your store. Past orders don’t change.",
+    "deleted": "Product deleted"
+  },
+  "vendorOrders": {
+    "tab": {
+      "new": "New",
+      "active": "In progress",
+      "done": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "empty": {
+      "new": "No new orders",
+      "active": "No orders in progress",
+      "done": "No delivered orders",
+      "cancelled": "No cancelled orders"
+    },
+    "emptyNewText": "New orders arrive here, with a notification. Keep your store open.",
+    "youGet": "You get",
+    "rider": "Rider: {{name}}",
+    "pay": {
+      "cod": "Cash on delivery",
+      "paid": "Paid",
+      "unpaid": "Payment pending"
+    },
+    "awaitingPayment": "The customer hasn’t paid online yet. Wait for the payment before preparing the order.",
+    "by": {
+      "customer": "the customer",
+      "vendor": "your store",
+      "admin": "the Kadou24h team"
+    },
+    "pinHint": "Give this code to the rider when they pick up the order, not before.",
+    "pinA11y": "Pickup code: {{pin}}",
+    "customer": "Customer",
+    "call": "Call the customer",
+    "chatCustomer": "Message the customer",
+    "chatRider": "Message the rider",
+    "delivery": "Delivery",
+    "items": "Items",
+    "modify": "Change",
+    "removed": "Removed",
+    "modifiedOn": "Changed on {{date}}: {{old}} → {{total}}",
+    "money": "Payment",
+    "deliveryForRider": "Paid by the customer, goes to the rider",
+    "customerPays": "Customer pays",
+    "commission": "Kadou24h commission ({{rate}}%)",
+    "codNote": "Cash on delivery: the rider collects {{amount}}. Your share arrives when they hand the cash over.",
+    "action": {
+      "accepted": "Accept",
+      "preparing": "Start preparing",
+      "ready_for_pickup": "Ready for the rider"
+    },
+    "moved": {
+      "accepted": "Order accepted",
+      "preparing": "Preparing",
+      "ready_for_pickup": "Order ready: choose a rider"
+    },
+    "refuse": "Refuse",
+    "cancel": "Cancel",
+    "refuseTitle": "Refuse the order?",
+    "cancelTitle": "Cancel the order?",
+    "cancelHint": "The customer is told and the stock goes back on sale. If they paid online, a refund is requested from the Kadou24h team. Choose a reason.",
+    "cancelReason": {
+      "outOfStock": "Out of stock",
+      "closed": "Store closed",
+      "tooFar": "Address too far",
+      "customerAsked": "Customer asked",
+      "other": "Other reason"
+    },
+    "reason": "Reason",
+    "refused": "Order refused",
+    "cancelled": "Order cancelled",
+    "assignRider": "Choose a rider",
+    "assignBus": "Choose a bus driver",
+    "assignTitle": "Choose a rider",
+    "assignHint": "Online riders: your partners first, then the nearest.",
+    "assignTo": "Give to {{name}}",
+    "riderAssigned": "Request sent to {{name}}",
+    "noRiders": "No rider online",
+    "noRidersText": "Try again in a few minutes, or invite riders to your network.",
+    "riderDeclined": "The rider declined: choose another one.",
+    "km": "{{km}} km",
+    "busy_one": "{{count}} delivery in progress",
+    "busy_other": "{{count}} deliveries in progress",
+    "legStatus": {
+      "pending_assignment": "Choose a rider",
+      "assigned": "Waiting for the rider",
+      "accepted": "Rider on the way",
+      "declined": "Declined by the rider",
+      "going_to_pickup": "Rider on the way",
+      "picked_up": "Picked up",
+      "in_transit": "On the way",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "modifyTitle": "Change the order",
+    "modifyHint": "Remove an item or lower a quantity, once the customer agrees in chat. The customer is told the new total; if they paid online, the difference is refunded after the team checks it.",
+    "ordered": "{{count}} ordered",
+    "less": "One less: {{name}}",
+    "more": "One more: {{name}}",
+    "modifyAllGone": "An order keeps at least one item. To remove everything, cancel the order.",
+    "removedValue": "Items removed: {{amount}}",
+    "modifyReason": "Reason",
+    "modifyReasonHint": "E.g. Size M out of stock, customer agreed",
+    "modifySave": "Save changes",
+    "modified": "Order changed",
+    "newAlert": "New order!",
+    "newAlertOpen": "Tap to open it"
+  },
+  "riders": {
+    "title": "My riders",
+    "tab": {
+      "linked": "Linked ({{count}})",
+      "requests": "Requests",
+      "invite": "Invite"
+    },
+    "linkedHint": "Your riders are offered first when you choose a rider.",
+    "empty": {
+      "linked": "No linked riders",
+      "requests": "No requests"
+    },
+    "emptyLinkedText": "Invite the moto riders you work with.",
+    "inviteAction": "Invite a rider",
+    "online": "Online",
+    "offline": "Offline",
+    "deliveries_one": "{{count}} delivery",
+    "deliveries_other": "{{count}} deliveries",
+    "wantsToJoin": "Wants to deliver for your store",
+    "accept": "Accept",
+    "decline": "Decline",
+    "accepted": "{{name}} is now one of your riders",
+    "declined": "Request declined",
+    "invitationSent": "Invitation sent, waiting for an answer",
+    "cancelInvite": "Cancel invitation",
+    "cancelInviteTitle": "Cancel the invitation?",
+    "inviteCancelled": "Invitation cancelled",
+    "remove": "Remove",
+    "removeTitle": "Remove {{name}}?",
+    "removeText": "They won’t be offered first anymore. You can invite them again.",
+    "removed": "{{name}} was removed",
+    "searchHint": "Rider's name or full number",
+    "invite": "Invite",
+    "invited": "Invitation sent to {{name}}",
+    "linked": "Linked",
+    "pending": "Pending",
+    "noResults": "No rider found",
+    "noResultsText": "Check the name, or enter their full number."
+  },
+  "store": {
+    "title": "My store",
+    "open": "Open",
+    "closed": "Closed",
+    "openSwitch": "Store open",
+    "nowOpen": "Store open: you receive orders",
+    "nowClosed": "Store closed: customers can’t order",
+    "noRating": "No reviews yet",
+    "products_one": "{{count}} product",
+    "products_other": "{{count}} products",
+    "todayEarned": "Earned today",
+    "todayDelivered": "Delivered",
+    "toAccept": "To accept",
+    "business": "Store details",
+    "hours": "Opening hours",
+    "reviews": "Customer reviews",
+    "reviewFields": "To change the store type or documents, contact support.",
+    "hoursHint": "Shown on your store page.",
+    "useHours": "Show my opening hours",
+    "days": "Open on",
+    "opens": "Opens",
+    "closes": "Closes",
+    "badTime": "Times like 08:00, opening before closing."
+  },
+  "earnings": {
+    "withdrawable": "Available",
+    "withdrawableHint": "You can withdraw this money now.",
+    "minWithdrawal": "You can withdraw from {{amount}}.",
+    "withdraw": "Withdraw",
+    "balance": {
+      "inEscrow": "Pending (orders in progress)",
+      "awaitingCod": "Waiting for the rider",
+      "totalEarned": "Total earned",
+      "totalCommission": "Commission paid",
+      "cashOwed": "Cash to hand over"
+    },
+    "balanceHint": {
+      "inEscrow": "You get it after delivery.",
+      "awaitingCod": "Cash orders: available once the rider hands the cash over.",
+      "totalEarned": "Since the start, after commission.",
+      "totalCommission": "Taken from each sale.",
+      "cashOwed": "Customers’ cash to hand over to Kadou24h."
+    },
+    "activity": "Activity",
+    "range": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "6m": "6 months",
+      "12m": "12 months"
+    },
+    "periodEarned": "Earned in this period",
+    "ordersDelivered": "Orders delivered",
+    "deliveriesDone": "Deliveries",
+    "today": "Today: {{amount}} · {{count}} delivered",
+    "noActivity": "No delivered sales in this period yet.",
+    "chartA11y": "Earnings chart",
+    "money": "My money",
+    "withdrawals": "My withdrawals",
+    "payoutMethods": "Payout methods",
+    "history": "Wallet history"
+  },
+  "withdraw": {
+    "amount": "Amount to withdraw",
+    "all": "All",
+    "min": "Minimum {{amount}}",
+    "tooBig": "More than your available balance",
+    "to": "Receive on",
+    "noMethod": "Add a payout method first.",
+    "requested": "Amount requested",
+    "fee": "Withdrawal fee",
+    "noFee": "Free",
+    "youReceive": "You will receive",
+    "delayNote": "The Kadou24h team usually processes withdrawals within 24 h. You’ll get a notification.",
+    "submit": "Request withdrawal",
+    "sentTitle": "Request sent",
+    "sentText": "Withdrawal {{number}}: you will receive {{amount}} once it is processed."
+  },
+  "withdrawals": {
+    "empty": "No withdrawals",
+    "emptyText": "Your withdrawal requests will appear here.",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "completed": "Paid",
+      "rejected": "Rejected"
+    },
+    "net": "Received: {{amount}}",
+    "fee": "fee {{amount}}",
+    "reference": "Reference: {{id}}",
+    "receipt": "Payment receipt",
+    "rejected": "Rejected: {{reason}}. The amount went back to your balance.",
+    "pendingHint": "Being processed by the team."
+  },
+  "walletHistory": {
+    "empty": "No activity",
+    "type": {
+      "earning_held": "Sale (pending)",
+      "earning_held_reversed": "Sale cancelled or changed",
+      "earning_released": "Money available",
+      "commission": "Commission",
+      "withdrawal": "Withdrawal",
+      "withdrawal_fee": "Withdrawal fee",
+      "withdrawal_reversal": "Withdrawal rejected (refunded)",
+      "refund_deduction": "Customer refund",
+      "cod_collected": "Cash collected",
+      "cod_settled": "Cash handed over",
+      "cod_offset": "Cash offset",
+      "adjustment": "Adjustment"
     }
+  },
+  "refund": {
+    "title": "Refund",
+    "status": {
+      "pending": "Being checked",
+      "completed": "Refunded",
+      "rejected": "Declined"
+    },
+    "pending": "{{amount}} will be refunded to you. The Kadou24h team checks the request and sends the money back to the payment method you used.",
+    "completed": "{{amount}} has been refunded to you.",
+    "rejected": "The refund of {{amount}} was declined:",
+    "reference": "Transfer reference: {{ref}}"
   }
 }

@@ -6,6 +6,7 @@ import { api, unwrap, unwrapPage } from '@/lib/api/api';
 import type { FileRef, NotificationPrefs, Paginated, User } from '@/types/api';
 
 import type { Payment } from '../orders/types';
+import type { WithdrawalFee } from '../wallet/types';
 
 export type TicketType =
   | 'order_issue'
@@ -50,6 +51,9 @@ export interface PublicSettings {
   supportEmail?: string;
   contactNumber?: string;
   whatsappSupportNumber?: string;
+  /** Vendor pays max(rate % of the subtotal, min) */
+  commission?: { rate: number; min: number };
+  withdrawalFees?: WithdrawalFee[];
 }
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);

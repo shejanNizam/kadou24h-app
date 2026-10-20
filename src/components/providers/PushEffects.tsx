@@ -1,10 +1,11 @@
 /**
  * Push side effects (no UI): register this phone after sign-in, and open the
- * right screen when a notification is tapped (chat, order, else the list).
+ * right screen when a notification is tapped (features/notifications/open.ts, else the list).
  */
 import { router } from 'expo-router';
 import { useEffect } from 'react';
 
+import { openNotification } from '@/features/notifications/open';
 import { registerForPush } from '@/lib/push';
 import { useAppSelector } from '@/store/hooks';
 
@@ -23,9 +24,7 @@ export function PushEffects() {
 
   useNotificationTap((data) => {
     if (!signedIn) return;
-    if (data.conversationId) router.push({ pathname: '/chat/[id]', params: { id: data.conversationId } });
-    else if (data.orderId && (!data.mode || data.mode === 'customer')) router.push({ pathname: '/order/[id]', params: { id: data.orderId } });
-    else router.push('/notifications');
+    if (!openNotification(data)) router.push('/notifications');
   });
 
   return null;

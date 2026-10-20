@@ -164,9 +164,25 @@ export interface OrderListItem extends Order {
   subOrders: Pick<SubOrder, '_id' | 'subOrderNumber' | 'vendorId' | 'status' | 'total' | 'items'>[];
 }
 
+export type RefundStatus = 'pending' | 'completed' | 'rejected';
+
+/** Money going back after a cancellation / store change / dispute (an admin approves it) */
+export interface OrderRefund {
+  _id: string;
+  amount: number;
+  requestedAmount?: number;
+  status: RefundStatus;
+  source: 'cancellation' | 'modification' | 'order_fees' | 'dispute' | 'admin';
+  transactionId?: string;
+  rejectionReason?: string;
+  processedAt?: string;
+  createdAt: string;
+}
+
 export interface OrderDetails {
   order: Order;
   subOrders: SubOrder[];
+  refunds?: OrderRefund[];
 }
 
 // ── Checkout ─────────────────────────────────────────────────────────

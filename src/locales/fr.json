@@ -20,7 +20,9 @@
     "change": "Modifier",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "add": "Ajouter",
+    "loading": "Chargement…"
   },
   "language": {
     "title": "Choisissez votre langue",
@@ -191,7 +193,58 @@
     "vendorTitle": "Devenir vendeur",
     "riderTitle": "Devenir livreur",
     "placeholder": "Le formulaire de candidature arrive à la prochaine étape. Votre compte est prêt : vous pouvez déjà utiliser Kadou24h en tant que client.",
-    "goHome": "Explorer en tant que client"
+    "goHome": "Explorer en tant que client",
+    "step": "Étape {{current}} sur {{total}}",
+    "steps": {
+      "store": "Boutique",
+      "location": "Emplacement",
+      "documents": "Documents",
+      "payout": "Paiement",
+      "review": "Vérification"
+    },
+    "logo": "Logo de la boutique",
+    "logoHint": "Une photo carrée et nette de votre logo ou de votre devanture.",
+    "storeName": "Nom de la boutique",
+    "storeNameRequired": "Entrez le nom de la boutique",
+    "category": "Type de boutique",
+    "categoryRequired": "Choisissez le type de boutique",
+    "market": "Marché ou centre commercial",
+    "marketHint": "Ex. : Marché Madina",
+    "businessPhone": "Téléphone de la boutique",
+    "phonePrivate": "Ce numéro n'est jamais montré aux clients : ils vous écrivent dans l'application.",
+    "businessEmail": "E-mail de la boutique",
+    "locationHint": "Placez le repère sur votre boutique : les clients proches vous trouvent grâce à ce point, et les livreurs viennent ici.",
+    "fillFromPin": "Remplir la ville depuis le repère",
+    "addressText": "Adresse",
+    "addressTextHint": "Quartier, rue, repère",
+    "documentsHint": "Facultatif, mais une boutique avec ses documents est approuvée plus vite. Photos nettes, sans reflet.",
+    "doc": {
+      "business_license": "Registre de commerce / licence",
+      "national_id": "Pièce d'identité"
+    },
+    "docRejected": "Refusé",
+    "payoutHint": "Où envoyer votre argent quand vous faites un retrait. Obligatoire pour envoyer la demande.",
+    "noPayout": "Aucun moyen de paiement",
+    "docsCount_one": "{{count}} document",
+    "docsCount_other": "{{count}} documents",
+    "reviewNote": "L'équipe Kadou24h vérifie votre boutique, en général sous 24 à 48 h. Vous recevrez une notification.",
+    "submit": "Envoyer ma demande",
+    "submitted": "Demande envoyée",
+    "openVendorMode": "Passer en mode Vendeur",
+    "state": {
+      "pending": {
+        "title": "Demande en cours de vérification",
+        "text": "Merci ! L'équipe Kadou24h vérifie « {{store}} ». Vous recevrez une notification dès la décision."
+      },
+      "approved": {
+        "title": "Boutique approuvée 🎉",
+        "text": "« {{store}} » est prête. Ajoutez vos produits et recevez vos premières commandes."
+      },
+      "suspended": {
+        "title": "Boutique suspendue",
+        "text": "Votre boutique est suspendue. Contactez le support pour en savoir plus."
+      }
+    }
   },
   "cart": {
     "title": "Panier",
@@ -359,7 +412,11 @@
   "upload": {
     "camera": "Prendre une photo",
     "library": "Choisir dans la galerie",
-    "failed": "La photo n'a pas pu être envoyée. Réessayez."
+    "failed": "La photo n'a pas pu être envoyée. Réessayez.",
+    "add": "Ajouter une photo",
+    "change": "changer",
+    "remove": "Retirer",
+    "cameraDenied": "Autorisez l'appareil photo dans les réglages du téléphone."
   },
   "address": {
     "title": "Mes adresses",
@@ -553,7 +610,7 @@
     "cannotCancel": "Annulation impossible : une boutique prépare déjà votre commande. Signalez un problème si besoin.",
     "reportProblem": "Signaler un problème",
     "cancelTitle": "Annuler la commande ?",
-    "cancelText": "Toute la commande sera annulée. Si vous avez payé en ligne, vous serez remboursé.",
+    "cancelText": "Toute la commande sera annulée. Si vous avez payé en ligne, un remboursement est demandé automatiquement : l'équipe Kadou24h le vérifie puis vous renvoie l'argent.",
     "cancelReason": {
       "changedMind": "J'ai changé d'avis",
       "tooLong": "Délai trop long",
@@ -846,6 +903,386 @@
       "in_progress": "En cours",
       "resolved": "Résolue",
       "closed": "Fermée"
+    },
+    "contact": "Contacter le support"
+  },
+  "vehicle": {
+    "motorbike": "Moto",
+    "bicycle": "Vélo",
+    "car": "Voiture",
+    "bus": "Bus"
+  },
+  "suspended": {
+    "title": "Compte suspendu",
+    "text": "Votre compte a été suspendu par l'équipe Kadou24h. Vous ne pouvez plus vous connecter pour le moment.",
+    "bannedTitle": "Compte bloqué",
+    "bannedText": "Votre compte a été bloqué par l'équipe Kadou24h.",
+    "reason": "Motif",
+    "call": "Appeler le support",
+    "email": "Écrire un e-mail",
+    "back": "Retour à l'accueil"
+  },
+  "payout": {
+    "type": {
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN Mobile Money",
+      "bank": "Compte bancaire"
+    },
+    "typeHint": {
+      "orange_money": "Reçu sur votre numéro Orange Money",
+      "mobile_money": "Reçu sur votre numéro MTN MoMo",
+      "bank": "Virement sur votre compte"
+    },
+    "accountName": "Nom du titulaire",
+    "accountNameHint": "Tel qu’il apparaît sur le compte",
+    "phone": "Numéro {{type}}",
+    "bankName": "Nom de la banque",
+    "bankRequired": "Entrez le nom de la banque",
+    "accountNumber": "Numéro de compte",
+    "accountRequired": "Entrez le numéro de compte",
+    "add": "Ajouter un moyen de paiement",
+    "addAnother": "Ajouter un autre",
+    "edit": "Modifier le moyen de paiement",
+    "default": "Par défaut",
+    "makeDefault": "Par défaut",
+    "deleteTitle": "Supprimer ce moyen de paiement ?",
+    "emptyTitle": "Aucun moyen de paiement",
+    "emptyText": "Ajoutez Orange Money, MTN MoMo ou un compte bancaire pour recevoir vos retraits."
+  },
+  "products": {
+    "add": "Ajouter",
+    "addFirst": "Ajouter mon premier produit",
+    "tab": {
+      "all": "Tous",
+      "active": "En ligne",
+      "in_review": "À valider",
+      "out_of_stock": "Rupture"
+    },
+    "empty": {
+      "all": "Aucun produit",
+      "active": "Aucun produit en ligne",
+      "in_review": "Rien à valider",
+      "out_of_stock": "Aucun produit en rupture"
+    },
+    "emptyText": "Ajoutez vos produits : l'équipe les vérifie puis ils apparaissent aux clients.",
+    "approval": {
+      "pending": "En attente",
+      "approved": "En ligne",
+      "rejected": "Refusé"
+    },
+    "soldOut": "Rupture",
+    "lowStock": "Stock bas",
+    "stock_one": "Stock : {{count}}",
+    "stock_other": "Stock : {{count}}",
+    "editStock": "Modifier le stock",
+    "forSale": "En vente",
+    "forSaleHint": "Désactivez pour cacher le produit sans le supprimer.",
+    "stockQty": "Quantité en stock",
+    "stockRequired": "Entrez la quantité",
+    "minStockAlert": "Alerte stock bas",
+    "minStockAlertHint": "Nous signalons le produit quand il en reste ce nombre ou moins.",
+    "stockSaved": "Stock mis à jour",
+    "newTitle": "Nouveau produit",
+    "editTitle": "Modifier le produit",
+    "step1": "Photos et prix",
+    "step2": "Stock et détails",
+    "photos": "Photos",
+    "photosHint": "Jusqu’à 5 photos. La première est la couverture : touchez une photo pour la mettre en premier.",
+    "photoRequired": "Ajoutez au moins une photo",
+    "cover": "Couverture",
+    "makeCover": "Mettre en couverture",
+    "name": "Nom du produit",
+    "nameRequired": "Entrez le nom du produit",
+    "description": "Description",
+    "category": "Catégorie",
+    "categoryRequired": "Choisissez une catégorie",
+    "subcategory": "Sous-catégorie",
+    "price": "Prix",
+    "priceRequired": "Entrez le prix",
+    "discountPrice": "Prix promo",
+    "discountInvalid": "Le prix promo doit être inférieur au prix",
+    "earnLine": "Le client paie {{pays}} · Vous recevez environ {{get}} (commission {{rate}} %, min. {{min}})",
+    "prepTime": "Temps de préparation (minutes)",
+    "prepTimeHint": "Le temps pour préparer le colis une fois la commande acceptée.",
+    "features": "Points forts",
+    "featuresHint": "Ex. : Garantie 1 an, Double SIM",
+    "inTheBox": "Contenu de la boîte",
+    "inTheBoxHint": "Ex. : Chargeur, Câble USB-C",
+    "approvalNotice": "Chaque nouveau produit est vérifié par l'équipe avant d'être visible. Commission Kadou24h : {{rate}} % par vente (minimum {{min}}).",
+    "rejectedNote": "Ce produit a été refusé. Corrigez-le puis enregistrez : il repartira en vérification.",
+    "publish": "Envoyer pour vérification",
+    "created": "Produit envoyé pour vérification",
+    "saved": "Produit enregistré",
+    "resubmitted": "Produit renvoyé pour vérification",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce produit ?",
+    "deleteText": "Il disparaît de la boutique. Les commandes passées ne changent pas.",
+    "deleted": "Produit supprimé"
+  },
+  "vendorOrders": {
+    "tab": {
+      "new": "Nouvelles",
+      "active": "En cours",
+      "done": "Livrées",
+      "cancelled": "Annulées"
+    },
+    "empty": {
+      "new": "Aucune nouvelle commande",
+      "active": "Aucune commande en cours",
+      "done": "Aucune commande livrée",
+      "cancelled": "Aucune commande annulée"
+    },
+    "emptyNewText": "Les nouvelles commandes arrivent ici, avec une notification. Gardez la boutique ouverte.",
+    "youGet": "Vous recevez",
+    "rider": "Livreur : {{name}}",
+    "pay": {
+      "cod": "À la livraison",
+      "paid": "Payée",
+      "unpaid": "Paiement en attente"
+    },
+    "awaitingPayment": "Le client n'a pas encore payé en ligne. Attendez le paiement avant de préparer la commande.",
+    "by": {
+      "customer": "le client",
+      "vendor": "votre boutique",
+      "admin": "l'équipe Kadou24h"
+    },
+    "pinHint": "Donnez ce code au livreur quand il récupère la commande, pas avant.",
+    "pinA11y": "Code de retrait : {{pin}}",
+    "customer": "Client",
+    "call": "Appeler le client",
+    "chatCustomer": "Écrire au client",
+    "chatRider": "Écrire au livreur",
+    "delivery": "Livraison",
+    "items": "Articles",
+    "modify": "Modifier",
+    "removed": "Retiré",
+    "modifiedOn": "Modifiée le {{date}} : {{old}} → {{total}}",
+    "money": "Paiement",
+    "deliveryForRider": "Payée par le client, reversée au livreur",
+    "customerPays": "Le client paie",
+    "commission": "Commission Kadou24h ({{rate}} %)",
+    "codNote": "Paiement à la livraison : le livreur encaisse {{amount}}. Votre part arrive quand il dépose l’argent.",
+    "action": {
+      "accepted": "Accepter",
+      "preparing": "Commencer la préparation",
+      "ready_for_pickup": "Prête pour le livreur"
+    },
+    "moved": {
+      "accepted": "Commande acceptée",
+      "preparing": "Préparation commencée",
+      "ready_for_pickup": "Commande prête : choisissez un livreur"
+    },
+    "refuse": "Refuser",
+    "cancel": "Annuler",
+    "refuseTitle": "Refuser la commande ?",
+    "cancelTitle": "Annuler la commande ?",
+    "cancelHint": "Le client est prévenu et le stock est remis en vente. S'il a payé en ligne, un remboursement est demandé à l'équipe Kadou24h. Choisissez une raison.",
+    "cancelReason": {
+      "outOfStock": "Produit en rupture",
+      "closed": "Boutique fermée",
+      "tooFar": "Adresse trop loin",
+      "customerAsked": "Le client a demandé",
+      "other": "Autre raison"
+    },
+    "reason": "Raison",
+    "refused": "Commande refusée",
+    "cancelled": "Commande annulée",
+    "assignRider": "Choisir un livreur",
+    "assignBus": "Choisir un chauffeur de bus",
+    "assignTitle": "Choisir un livreur",
+    "assignHint": "Livreurs en ligne : vos partenaires d’abord, puis les plus proches.",
+    "assignTo": "Confier à {{name}}",
+    "riderAssigned": "Demande envoyée à {{name}}",
+    "noRiders": "Aucun livreur en ligne",
+    "noRidersText": "Réessayez dans quelques minutes, ou invitez des livreurs dans votre réseau.",
+    "riderDeclined": "Le livreur a refusé : choisissez-en un autre.",
+    "km": "{{km}} km",
+    "busy_one": "{{count}} livraison en cours",
+    "busy_other": "{{count}} livraisons en cours",
+    "legStatus": {
+      "pending_assignment": "Livreur à choisir",
+      "assigned": "En attente du livreur",
+      "accepted": "Livreur en route",
+      "declined": "Refusé par le livreur",
+      "going_to_pickup": "Livreur en route",
+      "picked_up": "Colis récupéré",
+      "in_transit": "En route",
+      "delivered": "Livré",
+      "cancelled": "Annulé"
+    },
+    "modifyTitle": "Modifier la commande",
+    "modifyHint": "Retirez un article ou baissez une quantité, après accord du client dans le chat. Le client est prévenu du nouveau total ; s'il a payé en ligne, la différence lui est remboursée après vérification par l'équipe.",
+    "ordered": "{{count}} commandé(s)",
+    "less": "Un de moins : {{name}}",
+    "more": "Un de plus : {{name}}",
+    "modifyAllGone": "Une commande garde au moins un article. Pour tout retirer, annulez la commande.",
+    "removedValue": "Articles retirés : {{amount}}",
+    "modifyReason": "Raison",
+    "modifyReasonHint": "Ex. : Rupture de la taille M, accord du client",
+    "modifySave": "Enregistrer les changements",
+    "modified": "Commande modifiée",
+    "newAlert": "Nouvelle commande !",
+    "newAlertOpen": "Touchez pour la voir"
+  },
+  "riders": {
+    "title": "Mes livreurs",
+    "tab": {
+      "linked": "Liés ({{count}})",
+      "requests": "Demandes",
+      "invite": "Inviter"
+    },
+    "linkedHint": "Vos livreurs sont proposés en premier quand vous choisissez un livreur.",
+    "empty": {
+      "linked": "Aucun livreur lié",
+      "requests": "Aucune demande"
+    },
+    "emptyLinkedText": "Invitez les livreurs moto avec qui vous travaillez.",
+    "inviteAction": "Inviter un livreur",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "deliveries_one": "{{count}} livraison",
+    "deliveries_other": "{{count}} livraisons",
+    "wantsToJoin": "Souhaite livrer pour votre boutique",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "accepted": "{{name}} fait partie de vos livreurs",
+    "declined": "Demande refusée",
+    "invitationSent": "Invitation envoyée, en attente de réponse",
+    "cancelInvite": "Annuler l'invitation",
+    "cancelInviteTitle": "Annuler l'invitation ?",
+    "inviteCancelled": "Invitation annulée",
+    "remove": "Retirer",
+    "removeTitle": "Retirer {{name}} ?",
+    "removeText": "Il ne sera plus proposé en premier. Vous pourrez l'inviter à nouveau.",
+    "removed": "{{name}} a été retiré",
+    "searchHint": "Nom ou numéro exact du livreur",
+    "invite": "Inviter",
+    "invited": "Invitation envoyée à {{name}}",
+    "linked": "Lié",
+    "pending": "En attente",
+    "noResults": "Aucun livreur trouvé",
+    "noResultsText": "Vérifiez le nom, ou entrez son numéro complet."
+  },
+  "store": {
+    "title": "Ma boutique",
+    "open": "Ouverte",
+    "closed": "Fermée",
+    "openSwitch": "Boutique ouverte",
+    "nowOpen": "Boutique ouverte : vous recevez des commandes",
+    "nowClosed": "Boutique fermée : les clients ne peuvent plus commander",
+    "noRating": "Pas encore d’avis",
+    "products_one": "{{count}} produit",
+    "products_other": "{{count}} produits",
+    "todayEarned": "Gagné aujourd'hui",
+    "todayDelivered": "Livrées",
+    "toAccept": "À accepter",
+    "business": "Informations de la boutique",
+    "hours": "Horaires d'ouverture",
+    "reviews": "Avis des clients",
+    "reviewFields": "Pour changer le type de boutique ou les documents, contactez le support.",
+    "hoursHint": "Affichés sur la page de votre boutique.",
+    "useHours": "Afficher mes horaires",
+    "days": "Jours d'ouverture",
+    "opens": "Ouverture",
+    "closes": "Fermeture",
+    "badTime": "Heures au format 08:00, l'ouverture avant la fermeture."
+  },
+  "earnings": {
+    "withdrawable": "Disponible",
+    "withdrawableHint": "Vous pouvez retirer cet argent maintenant.",
+    "minWithdrawal": "Retrait possible à partir de {{amount}}.",
+    "withdraw": "Retirer",
+    "balance": {
+      "inEscrow": "En attente (commandes en cours)",
+      "awaitingCod": "En attente du livreur",
+      "totalEarned": "Total gagné",
+      "totalCommission": "Commission payée",
+      "cashOwed": "Espèces à remettre"
+    },
+    "balanceHint": {
+      "inEscrow": "Vous le recevez après la livraison.",
+      "awaitingCod": "Commandes payées en espèces : disponible quand le livreur dépose l’argent.",
+      "totalEarned": "Depuis le début, après commission.",
+      "totalCommission": "Prélevée sur chaque vente.",
+      "cashOwed": "Argent des clients à remettre à Kadou24h."
+    },
+    "activity": "Activité",
+    "range": {
+      "7d": "7 jours",
+      "30d": "30 jours",
+      "6m": "6 mois",
+      "12m": "12 mois"
+    },
+    "periodEarned": "Gagné sur la période",
+    "ordersDelivered": "Commandes livrées",
+    "deliveriesDone": "Livraisons",
+    "today": "Aujourd'hui : {{amount}} · {{count}} livrée(s)",
+    "noActivity": "Pas encore de ventes livrées sur cette période.",
+    "chartA11y": "Graphique des gains",
+    "money": "Mon argent",
+    "withdrawals": "Mes retraits",
+    "payoutMethods": "Moyens de paiement",
+    "history": "Historique du portefeuille"
+  },
+  "withdraw": {
+    "amount": "Montant à retirer",
+    "all": "Tout",
+    "min": "Minimum {{amount}}",
+    "tooBig": "Plus que votre solde disponible",
+    "to": "Recevoir sur",
+    "noMethod": "Ajoutez d’abord un moyen de paiement.",
+    "requested": "Montant demandé",
+    "fee": "Frais de retrait",
+    "noFee": "Gratuit",
+    "youReceive": "Vous recevrez",
+    "delayNote": "L'équipe Kadou24h traite les retraits en général sous 24 h. Vous recevrez une notification.",
+    "submit": "Demander le retrait",
+    "sentTitle": "Demande envoyée",
+    "sentText": "Retrait {{number}} : vous recevrez {{amount}} dès qu’il est traité."
+  },
+  "withdrawals": {
+    "empty": "Aucun retrait",
+    "emptyText": "Vos demandes de retrait apparaîtront ici.",
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "completed": "Payé",
+      "rejected": "Refusé"
+    },
+    "net": "Reçu : {{amount}}",
+    "fee": "frais {{amount}}",
+    "reference": "Référence : {{id}}",
+    "receipt": "Reçu de paiement",
+    "rejected": "Refusé : {{reason}}. Le montant est revenu dans votre solde.",
+    "pendingHint": "En cours de traitement par l’équipe."
+  },
+  "walletHistory": {
+    "empty": "Aucun mouvement",
+    "type": {
+      "earning_held": "Vente (en attente)",
+      "earning_held_reversed": "Vente annulée ou modifiée",
+      "earning_released": "Argent disponible",
+      "commission": "Commission",
+      "withdrawal": "Retrait",
+      "withdrawal_fee": "Frais de retrait",
+      "withdrawal_reversal": "Retrait refusé (remboursé)",
+      "refund_deduction": "Remboursement client",
+      "cod_collected": "Espèces encaissées",
+      "cod_settled": "Espèces déposées",
+      "cod_offset": "Compensation espèces",
+      "adjustment": "Ajustement"
     }
+  },
+  "refund": {
+    "title": "Remboursement",
+    "status": {
+      "pending": "En vérification",
+      "completed": "Remboursé",
+      "rejected": "Refusé"
+    },
+    "pending": "{{amount}} vont vous être remboursés. L'équipe Kadou24h vérifie la demande et vous renvoie l'argent sur le moyen de paiement utilisé.",
+    "completed": "{{amount}} vous ont été remboursés.",
+    "rejected": "Le remboursement de {{amount}} a été refusé :",
+    "reference": "Référence du transfert : {{ref}}"
   }
 }

@@ -1,5 +1,6 @@
 import { Redirect, Stack } from 'expo-router';
 
+import { NewOrderAlert } from '@/features/vendor/components/NewOrderAlert';
 import { useAppSelector } from '@/store/hooks';
 import { UserRole } from '@/types/api';
 
@@ -7,5 +8,10 @@ import { UserRole } from '@/types/api';
 export default function VendorLayout() {
   const { status, user } = useAppSelector((s) => s.auth);
   if (status !== 'signedIn' || !user?.roles.includes(UserRole.vendor)) return <Redirect href="/home" />;
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false }} />
+      <NewOrderAlert />
+    </>
+  );
 }

@@ -3,7 +3,7 @@
  */
 import type { StatusTone } from '@/components/ui/StatusPill';
 
-import type { DeliveryStatus, DisputeStatus, OrderPaymentStatus, OrderStatus, SubOrderStatus } from './types';
+import type { DeliveryStatus, DisputeStatus, OrderPaymentStatus, OrderStatus, RefundStatus, SubOrderStatus } from './types';
 
 export const SUB_ORDER_TONE: Record<SubOrderStatus, StatusTone> = {
   new: 'blue',
@@ -27,6 +27,12 @@ export const PAYMENT_TONE: Record<OrderPaymentStatus, StatusTone> = {
   paid: 'green',
   partially_refunded: 'orange',
   refunded: 'grey',
+};
+
+export const REFUND_TONE: Record<RefundStatus, StatusTone> = {
+  pending: 'amber',
+  completed: 'green',
+  rejected: 'red',
 };
 
 export const DISPUTE_TONE: Record<DisputeStatus, StatusTone> = {

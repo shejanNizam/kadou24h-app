@@ -1,0 +1,72 @@
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+
+import { Colors, MinTouch, Radius, Spacing } from '@/constants/theme';
+
+import { AppText } from './AppText';
+
+export interface SegmentTab<K extends string> {
+  key: K;
+  label: string;
+  /** Count bubble (e.g. new orders); hidden when 0 */
+  badge?: number;
+}
+
+/**
+ * Underlined tabs above a list (orders, products, riders). Scrolls sideways
+ * when the labels don't fit (French is longer).
+ */
+export function SegmentTabs<K extends string>({
+  tabs,
+  value,
+  onChange,
+}: {
+  tabs: SegmentTab<K>[];
+  value: K;
+  onChange: (key: K) => void;
+}) {
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row} accessibilityRole="tablist" style={styles.bar}>
+      {tabs.map((tab) => {
+        const on = tab.key === value;
+        return (
+          <Pressable
+            key={tab.key}
+            onPress={() => onChange(tab.key)}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: on }}
+            style={[styles.tab, on && styles.tabOn]}>
+            <AppText variant="label" color={on ? Colors.primary : Colors.textMuted} numberOfLines={1}>
+              {tab.label}
+            </AppText>
+            {tab.badge ? (
+              <View style={styles.badge}>
+                <AppText variant="caption" color={Colors.textOnPrimary} style={styles.badgeText}>
+                  {tab.badge > 99 ? '99+' : tab.badge}
+                </AppText>
+              </View>
+            ) : null}
+          </Pressable>
+        );
+      })}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  bar: { flexGrow: 0, borderBottomWidth: 1, borderBottomColor: Colors.border },
+  row: { flexGrow: 1 },
+  tab: {
+    flexGrow: 1,
+    flexDirection: 'row',
+    gap: Spacing.xs,
+    minHeight: MinTouch,
+    paddingHorizontal: Spacing.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  tabOn: { borderBottomColor: Colors.primary },
+  badge: { minWidth: 18, height: 18, paddingHorizontal: 5, borderRadius: Radius.pill, backgroundColor: Colors.danger, alignItems: 'center', justifyContent: 'center' },
+  badgeText: { fontSize: 11, lineHeight: 14 },
+});

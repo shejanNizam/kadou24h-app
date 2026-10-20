@@ -1,9 +1,5 @@
-import { useTranslation } from 'react-i18next';
+import { EarningsScreen } from '@/features/wallet/components/EarningsScreen';
 
-import { ComingSoon } from '@/components/ui/ComingSoon';
-
-// Phase 7: vendor earnings
 export default function VendorEarningsScreen() {
-  const { t } = useTranslation();
-  return <ComingSoon title={t('tabs.earnings')} icon="dollar-sign" />;
+  return <EarningsScreen mode="vendor" />;
 }

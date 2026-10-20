@@ -16,7 +16,7 @@ import { pendingAuth } from '@/features/auth/pending';
 import { useCompleteSignIn } from '@/features/auth/session';
 import { isSession } from '@/features/auth/types';
 import { loginSchema, type LoginForm } from '@/features/auth/validation';
-import { getApiErrorMessage } from '@/lib/api/errors';
+import { blockedAccount, getApiErrorMessage } from '@/lib/api/errors';
 import { toIdentifier } from '@/lib/format';
 import { zodResolver } from '@/lib/form';
 import { endedReasonSeen } from '@/store/authSlice';
@@ -63,6 +63,8 @@ export default function LoginScreen() {
       });
       router.push('/verify');
     } catch (error) {
+      const blocked = blockedAccount(error);
+      if (blocked) return router.replace({ pathname: '/suspended', params: { status: blocked.status, reason: blocked.reason } });
       setFormError(getApiErrorMessage(error, t));
     }
   });

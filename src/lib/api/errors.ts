@@ -19,6 +19,15 @@ export const statusOf = (error: unknown): number | string | undefined =>
 
 export const serverMessage = (error: unknown): string | undefined => bodyOf(error)?.message;
 
+/** "Your account is suspended: <reason>" (login / any call) → the Suspended screen */
+export function blockedAccount(error: unknown): { status: 'suspended' | 'banned'; reason?: string } | null {
+  const match = serverMessage(error)?.match(/your account is (suspended|banned)(?::\s*(.+))?/i);
+  return match ? { status: match[1].toLowerCase() as 'suspended' | 'banned', reason: match[2] } : null;
+}
+
+/** 404: e.g. "no vendor application yet" — a normal empty state, not an error */
+export const isNotFound = (error: unknown) => statusOf(error) === 404;
+
 export function getApiErrorMessage(error: unknown, t: TFunction): string {
   const status = statusOf(error);
   const message = serverMessage(error) ?? '';
