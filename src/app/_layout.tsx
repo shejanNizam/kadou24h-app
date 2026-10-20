@@ -20,6 +20,8 @@ import { bootstrap } from '@/lib/bootstrap';
 import i18n from '@/lib/i18n';
 import { store } from '@/store';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 void SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
@@ -47,22 +49,24 @@ export default function RootLayout() {
   if (!ready) return null;
 
   return (
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <SafeAreaProvider>
-          <ToastProvider>
-            <SessionEffects />
-            <StatusBar style="dark" />
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: Colors.background },
-                animation: 'slide_from_right',
-              }}
-            />
-          </ToastProvider>
-        </SafeAreaProvider>
-      </I18nextProvider>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18n}>
+          <SafeAreaProvider>
+            <ToastProvider>
+              <SessionEffects />
+              <StatusBar style="dark" />
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: { backgroundColor: Colors.background },
+                  animation: 'slide_from_right',
+                }}
+              />
+            </ToastProvider>
+          </SafeAreaProvider>
+        </I18nextProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
