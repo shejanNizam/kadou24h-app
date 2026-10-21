@@ -14,6 +14,11 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
     router.push({ pathname: '/chat/[id]', params: { id: str('conversationId')! } });
     return true;
   }
+  // Job application news (candidate or recruiter: the screen picks the right view)
+  if (str('applicationId')) {
+    router.push({ pathname: '/jobs/application/[id]', params: { id: str('applicationId')! } });
+    return true;
+  }
   // Rider: a delivery (assigned, cancelled…) or my COD cash hand-over
   if (mode === 'rider' && str('deliveryId')) {
     router.push({ pathname: '/rider/delivery/[id]', params: { id: str('deliveryId')! } });

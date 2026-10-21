@@ -18,6 +18,7 @@ import { ORDER_TONE } from '@/features/orders/status';
 import type { OrderListItem } from '@/features/orders/types';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 const TABS = Object.keys(ORDER_TABS) as OrdersTab[];
 
@@ -115,7 +116,7 @@ function OrderCard({ order }: { order: OrderListItem }) {
       <View style={styles.thumbs}>
         {items.slice(0, 4).map((i) => (
           <View key={i._id} style={styles.thumb}>
-            {i.image ? <Image source={i.image} style={styles.thumbImg} contentFit="cover" /> : null}
+            {i.image ? <Image source={img(i.image, 'thumb')} style={styles.thumbImg} contentFit="cover" /> : null}
           </View>
         ))}
         {items.length > 4 && (

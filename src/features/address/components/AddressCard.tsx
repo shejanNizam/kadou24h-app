@@ -8,6 +8,7 @@ import { AppText } from '@/components/ui/AppText';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 
 import { addressLine, type Address } from '../api';
+import { img } from '@/lib/image';
 
 const LABEL_ICON = { home: 'home', office: 'briefcase', other: 'map-pin' } as const;
 
@@ -61,7 +62,7 @@ export function AddressCard({
           {address.fullName}
         </AppText>
       </View>
-      {address.placePhoto?.url ? <Image source={address.placePhoto.url} style={styles.photo} contentFit="cover" /> : null}
+      {address.placePhoto?.url ? <Image source={img(address.placePhoto.url, 'card')} style={styles.photo} contentFit="cover" /> : null}
       {right}
     </Pressable>
   );

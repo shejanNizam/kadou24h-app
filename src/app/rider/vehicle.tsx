@@ -60,7 +60,7 @@ function VehicleForm({ rider }: { rider: MyRider }) {
     if (cityArea.trim().length < 2) return setError(t('kycRider.cityRequired'));
     // Bus drivers: stores pick drivers by route
     const payload = bus ? routesPayload(routes) : null;
-    setRoutesError(payload?.error ? t('kycRider.' + payload.error) : undefined);
+    setRoutesError(payload?.error ? t(`kycRider.${payload.error}`) : undefined);
     if (payload?.error) return;
     try {
       await update({

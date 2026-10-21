@@ -26,6 +26,7 @@ import type { VendorLeg, VendorSubOrderDetails } from '@/features/vendor/types';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
+import { img } from '@/lib/image';
 
 /** The one next step the store can take (the rider does pickup and delivery with PINs) */
 const NEXT_STEP: Partial<Record<SubOrderStatus, 'accepted' | 'preparing' | 'ready_for_pickup'>> = {
@@ -134,7 +135,7 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
           <View style={styles.row}>
             <View style={styles.avatar}>
               {so.customerId?.avatar?.url ? (
-                <Image source={so.customerId.avatar.url} style={styles.avatar} contentFit="cover" />
+                <Image source={img(so.customerId.avatar.url, 'thumb')} style={styles.avatar} contentFit="cover" />
               ) : (
                 <Feather name="user" size={18} color={Colors.primary} />
               )}
@@ -176,7 +177,7 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
           </AppText>
           {address.landmark ? <AppText variant="small">📍 {address.landmark}</AppText> : null}
           {address.directions ? <AppText variant="small">{address.directions}</AppText> : null}
-          {address.placePhoto?.url ? <Image source={address.placePhoto.url} style={styles.placePhoto} contentFit="cover" /> : null}
+          {address.placePhoto?.url ? <Image source={img(address.placePhoto.url, 'card')} style={styles.placePhoto} contentFit="cover" /> : null}
           {order.specialInstructions ? <Banner tone="info" message={`${t('checkout.instructions')} : ${order.specialInstructions}`} /> : null}
         </Section>
 
@@ -201,7 +202,7 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
           action={EDITABLE.includes(so.status) ? { label: t('vendorOrders.modify'), onPress: () => setModifyOpen(true) } : undefined}>
           {items.map((i) => (
             <View key={i._id} style={styles.row}>
-              <View style={styles.thumb}>{i.image ? <Image source={i.image} style={styles.thumb} contentFit="cover" /> : null}</View>
+              <View style={styles.thumb}>{i.image ? <Image source={img(i.image, 'thumb')} style={styles.thumb} contentFit="cover" /> : null}</View>
               <View style={styles.flex}>
                 <AppText variant="small" numberOfLines={2} style={i.removed ? styles.struck : undefined}>
                   {i.name}

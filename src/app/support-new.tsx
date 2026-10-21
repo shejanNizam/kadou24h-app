@@ -20,6 +20,7 @@ import { TICKET_TYPES, TICKET_URGENCIES } from '@/features/profile/ticketStatus'
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { pickImage, uploadImage } from '@/lib/upload';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 const MAX_PHOTOS = 3;
 
@@ -112,7 +113,7 @@ export default function NewTicketScreen() {
         <View style={styles.photos}>
           {photos.map((url) => (
             <View key={url}>
-              <Image source={url} style={styles.photo} contentFit="cover" />
+              <Image source={img(url, 'card')} style={styles.photo} contentFit="cover" />
               <Pressable
                 onPress={() => setPhotos((p) => p.filter((x) => x !== url))}
                 hitSlop={6}

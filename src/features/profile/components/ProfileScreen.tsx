@@ -22,6 +22,7 @@ import { AppMode } from '@/types/api';
 
 import { MenuRow, MenuSection } from './Menu';
 import { ModeCard } from './ModeCard';
+import { img } from '@/lib/image';
 
 /** Profile tab of every mode: account, mode card, mode extras, settings, help, sign out. */
 export function ProfileScreen({ mode }: { mode: AppMode }) {
@@ -63,7 +64,7 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
           <Pressable onPress={() => router.push('/account')} accessibilityRole="button" accessibilityHint={t('account.title')} style={styles.header}>
             <View style={styles.avatar}>
               {user.avatar?.url ? (
-                <Image source={user.avatar.url} style={styles.avatarImg} contentFit="cover" />
+                <Image source={img(user.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
               ) : (
                 <AppText variant="h2" color={Colors.primary}>
                   {user.name.charAt(0).toUpperCase()}
@@ -106,6 +107,16 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
             <MenuRow icon="heart" label={t('profile.favorites')} onPress={() => router.push('/favorites')} />
             <MenuRow icon="credit-card" label={t('profile.payments')} onPress={() => router.push('/payments')} />
             <MenuRow icon="star" label={t('profile.myReviews')} onPress={() => router.push('/my-reviews')} last />
+          </MenuSection>
+        )}
+
+        {/* Jobs: every mode can look for work or hire */}
+        {user && (
+          <MenuSection title={t('profile.jobs')}>
+            <MenuRow icon="briefcase" label={t('profile.findJob')} onPress={() => router.push('/jobs')} />
+            <MenuRow icon="file-text" label={t('profile.myCv')} onPress={() => router.push('/cv')} />
+            <MenuRow icon="send" label={t('profile.myApplications')} onPress={() => router.push('/jobs/applications')} />
+            <MenuRow icon="user-plus" label={t('profile.postJob')} onPress={() => router.push('/recruiter')} last />
           </MenuSection>
         )}
 

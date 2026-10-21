@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native'
 
 import { Colors, MaxContentWidth } from '@/constants/theme';
 import type { FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 /** Swipeable photos with page dots (product page). */
 export function ImageGallery({ images, height = 320 }: { images: FileRef[]; height?: number }) {
@@ -20,10 +21,10 @@ export function ImageGallery({ images, height = 320 }: { images: FileRef[]; heig
         onMomentumScrollEnd={(e) => setIndex(Math.round(e.nativeEvent.contentOffset.x / width))}
         onScroll={(e) => setIndex(Math.round(e.nativeEvent.contentOffset.x / width))}
         scrollEventThrottle={64}>
-        {images.map((img, i) => (
+        {images.map((image, i) => (
           <Image
-            key={img.url + i}
-            source={img.url}
+            key={image.url + i}
+            source={img(image.url, 'full')}
             style={{ width, height }}
             contentFit="contain"
             transition={150}

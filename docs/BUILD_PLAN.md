@@ -133,28 +133,33 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Privacy (server): the customer's address / phone only reach the rider of the leg that ends with the customer (not the first-mile rider or a relay bus driver)
 - [x] Contract test (scratchpad `phase9-contract.mjs`) 30/30 (full intercity COD relay + station pickup); Phase 8 contract re-run 47/47; jest 149/149; e2e 129/129
 
-## Phase 10 — Jobs, CV, subscriptions (shared)
-- [ ] Job list/details/apply, my applications + detail (interview)
-- [ ] CV builder + upload + "generate" (template) + download/share
-- [ ] Subscription plans (admin data) + subscribe via the payment flow
-- [ ] Worker listing toggle
-- [ ] Recruiter: job operations, 4-step create, publish (5 000 GNF), candidates, unlock CV, actions, interview invite
-- [ ] Spontaneous application
+## Phase 10 — Jobs, CV, subscriptions (shared) ✅ (2026-10-21)
+- [x] Jobs `app/jobs.tsx` (search, job categories, "% match" from my CV skills/languages — same formula as the server — or a "fill your CV" prompt), `app/job/[id].tsx` (match card, Apply sheet with the CV that will be sent + note; "Applied" / "Manage" / "Closed" states), `app/jobs/applied.tsx`, `app/jobs/applications.tsx` (status chips), `app/jobs/application/[id].tsx` (progress, interview card: confirm + map link, CV sent, message the recruiter, withdraw)
+- [x] CV `app/cv.tsx` + `app/cv/edit.tsx?section=about|experience|education|skills|worker`: completeness, photo, summary suggestion (template, the user edits it), experience / education / skills / languages; the CV PDF is made on the phone (expo-print → upload → `generatedCv`), or the user's own PDF/photo (expo-document-picker → `uploadedResume`); open / share; worker listing (profession, GNF/h, service type)
+- [x] Plans `app/subscriptions.tsx` (building a CV and applying are free; a plan boosts the profile — APP_SPEC §10 #1 / #6 built with the recommended default) + shared `PayFeeSheet` (online methods only) → payment screen
+- [x] Recruiter `app/recruiter.tsx` (counts, live / drafts / ended), `app/recruiter/job/form.tsx` (4 steps → draft or publish 5 000 GNF), `app/recruiter/job/[id].tsx` (numbers, edit, publish / republish, close, candidates by match or date), `app/recruiter/candidate/[id].tsx` (profile, paid unlock of phone / e-mail / CV, shortlist, interview invite / reschedule, hire, reject, message)
+- [x] Spontaneous application from a store page (paid; the store sees it once paid) + vendor inbox `app/vendor/applications.tsx`; Profile "Emploi" section in every mode; home "Jobs near you" → see all
+- [x] Server: `GET /jobs/my` (+ counts), `GET /jobs/applications/:id`, withdraw, confirm interview, apply-twice 409, recruiter statuses limited, drafts private, `myApplication` / `isOwner` / `isOpen` on details (optional auth), fees online only, CV-unlock validation, reschedule ≠ new interview, CV generator no longer saves a fake file (summary suggestion only), `generatedCv` + null removes files, subscription retry + renewal stacking, demo plans in the seed
+- [x] Contract test (scratchpad `phase10-contract.mjs`) 48/49 — the 1 was a wrong assertion (the notice went to the mode the job was posted from, checked in the DB; assertion fixed); jest 149/149; e2e 129/129; app typecheck / lint clean
+- [ ] User: Cloudinary must allow PDF delivery (Settings → Security → "Allow delivery of PDF and ZIP files"), else CV links won't open
 
-## Phase 11 — Polish & release
-- [ ] Ads popup/interstitial
-- [ ] Performance pass (lists, images), accessibility (tap targets, contrast)
-- [ ] App icon, splash (purple), app name "Kadou24h"
-- [ ] EAS builds (Android first), OTA updates
+## Phase 11 — Polish & release (2026-10-21)
+- [x] Ads: `AdInterrupt` (popup card / full-screen interstitial with a 3 s close lock) on home, search and category — at most one per app session, the same ad once a day (`k24.adsSeen`), only while the screen is in front; `AdBanner` is a swipeable carousel (auto every 5 s, one impression per banner). Demo seed: 2 home banners, a home popup, a category interstitial
+- [x] Performance: `img(url, 'thumb'|'card'|'full')` (`lib/image.ts`) asks Cloudinary for the shown size in WebP/auto quality — a 64 px thumbnail no longer downloads the 1280 px upload (37 files); every paged list was already a FlatList
+- [x] Accessibility: icon-only buttons and tap targets scanned (all labelled, ≥ 44 px or hitSlop); text colours raised to ≥ 4.5:1 (textSubtle, success, danger, info; new `warningText` for amber text). The brand purple (4.2:1 under white text) is unchanged — Figma colour
+- [x] Interim app icon / adaptive icon / splash / favicon (purple, "K 24H") instead of the Expo template — replace with the real logo; app name "Kadou24h"
+- [x] EAS: channels per profile, production = AAB, OTA updates (`expo-updates`, `runtimeVersion` = app version, `npm run update:preview|production -- "msg"` via `scripts/ota-update.mjs`, API URL from eas.json), Maps key from the `GOOGLE_MAPS_API_KEY` EAS variable (`app.config.ts`). See [RELEASE.md](RELEASE.md)
+- [x] Server: `GET /cart/suggestions` (customers also bought) — direct check 12/12 on a throwaway DB; jest 150/150
 
 ### Carry-over from Phases 1–6 (do all of these before release; user asked 2026-10-20)
 - [x] Suspended account full screen (`app/suspended.tsx`: reason, WhatsApp / call / e-mail) from sign-in and live from the socket — done in Phase 7
-- [ ] OfflineBanner (NetInfo)
-- [ ] "Customers also bought" in the cart (needs a server endpoint)
-- [ ] Social login (needs Google/Apple client IDs from the user)
-- [ ] Real logo asset → BrandLogo, app icon, splash
+- [x] OfflineBanner (NetInfo): strip above every screen (nested SafeAreaProvider, so nothing is covered) + "Back online"; RTK Query `refetchOnReconnect` via `setupListeners` + NetInfo/AppState — 2026-10-21
+- [x] "Customers also bought" in the cart — `GET /cart/suggestions` — 2026-10-21
+- [ ] Social login — waits for the user: Google Cloud OAuth clients (Web client ID for the app, Android client with the EAS SHA-1), `GOOGLE_CLIENT_IDS` on the server. Then add `@react-native-google-signin/google-signin` (native, new APK), the button when `EXPO_PUBLIC_GOOGLE_CLIENT_ID` is set, and the phone step after `requiresPhone`. Not added before: it is not in Expo's tested module list for SDK 58, so it should go in with a test build
+- [ ] Real logo asset → BrandLogo, app icon, splash (interim icon in place)
 - [ ] User setup: deploy server to pagla7000, Firebase (google-services.json + FIREBASE_SERVICE_ACCOUNT_BASE64), real Google Maps key, then rebuild the APK
-- [ ] Client answers for APP_SPEC §10 (#1–9); **#8 COD above the rider cash limit** and **#9 unpaid online orders** are real bugs, so fix them once the client picks an option
+- [x] **§10 #8 + #9 fixed (2026-10-21, best-practice options):** COD only up to the rider cash limit per store (summary `cod`, server refusal, greyed COD option); online orders reach the store once paid (`pending_payment`, 30-min window, sweep cancels + cart restore, late payment → refund). e2e 157/157 (28 new checks)
+- [ ] Client answers for APP_SPEC §10 #2–5, #7 (defaults stay until then)
 
 ## Backend tasks found while planning
 - [x] `GET /wallets/me/summary` (today/period earnings, counts, chart series) for vendor and rider — 2026-10-19
@@ -162,6 +167,8 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-10-21 — §10 #8 (COD ≤ rider cash limit per store) and #9 (online orders: pay first, 30-min window, then the store) built in server, app and dashboard. e2e 157/157.
+- 2026-10-21 — Phase 11 (polish & release): ads popup/interstitial + banner carousel, offline banner + refetch on reconnect, customers also bought (server `GET /cart/suggestions`), Cloudinary-sized images, contrast fixes, interim icon, OTA updates + channels + Maps key from EAS env. New native modules: netinfo, expo-updates.
 - 2026-10-19 — Project created, all 3 roles' Figma reviewed, docs written.
 - 2026-10-20 — Phase 7 (vendor). Server: modify order reduce-only, rider list only for the order's store, rejected products can be fixed, unapproved products hidden, product locations follow the store. App: suspended screen.
 - 2026-10-20 — Phase 6 (profile & settings). Server: delete-account guard. App: password change keeps this phone signed in.

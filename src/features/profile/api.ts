@@ -54,6 +54,8 @@ export interface PublicSettings {
   /** Vendor pays max(rate % of the subtotal, min) */
   commission?: { rate: number; min: number };
   withdrawalFees?: WithdrawalFee[];
+  /** GNF: job publishing, CV unlock, spontaneous application */
+  pricing?: { jobPublishFee: number; cvUnlockFee: number; spontaneousApplicationFee: number };
 }
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);

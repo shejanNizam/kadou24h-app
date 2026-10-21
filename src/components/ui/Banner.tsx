@@ -12,7 +12,7 @@ const tones: Record<Tone, { bg: string; fg: string; icon: ComponentProps<typeof 
   danger: { bg: Colors.dangerSoft, fg: Colors.danger, icon: 'alert-circle' },
   success: { bg: Colors.successSoft, fg: Colors.success, icon: 'check-circle' },
   info: { bg: Colors.infoSoft, fg: Colors.info, icon: 'info' },
-  warning: { bg: Colors.warningSoft, fg: '#B45309', icon: 'alert-triangle' },
+  warning: { bg: Colors.warningSoft, fg: Colors.warningText, icon: 'alert-triangle' },
 };
 
 /** Inline message box (form errors, notices). Announced to screen readers. */

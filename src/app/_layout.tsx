@@ -9,11 +9,13 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { I18nextProvider } from 'react-i18next';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
+import { OfflineBanner } from '@/components/providers/OfflineBanner';
 import { PushEffects } from '@/components/providers/PushEffects';
 import { SessionEffects } from '@/components/providers/SessionEffects';
 import { ToastProvider } from '@/components/ui/Toast';
@@ -63,13 +65,19 @@ export default function RootLayout() {
                 <SessionEffects />
                 <PushEffects />
                 <StatusBar style="dark" />
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                    contentStyle: { backgroundColor: Colors.background },
-                    animation: 'slide_from_right',
-                  }}
-                />
+                <View style={{ flex: 1, backgroundColor: Colors.background }}>
+                  <OfflineBanner />
+                  {/* Nested provider: screens measure their safe area below the offline strip */}
+                  <SafeAreaProvider style={{ flex: 1 }}>
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                        contentStyle: { backgroundColor: Colors.background },
+                        animation: 'slide_from_right',
+                      }}
+                    />
+                  </SafeAreaProvider>
+                </View>
               </ToastProvider>
             </KeyboardProvider>
           </SafeAreaProvider>

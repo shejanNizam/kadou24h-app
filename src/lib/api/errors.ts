@@ -48,6 +48,11 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/email is already in use/i.test(message)) return t('errors.emailTaken');
   if (/invalid referral code/i.test(message)) return t('errors.invalidReferral');
   if (/uses google or apple sign-in/i.test(message)) return t('errors.socialAccount');
+  // Checkout & payment
+  const codLimit = message.match(/cash on delivery is not available above ([\d\s  .,]+) GNF/i);
+  if (codLimit) return t('errors.codLimit', { limit: `${codLimit[1].trim()} GNF` });
+  if (/time to pay for this order is over/i.test(message)) return t('errors.paymentTimeOver');
+  if (/pay for this order first/i.test(message)) return t('errors.chatUnpaidOrder');
   // Account & settings
   if (/old password does not match/i.test(message)) return t('errors.oldPasswordWrong');
   if (/new password cannot be the same/i.test(message)) return t('errors.samePassword');
@@ -72,6 +77,15 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/unremitted COD cash/i.test(message)) return t('errors.withdrawCashOwed');
   if (/currently offline/i.test(message)) return t('errors.riderOffline');
   if (/only local delivery partners can join/i.test(message)) return t('errors.onlyMotoJoin');
+  // Jobs
+  if (/already applied to this job/i.test(message)) return t('errors.alreadyApplied');
+  if (/not available for applications/i.test(message)) return t('errors.jobClosed');
+  if (/apply to your own (job|store)/i.test(message)) return t('errors.ownJob');
+  if (/can no longer be withdrawn/i.test(message)) return t('errors.cannotWithdraw');
+  if (/no interview to confirm/i.test(message)) return t('errors.noInterview');
+  if (/candidate withdrew/i.test(message)) return t('errors.candidateWithdrew');
+  if (/can only be made online/i.test(message)) return t('errors.onlineOnly');
+  if (/only unlock candidates who applied/i.test(message)) return t('errors.unlockNotYours');
   // Chat
   if (/no rider is assigned/i.test(message)) return t('errors.noRiderYet');
   if (/not part of this/i.test(message)) return t('errors.notYourOrder');

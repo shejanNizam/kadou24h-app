@@ -2,6 +2,7 @@
  * Cart (server: cart.route.ts — login required). The server groups the cart
  * by store; each store becomes one sub-order at checkout.
  */
+import type { Product } from '@/features/catalog/types';
 import { api, unwrap } from '@/lib/api/api';
 
 export interface CartItem {
@@ -66,6 +67,14 @@ export const cartApi = api.injectEndpoints({
         dispatch(cartApi.util.upsertQueryData('getCart', undefined, data));
       },
     }),
+    /**
+     * "Customers also bought". The argument is only the cache key (the cart's product ids),
+     * so the list reloads when products are added or removed, not on quantity changes.
+     */
+    getCartSuggestions: build.query<Product[], string>({
+      query: () => ({ url: '/cart/suggestions', params: { limit: 10 } }),
+      transformResponse: unwrap<Product[]>,
+    }),
     clearCart: build.mutation<Cart, void>({
       query: () => ({ url: '/cart', method: 'DELETE' }),
       transformResponse: unwrap<Cart>,
@@ -74,4 +83,4 @@ export const cartApi = api.injectEndpoints({
   }),
 });
 
-export const { useGetCartQuery, useAddToCartMutation, useUpdateCartQtyMutation, useClearCartMutation } = cartApi;
+export const { useGetCartQuery, useAddToCartMutation, useUpdateCartQtyMutation, useClearCartMutation, useGetCartSuggestionsQuery } = cartApi;

@@ -137,7 +137,7 @@ export const {
 
 /** Sub-orders that can still be cancelled by the buyer (server rule: before "preparing"). */
 export const canCancelOrder = (order: Order, subOrders: Pick<SubOrder, 'status'>[]) =>
-  order.status === 'active' && subOrders.every((s) => ['new', 'accepted', 'cancelled'].includes(s.status));
+  order.status === 'active' && subOrders.every((s) => ['pending_payment', 'new', 'accepted', 'cancelled'].includes(s.status));
 
 export const isOnlinePayment = (m: PaymentMethod): m is Exclude<PaymentMethod, 'cod'> => m !== 'cod';
 

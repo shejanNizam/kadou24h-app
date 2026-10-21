@@ -20,6 +20,7 @@ import { useSocketEvent } from '@/hooks/useSocketEvent';
 import { connectSocket } from '@/lib/socket';
 import type { LatLng } from '@/lib/location';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 /** Live map of one delivery leg: store/station → rider → you. */
 export default function TrackScreen() {
@@ -104,7 +105,7 @@ export default function TrackScreen() {
           <View style={[styles.card, styles.riderRow]}>
             <View style={styles.avatar}>
               {rider.userId?.avatar?.url ? (
-                <Image source={rider.userId.avatar.url} style={styles.avatarImg} contentFit="cover" />
+                <Image source={img(rider.userId.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
               ) : (
                 <Feather name="user" size={20} color={Colors.primary} />
               )}

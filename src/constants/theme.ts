@@ -11,7 +11,8 @@ export const Colors = {
 
   text: '#1F1F29',
   textMuted: '#6B6B80',
-  textSubtle: '#9A9AAD',
+  // Text colours keep at least 4.5:1 on white (WCAG AA) — read outdoors on low-end screens
+  textSubtle: '#73738A',
   textOnPrimary: '#FFFFFF',
 
   background: '#FFFFFF',
@@ -19,13 +20,15 @@ export const Colors = {
   border: '#E4E4EC',
   overlay: 'rgba(17, 17, 26, 0.45)',
 
-  success: '#16A34A',
+  success: '#15803D',
   successSoft: '#E8F7EE',
+  /** Icons and accents only — too light for text; use warningText */
   warning: '#F59E0B',
+  warningText: '#B45309',
   warningSoft: '#FEF4E2',
-  danger: '#EF4444',
+  danger: '#DC2626',
   dangerSoft: '#FDECEC',
-  info: '#3B82F6',
+  info: '#2563EB',
   infoSoft: '#EAF1FE',
 } as const;
 

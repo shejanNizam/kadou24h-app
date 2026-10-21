@@ -16,6 +16,7 @@ import { payoutAccountLabel } from '@/features/wallet/components/PayoutMethodFor
 import type { Withdrawal } from '@/features/wallet/types';
 import { useWalletMode } from '@/features/wallet/useWalletMode';
 import { formatGNF } from '@/lib/format';
+import { img } from '@/lib/image';
 
 /** My withdrawal requests: pending, paid (with the transfer reference and receipt) or rejected (reason). */
 export default function WithdrawalsScreen() {
@@ -82,7 +83,7 @@ function Row({ w }: { w: Withdrawal }) {
       ) : null}
       {w.status === 'completed' && w.receiptImage?.url ? (
         <Pressable onPress={() => void Linking.openURL(w.receiptImage!.url)} accessibilityRole="imagebutton" accessibilityLabel={t('withdrawals.receipt')}>
-          <Image source={w.receiptImage.url} style={styles.receipt} contentFit="cover" />
+          <Image source={img(w.receiptImage.url, 'card')} style={styles.receipt} contentFit="cover" />
         </Pressable>
       ) : null}
       {w.status === 'rejected' ? (

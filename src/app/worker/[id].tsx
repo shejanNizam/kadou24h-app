@@ -17,6 +17,7 @@ import { useGetWorkerQuery } from '@/features/catalog/api';
 import { useOpenChat } from '@/features/chat/useOpenChat';
 import { useLocalized } from '@/hooks/useLocalized';
 import { formatGNF } from '@/lib/format';
+import { img } from '@/lib/image';
 
 /** Worker profile. Contact only through chat — no phone/email (client rule). */
 export default function WorkerScreen() {
@@ -48,7 +49,7 @@ export default function WorkerScreen() {
                 <>
                   <View style={styles.photoBox}>
                     {photo ? (
-                      <Image source={photo} style={styles.photo} contentFit="cover" />
+                      <Image source={img(photo, 'card')} style={styles.photo} contentFit="cover" />
                     ) : (
                       <Feather name="user" size={64} color={Colors.primary} />
                     )}

@@ -16,6 +16,7 @@ import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api
 import { useGetCartQuery } from '@/features/cart/api';
 import { useGetCategoriesQuery, useGetJobsQuery, useGetProductsQuery, useGetWorkersQuery } from '@/features/catalog/api';
 import { AdBanner } from '@/features/catalog/components/AdBanner';
+import { AdInterrupt } from '@/features/catalog/components/AdInterrupt';
 import { CategoryTile } from '@/features/catalog/components/CategoryTile';
 import { JobCard } from '@/features/catalog/components/JobCard';
 import { ProductCard } from '@/features/catalog/components/ProductCard';
@@ -81,8 +82,10 @@ export default function HomeScreen() {
       <LinearGradient colors={Colors.gradient} style={[styles.hero, { paddingTop: insets.top + Spacing.sm }]}>
         <View style={styles.inner}>
           <View style={styles.topRow}>
+            {/* Jobs, top left as in the Figma (open to guests too) */}
+            <HeaderIconButton icon="briefcase" color={Colors.textOnPrimary} label={t('jobsList.title')} onPress={() => router.push('/jobs')} />
             <Pressable
-              style={styles.flex}
+              style={styles.address}
               onPress={() =>
                 requireAuth(() =>
                   address ? router.push({ pathname: '/addresses', params: { select: '1' } }) : router.push('/address-edit'),
@@ -140,9 +143,11 @@ export default function HomeScreen() {
 
         <AdBanner placement="home" />
 
+        <AdInterrupt placement="home" />
+
         {jobs.data?.data.length ? (
           <View>
-            <SectionHeader title={t('home.jobsNearYou')} />
+            <SectionHeader title={t('home.jobsNearYou')} onSeeAll={() => router.push('/jobs')} />
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hList}>
               {jobs.data.data.map((job) => (
                 <JobCard key={job._id} job={job} width={Math.min(260, itemWidth * 1.5)} />
@@ -186,6 +191,8 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  // On the purple header: no background (white text)
+  address: { flex: 1 },
   addressRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
   shrink: { flexShrink: 1 },
   flex: { flex: 1, backgroundColor: Colors.background },

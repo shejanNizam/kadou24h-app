@@ -14,6 +14,7 @@ import { formatGNF } from '@/lib/format';
 
 import { SUB_ORDER_STEPS, SUB_ORDER_TONE, TRACKABLE_LEG } from '../status';
 import type { DeliveryLegSummary, DeliveryType, OrderRider, SubOrder } from '../types';
+import { img } from '@/lib/image';
 
 /** One store's part of the order: progress, items, rider, PIN, actions. */
 export function SubOrderCard({
@@ -41,7 +42,7 @@ export function SubOrderCard({
       <View style={styles.head}>
         <View style={styles.logo}>
           {store.logo?.url ? (
-            <Image source={store.logo.url} style={styles.logoImg} contentFit="cover" />
+            <Image source={img(store.logo.url, 'thumb')} style={styles.logoImg} contentFit="cover" />
           ) : (
             <Feather name="shopping-bag" size={18} color={Colors.primary} />
           )}
@@ -61,10 +62,15 @@ export function SubOrderCard({
         subOrder.cancellation && (
           <Banner
             tone="danger"
-            message={t('order.cancelledBy', { by: t(`order.by.${subOrder.cancellation.by}`), reason: subOrder.cancellation.reason })}
+            message={
+              // Payment window over: the server's reason is English, say it in the user's language
+              subOrder.cancellation.by === 'system'
+                ? t('order.paymentExpired')
+                : t('order.cancelledBy', { by: t(`order.by.${subOrder.cancellation.by}`), reason: subOrder.cancellation.reason })
+            }
           />
         )
-      ) : (
+      ) : subOrder.status === 'pending_payment' ? null : (
         <Steps current={subOrder.status} />
       )}
 
@@ -100,7 +106,7 @@ export function SubOrderCard({
       <View style={styles.items}>
         {subOrder.items.map((item) => (
           <View key={item._id} style={[styles.item, item.removed && styles.removed]}>
-            <View style={styles.thumb}>{item.image ? <Image source={item.image} style={styles.thumbImg} contentFit="cover" /> : null}</View>
+            <View style={styles.thumb}>{item.image ? <Image source={img(item.image, 'thumb')} style={styles.thumbImg} contentFit="cover" /> : null}</View>
             <AppText variant="small" numberOfLines={2} style={[styles.flex, item.removed && styles.strike]}>
               {item.qty} × {item.name}
             </AppText>
@@ -185,7 +191,7 @@ function RiderRow({ rider }: { rider: OrderRider }) {
     <View style={styles.rider}>
       <View style={styles.avatar}>
         {rider.userId?.avatar?.url ? (
-          <Image source={rider.userId.avatar.url} style={styles.avatarImg} contentFit="cover" />
+          <Image source={img(rider.userId.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
         ) : (
           <Feather name={rider.partnerType === 'transit' ? 'truck' : 'user'} size={18} color={Colors.primary} />
         )}

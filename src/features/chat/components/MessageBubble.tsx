@@ -10,6 +10,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 
 import { clock } from '../time';
 import type { Message } from '../types';
+import { img } from '@/lib/image';
 
 /** One message. Mine on the right (purple), theirs on the left, system notices centred. */
 export function MessageBubble({ message, mine, onLongPress }: { message: Message; mine: boolean; onLongPress?: () => void }) {
@@ -40,7 +41,7 @@ export function MessageBubble({ message, mine, onLongPress }: { message: Message
         style={[styles.bubble, mine ? styles.mine : styles.theirs, message.type === 'image' && styles.imageBubble, message.pending && styles.pending]}>
         {message.type === 'image' && message.mediaUrl ? (
           <Pressable onPress={() => setViewer(true)} accessibilityRole="imagebutton" accessibilityLabel={t('chat.photo')}>
-            <Image source={message.mediaUrl} style={styles.image} contentFit="cover" />
+            <Image source={img(message.mediaUrl, 'card')} style={styles.image} contentFit="cover" />
           </Pressable>
         ) : message.type === 'voice' && message.mediaUrl ? (
           <VoicePlayer url={message.mediaUrl} duration={message.mediaDurationSec} color={fg} sub={sub} />
@@ -65,7 +66,7 @@ export function MessageBubble({ message, mine, onLongPress }: { message: Message
       {message.type === 'image' && message.mediaUrl && (
         <Modal visible={viewer} transparent animationType="fade" onRequestClose={() => setViewer(false)}>
           <Pressable style={styles.viewer} onPress={() => setViewer(false)} accessibilityLabel={t('common.close')}>
-            <Image source={message.mediaUrl} style={styles.full} contentFit="contain" />
+            <Image source={img(message.mediaUrl, 'full')} style={styles.full} contentFit="contain" />
           </Pressable>
         </Modal>
       )}

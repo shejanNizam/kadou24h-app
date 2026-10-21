@@ -24,6 +24,7 @@ import {
 } from '@/features/vendor/api';
 import type { RiderCard, RiderLink } from '@/features/vendor/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
+import { img } from '@/lib/image';
 
 type Tab = 'linked' | 'requests' | 'invite';
 
@@ -103,7 +104,7 @@ function RiderInfo({ rider }: { rider: RiderCard | null }) {
   return (
     <View style={styles.row}>
       <View style={styles.avatar}>
-        {rider.userId?.avatar?.url ? <Image source={rider.userId.avatar.url} style={styles.avatar} contentFit="cover" /> : <Feather name="user" size={18} color={Colors.primary} />}
+        {rider.userId?.avatar?.url ? <Image source={img(rider.userId.avatar.url, 'thumb')} style={styles.avatar} contentFit="cover" /> : <Feather name="user" size={18} color={Colors.primary} />}
         <View style={[styles.dot, { backgroundColor: rider.isOnline ? Colors.success : Colors.textSubtle }]} />
       </View>
       <View style={styles.flex}>

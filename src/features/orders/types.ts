@@ -9,6 +9,8 @@ export type PaymentMethod = 'cod' | 'orange_money' | 'mobile_money' | 'card';
 export type OrderPaymentStatus = 'unpaid' | 'paid' | 'partially_refunded' | 'refunded';
 export type OrderStatus = 'active' | 'completed' | 'cancelled' | 'partially_cancelled';
 export type SubOrderStatus =
+  /** Online order not paid yet: the store does not see it; cancelled when paymentDueAt passes */
+  | 'pending_payment'
   | 'new'
   | 'accepted'
   | 'preparing'
@@ -126,7 +128,7 @@ export interface SubOrder {
   total: number;
   status: SubOrderStatus;
   estimatedDeliveryAt?: string;
-  cancellation?: { by: 'customer' | 'vendor' | 'admin'; reason: string; at: string };
+  cancellation?: { by: 'customer' | 'vendor' | 'admin' | 'system'; reason: string; at: string };
   /** COD: what this store's rider collects */
   codAmountToCollect?: number;
   deliveredAt?: string;
@@ -156,6 +158,8 @@ export interface Order {
   total: number;
   status: OrderStatus;
   placedAt: string;
+  /** Online orders: pay before this or the order is cancelled (items back in the cart) */
+  paymentDueAt?: string;
   createdAt: string;
 }
 
@@ -217,6 +221,8 @@ export interface CheckoutSummary {
   addressSnapshot: AddressSnapshot;
   deliveryType: DeliveryType;
   paymentMethod: PaymentMethod;
+  /** Cash on delivery only up to `limit` GNF per store (a rider's cash limit); above it, pay online */
+  cod: { allowed: boolean; limit: number };
   pricing: {
     subtotal: number;
     deliveryFee: number;

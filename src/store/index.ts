@@ -1,6 +1,8 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
 import { api } from '@/lib/api/api';
+import { networkListeners } from '@/lib/network';
 import { StorageKeys, storage } from '@/lib/storage';
 
 import authReducer, { signedIn, signedOut, tokenRefreshed, tokensRotated, userUpdated } from './authSlice';
@@ -50,6 +52,8 @@ export const store = configureStore({
   middleware: (getDefault) =>
     getDefault().prepend(persistence.middleware).concat(api.middleware),
 });
+
+setupListeners(store.dispatch, networkListeners);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

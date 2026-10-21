@@ -23,6 +23,7 @@ import { ReviewList } from '@/features/catalog/components/ReviewList';
 import { useLocalized } from '@/hooks/useLocalized';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 export default function ProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -112,7 +113,7 @@ export default function ProductScreen() {
               style={styles.storeCard}>
               <View style={styles.logo}>
                 {store.logo?.url ? (
-                  <Image source={store.logo.url} style={styles.logoImg} contentFit="cover" />
+                  <Image source={img(store.logo.url, 'thumb')} style={styles.logoImg} contentFit="cover" />
                 ) : (
                   <Feather name="shopping-bag" size={20} color={Colors.primary} />
                 )}

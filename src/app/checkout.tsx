@@ -40,6 +40,9 @@ const DELIVERY_TYPES: { type: DeliveryType; icon: 'home' | 'truck' | 'map-pin' }
   { type: 'intercity', icon: 'truck' },
   { type: 'station_pickup', icon: 'map-pin' },
 ];
+/** Same as the server's PAYMENT_WINDOW_MINUTES (order.checkout.service.ts) — shown as a hint only */
+const PAYMENT_WINDOW_MINUTES = 30;
+
 const PAYMENTS: { method: PaymentMethod; icon: 'dollar-sign' | 'smartphone' | 'credit-card' }[] = [
   { method: 'cod', icon: 'dollar-sign' },
   { method: 'orange_money', icon: 'smartphone' },
@@ -121,6 +124,9 @@ function Checkout() {
   }
 
   const splits = summary.data?.vendorSplits ?? [];
+  // Above a rider's cash limit per store, cash on delivery is not possible (server rule)
+  const codBlocked = summary.data?.cod?.allowed === false;
+  const codLimit = summary.data?.cod?.limit ?? 0;
   const route = splits.find((s) => s.stationRoute)?.stationRoute;
 
   return (
@@ -204,11 +210,20 @@ function Checkout() {
               key={method}
               icon={icon}
               title={t(`payment.method.${method}`)}
-              description={t(`checkout.paymentHint.${method}`)}
+              description={
+                method === 'cod' && codBlocked ? t('checkout.codUnavailable', { limit: formatGNF(codLimit) }) : t(`checkout.paymentHint.${method}`)
+              }
               selected={paymentMethod === method}
+              disabled={method === 'cod' && codBlocked}
               onPress={() => setPaymentMethod(method)}
             />
           ))}
+          {paymentMethod === 'cod' && codBlocked && <Banner tone="warning" message={t('checkout.codTooHigh', { limit: formatGNF(codLimit) })} />}
+          {isOnlinePayment(paymentMethod) && (
+            <AppText variant="caption" color={Colors.textMuted}>
+              {t('checkout.payWithin', { minutes: PAYMENT_WINDOW_MINUTES })}
+            </AppText>
+          )}
         </Section>
 
         {/* 5. Summary (server) */}
@@ -253,7 +268,7 @@ function Checkout() {
         <Button
           title={summary.data ? t('checkout.place', { total: formatGNF(summary.data.pricing.total) }) : t('checkout.placeShort')}
           loading={placing}
-          disabled={!ready || !summary.data || summary.isFetching || summary.isError}
+          disabled={!ready || !summary.data || summary.isFetching || summary.isError || (paymentMethod === 'cod' && codBlocked)}
           onPress={() => void onPlace()}
         />
       </View>

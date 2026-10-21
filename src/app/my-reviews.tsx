@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetMyReviewsInfiniteQuery, type MyReview } from '@/features/profile/api';
+import { img } from '@/lib/image';
 
 /** Reviews I wrote (one per delivered store order). */
 export default function MyReviewsScreen() {
@@ -64,7 +65,7 @@ function ReviewRow({ review: r }: { review: MyReview }) {
         accessibilityRole="button"
         style={styles.head}>
         <View style={styles.logo}>
-          {store?.logo?.url ? <Image source={store.logo.url} style={styles.logoImg} contentFit="cover" /> : <Feather name="shopping-bag" size={16} color={Colors.primary} />}
+          {store?.logo?.url ? <Image source={img(store.logo.url, 'thumb')} style={styles.logoImg} contentFit="cover" /> : <Feather name="shopping-bag" size={16} color={Colors.primary} />}
         </View>
         <AppText variant="title" numberOfLines={1} style={styles.flex}>
           {store?.storeName ?? '—'}
@@ -80,7 +81,7 @@ function ReviewRow({ review: r }: { review: MyReview }) {
       </View>
       {r.comment ? <AppText variant="body">{r.comment}</AppText> : null}
       {r.status !== 'visible' && (
-        <AppText variant="caption" color={Colors.warning}>
+        <AppText variant="caption" color={Colors.warningText}>
           {t('myReviews.hidden')}
         </AppText>
       )}

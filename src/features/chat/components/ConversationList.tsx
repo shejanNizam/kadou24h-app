@@ -15,6 +15,7 @@ import type { AppMode } from '@/types/api';
 import { useGetConversationsInfiniteQuery } from '../api';
 import type { Conversation } from '../types';
 import { chatTime } from '../time';
+import { img } from '@/lib/image';
 
 /** "Messages" tab — the same list in every mode (customer, vendor, rider). */
 export function ConversationList({ mode, emptyText }: { mode: AppMode; emptyText: string }) {
@@ -81,7 +82,7 @@ function Row({ conversation: c }: { conversation: Conversation }) {
       style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
       <View style={styles.avatar}>
         {c.peer.avatar?.url ? (
-          <Image source={c.peer.avatar.url} style={styles.avatarImg} contentFit="cover" />
+          <Image source={img(c.peer.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
         ) : (
           <Feather name={c.peer.mode === 'vendor' ? 'shopping-bag' : c.peer.mode === 'rider' ? 'navigation' : 'user'} size={20} color={Colors.primary} />
         )}

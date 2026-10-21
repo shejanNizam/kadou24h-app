@@ -21,14 +21,17 @@ import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import {
   useClearCartMutation,
   useGetCartQuery,
+  useGetCartSuggestionsQuery,
   useUpdateCartQtyMutation,
   type CartItem,
   type CartStoreGroup,
 } from '@/features/cart/api';
 import { AddToCartControl } from '@/features/cart/components/AddToCartControl';
+import { ProductCard } from '@/features/catalog/components/ProductCard';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 /** Cart grouped by store: each store becomes one delivery (sub-order). */
 export default function CartScreen() {
@@ -97,6 +100,7 @@ function Cart() {
               <StoreGroup key={g.vendorId} group={g} />
             ))}
             {unavailable.length > 0 && <UnavailableItems items={unavailable} />}
+            {groups.length > 0 && <AlsoBought groups={groups} />}
           </ScrollView>
 
           {groups.length > 0 && (
@@ -149,7 +153,7 @@ function StoreGroup({ group }: { group: CartStoreGroup }) {
         style={styles.storeRow}>
         <View style={styles.logo}>
           {group.logo ? (
-            <Image source={group.logo} style={styles.logoImg} contentFit="cover" />
+            <Image source={img(group.logo, 'thumb')} style={styles.logoImg} contentFit="cover" />
           ) : (
             <Feather name="shopping-bag" size={18} color={Colors.primary} />
           )}
@@ -172,7 +176,7 @@ function StoreGroup({ group }: { group: CartStoreGroup }) {
             accessibilityRole="button"
             accessibilityLabel={item.name}
             style={styles.thumb}>
-            {item.image ? <Image source={item.image} style={styles.thumbImg} contentFit="cover" /> : null}
+            {item.image ? <Image source={img(item.image, 'thumb')} style={styles.thumbImg} contentFit="cover" /> : null}
           </Pressable>
           <View style={[styles.flex, styles.itemText]}>
             <AppText variant="bodyMedium" numberOfLines={2}>
@@ -184,7 +188,7 @@ function StoreGroup({ group }: { group: CartStoreGroup }) {
               variant="smallMedium"
             />
             {item.qty >= item.stockQty && (
-              <AppText variant="caption" color={Colors.warning}>
+              <AppText variant="caption" color={Colors.warningText}>
                 {t('cart.maxStock', { count: item.stockQty })}
               </AppText>
             )}
@@ -208,6 +212,29 @@ function StoreGroup({ group }: { group: CartStoreGroup }) {
   );
 }
 
+const SUGGESTION_WIDTH = 156;
+
+/** "Customers also bought" — from the server; nothing shown when it has nothing to say. */
+function AlsoBought({ groups }: { groups: CartStoreGroup[] }) {
+  const { t } = useTranslation();
+  const inCart = new Set(groups.flatMap((g) => g.items.map((i) => i.productId)));
+  const key = [...inCart].sort().join(',');
+  const { data } = useGetCartSuggestionsQuery(key);
+  // Just added from here: hide it until the new list arrives
+  const products = (data ?? []).filter((p) => !inCart.has(p._id));
+  if (products.length === 0) return null;
+  return (
+    <View style={styles.gap}>
+      <AppText variant="title">{t('cart.alsoBought')}</AppText>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hList}>
+        {products.map((p) => (
+          <ProductCard key={p._id} product={p} width={SUGGESTION_WIDTH} />
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
+
 function UnavailableItems({ items }: { items: CartItem[] }) {
   const { t } = useTranslation();
   const toast = useToast();
@@ -225,7 +252,7 @@ function UnavailableItems({ items }: { items: CartItem[] }) {
       </AppText>
       {items.map((item) => (
         <View key={item._id} style={[styles.item, styles.dim]}>
-          <View style={styles.thumb}>{item.image ? <Image source={item.image} style={styles.thumbImg} contentFit="cover" /> : null}</View>
+          <View style={styles.thumb}>{item.image ? <Image source={img(item.image, 'thumb')} style={styles.thumbImg} contentFit="cover" /> : null}</View>
           <AppText variant="body" numberOfLines={2} style={styles.flex}>
             {item.name}
           </AppText>
@@ -240,6 +267,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.surface },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },
   gap: { gap: Spacing.md },
+  hList: { gap: Spacing.md, paddingRight: Spacing.xl },
   flex: { flex: 1 },
   content: { gap: Spacing.lg, paddingBottom: Spacing.xxl },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },

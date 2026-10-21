@@ -6,6 +6,7 @@ import type { StatusTone } from '@/components/ui/StatusPill';
 import type { DeliveryStatus, DisputeStatus, OrderPaymentStatus, OrderStatus, RefundStatus, SubOrderStatus } from './types';
 
 export const SUB_ORDER_TONE: Record<SubOrderStatus, StatusTone> = {
+  pending_payment: 'amber',
   new: 'blue',
   accepted: 'blue',
   preparing: 'amber',

@@ -1,11 +1,13 @@
 {
   "cli": {
-    "version": ">= 14.0.0"
+    "version": ">= 14.0.0",
+    "appVersionSource": "local"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
@@ -14,12 +16,17 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://pagla7000.ilmifygroup.com/api/v1"
-      }
+      },
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_API_URL": "https://pagla7000.ilmifygroup.com/api/v1"
+      },
+      "channel": "production",
+      "android": {
+        "buildType": "app-bundle"
       }
     }
   },

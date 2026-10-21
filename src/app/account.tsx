@@ -23,6 +23,7 @@ import { getApiErrorMessage } from '@/lib/api/errors';
 import { pickImage, uploadImage } from '@/lib/upload';
 import { signedOut, userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 /** Photo, name, phone (OTP), password, delete account. */
 export default function AccountScreen() {
@@ -98,7 +99,7 @@ function Account() {
             {uploading ? (
               <ActivityIndicator color={Colors.primary} />
             ) : user.avatar?.url ? (
-              <Image source={user.avatar.url} style={styles.avatarImg} contentFit="cover" />
+              <Image source={img(user.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
             ) : (
               <AppText variant="h1" color={Colors.primary}>
                 {user.name.charAt(0).toUpperCase()}

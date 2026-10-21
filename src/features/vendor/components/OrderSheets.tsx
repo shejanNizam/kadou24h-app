@@ -21,6 +21,7 @@ import { formatGNF } from '@/lib/format';
 
 import { useAssignRiderMutation, useCancelVendorOrderMutation, useGetAvailableRidersQuery, useModifyOrderMutation } from '../api';
 import type { AvailableRider, ItemChange } from '../types';
+import { img } from '@/lib/image';
 
 const CANCEL_REASONS = ['outOfStock', 'closed', 'tooFar', 'customerAsked'] as const;
 
@@ -125,7 +126,7 @@ export function AssignRiderSheet({ deliveryId, onClose }: { deliveryId: string |
             accessibilityLabel={t('vendorOrders.assignTo', { name: r.name })}
             style={({ pressed }) => [styles.rider, pressed && styles.pressed]}>
             <View style={styles.avatar}>
-              {r.avatar ? <Image source={r.avatar} style={styles.avatar} contentFit="cover" /> : <Feather name="user" size={18} color={Colors.primary} />}
+              {r.avatar ? <Image source={img(r.avatar, 'thumb')} style={styles.avatar} contentFit="cover" /> : <Feather name="user" size={18} color={Colors.primary} />}
             </View>
             <View style={styles.flex}>
               <View style={styles.row}>

@@ -16,6 +16,7 @@ import { signedOut, userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 const WALLET_EVENTS = ['wallet:earning_released', 'withdrawal:requested', 'withdrawal:completed', 'withdrawal:rejected', 'cod_settlement:confirmed', 'cod_settlement:rejected'];
+const JOB_EVENTS = ['job_application:new', 'job_application:status_changed', 'job_application:interview_scheduled'];
 const ORDER_EVENTS = ['new_notification', 'delivery:status_changed', 'delivery:assigned', 'payment:successful', 'refund:requested', 'refund:issued'];
 
 export function SessionEffects() {
@@ -44,7 +45,10 @@ export function SessionEffects() {
       }
     };
     // Vendor status changes arrive as notifications; riders send delivery events
-    const refreshOrders = () => dispatch(api.util.invalidateTags(['Order', 'SubOrder', 'Delivery', 'Notification', 'Wallet']));
+    // (payment:successful also finishes job / CV-unlock / plan / spontaneous payments)
+    // (Cart: an unpaid online order that expires puts its items back in the cart)
+    const refreshOrders = () => dispatch(api.util.invalidateTags(['Order', 'SubOrder', 'Cart', 'Delivery', 'Notification', 'Wallet', 'Job', 'Application', 'Cv', 'Subscription']));
+    const refreshJobs = () => dispatch(api.util.invalidateTags(['Job', 'Application']));
     const refreshChats = () => dispatch(api.util.invalidateTags(['Conversation']));
     const refreshTickets = () => dispatch(api.util.invalidateTags(['Ticket']));
     const refreshDisputes = () => dispatch(api.util.invalidateTags(['Dispute', 'Order']));
@@ -61,6 +65,7 @@ export function SessionEffects() {
     socket.on('delivery:declined', refreshOrders);
     socket.on('rider_link:updated', refreshLinks);
     socket.on('application:reviewed', refreshApplication);
+    JOB_EVENTS.forEach((e) => socket.on(e, refreshJobs));
     return () => {
       socket.off('session:revoked', onRevoked);
       ORDER_EVENTS.forEach((e) => socket.off(e, refreshOrders));
@@ -71,6 +76,7 @@ export function SessionEffects() {
       socket.off('delivery:declined', refreshOrders);
       socket.off('rider_link:updated', refreshLinks);
       socket.off('application:reviewed', refreshApplication);
+      JOB_EVENTS.forEach((e) => socket.off(e, refreshJobs));
     };
   }, [signedIn, accessToken, dispatch]);
 

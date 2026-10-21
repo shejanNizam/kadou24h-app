@@ -12,16 +12,19 @@ export interface OptionCardProps {
   icon?: ComponentProps<typeof Feather>['name'];
   selected: boolean;
   onPress: () => void;
+  /** Greyed out and not selectable (the description says why) */
+  disabled?: boolean;
 }
 
 /** Selectable card (language, partner type, payout type…). Radio semantics. */
-export function OptionCard({ title, description, icon, selected, onPress }: OptionCardProps) {
+export function OptionCard({ title, description, icon, selected, onPress, disabled }: OptionCardProps) {
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       accessibilityRole="radio"
-      accessibilityState={{ checked: selected }}
-      style={({ pressed }) => [styles.card, selected && styles.selected, pressed && styles.pressed]}>
+      accessibilityState={{ checked: selected, disabled }}
+      style={({ pressed }) => [styles.card, selected && styles.selected, pressed && styles.pressed, disabled && styles.disabled]}>
       {icon && (
         <View style={[styles.icon, selected && styles.iconSelected]}>
           <Feather name={icon} size={18} color={selected ? Colors.textOnPrimary : Colors.primary} />
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
   },
   selected: { borderColor: Colors.primary, backgroundColor: Colors.primarySoft },
   pressed: { opacity: 0.9 },
+  disabled: { opacity: 0.55 },
   icon: {
     width: 36,
     height: 36,

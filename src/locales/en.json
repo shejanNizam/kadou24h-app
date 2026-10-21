@@ -159,7 +159,18 @@
     "offsetTooMuch": "Your available earnings are not enough.",
     "withdrawCashOwed": "Hand over the cash you collected first: it is kept back from withdrawals.",
     "riderOffline": "This rider is offline.",
-    "onlyMotoJoin": "Only moto riders can join a store."
+    "onlyMotoJoin": "Only moto riders can join a store.",
+    "alreadyApplied": "You already applied to this offer.",
+    "jobClosed": "This offer no longer accepts applications.",
+    "ownJob": "You can’t apply to yourself.",
+    "cannotWithdraw": "This application can no longer be withdrawn.",
+    "noInterview": "There’s no interview to confirm.",
+    "candidateWithdrew": "The candidate withdrew their application.",
+    "onlineOnly": "This payment is online only (Orange Money, MoMo or card).",
+    "unlockNotYours": "You can only unlock people who applied to you.",
+    "codLimit": "Cash on delivery is limited to {{limit}} per store. Please pay online.",
+    "paymentTimeOver": "The time to pay is over. The order will be cancelled and the items put back in your cart.",
+    "chatUnpaidOrder": "Pay for the order first: the store receives it once paid."
   },
   "tabs": {
     "home": "Home",
@@ -199,7 +210,12 @@
     "help": "Help",
     "share": "Share the app",
     "shareText": "I shop on Kadou24h: products, delivery and services near you. Get the app!",
-    "shareWithCode": "I shop on Kadou24h: products, delivery and services near you. Sign up with my code {{code}}!"
+    "shareWithCode": "I shop on Kadou24h: products, delivery and services near you. Sign up with my code {{code}}!",
+    "jobs": "Jobs",
+    "findJob": "Job offers",
+    "myCv": "My CV",
+    "myApplications": "My applications",
+    "postJob": "Post a job"
   },
   "kyc": {
     "vendorTitle": "Become a vendor",
@@ -288,7 +304,8 @@
     "subtotal": "Subtotal",
     "feesAtCheckout": "Delivery and service fees are calculated at the next step.",
     "closedBlocksCheckout": "Store closed: {{stores}}. Remove these items to order.",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "alsoBought": "Customers also bought"
   },
   "catalog": {
     "noRating": "New",
@@ -528,7 +545,10 @@
     "codSingle": "Have {{total}} in cash ready for the rider.",
     "codMultiple": "{{count}} riders (one per store): each collects their store's amount, shown in the order.",
     "place": "Place order · {{total}}",
-    "placeShort": "Place order"
+    "placeShort": "Place order",
+    "codUnavailable": "Not available above {{limit}} per store.",
+    "codTooHigh": "Cash on delivery is limited to {{limit}} per store (rider safety). Choose an online payment.",
+    "payWithin": "You have {{minutes}} minutes to pay. The store receives the order as soon as it is paid."
   },
   "payment": {
     "method": {
@@ -597,7 +617,8 @@
     "by": {
       "customer": "you",
       "vendor": "the store",
-      "admin": "the Kadou24h team"
+      "admin": "the Kadou24h team",
+      "system": "Kadou24h"
     },
     "rider": "Rider",
     "partner": {
@@ -666,7 +687,9 @@
     "disputeSend": "Send",
     "disputeSent": "Report sent",
     "adminReply": "Kadou24h reply: {{reply}}",
-    "chatRider": "Message the rider"
+    "chatRider": "Message the rider",
+    "unpaidUntil": "Pay before {{time}}: the store receives the order as soon as it is paid. Otherwise it is cancelled and the items go back to your cart.",
+    "paymentExpired": "Cancelled: the payment was not received in time. The items are back in your cart."
   },
   "track": {
     "title": "Delivery tracking",
@@ -696,7 +719,8 @@
       "ready_for_pickup": "Ready",
       "in_delivery": "Out for delivery",
       "delivered": "Delivered",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "pending_payment": "Awaiting payment"
     },
     "payment": {
       "unpaid": "Unpaid",
@@ -1570,5 +1594,387 @@
       "motoRider": "Hand the parcel to the moto rider, ask for their code and type it."
     },
     "atStation": "The customer collects it at {{station}}"
+  },
+  "tags": {
+    "add": "Add",
+    "remove": "Remove {{value}}"
+  },
+  "fee": {
+    "method": "Pay with",
+    "pay": "Pay",
+    "payAmount": "Pay {{amount}}",
+    "price": "Price"
+  },
+  "applicationStatus": {
+    "pending_payment": "Payment pending",
+    "applied": "Sent",
+    "under_review": "Under review",
+    "shortlisted": "Shortlisted",
+    "interview": "Interview",
+    "hired": "Hired",
+    "rejected": "Not selected",
+    "withdrawn": "Withdrawn"
+  },
+  "jobsList": {
+    "title": "Job offers",
+    "searchHint": "Job, company…",
+    "all": "All",
+    "myCv": "My CV",
+    "myApplications": "My applications",
+    "postJob": "Hire",
+    "createCvForMatch": "Fill in your CV (skills, languages) to see your % match with each offer.",
+    "match": "{{score}}% match",
+    "empty": "No job offers yet",
+    "emptyFiltered": "Try another word or category."
+  },
+  "jobDetail": {
+    "yourMatch": "Your match",
+    "createCvForMatch": "Add your skills and languages to your CV to see if this offer suits you.",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Wanted skills",
+    "languages": "Languages",
+    "manage": "Manage this offer",
+    "alreadyApplied": "You applied",
+    "viewApplication": "View",
+    "closed": "Applications closed",
+    "applyTitle": "Send my application",
+    "applyTo": "\"{{title}}\" at {{org}}",
+    "myUploadedCv": "My uploaded CV",
+    "myKadouCv": "My Kadou24h CV",
+    "note": "Message to the recruiter",
+    "noteHint": "Why you? When you can start…",
+    "privacy": "The recruiter sees your profile. Your phone, e-mail and CV file stay hidden until they pay to unlock them.",
+    "send": "Send",
+    "needCvTitle": "You need a CV",
+    "needCvText": "Make your Kadou24h CV in a few minutes, or upload yours (PDF or photo), then apply.",
+    "createCv": "Create my CV"
+  },
+  "applied": {
+    "title": "Application sent!",
+    "text": "The recruiter will review it. You’ll be told at every step.",
+    "textFor": "Your application for \"{{title}}\" is sent. You’ll be told at every step.",
+    "follow": "Follow my application",
+    "moreJobs": "See more offers"
+  },
+  "myApplications": {
+    "title": "My applications",
+    "spontaneous": "Spontaneous application",
+    "sentOn": "Sent on {{date}}",
+    "empty": "No applications",
+    "emptyText": "Your applications and their progress will show here.",
+    "findJobs": "See job offers"
+  },
+  "application": {
+    "title": "My application",
+    "viewJob": "View the offer",
+    "ended": {
+      "rejected": "Your application wasn’t selected this time. Don’t give up: other offers are waiting.",
+      "withdrawn": "You withdrew this application."
+    },
+    "pendingPayment": "The payment isn’t confirmed yet: the store can’t see your application yet.",
+    "interview": "Interview",
+    "confirmed": "Confirmed",
+    "map": "See the place",
+    "confirm": "I’ll be there",
+    "confirmedToast": "The recruiter knows you’re coming.",
+    "sentCv": "CV sent",
+    "openCv": "Open the file",
+    "message": "Message the recruiter",
+    "withdraw": "Withdraw",
+    "withdrawTitle": "Withdraw your application?",
+    "withdrawText": "The recruiter will be told. You can’t apply to this offer again.",
+    "withdrawn": "Application withdrawn"
+  },
+  "cv": {
+    "title": "My CV",
+    "photo": "Profile photo",
+    "noProfession": "Add your job title",
+    "complete": "Your CV is complete. Well done!",
+    "completeHint": "CV {{percent}}% complete. To add: {{missing}}.",
+    "missing": {
+      "photo": "photo",
+      "profession": "job title",
+      "summary": "summary",
+      "experience": "experience",
+      "education": "education",
+      "skills": "skills",
+      "languages": "languages"
+    },
+    "document": "My CV document",
+    "documentHint": "Your applications send your uploaded CV if you have one, else the Kadou24h CV made from this profile.",
+    "kadouCv": "Kadou24h CV (PDF)",
+    "madeOn": "Updated on {{date}}",
+    "notMade": "Not made yet",
+    "sent": "Sent",
+    "makePdf": "Make the PDF",
+    "updatePdf": "Update",
+    "open": "Open",
+    "share": "Share",
+    "pdfInApp": "The PDF is made in the mobile app.",
+    "fillFirst": "First add your job title, a summary or an experience.",
+    "pdfReady": "Your CV PDF is ready.",
+    "myOwnCv": "My own CV",
+    "ownCvHint": "Already have a CV? Upload it (PDF or photo).",
+    "ownCvSaved": "Uploaded: this one is sent",
+    "import": "Upload",
+    "replace": "Replace",
+    "imported": "CV uploaded",
+    "tooBig": "File too large (8 MB max).",
+    "add": "Add",
+    "summary": "Summary",
+    "summaryEmpty": "A few lines about you: what you can do, what you’re looking for.",
+    "experience": "Experience",
+    "experienceEmpty": "Your jobs, internships or side jobs.",
+    "education": "Education",
+    "educationEmpty": "Degrees, schools, trainings.",
+    "skillsAndLanguages": "Skills and languages",
+    "skillsEmpty": "What you can do and the languages you speak.",
+    "skills": "Skills",
+    "skillsHint": "E.g. Sales, Excel, Riding a moto",
+    "languages": "Languages",
+    "achievements": "Achievements",
+    "achievementsHint": "E.g. Best seller 2024",
+    "present": "present",
+    "madeWith": "CV made with Kadou24h",
+    "edit": {
+      "about": "Summary",
+      "experience": "Experience",
+      "education": "Education",
+      "skills": "Skills and languages",
+      "worker": "Worker profile"
+    },
+    "profession": "Job title",
+    "professionHint": "E.g. Electrician, Salesperson, Accountant",
+    "professionRequired": "Enter your job title",
+    "city": "City",
+    "years": "Years of experience",
+    "summaryHint": "Write it yourself or start from a suggestion.",
+    "suggest": "Suggest a text",
+    "suggestHint": "The suggestion is built from your job title, skills and experience. Read it and adapt it.",
+    "experienceN": "Experience {{n}}",
+    "jobTitle": "Position",
+    "company": "Company",
+    "place": "Place",
+    "start": "Start (MM/YYYY)",
+    "end": "End (MM/YYYY)",
+    "current": "I still work there",
+    "tasks": "What you did",
+    "addExperience": "Add an experience",
+    "titleRequired": "Each experience needs a position.",
+    "badMonth": "Dates as MM/YYYY, e.g. 03/2022.",
+    "educationN": "Education {{n}}",
+    "degree": "Degree or training",
+    "degreeHint": "E.g. Baccalaureate, Bachelor in management",
+    "school": "School or centre",
+    "year": "Year",
+    "addEducation": "Add an education",
+    "educationIncomplete": "Fill in the degree, school and year (4 digits) of each education.",
+    "worker": "Offer my services",
+    "workerOn": "Shown in the workers list · {{rate}}",
+    "workerOff": "Customers can find you and message you for work.",
+    "workerEdit": "Job title, rate, service type",
+    "workerHint": "Customers find you in the workers list and message you in the app chat.",
+    "workerSwitch": "Show me in the workers list",
+    "rate": "Hourly rate (GNF)",
+    "rateHint": "You can always discuss it with the customer.",
+    "serviceType": "Service type",
+    "workerPrivacy": "Your number is never shown: customers message you in the app.",
+    "listedOn": "You’re shown in the workers list.",
+    "listedOff": "You’re no longer shown in the workers list.",
+    "boost": "Boost my profile",
+    "boostHint": "Appear at the top of the workers list.",
+    "boostOn": "Profile boosted",
+    "boostUntil": "Until {{date}}"
+  },
+  "plans": {
+    "title": "Boost my profile",
+    "intro": "Creating your CV and applying is free. A plan puts your profile at the top of the workers list for its duration.",
+    "activeUntil": "Active until {{date}}",
+    "audience": {
+      "job_seeker": "Job seeker",
+      "service_provider": "Service provider"
+    },
+    "forDays_one": "for {{count}} day",
+    "forDays_other": "for {{count}} days",
+    "featureVisibility": "Your profile at the top of the workers list",
+    "choose": "Choose",
+    "extend": "Extend",
+    "payText": "Your profile will be boosted for {{count}} days from the payment.",
+    "extendText": "The new period starts when your current plan ends.",
+    "none": "No plans yet",
+    "noneText": "Come back soon."
+  },
+  "spontaneous": {
+    "cta": "Work at {{store}}? Send your CV",
+    "title": "Spontaneous application",
+    "text": "Your CV is sent to {{store}}, even without a published offer. The store gets it once the fee is paid.",
+    "noteHint": "The position you’d like, when you can start…",
+    "sent": "Application sent to the store."
+  },
+  "received": {
+    "title": "Received applications",
+    "hint": "People who want to work in your store.",
+    "empty": "No applications received",
+    "emptyText": "Spontaneous applications sent to your store will show here."
+  },
+  "recruiter": {
+    "title": "My job offers",
+    "statActive": "Live",
+    "statApplicants": "Candidates",
+    "statViews": "Views",
+    "post": "Post a job",
+    "tab": {
+      "active": "Live",
+      "draft": "Drafts",
+      "closed": "Ended"
+    },
+    "empty": {
+      "active": "No live offers",
+      "draft": "No drafts",
+      "closed": "No ended offers"
+    },
+    "emptyText": "Post an offer: it stays live for 30 days.",
+    "state": {
+      "live": "Live",
+      "draft": "Draft",
+      "unpaid": "Payment pending",
+      "closed": "Closed",
+      "expired": "Expired"
+    },
+    "applicants_one": "{{count}} candidate",
+    "applicants_other": "{{count}} candidates",
+    "until": "Until {{date}}"
+  },
+  "recruiterJob": {
+    "title": "My offer",
+    "notYours": "This offer isn’t yours",
+    "liveUntil": "Live until {{date}}",
+    "views": "Views",
+    "applicants": "Candidates",
+    "shortlisted": "Shortlist",
+    "interviews": "Interviews",
+    "close": "Close the offer",
+    "closeTitle": "Close this offer?",
+    "closeText": "It leaves the offers and nobody can apply any more. You keep the applications received.",
+    "closed": "Offer closed",
+    "publish": "Publish",
+    "republish": "Publish again",
+    "seePublic": "See it as candidates do",
+    "candidates": "Candidates",
+    "sort": {
+      "match": "Best match",
+      "date": "Newest"
+    },
+    "noCandidates": "No candidates",
+    "noCandidatesOpen": "Applications arrive here. You’re told about each new one.",
+    "noCandidatesClosed": "Publish the offer to get applications."
+  },
+  "jobForm": {
+    "newTitle": "New offer",
+    "editTitle": "Edit the offer",
+    "steps": {
+      "basics": "The position",
+      "details": "Pay and details",
+      "candidates": "Wanted profile",
+      "preview": "Preview"
+    },
+    "jobTitle": "Job title",
+    "jobTitleHint": "E.g. Shop assistant",
+    "org": "Company or store",
+    "category": "Category",
+    "type": "Contract type",
+    "workplace": "Workplace",
+    "city": "City",
+    "area": "Area",
+    "areaHint": "E.g. Kaloum, Ratoma",
+    "titleRequired": "Enter the job title.",
+    "orgRequired": "Enter the company or store.",
+    "salaryMin": "Min. salary (GNF)",
+    "salaryMax": "Max. salary (GNF)",
+    "per": "Per",
+    "aboutHint": "The daily work, the team, the hours…",
+    "aboutRequired": "Describe the job (at least 10 characters).",
+    "salaryOrder": "The minimum salary is above the maximum.",
+    "onePerLine": "One item per line",
+    "candidatesHint": "Candidates see their % match with these skills and languages.",
+    "skills": "Wanted skills",
+    "skillsHint": "E.g. Sales, Cash register",
+    "languages": "Languages",
+    "experience": "Experience",
+    "experienceHint": "E.g. At least 1 year",
+    "education": "Education",
+    "educationHint": "E.g. Baccalaureate",
+    "deadline": "Deadline (DD/MM/YYYY)",
+    "badDate": "Date as DD/MM/YYYY, e.g. 31/12/2026.",
+    "aboutCompany": "About the company",
+    "editStep": "Edit",
+    "publishInfo": "Publishing costs {{amount}} GNF: the offer stays live for 30 days. You can also save it as a draft.",
+    "saveDraft": "Draft",
+    "publish": "Publish",
+    "saveChanges": "Save",
+    "saved": "Offer saved",
+    "publishTitle": "Publish the offer",
+    "publishText": "Your offer will be visible to everyone for 30 days. You’ll get the applications here.",
+    "published": "Offer published!"
+  },
+  "candidate": {
+    "title": "Candidate",
+    "appliedFor": "For \"{{title}}\"",
+    "spontaneous": "Spontaneous application",
+    "withdrawn": "This candidate withdrew their application.",
+    "profile": "Profile",
+    "noSummary": "No summary.",
+    "contact": "Contact and CV",
+    "lockedText": "Phone, e-mail and CV file are hidden. Unlock them once for this candidate.",
+    "unlock": "Unlock — {{amount}} GNF",
+    "unlockTitle": "Unlock contact and CV",
+    "unlockText": "You’ll see {{name}}’s phone, e-mail and CV file, for all their applications with you.",
+    "unlocked": "Unlocked",
+    "openCv": "Open the CV",
+    "noCvFile": "No CV file: see the profile above.",
+    "notConfirmed": "Not confirmed yet",
+    "message": "Message the candidate",
+    "shortlist": "Shortlist",
+    "invite": "Invite to an interview",
+    "reschedule": "Change the interview date",
+    "hire": "Hire",
+    "reject": "Reject",
+    "confirm": {
+      "hired": "Hire {{name}}?",
+      "rejected": "Reject {{name}}?"
+    },
+    "confirmText": {
+      "hired": "The candidate is told the good news.",
+      "rejected": "The candidate is told, politely. You can change your mind."
+    },
+    "done": {
+      "shortlisted": "Candidate shortlisted",
+      "hired": "Candidate hired",
+      "rejected": "Candidate rejected"
+    },
+    "inviteTitle": "Invite to an interview",
+    "inviteHint": "The candidate gets the date, time and place, and can confirm.",
+    "day": "Date (DD/MM/YYYY)",
+    "time": "Time",
+    "place": "Place",
+    "placeHint": "E.g. TechHub, Niger Market, 1st floor",
+    "mapLink": "Google Maps link",
+    "mapLinkHint": "To find the place easily",
+    "note": "Message",
+    "sendInvite": "Send the invitation",
+    "invited": "Invitation sent",
+    "badDate": "Enter a future date (DD/MM/YYYY) and a time (10:30).",
+    "badLink": "The link must start with https://"
+  },
+  "ads": {
+    "sponsored": "Sponsored",
+    "learnMore": "Learn more",
+    "closeIn_one": "You can close in {{count}} second",
+    "closeIn_other": "You can close in {{count}} seconds"
+  },
+  "network": {
+    "offline": "No internet connection",
+    "back": "Back online"
   }
 }

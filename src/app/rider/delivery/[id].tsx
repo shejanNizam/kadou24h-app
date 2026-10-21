@@ -28,6 +28,7 @@ import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { connectSocket } from '@/lib/socket';
 import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 // Accepted → picked up → delivered: how many are behind me at each step
 const MILESTONES = ['accepted', 'pickedUp', 'delivered'] as const;
@@ -362,7 +363,7 @@ function Stop({
       ))}
       {photo ? (
         <Pressable onPress={() => setViewPhoto((v) => !v)} accessibilityRole="imagebutton" accessibilityLabel={t('rider.gatePhoto')}>
-          <Image source={photo} style={viewPhoto ? styles.photoBig : styles.photo} contentFit="cover" />
+          <Image source={img(photo, 'full')} style={viewPhoto ? styles.photoBig : styles.photo} contentFit="cover" />
         </Pressable>
       ) : null}
       {(onNavigate || onChat) && (

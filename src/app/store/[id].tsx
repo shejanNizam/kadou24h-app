@@ -14,6 +14,9 @@ import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetVendorQuery } from '@/features/catalog/api';
 import { ProductResults } from '@/features/catalog/components/ProductResults';
 import { useOpenChat } from '@/features/chat/useOpenChat';
+import { SpontaneousApply } from '@/features/jobs/components/SpontaneousApply';
+import { useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
@@ -23,6 +26,7 @@ export default function StoreScreen() {
   const { t } = useTranslation();
   const { data: store, isLoading, isError, error, refetch } = useGetVendorQuery(id);
   const { open: openChat } = useOpenChat();
+  const me = useAppSelector((s) => s.auth.user);
 
   const header = (
     <View style={styles.header}>
@@ -32,7 +36,7 @@ export default function StoreScreen() {
         <View style={styles.card}>
           <View style={styles.logo}>
             {store.logo?.url ? (
-              <Image source={store.logo.url} style={styles.logoImg} contentFit="cover" />
+              <Image source={img(store.logo.url, 'thumb')} style={styles.logoImg} contentFit="cover" />
             ) : (
               <Feather name="shopping-bag" size={28} color={Colors.primary} />
             )}
@@ -58,6 +62,8 @@ export default function StoreScreen() {
           </View>
         </View>
       ) : null}
+      {/* Not on my own store */}
+      {store && store.userId !== me?._id && <SpontaneousApply vendorId={store._id} storeName={store.storeName} />}
       <AppText variant="h3" style={styles.productsTitle}>
         {t('catalog.storeProducts', { count: store?.stats.totalProducts ?? 0 })}
       </AppText>

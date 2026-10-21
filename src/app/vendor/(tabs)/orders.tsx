@@ -21,6 +21,7 @@ import { VENDOR_ORDER_TABS, type VendorOrdersTab, type VendorSubOrder } from '@/
 import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
+import { img } from '@/lib/image';
 
 const TABS = Object.keys(VENDOR_ORDER_TABS) as VendorOrdersTab[];
 
@@ -136,7 +137,7 @@ function OrderCard({ order }: { order: VendorSubOrder }) {
       <View style={styles.thumbs}>
         {items.slice(0, 4).map((i) => (
           <View key={i._id} style={styles.thumb}>
-            {i.image ? <Image source={i.image} style={styles.thumb} contentFit="cover" /> : null}
+            {i.image ? <Image source={img(i.image, 'thumb')} style={styles.thumb} contentFit="cover" /> : null}
           </View>
         ))}
         <View style={styles.flex}>

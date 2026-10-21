@@ -99,11 +99,14 @@ Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vend
 - **Sheets & dialogs:** `BottomSheet` (title, body, footer) for choices and forms; `ConfirmDialog` for destructive yes/no.
 - **Status UI:** `<StatusPill label={t(`status.subOrder.${s}`)} tone={SUB_ORDER_TONE[s]} />` — tones in `features/orders/status.ts` (APP_SPEC §9), labels in i18n `status.*`.
 - **Money:** always `<Money value={n} />` / `formatGNF(n)`. Values are integers.
+- **Images:** always `source={img(url, 'thumb' | 'card' | 'full')}` (`lib/image.ts`) — Cloudinary resizes to the shown size (WebP when possible); other URLs pass through.
+- **Network:** `OfflineBanner` (root layout, above a nested `SafeAreaProvider` so screens measure their safe area below it). RTK Query `refetchOnReconnect` is fed by `lib/network.ts` (NetInfo + AppState) through `setupListeners` in the store.
+- **Ads:** `<AdBanner placement>` (carousel) + `<AdInterrupt placement>` (popup / interstitial, once per session, each ad once a day) on home, search and category.
 - **Errors:** `getApiErrorMessage(err)` (the same idea as the dashboard `utils/apiError.ts`) → toast or inline.
 
 ## Theme (from Figma, provisional; refine from detailed frames)
 - Primary purple ≈ `#8B5CF6`, with a light tint for chips/backgrounds ≈ `#F3EEFF`. Auth headers use a purple gradient.
-- Success green, warning amber/orange, danger red `#EF4444`, text dark `#1F1F29`, muted grey.
+- Success green `#15803D`, warning amber `#F59E0B` (icons only; amber text uses `warningText` `#B45309`), danger red `#DC2626`, info `#2563EB`, text dark `#1F1F29`, muted grey. Text colours keep ≥ 4.5:1 on white (2026-10-21).
 - Rounded cards (radius 12–16) and pill buttons (radius 999). Clean sans font (Figma looks like DM Sans / Inter; confirm with the user).
 - Light mode only at first (the Figma is light). Keep tokens so dark mode can be added later.
 
@@ -111,3 +114,4 @@ Customer detail screens (product/[id], order/[id]…) go at the root Stack. Vend
 - `EXPO_PUBLIC_API_URL` (default `http://localhost:7000/api/v1`)
 - `EXPO_PUBLIC_SOCKET_URL` (default `http://localhost:7000`)
 - Put them in `.env` (git-ignored). Commit an `.env.example`.
+- Builds take the API URL from `eas.json`; OTA updates too (`scripts/ota-update.mjs`). `GOOGLE_MAPS_API_KEY` is an EAS environment variable read by `app.config.ts`. Expo CLI here loads only `.env` (not `.env.production`), and real environment variables win over it. Release steps: [RELEASE.md](RELEASE.md).

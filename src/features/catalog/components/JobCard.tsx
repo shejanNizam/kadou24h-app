@@ -9,7 +9,7 @@ import { formatGNF } from '@/lib/format';
 
 import type { Job } from '../types';
 
-export const salaryText = (job: Job, t: TFunction) => {
+export const salaryText = (job: Pick<Job, 'salaryMin' | 'salaryMax' | 'salaryFrequency'>, t: TFunction) => {
   if (!job.salaryMin && !job.salaryMax) return t('jobs.salaryNegotiable');
   const range =
     job.salaryMin && job.salaryMax

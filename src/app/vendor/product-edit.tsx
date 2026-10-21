@@ -27,6 +27,7 @@ import { useLocalized } from '@/hooks/useLocalized';
 import { getApiErrorMessage, getFieldErrors } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import type { FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 const MAX_PHOTOS = 5;
 
@@ -229,14 +230,14 @@ function ProductEditor({ existing }: { existing?: EditableProduct }) {
                 {t('products.photosHint')}
               </AppText>
               <View style={styles.photos}>
-                {images.map((img, i) => (
-                  <View key={img.url} style={styles.photo}>
+                {images.map((photo, i) => (
+                  <View key={photo.url} style={styles.photo}>
                     <Pressable
                       onPress={() => makeCover(i)}
                       accessibilityRole="button"
                       accessibilityLabel={t('products.makeCover')}
                       style={styles.photo}>
-                      <Image source={img.url} style={styles.photo} contentFit="cover" />
+                      <Image source={img(photo.url, 'card')} style={styles.photo} contentFit="cover" />
                     </Pressable>
                     {i === 0 && (
                       <View style={styles.cover}>

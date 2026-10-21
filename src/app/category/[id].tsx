@@ -11,6 +11,7 @@ import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
 import { useGetCategoriesQuery } from '@/features/catalog/api';
 import { AdBanner } from '@/features/catalog/components/AdBanner';
+import { AdInterrupt } from '@/features/catalog/components/AdInterrupt';
 import {
   activeFilterCount,
   DEFAULT_FILTERS,
@@ -65,6 +66,7 @@ export default function CategoryScreen() {
         header={
           <View style={styles.header}>
             <AdBanner placement="category" />
+            <AdInterrupt placement="category" />
             {count > 0 && (
               <View style={styles.active}>
                 <Feather name="filter" size={14} color={Colors.primary} />

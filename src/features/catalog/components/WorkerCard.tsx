@@ -10,6 +10,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 import { formatGNF } from '@/lib/format';
 
 import type { Worker } from '../types';
+import { img } from '@/lib/image';
 
 /** Photo, name, profession, GNF/h, rating. No discount badge, no phone (chat only). */
 export function WorkerCard({ worker, width }: { worker: Worker; width: number }) {
@@ -23,7 +24,7 @@ export function WorkerCard({ worker, width }: { worker: Worker; width: number })
       style={({ pressed }) => [styles.card, { width }, pressed && styles.pressed]}>
       <View style={styles.photoBox}>
         {photo ? (
-          <Image source={photo} style={styles.photo} contentFit="cover" />
+          <Image source={img(photo, 'card')} style={styles.photo} contentFit="cover" />
         ) : (
           <Feather name="user" size={36} color={Colors.primary} />
         )}

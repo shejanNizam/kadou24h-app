@@ -36,6 +36,7 @@ import { CONAKRY, getCurrentPosition, reverseGeocode, type LatLng } from '@/lib/
 import { pickImage, uploadImage } from '@/lib/upload';
 import { useAppSelector } from '@/store/hooks';
 import type { FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 const LABELS: AddressLabel[] = ['home', 'office', 'other'];
 
@@ -283,7 +284,7 @@ function AddressEditor({ existing, isFirst }: { existing?: Address; isFirst: boo
             {uploading ? (
               <ActivityIndicator color={Colors.primary} />
             ) : photo ? (
-              <Image source={photo.url} style={styles.photo} contentFit="cover" />
+              <Image source={img(photo.url, 'card')} style={styles.photo} contentFit="cover" />
             ) : (
               <>
                 <Feather name="camera" size={22} color={Colors.primary} />

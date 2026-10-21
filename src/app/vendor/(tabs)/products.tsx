@@ -22,6 +22,7 @@ import { useGetMyProductsInfiniteQuery, useUpdateStockMutation } from '@/feature
 import { PRODUCT_APPROVAL_TONE, isLowStock } from '@/features/vendor/status';
 import type { MyProduct, ProductsTab } from '@/features/vendor/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
+import { img } from '@/lib/image';
 
 const TABS: ProductsTab[] = ['all', 'active', 'in_review', 'out_of_stock'];
 
@@ -104,7 +105,7 @@ function ProductRow({ product: p, onStock }: { product: MyProduct; onStock: () =
       accessibilityLabel={p.name}
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <View style={styles.row}>
-        <View style={styles.thumb}>{p.images[0] ? <Image source={p.images[0].url} style={styles.thumb} contentFit="cover" /> : null}</View>
+        <View style={styles.thumb}>{p.images[0] ? <Image source={img(p.images[0].url, 'thumb')} style={styles.thumb} contentFit="cover" /> : null}</View>
         <View style={styles.flex}>
           <AppText variant="bodyMedium" numberOfLines={2}>
             {p.name}

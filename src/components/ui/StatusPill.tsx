@@ -8,7 +8,7 @@ export type StatusTone = 'blue' | 'amber' | 'purple' | 'green' | 'red' | 'orange
 
 const tones: Record<StatusTone, { bg: string; fg: string }> = {
   blue: { bg: Colors.infoSoft, fg: Colors.info },
-  amber: { bg: Colors.warningSoft, fg: '#B45309' },
+  amber: { bg: Colors.warningSoft, fg: Colors.warningText },
   purple: { bg: Colors.primarySoft, fg: Colors.primaryDark },
   green: { bg: Colors.successSoft, fg: Colors.success },
   red: { bg: Colors.dangerSoft, fg: Colors.danger },

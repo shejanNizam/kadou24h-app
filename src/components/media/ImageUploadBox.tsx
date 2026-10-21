@@ -11,6 +11,7 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { pickImage, uploadImage, UploadError } from '@/lib/upload';
 import type { FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 /**
  * Camera-or-gallery sheet + compress + upload. `choose()` opens the sheet and
@@ -102,7 +103,7 @@ export function ImageUploadBox({
         {uploading ? (
           <ActivityIndicator color={Colors.primary} />
         ) : value ? (
-          <Image source={value.url} style={styles.image} contentFit="cover" />
+          <Image source={img(value.url, 'card')} style={styles.image} contentFit="cover" />
         ) : (
           <>
             <Feather name={icon} size={22} color={Colors.primary} />

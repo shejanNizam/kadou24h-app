@@ -34,6 +34,7 @@ import { getApiErrorMessage } from '@/lib/api/errors';
 import { setActiveChat } from '@/lib/push';
 import { connectSocket } from '@/lib/socket';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { img } from '@/lib/image';
 
 const REPORT_REASONS = ['contact', 'offPlatformPayment', 'abuse', 'scam', 'other'] as const;
 const QUICK_REPLIES = ['coming', 'arrived', 'atGate', 'comeOut'] as const;
@@ -162,7 +163,7 @@ export default function ChatScreen() {
           <View style={styles.peerRow}>
             <View style={styles.avatar}>
               {c.peer.avatar?.url ? (
-                <Image source={c.peer.avatar.url} style={styles.avatarImg} contentFit="cover" />
+                <Image source={img(c.peer.avatar.url, 'thumb')} style={styles.avatarImg} contentFit="cover" />
               ) : (
                 <Feather name={c.peer.mode === 'vendor' ? 'shopping-bag' : 'user'} size={14} color={Colors.primary} />
               )}

@@ -21,6 +21,7 @@ import type { StoreLink } from '@/features/rider/types';
 import { useDebounced } from '@/hooks/useDebounced';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import type { FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 type Tab = 'linked' | 'requests' | 'find';
 
@@ -92,7 +93,7 @@ function StoreInfo({ name, logo, city, rating }: { name: string; logo?: FileRef;
   return (
     <View style={styles.row}>
       <View style={styles.logo}>
-        {logo?.url ? <Image source={logo.url} style={styles.logo} contentFit="cover" /> : <Feather name="shopping-bag" size={18} color={Colors.primary} />}
+        {logo?.url ? <Image source={img(logo.url, 'thumb')} style={styles.logo} contentFit="cover" /> : <Feather name="shopping-bag" size={18} color={Colors.primary} />}
       </View>
       <View style={styles.flex}>
         <AppText variant="bodyMedium" numberOfLines={1}>

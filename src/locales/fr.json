@@ -159,7 +159,18 @@
     "offsetTooMuch": "Vos gains disponibles ne suffisent pas.",
     "withdrawCashOwed": "Reversez d’abord le cash encaissé : il est retenu sur vos retraits.",
     "riderOffline": "Ce livreur est hors ligne.",
-    "onlyMotoJoin": "Seuls les livreurs moto peuvent rejoindre une boutique."
+    "onlyMotoJoin": "Seuls les livreurs moto peuvent rejoindre une boutique.",
+    "alreadyApplied": "Vous avez déjà postulé à cette offre.",
+    "jobClosed": "Cette offre n’accepte plus de candidatures.",
+    "ownJob": "Vous ne pouvez pas postuler chez vous.",
+    "cannotWithdraw": "Cette candidature ne peut plus être retirée.",
+    "noInterview": "Il n’y a pas d’entretien à confirmer.",
+    "candidateWithdrew": "Le candidat a retiré sa candidature.",
+    "onlineOnly": "Ce paiement se fait uniquement en ligne (Orange Money, MoMo ou carte).",
+    "unlockNotYours": "Vous ne pouvez débloquer que les personnes qui ont postulé chez vous.",
+    "codLimit": "Le paiement à la livraison est limité à {{limit}} par boutique. Payez en ligne.",
+    "paymentTimeOver": "Le délai de paiement est dépassé. La commande va être annulée et les articles remis dans votre panier.",
+    "chatUnpaidOrder": "Payez d’abord la commande : la boutique la reçoit dès le paiement."
   },
   "tabs": {
     "home": "Accueil",
@@ -199,7 +210,12 @@
     "help": "Aide",
     "share": "Partager l'application",
     "shareText": "Je commande sur Kadou24h : produits, livraison et services près de chez toi. Télécharge l’application !",
-    "shareWithCode": "Je commande sur Kadou24h : produits, livraison et services près de chez toi. Inscris-toi avec mon code {{code}} !"
+    "shareWithCode": "Je commande sur Kadou24h : produits, livraison et services près de chez toi. Inscris-toi avec mon code {{code}} !",
+    "jobs": "Emploi",
+    "findJob": "Offres d’emploi",
+    "myCv": "Mon CV",
+    "myApplications": "Mes candidatures",
+    "postJob": "Publier une offre"
   },
   "kyc": {
     "vendorTitle": "Devenir vendeur",
@@ -288,7 +304,8 @@
     "subtotal": "Sous-total",
     "feesAtCheckout": "Livraison et frais de service calculés à l’étape suivante.",
     "closedBlocksCheckout": "Boutique fermée : {{stores}}. Retirez ces articles pour commander.",
-    "checkout": "Passer la commande"
+    "checkout": "Passer la commande",
+    "alsoBought": "Les clients ont aussi acheté"
   },
   "catalog": {
     "noRating": "Nouveau",
@@ -528,7 +545,10 @@
     "codSingle": "Préparez {{total}} en espèces pour le livreur.",
     "codMultiple": "{{count}} livreurs (un par boutique) : chacun encaisse le montant de sa boutique, affiché dans la commande.",
     "place": "Commander · {{total}}",
-    "placeShort": "Commander"
+    "placeShort": "Commander",
+    "codUnavailable": "Indisponible au-delà de {{limit}} par boutique.",
+    "codTooHigh": "Le paiement à la livraison est limité à {{limit}} par boutique (sécurité des livreurs). Choisissez un paiement en ligne.",
+    "payWithin": "Vous avez {{minutes}} minutes pour payer. La boutique reçoit la commande dès le paiement."
   },
   "payment": {
     "method": {
@@ -597,7 +617,8 @@
     "by": {
       "customer": "vous",
       "vendor": "la boutique",
-      "admin": "l'équipe Kadou24h"
+      "admin": "l'équipe Kadou24h",
+      "system": "Kadou24h"
     },
     "rider": "Livreur",
     "partner": {
@@ -666,7 +687,9 @@
     "disputeSend": "Envoyer",
     "disputeSent": "Signalement envoyé",
     "adminReply": "Réponse de Kadou24h : {{reply}}",
-    "chatRider": "Écrire au livreur"
+    "chatRider": "Écrire au livreur",
+    "unpaidUntil": "Payez avant {{time}} : la boutique reçoit la commande dès le paiement. Sinon elle est annulée et les articles reviennent dans votre panier.",
+    "paymentExpired": "Annulée : le paiement n’a pas été reçu à temps. Les articles sont de retour dans votre panier."
   },
   "track": {
     "title": "Suivi de livraison",
@@ -696,7 +719,8 @@
       "ready_for_pickup": "Prête",
       "in_delivery": "En livraison",
       "delivered": "Livrée",
-      "cancelled": "Annulée"
+      "cancelled": "Annulée",
+      "pending_payment": "En attente de paiement"
     },
     "payment": {
       "unpaid": "Non payée",
@@ -1570,5 +1594,387 @@
       "motoRider": "Remettez le colis au livreur moto, demandez-lui son code et saisissez-le."
     },
     "atStation": "Le client vient le chercher à {{station}}"
+  },
+  "tags": {
+    "add": "Ajouter",
+    "remove": "Retirer {{value}}"
+  },
+  "fee": {
+    "method": "Payer avec",
+    "pay": "Payer",
+    "payAmount": "Payer {{amount}}",
+    "price": "Prix"
+  },
+  "applicationStatus": {
+    "pending_payment": "Paiement en attente",
+    "applied": "Envoyée",
+    "under_review": "En examen",
+    "shortlisted": "Présélectionné(e)",
+    "interview": "Entretien",
+    "hired": "Retenu(e)",
+    "rejected": "Non retenue",
+    "withdrawn": "Retirée"
+  },
+  "jobsList": {
+    "title": "Offres d’emploi",
+    "searchHint": "Métier, entreprise…",
+    "all": "Tout",
+    "myCv": "Mon CV",
+    "myApplications": "Mes candidatures",
+    "postJob": "Recruter",
+    "createCvForMatch": "Remplissez votre CV (compétences, langues) pour voir votre % de correspondance avec chaque offre.",
+    "match": "{{score}} % compatible",
+    "empty": "Aucune offre pour le moment",
+    "emptyFiltered": "Essayez un autre mot ou une autre catégorie."
+  },
+  "jobDetail": {
+    "yourMatch": "Votre correspondance",
+    "createCvForMatch": "Ajoutez vos compétences et langues à votre CV pour voir si cette offre vous correspond.",
+    "experience": "Expérience",
+    "education": "Niveau d’études",
+    "skills": "Compétences recherchées",
+    "languages": "Langues",
+    "manage": "Gérer cette offre",
+    "alreadyApplied": "Vous avez postulé",
+    "viewApplication": "Voir",
+    "closed": "Candidatures fermées",
+    "applyTitle": "Envoyer ma candidature",
+    "applyTo": "« {{title}} » chez {{org}}",
+    "myUploadedCv": "Mon CV importé",
+    "myKadouCv": "Mon CV Kadou24h",
+    "note": "Message au recruteur",
+    "noteHint": "Pourquoi vous ? Vos disponibilités…",
+    "privacy": "Le recruteur voit votre profil. Votre téléphone, e-mail et fichier CV restent cachés jusqu’à ce qu’il paie pour les débloquer.",
+    "send": "Envoyer",
+    "needCvTitle": "Il vous faut un CV",
+    "needCvText": "Créez votre CV Kadou24h en quelques minutes, ou importez le vôtre (PDF ou photo), puis postulez.",
+    "createCv": "Créer mon CV"
+  },
+  "applied": {
+    "title": "Candidature envoyée !",
+    "text": "Le recruteur va l’examiner. Vous serez prévenu(e) à chaque étape.",
+    "textFor": "Votre candidature pour « {{title}} » est envoyée. Vous serez prévenu(e) à chaque étape.",
+    "follow": "Suivre ma candidature",
+    "moreJobs": "Voir d’autres offres"
+  },
+  "myApplications": {
+    "title": "Mes candidatures",
+    "spontaneous": "Candidature spontanée",
+    "sentOn": "Envoyée le {{date}}",
+    "empty": "Aucune candidature",
+    "emptyText": "Vos candidatures et leur suivi apparaîtront ici.",
+    "findJobs": "Voir les offres"
+  },
+  "application": {
+    "title": "Ma candidature",
+    "viewJob": "Voir l’offre",
+    "ended": {
+      "rejected": "Votre candidature n’a pas été retenue cette fois. Ne vous découragez pas : d’autres offres vous attendent.",
+      "withdrawn": "Vous avez retiré cette candidature."
+    },
+    "pendingPayment": "Le paiement n’est pas encore confirmé : la boutique ne voit pas encore votre candidature.",
+    "interview": "Entretien",
+    "confirmed": "Confirmé",
+    "map": "Voir le lieu",
+    "confirm": "Je serai présent(e)",
+    "confirmedToast": "Le recruteur sait que vous venez.",
+    "sentCv": "CV envoyé",
+    "openCv": "Ouvrir le fichier",
+    "message": "Écrire au recruteur",
+    "withdraw": "Retirer",
+    "withdrawTitle": "Retirer votre candidature ?",
+    "withdrawText": "Le recruteur sera prévenu. Vous ne pourrez pas repostuler à cette offre.",
+    "withdrawn": "Candidature retirée"
+  },
+  "cv": {
+    "title": "Mon CV",
+    "photo": "Photo de profil",
+    "noProfession": "Ajoutez votre métier",
+    "complete": "Votre CV est complet. Bravo !",
+    "completeHint": "CV complet à {{percent}} %. À ajouter : {{missing}}.",
+    "missing": {
+      "photo": "photo",
+      "profession": "métier",
+      "summary": "présentation",
+      "experience": "expérience",
+      "education": "formation",
+      "skills": "compétences",
+      "languages": "langues"
+    },
+    "document": "Mon document CV",
+    "documentHint": "Vos candidatures envoient votre CV importé s’il y en a un, sinon le CV Kadou24h fait à partir de ce profil.",
+    "kadouCv": "CV Kadou24h (PDF)",
+    "madeOn": "Mis à jour le {{date}}",
+    "notMade": "Pas encore créé",
+    "sent": "Envoyé",
+    "makePdf": "Créer le PDF",
+    "updatePdf": "Mettre à jour",
+    "open": "Ouvrir",
+    "share": "Partager",
+    "pdfInApp": "Le PDF se crée dans l’application mobile.",
+    "fillFirst": "Ajoutez d’abord votre métier, une présentation ou une expérience.",
+    "pdfReady": "Votre CV PDF est prêt.",
+    "myOwnCv": "Mon propre CV",
+    "ownCvHint": "Vous avez déjà un CV ? Importez-le (PDF ou photo).",
+    "ownCvSaved": "Importé : c’est lui qui est envoyé",
+    "import": "Importer",
+    "replace": "Remplacer",
+    "imported": "CV importé",
+    "tooBig": "Fichier trop lourd (8 Mo maximum).",
+    "add": "Ajouter",
+    "summary": "Présentation",
+    "summaryEmpty": "Quelques phrases sur vous : ce que vous savez faire, ce que vous cherchez.",
+    "experience": "Expérience",
+    "experienceEmpty": "Vos emplois, stages ou petits boulots.",
+    "education": "Formation",
+    "educationEmpty": "Diplômes, écoles, formations.",
+    "skillsAndLanguages": "Compétences et langues",
+    "skillsEmpty": "Ce que vous savez faire et les langues que vous parlez.",
+    "skills": "Compétences",
+    "skillsHint": "Ex. : Vente, Excel, Conduite moto",
+    "languages": "Langues",
+    "achievements": "Réalisations",
+    "achievementsHint": "Ex. : Meilleur vendeur 2024",
+    "present": "aujourd’hui",
+    "madeWith": "CV créé avec Kadou24h",
+    "edit": {
+      "about": "Présentation",
+      "experience": "Expérience",
+      "education": "Formation",
+      "skills": "Compétences et langues",
+      "worker": "Profil de travailleur"
+    },
+    "profession": "Métier",
+    "professionHint": "Ex. : Électricien, Vendeuse, Comptable",
+    "professionRequired": "Indiquez votre métier",
+    "city": "Ville",
+    "years": "Années d’expérience",
+    "summaryHint": "Écrivez-la vous-même ou partez d’une proposition.",
+    "suggest": "Proposer un texte",
+    "suggestHint": "La proposition est faite à partir de votre métier, vos compétences et votre expérience. Relisez-la et adaptez-la.",
+    "experienceN": "Expérience {{n}}",
+    "jobTitle": "Poste",
+    "company": "Entreprise",
+    "place": "Lieu",
+    "start": "Début (MM/AAAA)",
+    "end": "Fin (MM/AAAA)",
+    "current": "J’y travaille encore",
+    "tasks": "Ce que vous faisiez",
+    "addExperience": "Ajouter une expérience",
+    "titleRequired": "Chaque expérience a besoin d’un poste.",
+    "badMonth": "Dates au format MM/AAAA, ex. 03/2022.",
+    "educationN": "Formation {{n}}",
+    "degree": "Diplôme ou formation",
+    "degreeHint": "Ex. : BAC, Licence en gestion",
+    "school": "École ou centre",
+    "year": "Année",
+    "addEducation": "Ajouter une formation",
+    "educationIncomplete": "Remplissez le diplôme, l’école et l’année (4 chiffres) de chaque formation.",
+    "worker": "Me proposer comme travailleur",
+    "workerOn": "Visible dans la liste des travailleurs · {{rate}}",
+    "workerOff": "Les clients peuvent vous trouver et vous écrire pour un travail.",
+    "workerEdit": "Métier, tarif, type de service",
+    "workerHint": "Les clients vous trouvent dans la liste des travailleurs et vous écrivent dans le chat de l’application.",
+    "workerSwitch": "Apparaître dans la liste des travailleurs",
+    "rate": "Tarif horaire (GNF)",
+    "rateHint": "Vous pourrez toujours en discuter avec le client.",
+    "serviceType": "Type de service",
+    "workerPrivacy": "Votre numéro n’est jamais montré : les clients vous écrivent dans l’application.",
+    "listedOn": "Vous êtes visible dans la liste des travailleurs.",
+    "listedOff": "Vous n’apparaissez plus dans la liste des travailleurs.",
+    "boost": "Mettre mon profil en avant",
+    "boostHint": "Apparaissez en tête de la liste des travailleurs.",
+    "boostOn": "Profil en avant",
+    "boostUntil": "Jusqu’au {{date}}"
+  },
+  "plans": {
+    "title": "Mettre mon profil en avant",
+    "intro": "Créer votre CV et postuler est gratuit. Une formule met votre profil en tête de la liste des travailleurs pendant sa durée.",
+    "activeUntil": "Active jusqu’au {{date}}",
+    "audience": {
+      "job_seeker": "Chercheur d’emploi",
+      "service_provider": "Prestataire"
+    },
+    "forDays_one": "pour {{count}} jour",
+    "forDays_other": "pour {{count}} jours",
+    "featureVisibility": "Votre profil en tête de la liste des travailleurs",
+    "choose": "Choisir",
+    "extend": "Prolonger",
+    "payText": "Votre profil sera en avant pendant {{count}} jours à partir du paiement.",
+    "extendText": "La nouvelle période commence à la fin de votre formule actuelle.",
+    "none": "Aucune formule pour le moment",
+    "noneText": "Revenez bientôt."
+  },
+  "spontaneous": {
+    "cta": "Travailler chez {{store}} ? Envoyez votre CV",
+    "title": "Candidature spontanée",
+    "text": "Votre CV est envoyé à {{store}}, même sans offre publiée. La boutique le reçoit une fois les frais payés.",
+    "noteHint": "Le poste qui vous intéresse, vos disponibilités…",
+    "sent": "Candidature envoyée à la boutique."
+  },
+  "received": {
+    "title": "Candidatures reçues",
+    "hint": "Des personnes qui veulent travailler dans votre boutique.",
+    "empty": "Aucune candidature reçue",
+    "emptyText": "Les candidatures spontanées envoyées à votre boutique apparaîtront ici."
+  },
+  "recruiter": {
+    "title": "Mes offres d’emploi",
+    "statActive": "En ligne",
+    "statApplicants": "Candidats",
+    "statViews": "Vues",
+    "post": "Publier une offre",
+    "tab": {
+      "active": "En ligne",
+      "draft": "Brouillons",
+      "closed": "Terminées"
+    },
+    "empty": {
+      "active": "Aucune offre en ligne",
+      "draft": "Aucun brouillon",
+      "closed": "Aucune offre terminée"
+    },
+    "emptyText": "Publiez une offre : elle reste en ligne 30 jours.",
+    "state": {
+      "live": "En ligne",
+      "draft": "Brouillon",
+      "unpaid": "Paiement en attente",
+      "closed": "Fermée",
+      "expired": "Expirée"
+    },
+    "applicants_one": "{{count}} candidat",
+    "applicants_other": "{{count}} candidats",
+    "until": "Jusqu’au {{date}}"
+  },
+  "recruiterJob": {
+    "title": "Mon offre",
+    "notYours": "Cette offre n’est pas à vous",
+    "liveUntil": "En ligne jusqu’au {{date}}",
+    "views": "Vues",
+    "applicants": "Candidats",
+    "shortlisted": "Présélection",
+    "interviews": "Entretiens",
+    "close": "Fermer l’offre",
+    "closeTitle": "Fermer cette offre ?",
+    "closeText": "Elle disparaît des offres et plus personne ne peut postuler. Vous gardez les candidatures reçues.",
+    "closed": "Offre fermée",
+    "publish": "Publier",
+    "republish": "Republier",
+    "seePublic": "Voir comme les candidats",
+    "candidates": "Candidats",
+    "sort": {
+      "match": "Meilleure correspondance",
+      "date": "Plus récents"
+    },
+    "noCandidates": "Aucun candidat",
+    "noCandidatesOpen": "Les candidatures arrivent ici. Vous êtes prévenu(e) à chaque nouvelle.",
+    "noCandidatesClosed": "Publiez l’offre pour recevoir des candidatures."
+  },
+  "jobForm": {
+    "newTitle": "Nouvelle offre",
+    "editTitle": "Modifier l’offre",
+    "steps": {
+      "basics": "Le poste",
+      "details": "Salaire et détails",
+      "candidates": "Profil recherché",
+      "preview": "Aperçu"
+    },
+    "jobTitle": "Intitulé du poste",
+    "jobTitleHint": "Ex. : Vendeur(se) en boutique",
+    "org": "Entreprise ou boutique",
+    "category": "Catégorie",
+    "type": "Type de contrat",
+    "workplace": "Lieu de travail",
+    "city": "Ville",
+    "area": "Quartier",
+    "areaHint": "Ex. : Kaloum, Ratoma",
+    "titleRequired": "Indiquez l’intitulé du poste.",
+    "orgRequired": "Indiquez l’entreprise ou la boutique.",
+    "salaryMin": "Salaire min. (GNF)",
+    "salaryMax": "Salaire max. (GNF)",
+    "per": "Par",
+    "aboutHint": "Le travail au quotidien, l’équipe, les horaires…",
+    "aboutRequired": "Décrivez le poste (10 caractères minimum).",
+    "salaryOrder": "Le salaire minimum dépasse le maximum.",
+    "onePerLine": "Un élément par ligne",
+    "candidatesHint": "Les candidats voient leur % de correspondance avec ces compétences et langues.",
+    "skills": "Compétences recherchées",
+    "skillsHint": "Ex. : Vente, Caisse",
+    "languages": "Langues",
+    "experience": "Expérience",
+    "experienceHint": "Ex. : 1 an minimum",
+    "education": "Niveau d’études",
+    "educationHint": "Ex. : BAC",
+    "deadline": "Date limite (JJ/MM/AAAA)",
+    "badDate": "Date au format JJ/MM/AAAA, ex. 31/12/2026.",
+    "aboutCompany": "À propos de l’entreprise",
+    "editStep": "Modifier",
+    "publishInfo": "Publier coûte {{amount}} GNF : l’offre reste en ligne 30 jours. Vous pouvez aussi l’enregistrer en brouillon.",
+    "saveDraft": "Brouillon",
+    "publish": "Publier",
+    "saveChanges": "Enregistrer",
+    "saved": "Offre enregistrée",
+    "publishTitle": "Publier l’offre",
+    "publishText": "Votre offre sera visible par tous pendant 30 jours. Vous recevrez les candidatures ici.",
+    "published": "Offre publiée !"
+  },
+  "candidate": {
+    "title": "Candidat",
+    "appliedFor": "Pour « {{title}} »",
+    "spontaneous": "Candidature spontanée",
+    "withdrawn": "Ce candidat a retiré sa candidature.",
+    "profile": "Profil",
+    "noSummary": "Pas de présentation.",
+    "contact": "Contact et CV",
+    "lockedText": "Le téléphone, l’e-mail et le fichier CV sont cachés. Débloquez-les une fois pour ce candidat.",
+    "unlock": "Débloquer — {{amount}} GNF",
+    "unlockTitle": "Débloquer le contact et le CV",
+    "unlockText": "Vous verrez le téléphone, l’e-mail et le fichier CV de {{name}}, pour toutes ses candidatures chez vous.",
+    "unlocked": "Débloqué",
+    "openCv": "Ouvrir le CV",
+    "noCvFile": "Pas de fichier CV : voir le profil ci-dessus.",
+    "notConfirmed": "Pas encore confirmé",
+    "message": "Écrire au candidat",
+    "shortlist": "Présélectionner",
+    "invite": "Inviter à un entretien",
+    "reschedule": "Changer la date de l’entretien",
+    "hire": "Retenir",
+    "reject": "Ne pas retenir",
+    "confirm": {
+      "hired": "Retenir {{name}} ?",
+      "rejected": "Ne pas retenir {{name}} ?"
+    },
+    "confirmText": {
+      "hired": "Le candidat est prévenu de la bonne nouvelle.",
+      "rejected": "Le candidat est prévenu, poliment. Vous pourrez changer d’avis."
+    },
+    "done": {
+      "shortlisted": "Candidat présélectionné",
+      "hired": "Candidat retenu",
+      "rejected": "Candidat non retenu"
+    },
+    "inviteTitle": "Inviter à un entretien",
+    "inviteHint": "Le candidat reçoit la date, l’heure et le lieu, et peut confirmer sa présence.",
+    "day": "Date (JJ/MM/AAAA)",
+    "time": "Heure",
+    "place": "Lieu",
+    "placeHint": "Ex. : TechHub, Marché Niger, 1er étage",
+    "mapLink": "Lien Google Maps",
+    "mapLinkHint": "Pour trouver le lieu facilement",
+    "note": "Message",
+    "sendInvite": "Envoyer l’invitation",
+    "invited": "Invitation envoyée",
+    "badDate": "Indiquez une date à venir (JJ/MM/AAAA) et une heure (10:30).",
+    "badLink": "Le lien doit commencer par https://"
+  },
+  "ads": {
+    "sponsored": "Sponsorisé",
+    "learnMore": "En savoir plus",
+    "closeIn_one": "Fermeture possible dans {{count}} seconde",
+    "closeIn_other": "Fermeture possible dans {{count}} secondes"
+  },
+  "network": {
+    "offline": "Pas de connexion internet",
+    "back": "De nouveau en ligne"
   }
 }

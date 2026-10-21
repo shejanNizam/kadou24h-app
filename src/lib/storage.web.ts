@@ -29,4 +29,6 @@ export const storage = {
 export const StorageKeys = {
   session: 'k24.session',
   prefs: 'k24.prefs',
+  /** { [adId]: 'YYYY-MM-DD' } — popup / interstitial ads already shown today */
+  adsSeen: 'k24.adsSeen',
 } as const;

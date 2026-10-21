@@ -37,6 +37,7 @@ import { CONAKRY, getCurrentPosition, reverseGeocode, type LatLng } from '@/lib/
 import { userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { AppMode, UserRole, type FileRef } from '@/types/api';
+import { img } from '@/lib/image';
 
 const STEPS = ['store', 'location', 'documents', 'payout', 'review'] as const;
 type Step = (typeof STEPS)[number];
@@ -414,7 +415,7 @@ function ApplicationForm({ store }: { store?: MyStore }) {
           <>
             <View style={styles.summary}>
               <View style={styles.row}>
-                {logo ? <Image source={logo.url} style={styles.summaryLogo} contentFit="cover" /> : null}
+                {logo ? <Image source={img(logo.url, 'thumb')} style={styles.summaryLogo} contentFit="cover" /> : null}
                 <View style={styles.flex}>
                   <AppText variant="title">{storeName}</AppText>
                   <AppText variant="caption" color={Colors.textMuted}>

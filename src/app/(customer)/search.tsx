@@ -14,6 +14,7 @@ import { Colors, MaxContentWidth, MinTouch, Spacing } from '@/constants/theme';
 import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
 import { useGetCategoriesQuery, useSearchWorkersInfiniteQuery } from '@/features/catalog/api';
 import { AdBanner } from '@/features/catalog/components/AdBanner';
+import { AdInterrupt } from '@/features/catalog/components/AdInterrupt';
 import {
   activeFilterCount,
   DEFAULT_FILTERS,
@@ -128,6 +129,7 @@ export default function SearchScreen() {
           header={
             <View style={styles.listHeader}>
               <AdBanner placement="search" />
+              <AdInterrupt placement="search" />
             </View>
           }
           onResetFilters={count || term ? () => {

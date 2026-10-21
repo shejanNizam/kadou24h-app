@@ -223,6 +223,22 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app — COD limit and pay-first online orders (2026-10-21)
+- `POST /orders/checkout-summary` → also `cod: { allowed, limit }`. `POST /orders` with `cod` above the limit → 400 "Cash on delivery is not available above … GNF per store".
+- Online orders: sub-orders `pending_payment` until paid (then `new`); `order.paymentDueAt` (placed + 30 min). `POST /payments/initiate` after it → 400 "The time to pay for this order is over". Expired orders: `cancellation.by = "system"`, items back in the cart, notification `order_cancelled` (data.cancelledBy "system").
+- `POST /conversations` type order on an unpaid sub-order → 400. Store endpoints never return `pending_payment` sub-orders.
+
+## Added for the app, Phase 11 — polish (2026-10-21)
+- `GET /cart/suggestions?limit=` (≤ 20, default 10) → products (same shape as `GET /products` items): bought in the same accepted/delivered orders as the cart's products, most often first, then best sellers of the cart's categories. Approved and in stock only; never the cart's own products; `[]` for an empty cart.
+- Ads: the app now also shows `popup` and `interstitial` types (`GET /advertisements?placement=`), counting impressions and clicks.
+
+## Changed for the app, Phase 10 — jobs, CV, plans (2026-10-21)
+- `GET /jobs/my?tab=active|draft|closed` (meta.counts), `GET /jobs/applications/:id` (viewerRole candidate | recruiter), `PATCH /jobs/applications/:id/withdraw`, `POST /jobs/applications/:id/interview/confirm`.
+- `GET /jobs/:id` (optional auth): `isOwner`, `isOpen`, `myApplication`; drafts only for their poster.
+- Recruiter `PATCH …/status`: under_review | shortlisted | hired | rejected only. Fees (publish, CV unlock, spontaneous, plans): orange_money | mobile_money | card.
+- `POST /professional-profiles/me/generate-ai-cv` `{ lang }` → `{ summary }` (saves nothing). `PUT /me` takes `generatedCv`; `null` removes photo / uploadedResume / generatedCv.
+- Socket `job_application:new | status_changed | interview_scheduled`; notifications carry `applicationId`.
+
 ## Changed for the app, Phase 9 — bus driver / relay (2026-10-21)
 - `GET /deliveries/:id/available-riders`: bus legs add `servesRoute` and list the drivers of that station → station route first; legs leaving the store list linked riders first; legs leaving a station are by distance.
 - Rider list / track: `orderId.deliveryType`; `orderId.addressSnapshot` and `toPhone` only when the leg ends with the customer (door, or the bus leg of a `station_pickup` order).

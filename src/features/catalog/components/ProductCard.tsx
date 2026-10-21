@@ -10,6 +10,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 import { AddToCartControl } from '@/features/cart/components/AddToCartControl';
 
 import type { Product } from '../types';
+import { img } from '@/lib/image';
 
 export const productBadge = (p: Product): { label: string; tone: 'discount' | 'new' | 'popular' } | null => {
   if (p.discountPrice && p.discountPrice < p.price) {
@@ -39,7 +40,7 @@ export function ProductCard({ product, width }: { product: Product; width: numbe
         style={({ pressed }) => [styles.body, pressed && styles.pressed]}>
         <View style={styles.imageBox}>
           <Image
-            source={product.images[0]?.url}
+            source={img(product.images[0]?.url, 'card')}
             style={styles.image}
             contentFit="contain"
             transition={150}

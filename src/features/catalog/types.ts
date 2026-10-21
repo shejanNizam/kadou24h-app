@@ -93,6 +93,8 @@ export interface ProductQuery {
 
 export interface PublicVendor {
   _id: string;
+  /** The owner (to hide "apply" on my own store) */
+  userId: string;
   storeName: string;
   logo?: FileRef;
   marketName?: string;

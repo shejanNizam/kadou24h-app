@@ -8,6 +8,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 import { useLocalized } from '@/hooks/useLocalized';
 
 import type { Category } from '../types';
+import { img } from '@/lib/image';
 
 /** Square image + name; opens that category's products. */
 export function CategoryTile({ category, size = 72 }: { category: Category; size?: number }) {
@@ -21,7 +22,7 @@ export function CategoryTile({ category, size = 72 }: { category: Category; size
       style={({ pressed }) => [styles.tile, { width: size + 8 }, pressed && styles.pressed]}>
       <View style={[styles.imageBox, { width: size, height: size }]}>
         {category.image?.url ? (
-          <Image source={category.image.url} style={styles.image} contentFit="contain" />
+          <Image source={img(category.image.url, 'thumb')} style={styles.image} contentFit="contain" />
         ) : (
           <Feather name="grid" size={24} color={Colors.primary} />
         )}

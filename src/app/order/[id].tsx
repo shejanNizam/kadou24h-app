@@ -121,7 +121,16 @@ export default function OrderScreen() {
 
         {unpaidOnline && (
           <View style={styles.payBox}>
-            <Banner tone="warning" message={t('order.unpaid')} />
+            <Banner
+              tone="warning"
+              message={
+                order.paymentDueAt
+                  ? t('order.unpaidUntil', {
+                      time: new Date(order.paymentDueAt).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
+                    })
+                  : t('order.unpaid')
+              }
+            />
             <Button title={t('order.payNow')} icon="smartphone" loading={payState.isLoading} onPress={() => void payNow()} />
           </View>
         )}

@@ -14,6 +14,7 @@ import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 
 import { useGetMyStoreQuery, useUpdateAvailabilityMutation } from '../api';
+import { img } from '@/lib/image';
 
 /** Vendor profile extras: my store at a glance (open switch, rating, today) + store settings. */
 export function StoreSection() {
@@ -39,7 +40,7 @@ export function StoreSection() {
         <View style={styles.card}>
           <View style={styles.row}>
             <View style={styles.logo}>
-              {store.logo?.url ? <Image source={store.logo.url} style={styles.logo} contentFit="cover" /> : <Feather name="shopping-bag" size={22} color={Colors.primary} />}
+              {store.logo?.url ? <Image source={img(store.logo.url, 'thumb')} style={styles.logo} contentFit="cover" /> : <Feather name="shopping-bag" size={22} color={Colors.primary} />}
             </View>
             <View style={styles.flex}>
               <AppText variant="title" numberOfLines={1}>
@@ -95,6 +96,7 @@ export function StoreSection() {
         <MenuRow icon="shopping-bag" label={t('store.business')} onPress={() => router.push('/vendor/store')} />
         <MenuRow icon="clock" label={t('store.hours')} onPress={() => router.push('/vendor/hours')} />
         <MenuRow icon="users" label={t('riders.title')} onPress={() => router.push('/vendor/riders')} />
+        <MenuRow icon="inbox" label={t('received.title')} onPress={() => router.push('/vendor/applications')} />
         <MenuRow
           icon="star"
           label={t('store.reviews')}
