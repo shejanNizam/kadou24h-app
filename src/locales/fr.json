@@ -170,7 +170,10 @@
     "unlockNotYours": "Vous ne pouvez débloquer que les personnes qui ont postulé chez vous.",
     "codLimit": "Le paiement à la livraison est limité à {{limit}} par boutique. Payez en ligne.",
     "paymentTimeOver": "Le délai de paiement est dépassé. La commande va être annulée et les articles remis dans votre panier.",
-    "chatUnpaidOrder": "Payez d’abord la commande : la boutique la reçoit dès le paiement."
+    "chatUnpaidOrder": "Payez d’abord la commande : la boutique la reçoit dès le paiement.",
+    "workerNotApproved": "Votre profil de travailleur doit d’abord être approuvé.",
+    "workerIncomplete": "Complétez votre profil de travailleur avant de l’envoyer.",
+    "workerInReview": "Votre profil est déjà en cours d’examen."
   },
   "tabs": {
     "home": "Accueil",
@@ -215,7 +218,8 @@
     "findJob": "Offres d’emploi",
     "myCv": "Mon CV",
     "myApplications": "Mes candidatures",
-    "postJob": "Publier une offre"
+    "postJob": "Publier une offre",
+    "becomeWorker": "Devenir travailleur"
   },
   "kyc": {
     "vendorTitle": "Devenir vendeur",
@@ -427,7 +431,119 @@
     "location": "Zone",
     "languages": "Langues",
     "skills": "Compétences",
-    "message": "Envoyer un message"
+    "message": "Envoyer un message",
+    "title": "Devenir travailleur",
+    "guest": "Connectez-vous pour proposer vos services aux clients.",
+    "subtitle": "Gérez votre profil de travailleur et votre demande.",
+    "dashboardTitle": "Espace travailleur",
+    "dashboardSubtitle": "Les clients qui vous ont écrit et votre note.",
+    "startTitle": "Travaillez avec Kadou24h",
+    "startText": "Créez votre profil de travailleur pour proposer vos services et gagner de l’argent.",
+    "step1": "Remplissez votre profil et ajoutez votre pièce d’identité.",
+    "step2": "L’équipe Kadou24h vérifie votre profil.",
+    "step3": "Les clients vous trouvent et vous écrivent dans l’application.",
+    "create": "Créer mon profil de travailleur",
+    "statusLabel": {
+      "draft": "Brouillon",
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "needs_changes": "À corriger",
+      "rejected": "Refusé",
+      "suspended": "Suspendu"
+    },
+    "status": {
+      "pending": {
+        "title": "Demande en cours d’examen",
+        "text": "Votre profil a été envoyé le {{date}}. Nous vous prévenons dès qu’il est vérifié."
+      },
+      "approved": {
+        "title": "Vous êtes approuvé(e) !",
+        "text": "Votre profil de travailleur est actif. Les clients vous écrivent dans l’application."
+      },
+      "needs_changes": {
+        "title": "Des corrections sont demandées",
+        "text": "Corrigez votre profil puis renvoyez-le."
+      },
+      "rejected": {
+        "title": "Demande refusée",
+        "text": "Vous pouvez modifier votre profil et le renvoyer."
+      },
+      "suspended": {
+        "title": "Profil suspendu",
+        "text": "Les clients ne vous voient plus. Contactez le support pour en savoir plus."
+      }
+    },
+    "note": "Message de l’équipe : {{note}}",
+    "visible": "Visible par les clients",
+    "visibleOn": "Vous apparaissez dans la liste des travailleurs.",
+    "visibleOff": "En pause : vous n’apparaissez pas dans la liste.",
+    "viewProfile": "Voir mon profil",
+    "editProfile": "Modifier le profil",
+    "fixAndResend": "Corriger et renvoyer",
+    "contactSupport": "Contacter le support",
+    "statClients": "Clients qui ont écrit",
+    "statUnread": "Messages non lus",
+    "statRating_one": "Note ({{count}} avis)",
+    "statRating_other": "Note ({{count}} avis)",
+    "noRating": "Pas encore d’avis",
+    "recentTitle": "Demandes des clients",
+    "recentEmpty": "Pas encore de message. Les clients qui vous trouvent vous écriront ici.",
+    "customer": "Client",
+    "allMessages": "Voir tous les messages",
+    "days": {
+      "0": "Dim",
+      "1": "Lun",
+      "2": "Mar",
+      "3": "Mer",
+      "4": "Jeu",
+      "5": "Ven",
+      "6": "Sam"
+    },
+    "form": {
+      "title": "Profil de travailleur",
+      "pendingEdit": "Votre profil est en cours d’examen. Vos modifications seront vues par l’équipe.",
+      "photo": "Photo de profil",
+      "photoHint": "Une photo nette de votre visage : les clients vous reconnaissent.",
+      "name": "Nom complet",
+      "service": "Type de service",
+      "profession": "Métier",
+      "years": "Années d’expérience",
+      "rate": "Tarif horaire (GNF)",
+      "hours": "Jours et heures de travail",
+      "from": "De",
+      "to": "À",
+      "city": "Zone de service",
+      "cityHint": "Ville et quartier, ex. Conakry • Kipé",
+      "useLocation": "Utiliser ma position",
+      "locationSaved": "Position enregistrée",
+      "locationDenied": "Position introuvable. Autorisez la localisation ou écrivez votre quartier.",
+      "summary": "Compétences et description",
+      "summaryHint": "Votre expérience, ce que vous faites, vos disponibilités…",
+      "skills": "Compétences",
+      "id": "Pièce d’identité",
+      "idHint": "Carte d’identité ou passeport. Seule l’équipe Kadou24h la voit, jamais les clients.",
+      "idHintApproved": "Changer la pièce d’identité renvoie votre profil en vérification.",
+      "cv": "Mon CV (facultatif)",
+      "cvAdded": "Ajouté — les recruteurs peuvent le demander",
+      "cvNone": "Pas encore de CV",
+      "send": "Envoyer pour vérification",
+      "sent": "Profil envoyé. Nous vous prévenons dès qu’il est vérifié.",
+      "idReview": "Enregistré. Votre nouvelle pièce d’identité va être vérifiée.",
+      "need": {
+        "photo": "Ajoutez une photo de profil.",
+        "name": "Indiquez votre nom complet.",
+        "service": "Choisissez un type de service.",
+        "profession": "Indiquez votre métier.",
+        "years": "Indiquez vos années d’expérience.",
+        "rate": "Indiquez votre tarif horaire.",
+        "hours": "Heures de travail : choisissez au moins un jour et des heures valides (ex. 08:00 à 18:00).",
+        "city": "Indiquez votre zone de service.",
+        "summary": "Décrivez votre travail (au moins {{count}} caractères).",
+        "skills": "Ajoutez au moins une compétence.",
+        "id": "Ajoutez une photo de votre pièce d’identité."
+      }
+    },
+    "hoursLabel": "Horaires"
   },
   "days": {
     "mon": "lun",

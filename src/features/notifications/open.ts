@@ -46,7 +46,8 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
   }
   // Vendor / rider application reviewed: { kind, status }
   if (str('kind') && str('status')) {
-    router.push(str('kind') === 'rider' ? '/kyc/rider' : '/kyc/vendor');
+    const kind = str('kind');
+    router.push(kind === 'worker' ? '/worker-profile' : kind === 'rider' ? '/kyc/rider' : '/kyc/vendor');
     return true;
   }
   return false;

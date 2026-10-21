@@ -170,7 +170,10 @@
     "unlockNotYours": "You can only unlock people who applied to you.",
     "codLimit": "Cash on delivery is limited to {{limit}} per store. Please pay online.",
     "paymentTimeOver": "The time to pay is over. The order will be cancelled and the items put back in your cart.",
-    "chatUnpaidOrder": "Pay for the order first: the store receives it once paid."
+    "chatUnpaidOrder": "Pay for the order first: the store receives it once paid.",
+    "workerNotApproved": "Your worker profile must be approved first.",
+    "workerIncomplete": "Complete your worker profile before sending it.",
+    "workerInReview": "Your profile is already under review."
   },
   "tabs": {
     "home": "Home",
@@ -215,7 +218,8 @@
     "findJob": "Job offers",
     "myCv": "My CV",
     "myApplications": "My applications",
-    "postJob": "Post a job"
+    "postJob": "Post a job",
+    "becomeWorker": "Become a worker"
   },
   "kyc": {
     "vendorTitle": "Become a vendor",
@@ -427,7 +431,119 @@
     "location": "Area",
     "languages": "Languages",
     "skills": "Skills",
-    "message": "Send a message"
+    "message": "Send a message",
+    "title": "Become a worker",
+    "guest": "Sign in to offer your services to customers.",
+    "subtitle": "Manage your worker profile and application.",
+    "dashboardTitle": "Worker dashboard",
+    "dashboardSubtitle": "The customers who wrote to you and your rating.",
+    "startTitle": "Start working with Kadou24h",
+    "startText": "Create your worker profile to offer your services and earn money.",
+    "step1": "Fill in your profile and add your ID.",
+    "step2": "The Kadou24h team checks your profile.",
+    "step3": "Customers find you and message you in the app.",
+    "create": "Create my worker profile",
+    "statusLabel": {
+      "draft": "Draft",
+      "pending": "Pending",
+      "approved": "Approved",
+      "needs_changes": "Needs changes",
+      "rejected": "Rejected",
+      "suspended": "Suspended"
+    },
+    "status": {
+      "pending": {
+        "title": "Application under review",
+        "text": "Your profile was sent on {{date}}. We will tell you as soon as it is checked."
+      },
+      "approved": {
+        "title": "You’re approved!",
+        "text": "Your worker profile is active. Customers message you in the app."
+      },
+      "needs_changes": {
+        "title": "Changes requested",
+        "text": "Fix your profile, then send it again."
+      },
+      "rejected": {
+        "title": "Application rejected",
+        "text": "You can edit your profile and send it again."
+      },
+      "suspended": {
+        "title": "Profile suspended",
+        "text": "Customers no longer see you. Contact support to know more."
+      }
+    },
+    "note": "Message from the team: {{note}}",
+    "visible": "Visible to customers",
+    "visibleOn": "You appear in the workers list.",
+    "visibleOff": "Paused: you are not in the list.",
+    "viewProfile": "View my profile",
+    "editProfile": "Edit profile",
+    "fixAndResend": "Fix and send again",
+    "contactSupport": "Contact support",
+    "statClients": "Customers who wrote",
+    "statUnread": "Unread messages",
+    "statRating_one": "Rating ({{count}} review)",
+    "statRating_other": "Rating ({{count}} reviews)",
+    "noRating": "No reviews yet",
+    "recentTitle": "Customer requests",
+    "recentEmpty": "No messages yet. Customers who find you will write here.",
+    "customer": "Customer",
+    "allMessages": "See all messages",
+    "days": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    },
+    "form": {
+      "title": "Worker profile",
+      "pendingEdit": "Your profile is under review. The team will see your changes.",
+      "photo": "Profile photo",
+      "photoHint": "A clear photo of your face: customers recognise you.",
+      "name": "Full name",
+      "service": "Service type",
+      "profession": "Profession",
+      "years": "Years of experience",
+      "rate": "Hourly rate (GNF)",
+      "hours": "Working days and hours",
+      "from": "From",
+      "to": "To",
+      "city": "Service area",
+      "cityHint": "City and area, e.g. Conakry • Kipé",
+      "useLocation": "Use my location",
+      "locationSaved": "Location saved",
+      "locationDenied": "Location not found. Allow location or type your area.",
+      "summary": "Skills and description",
+      "summaryHint": "Your experience, what you do, when you are available…",
+      "skills": "Skills",
+      "id": "ID document",
+      "idHint": "ID card or passport. Only the Kadou24h team sees it, never customers.",
+      "idHintApproved": "Changing your ID sends your profile back for review.",
+      "cv": "My CV (optional)",
+      "cvAdded": "Added — recruiters can request it",
+      "cvNone": "No CV yet",
+      "send": "Submit for review",
+      "sent": "Profile sent. We will tell you once it is checked.",
+      "idReview": "Saved. Your new ID will be checked.",
+      "need": {
+        "photo": "Add a profile photo.",
+        "name": "Enter your full name.",
+        "service": "Choose a service type.",
+        "profession": "Enter your profession.",
+        "years": "Enter your years of experience.",
+        "rate": "Enter your hourly rate.",
+        "hours": "Working hours: pick at least one day and valid hours (e.g. 08:00 to 18:00).",
+        "city": "Enter your service area.",
+        "summary": "Describe your work (at least {{count}} characters).",
+        "skills": "Add at least one skill.",
+        "id": "Add a photo of your ID."
+      }
+    },
+    "hoursLabel": "Working hours"
   },
   "days": {
     "mon": "Mon",

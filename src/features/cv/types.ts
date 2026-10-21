@@ -53,7 +53,42 @@ export interface MyCv {
   visibleUntil?: string;
   ratingAvg: number;
   ratingCount: number;
+  /** When I work (worker profile) */
+  workingHours?: WorkingHours;
+  /** ID card photo — only the Kadou24h team sees it */
+  idDocument?: FileRef;
+  /** Worker listing approval: customers see me only once approved */
+  approvalStatus: WorkerStatus;
+  reviewNote?: string;
+  submittedAt?: string;
   updatedAt: string;
+}
+
+export type WorkerStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'needs_changes' | 'suspended';
+
+/** days 0 (Sunday) … 6 (Saturday); hours "HH:mm" */
+export interface WorkingHours {
+  days: number[];
+  from: string;
+  to: string;
+}
+
+/** GET /professional-profiles/me/worker-summary — real data only (no bookings or earnings exist) */
+export interface WorkerSummary {
+  profileId: string;
+  approvalStatus: WorkerStatus;
+  reviewNote?: string;
+  submittedAt?: string;
+  isWorkerListed: boolean;
+  ratingAvg: number;
+  ratingCount: number;
+  messages: { conversations: number; unread: number; unreadChats: number };
+  recent: {
+    _id: string;
+    peer: { _id: string; name: string; avatar?: FileRef } | null;
+    lastMessage?: { text?: string; type: 'text' | 'image' | 'voice' | 'system'; at: string };
+    unreadCount: number;
+  }[];
 }
 
 export interface CvInput {
@@ -72,6 +107,9 @@ export interface CvInput {
   hourlyRate?: number;
   experienceYears?: number;
   serviceCategoryId?: string;
+  /** null clears it */
+  workingHours?: WorkingHours | null;
+  idDocument?: FileRef | null;
 }
 
 export interface WorkerListingInput {

@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
-import { Chip } from '@/components/ui/Chip';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { StackHeader } from '@/components/ui/StackHeader';
@@ -16,13 +15,11 @@ import { LANGUAGE_IDEAS, TagInput } from '@/components/ui/TagInput';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { useGetCategoriesQuery } from '@/features/catalog/api';
-import { useGetMyCvQuery, useSaveCvMutation, useSetWorkerListingMutation, useSuggestSummaryMutation } from '@/features/cv/api';
+import { useGetMyCvQuery, useSaveCvMutation, useSuggestSummaryMutation } from '@/features/cv/api';
 import type { Education, Experience, MyCv } from '@/features/cv/types';
-import { useLocalized } from '@/hooks/useLocalized';
 import { getApiErrorMessage } from '@/lib/api/errors';
 
-type Section = 'about' | 'experience' | 'education' | 'skills' | 'worker';
+type Section = 'about' | 'experience' | 'education' | 'skills';
 
 /** Edit one part of my CV, then save it (PUT /professional-profiles/me). */
 export default function CvEditScreen() {
@@ -44,8 +41,6 @@ export default function CvEditScreen() {
         <EducationForm cv={cv} />
       ) : section === 'skills' ? (
         <SkillsForm cv={cv} />
-      ) : section === 'worker' ? (
-        <WorkerForm cv={cv} />
       ) : (
         <AboutForm cv={cv} />
       )}
@@ -257,75 +252,6 @@ function SkillsForm({ cv }: { cv: MyCv }) {
   );
 }
 
-/** Listed in the workers directory: profession, rate per hour, service type */
-function WorkerForm({ cv }: { cv: MyCv }) {
-  const { t } = useTranslation();
-  const l = useLocalized();
-  const toast = useToast();
-  const { data: services = [] } = useGetCategoriesQuery('service');
-  const [listed, setListed] = useState(cv.isWorkerListed || !cv.profession);
-  const [profession, setProfession] = useState(cv.profession ?? '');
-  const [rate, setRate] = useState(cv.hourlyRate ? String(cv.hourlyRate) : '');
-  const [years, setYears] = useState(cv.experienceYears !== undefined ? String(cv.experienceYears) : '');
-  const [serviceId, setServiceId] = useState(typeof cv.serviceCategoryId === 'string' ? cv.serviceCategoryId : cv.serviceCategoryId?._id);
-  const [error, setError] = useState<string | null>(null);
-  const [save, saveState] = useSaveCvMutation();
-  const [setListing, listingState] = useSetWorkerListingMutation();
-
-  const submit = async () => {
-    setError(null);
-    if (listed && profession.trim().length < 2) return setError(t('cv.professionRequired'));
-    try {
-      if (profession.trim() && profession.trim() !== cv.profession) await save({ profession: profession.trim() }).unwrap();
-      await setListing({
-        isWorkerListed: listed,
-        ...(rate && { hourlyRate: Number(rate) }),
-        ...(years && { experienceYears: Number(years) }),
-        ...(serviceId && { serviceCategoryId: serviceId }),
-      }).unwrap();
-      toast.show(listed ? t('cv.listedOn') : t('cv.listedOff'), 'success');
-      router.back();
-    } catch (e) {
-      setError(getApiErrorMessage(e, t));
-    }
-  };
-
-  return (
-    <>
-      <KeyboardScroll contentContainerStyle={[styles.inner, styles.content]}>
-        <AppText variant="small" color={Colors.textMuted}>
-          {t('cv.workerHint')}
-        </AppText>
-        <Banner tone="danger" message={error} />
-        <View style={[styles.card, styles.row]}>
-          <AppText variant="bodyMedium" style={styles.flex}>
-            {t('cv.workerSwitch')}
-          </AppText>
-          <Switch value={listed} onValueChange={setListed} trackColor={{ true: Colors.success, false: Colors.border }} />
-        </View>
-        <TextField label={t('cv.profession')} hint={t('cv.professionHint')} value={profession} onChangeText={setProfession} maxLength={100} />
-        <TextField label={t('cv.rate')} hint={t('cv.rateHint')} optional value={rate} onChangeText={(v) => setRate(v.replace(/\D/g, '').slice(0, 9))} keyboardType="number-pad" />
-        <TextField label={t('cv.years')} optional value={years} onChangeText={(v) => setYears(v.replace(/\D/g, '').slice(0, 2))} keyboardType="number-pad" />
-        {services.length > 0 && (
-          <View style={styles.gap}>
-            <AppText variant="label">{t('cv.serviceType')}</AppText>
-            <View style={styles.chips}>
-              {services
-                .filter((c) => !c.parentId)
-                .map((c) => (
-                  <Chip key={c._id} label={l(c.name)} selected={serviceId === c._id} onPress={() => setServiceId(c._id)} />
-                ))}
-            </View>
-          </View>
-        )}
-        <AppText variant="caption" color={Colors.textMuted}>
-          {t('cv.workerPrivacy')}
-        </AppText>
-      </KeyboardScroll>
-      <Footer loading={saveState.isLoading || listingState.isLoading} onSave={() => void submit()} />
-    </>
-  );
-}
 
 function RemoveButton({ onPress }: { onPress: () => void }) {
   const { t } = useTranslation();

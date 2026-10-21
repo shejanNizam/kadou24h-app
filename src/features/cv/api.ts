@@ -6,7 +6,7 @@ import type { Payment } from '@/features/orders/types';
 import type { FeeMethod } from '@/features/jobs/types';
 import { api, unwrap } from '@/lib/api/api';
 
-import type { CvInput, MyCv, MySubscription, Plan, PlanAudience, WorkerListingInput } from './types';
+import type { CvInput, MyCv, MySubscription, Plan, PlanAudience, WorkerListingInput, WorkerSummary } from './types';
 
 export const cvApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -32,6 +32,18 @@ export const cvApi = api.injectEndpoints({
       query: (body) => ({ url: '/professional-profiles/me/worker-listing', method: 'PATCH', body }),
       transformResponse: unwrap<MyCv>,
       invalidatesTags: ['Cv'],
+    }),
+    /** Become a worker: send the profile for the team's review */
+    submitWorkerApplication: build.mutation<MyCv, void>({
+      query: () => ({ url: '/professional-profiles/me/worker-application/submit', method: 'POST' }),
+      transformResponse: unwrap<MyCv>,
+      invalidatesTags: ['Cv'],
+    }),
+    /** Worker home: status, the customers who wrote, rating */
+    getWorkerSummary: build.query<WorkerSummary, void>({
+      query: () => '/professional-profiles/me/worker-summary',
+      transformResponse: unwrap<WorkerSummary>,
+      providesTags: ['Cv', 'Conversation'],
     }),
     /** Template-based summary suggestion; saves nothing */
     suggestSummary: build.mutation<{ summary: string }, { targetRole?: string; lang: 'fr' | 'en' }>({
@@ -61,6 +73,8 @@ export const {
   useGetMyCvQuery,
   useSaveCvMutation,
   useSetWorkerListingMutation,
+  useSubmitWorkerApplicationMutation,
+  useGetWorkerSummaryQuery,
   useSuggestSummaryMutation,
   useGetPlansQuery,
   useGetMySubscriptionQuery,

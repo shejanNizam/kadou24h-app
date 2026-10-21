@@ -3,7 +3,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Image } from 'expo-image';
 import { Redirect, router } from 'expo-router';
 import { useState } from 'react';
-import { Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Switch, View } from 'react-native';
+import { Linking, Platform, Pressable, RefreshControl, ScrollView, Share, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +16,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { useGetMyCvQuery, useSaveCvMutation, useSetWorkerListingMutation } from '@/features/cv/api';
+import { useGetMyCvQuery, useSaveCvMutation } from '@/features/cv/api';
 import { makeCvPdf } from '@/features/cv/pdf';
 import type { MyCv } from '@/features/cv/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
@@ -269,39 +269,31 @@ function SectionCard({ section, icon, title, filled, preview }: { section: Secti
   );
 }
 
-/** "Show me as a worker": customers find me in the workers list and message me */
+/** Worker profile: status at a glance; everything happens on the worker page */
 function WorkerCard({ cv }: { cv: MyCv }) {
   const { t } = useTranslation();
-  const toast = useToast();
-  const [setListing, { isLoading }] = useSetWorkerListingMutation();
-
-  const toggle = async (isWorkerListed: boolean) => {
-    if (isWorkerListed && !cv.profession) {
-      router.push({ pathname: '/cv/edit', params: { section: 'worker' } });
-      return;
-    }
-    try {
-      await setListing({ isWorkerListed }).unwrap();
-      toast.show(isWorkerListed ? t('cv.listedOn') : t('cv.listedOff'));
-    } catch (e) {
-      toast.show(getApiErrorMessage(e, t), 'danger');
-    }
-  };
-
+  const status = cv.approvalStatus ?? 'draft';
+  const line =
+    status === 'approved'
+      ? cv.isWorkerListed
+        ? t('cv.workerOn', { rate: cv.hourlyRate ? `${cv.hourlyRate.toLocaleString('fr-FR')} GNF/h` : '—' })
+        : t('worker.visibleOff')
+      : status === 'draft'
+        ? t('cv.workerOff')
+        : t(`worker.statusLabel.${status}`);
   return (
-    <View style={styles.card}>
+    <Pressable onPress={() => router.push('/worker-profile')} accessibilityRole="button" style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <View style={styles.row}>
         <Feather name="tool" size={18} color={Colors.primary} />
         <View style={styles.flex}>
           <AppText variant="title">{t('cv.worker')}</AppText>
           <AppText variant="caption" color={Colors.textMuted}>
-            {cv.isWorkerListed ? t('cv.workerOn', { rate: cv.hourlyRate ? `${cv.hourlyRate.toLocaleString('fr-FR')} GNF/h` : '—' }) : t('cv.workerOff')}
+            {line}
           </AppText>
         </View>
-        <Switch value={cv.isWorkerListed} onValueChange={(v) => void toggle(v)} disabled={isLoading} trackColor={{ true: Colors.success, false: Colors.border }} accessibilityLabel={t('cv.worker')} />
+        <Feather name="chevron-right" size={18} color={Colors.textSubtle} />
       </View>
-      <Button title={t('cv.workerEdit')} size="sm" variant="ghost" onPress={() => router.push({ pathname: '/cv/edit', params: { section: 'worker' } })} />
-    </View>
+    </Pressable>
   );
 }
 

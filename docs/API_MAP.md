@@ -223,6 +223,12 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app — Become a worker (2026-10-21)
+- Professional profile adds `approvalStatus` (draft | pending | approved | rejected | needs_changes | suspended), `reviewNote`, `submittedAt`, `workingHours { days 0–6, from, to "HH:mm" }`, `idDocument`. `PUT /professional-profiles/me` takes `workingHours` / `idDocument` (null clears).
+- `POST /professional-profiles/me/worker-application/submit` (400 lists missing fields; 409 when pending/approved/suspended). `GET /professional-profiles/me/worker-summary` → status, note, isWorkerListed, rating, `messages { conversations, unread, unreadChats }`, `recent[5]`.
+- `PATCH /me/worker-listing` with `isWorkerListed: true` → 400 unless approved. Public `/workers` and `/workers/:id` and worker chats: approved only; never `idDocument`, `uploadedResume`, `generatedCv`, review data.
+- Socket `application:reviewed { kind: "worker", status, note }`; notification data `{ kind: "worker", status }`.
+
 ## Changed for the app — COD limit and pay-first online orders (2026-10-21)
 - `POST /orders/checkout-summary` → also `cod: { allowed, limit }`. `POST /orders` with `cod` above the limit → 400 "Cash on delivery is not available above … GNF per store".
 - Online orders: sub-orders `pending_payment` until paid (then `new`); `order.paymentDueAt` (placed + 30 min). `POST /payments/initiate` after it → 400 "The time to pay for this order is over". Expired orders: `cancellation.by = "system"`, items back in the cart, notification `order_cancelled` (data.cancelledBy "system").

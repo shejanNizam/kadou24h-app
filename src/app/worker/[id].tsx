@@ -15,6 +15,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetWorkerQuery } from '@/features/catalog/api';
 import { useOpenChat } from '@/features/chat/useOpenChat';
+import { formatWorkingHours } from '@/features/cv/hours';
 import { useLocalized } from '@/hooks/useLocalized';
 import { formatGNF } from '@/lib/format';
 import { img } from '@/lib/image';
@@ -75,6 +76,9 @@ export default function WorkerScreen() {
                       <Fact icon="award" label={t('worker.experience')} value={t('worker.years', { count: worker.experienceYears })} />
                     )}
                     {worker.city ? <Fact icon="map-pin" label={t('worker.location')} value={worker.city} /> : null}
+                    {formatWorkingHours(t, worker.workingHours) ? (
+                      <Fact icon="clock" label={t('worker.hoursLabel')} value={formatWorkingHours(t, worker.workingHours)!} />
+                    ) : null}
                     {worker.languages.length > 0 && (
                       <Fact icon="message-square" label={t('worker.languages')} value={worker.languages.join(', ')} />
                     )}

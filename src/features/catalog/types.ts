@@ -128,6 +128,8 @@ export interface Worker {
   hourlyRate?: number;
   experienceYears?: number;
   serviceCategoryId?: CategoryRef;
+  /** days 0 (Sunday) … 6, hours "HH:mm" */
+  workingHours?: { days: number[]; from: string; to: string };
   ratingAvg: number;
   ratingCount: number;
   isPremium?: boolean;

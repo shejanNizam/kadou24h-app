@@ -55,7 +55,7 @@ export function SessionEffects() {
     const refreshWallet = () => dispatch(api.util.invalidateTags(['Wallet', 'CodSettlement']));
     const refreshLinks = () => dispatch(api.util.invalidateTags(['RiderLink']));
     // Vendor / rider application reviewed: roles and status change
-    const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store', 'Rider']));
+    const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store', 'Rider', 'Cv']));
     socket.on('session:revoked', onRevoked);
     ORDER_EVENTS.forEach((e) => socket.on(e, refreshOrders));
     socket.on('dispute:resolved', refreshDisputes);

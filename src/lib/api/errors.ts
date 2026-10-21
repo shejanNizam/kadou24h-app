@@ -53,6 +53,10 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (codLimit) return t('errors.codLimit', { limit: `${codLimit[1].trim()} GNF` });
   if (/time to pay for this order is over/i.test(message)) return t('errors.paymentTimeOver');
   if (/pay for this order first/i.test(message)) return t('errors.chatUnpaidOrder');
+  // Worker profile
+  if (/must be approved before it can be listed/i.test(message)) return t('errors.workerNotApproved');
+  if (/complete your worker profile first/i.test(message)) return t('errors.workerIncomplete');
+  if (/application is under review/i.test(message)) return t('errors.workerInReview');
   // Account & settings
   if (/old password does not match/i.test(message)) return t('errors.oldPasswordWrong');
   if (/new password cannot be the same/i.test(message)) return t('errors.samePassword');

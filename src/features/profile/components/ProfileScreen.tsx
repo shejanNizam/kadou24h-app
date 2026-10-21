@@ -116,6 +116,14 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
             <MenuRow icon="briefcase" label={t('profile.findJob')} onPress={() => router.push('/jobs')} />
             <MenuRow icon="file-text" label={t('profile.myCv')} onPress={() => router.push('/cv')} />
             <MenuRow icon="send" label={t('profile.myApplications')} onPress={() => router.push('/jobs/applications')} />
+            {/* Customers and stores can offer their services (client rule); riders already work for Kadou24h */}
+            {mode !== AppMode.rider && (
+              <MenuRow
+                icon="tool"
+                label={t('profile.becomeWorker')}
+                onPress={() => router.push('/worker-profile')}
+              />
+            )}
             <MenuRow icon="user-plus" label={t('profile.postJob')} onPress={() => router.push('/recruiter')} last />
           </MenuSection>
         )}
