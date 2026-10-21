@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.ilmify.kadou24h",
-      "versionCode": 7,
+      "versionCode": 8,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDummyKeyForGoogleMapsDevOnly000"
