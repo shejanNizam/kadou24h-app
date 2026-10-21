@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +36,7 @@ import { connectSocket } from '@/lib/socket';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 const REPORT_REASONS = ['contact', 'offPlatformPayment', 'abuse', 'scam', 'other'] as const;
+const QUICK_REPLIES = ['coming', 'arrived', 'atGate', 'comeOut'] as const;
 
 export default function ChatScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -212,6 +213,14 @@ export default function ChatScreen() {
           </View>
         )}
         <View style={styles.composer}>
+          {/* Rider → customer: one tap at the door instead of typing on the moto */}
+          {myMode === 'rider' && c?.peer.mode === 'customer' && !restricted && (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.quick}>
+              {QUICK_REPLIES.map((key) => (
+                <Chip key={key} label={t(`chat.quick.${key}`)} onPress={() => void onSend({ type: 'text', text: t(`chat.quick.${key}`) })} />
+              ))}
+            </ScrollView>
+          )}
           <Composer allowVoice={Boolean(c?.allowVoice)} disabled={restricted || !c} onSend={onSend} onTyping={onTyping} />
         </View>
       </KeyboardAvoidingView>
@@ -285,5 +294,6 @@ const styles = StyleSheet.create({
   day: { marginVertical: Spacing.md },
   loading: { marginVertical: Spacing.lg },
   composer: { borderTopWidth: 1, borderTopColor: Colors.border, backgroundColor: Colors.background },
+  quick: { gap: Spacing.sm, paddingHorizontal: Spacing.lg, paddingTop: Spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
 });

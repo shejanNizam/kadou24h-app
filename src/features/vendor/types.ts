@@ -190,6 +190,8 @@ export interface AvailableRider {
   vehicleBrand?: string;
   plateNumber?: string;
   isLinked: boolean;
+  /** Bus leg: the driver runs this station → station route */
+  servesRoute?: boolean;
   ratingAvg: number;
   totalDeliveries: number;
   activeDeliveryCount: number;

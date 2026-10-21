@@ -22,7 +22,9 @@
     "edit": "Modifier",
     "save": "Enregistrer",
     "add": "Ajouter",
-    "loading": "Chargement…"
+    "loading": "Chargement…",
+    "saved": "Enregistré",
+    "remove": "Supprimer"
   },
   "language": {
     "title": "Choisissez votre langue",
@@ -148,7 +150,16 @@
     "deleteWallet": "Votre portefeuille contient encore de l’argent. Retirez votre solde avant de supprimer votre compte.",
     "noRiderYet": "Aucun livreur n'est encore assigné à cette commande.",
     "notYourOrder": "Vous ne faites pas partie de cette commande.",
-    "chatRestricted": "Votre messagerie est temporairement restreinte."
+    "chatRestricted": "Votre messagerie est temporairement restreinte.",
+    "pinLocked": "Trop de codes erronés. Réessayez dans {{count}} min.",
+    "cashLimit": "Vous avez trop de cash sur vous (limite {{limit}}). Reversez-le avant d’accepter cette commande payée à la livraison.",
+    "deliveryGone": "Cette livraison ne vous est plus attribuée.",
+    "deliveryChanged": "Cette livraison a changé. Actualisez.",
+    "codTooMuch": "Plus que ce que vous devez encore ({{amount}}).",
+    "offsetTooMuch": "Vos gains disponibles ne suffisent pas.",
+    "withdrawCashOwed": "Reversez d’abord le cash encaissé : il est retenu sur vos retraits.",
+    "riderOffline": "Ce livreur est hors ligne.",
+    "onlyMotoJoin": "Seuls les livreurs moto peuvent rejoindre une boutique."
   },
   "tabs": {
     "home": "Accueil",
@@ -764,7 +775,13 @@
     "reportDetails": "Détails",
     "reportInfo": "L'équipe Kadou24h examine chaque signalement. La personne n'est pas prévenue.",
     "reportSend": "Signaler",
-    "reported": "Merci, signalement envoyé"
+    "reported": "Merci, signalement envoyé",
+    "quick": {
+      "coming": "J’arrive",
+      "arrived": "Je suis arrivé",
+      "atGate": "Je suis au portail",
+      "comeOut": "Pouvez-vous sortir ?"
+    }
   },
   "mode": {
     "current": "Actuel",
@@ -913,7 +930,8 @@
     "motorbike": "Moto",
     "bicycle": "Vélo",
     "car": "Voiture",
-    "bus": "Bus"
+    "bus": "Bus",
+    "minibus": "Minibus"
   },
   "suspended": {
     "title": "Compte suspendu",
@@ -1093,7 +1111,7 @@
     "assignRider": "Choisir un livreur",
     "assignBus": "Choisir un chauffeur de bus",
     "assignTitle": "Choisir un livreur",
-    "assignHint": "Livreurs en ligne : vos partenaires d’abord, puis les plus proches.",
+    "assignHint": "Livreurs en ligne. Bus : les chauffeurs de ce trajet d’abord. Depuis votre boutique : vos partenaires d’abord. Puis les plus proches.",
     "assignTo": "Confier à {{name}}",
     "riderAssigned": "Demande envoyée à {{name}}",
     "noRiders": "Aucun livreur en ligne",
@@ -1125,7 +1143,8 @@
     "modifySave": "Enregistrer les changements",
     "modified": "Commande modifiée",
     "newAlert": "Nouvelle commande !",
-    "newAlertOpen": "Touchez pour la voir"
+    "newAlertOpen": "Touchez pour la voir",
+    "runsRoute": "Fait ce trajet"
   },
   "riders": {
     "title": "Mes livreurs",
@@ -1225,7 +1244,8 @@
     "money": "Mon argent",
     "withdrawals": "Mes retraits",
     "payoutMethods": "Moyens de paiement",
-    "history": "Historique du portefeuille"
+    "history": "Historique du portefeuille",
+    "riderCashKept": "{{amount}} de cash à reverser sont retenus sur vos retraits."
   },
   "withdraw": {
     "amount": "Montant à retirer",
@@ -1287,5 +1307,268 @@
     "completed": "{{amount}} vous ont été remboursés.",
     "rejected": "Le remboursement de {{amount}} a été refusé :",
     "reference": "Référence du transfert : {{ref}}"
+  },
+  "rider": {
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "onlineSwitch": "Être en ligne",
+    "onlineHint": "Les boutiques peuvent vous confier des livraisons.",
+    "offlineHint": "Passez en ligne pour recevoir des livraisons.",
+    "nowOnline": "Vous êtes en ligne",
+    "nowOffline": "Vous êtes hors ligne",
+    "locationNeeded": "Autorisez la localisation : les boutiques choisissent les livreurs les plus proches.",
+    "openSettings": "Réglages",
+    "tab": {
+      "new": "Nouvelles",
+      "ongoing": "En cours",
+      "completed": "Historique"
+    },
+    "empty": {
+      "new": "Aucune nouvelle livraison",
+      "ongoing": "Aucune livraison en cours",
+      "completed": "Aucune livraison terminée"
+    },
+    "emptyNewOnline": "Restez en ligne : les boutiques vous enverront leurs livraisons ici.",
+    "emptyNewOffline": "Vous êtes hors ligne. Passez en ligne pour recevoir des livraisons.",
+    "cashStrip": "Cash à reverser : {{amount}}",
+    "cashLimit": "Limite : {{limit}}. Reversez le cash pour accepter d’autres commandes payées à la livraison.",
+    "cashNearLimit": "Presque à la limite ({{limit}}) : reversez le cash pour accepter d’autres commandes en espèces.",
+    "deliveryA11y": "Livraison de {{from}} à {{to}}",
+    "yourEarning": "Votre gain",
+    "collectShort": "Encaisser {{amount}}",
+    "accept": "Accepter",
+    "accepted": "Livraison acceptée",
+    "decline": "Refuser",
+    "declined": "Livraison refusée. La boutique choisira un autre livreur.",
+    "declineTitle": "Refuser la livraison ?",
+    "declineHint": "La boutique est prévenue et choisit un autre livreur. Dites-lui pourquoi.",
+    "declineReason": {
+      "tooFar": "Trop loin",
+      "busy": "Déjà occupé",
+      "vehicle": "Problème de véhicule",
+      "cashLimit": "Trop de cash sur moi",
+      "other": "Autre"
+    },
+    "reason": "Raison",
+    "newAlert": "Nouvelle livraison · {{amount}}",
+    "deliveryTitle": "Livraison",
+    "me": "Moi",
+    "leg": {
+      "first_mile": "Vers la gare routière",
+      "line_haul": "Trajet en bus",
+      "last_mile": "Depuis la gare routière"
+    },
+    "stepA11y": "Étape {{current}} sur {{total}}",
+    "milestone": {
+      "accepted": "Acceptée",
+      "pickedUp": "Récupérée",
+      "delivered": "Livrée"
+    },
+    "cancelledBanner": "Cette livraison a été annulée. Si vous avez déjà le colis, contactez la boutique ou le support.",
+    "deliveredBanner": "Livrée ! {{amount}} ajoutés à vos gains.",
+    "pinLocked": "Trop de codes erronés. Réessayez dans {{count}} min.",
+    "mapA11y": "Carte de la livraison",
+    "pickupAt": "Récupérer chez",
+    "dropAt": "Livrer à",
+    "landmark": "Repère : {{text}}",
+    "gatePhoto": "Photo du portail",
+    "navigate": "Itinéraire",
+    "message": "Message",
+    "amountToCollect": "Montant à encaisser",
+    "paidOnline": "Déjà payé en ligne : n’encaissez rien.",
+    "parcel_one": "Colis : {{count}} article",
+    "parcel_other": "Colis : {{count}} articles",
+    "step": {
+      "leave": "Je pars récupérer",
+      "pickupCode": "Saisir le code d’enlèvement",
+      "handoverCode": "Saisir le code du client",
+      "handoverCash": "Encaisser {{amount}} et saisir le code"
+    },
+    "backToList": "Retour aux livraisons",
+    "pickupCodeTitle": "Code d’enlèvement",
+    "handoverCodeTitle": "Code de livraison",
+    "collectFirst": "Encaissez d’abord",
+    "confirmCode": "Valider le code",
+    "codeA11y": "Code à 4 chiffres",
+    "codeSafety": "Ne donnez jamais un code et ne demandez jamais de le dicter au téléphone : il se donne en main propre.",
+    "pickupDone": "Colis récupéré. En route !",
+    "handoverDone": "Livraison terminée. Merci !",
+    "statRating": "Note",
+    "statToday": "Aujourd’hui",
+    "statDone": "Livraisons",
+    "menuTitle": "Mon activité de livreur",
+    "vehicleTitle": "Véhicule et identité",
+    "identity": "Identité vérifiée",
+    "identityLocked": "Pour changer ces informations, contactez le support."
+  },
+  "cash": {
+    "title": "Cash à reverser",
+    "owed": "Cash encaissé à reverser",
+    "declaredWaiting": "Dont {{amount}} déclarés, en attente de confirmation",
+    "limit": "Limite autorisée : {{limit}}",
+    "declare": "Déclarer un versement",
+    "howTo": "L’argent des commandes payées à la livraison appartient aux boutiques. Envoyez-le à Kadou24h (Orange Money, MoMo ou au bureau), puis déclarez-le ici avec la référence.",
+    "nothingOwed": "Vous ne devez rien. Le cash des prochaines commandes payées à la livraison apparaîtra ici.",
+    "withdrawBlocked": "Tant que du cash est dû, il est retenu sur vos retraits.",
+    "history": "Mes versements",
+    "emptyTitle": "Aucun versement",
+    "emptyText": "Vos versements déclarés apparaîtront ici.",
+    "method": {
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN MoMo",
+      "cash_at_office": "Au bureau",
+      "earnings_offset": "Sur mes gains"
+    },
+    "methodHint": {
+      "orange_money": "Envoyez l’argent au compte Orange Money de Kadou24h, puis saisissez la référence du transfert.",
+      "mobile_money": "Envoyez l’argent au compte MoMo de Kadou24h, puis saisissez la référence du transfert.",
+      "cash_at_office": "Remettez le cash au bureau Kadou24h. Ajoutez le numéro du reçu si vous en avez un.",
+      "earnings_offset": "Retenu tout de suite sur vos gains disponibles ({{amount}}). Pas besoin de confirmation."
+    },
+    "amount": "Montant (GNF)",
+    "all": "Tout ({{amount}})",
+    "tooBig": "Maximum {{amount}}",
+    "reference": "Référence du transfert",
+    "referenceHint": "Le code reçu par SMS après l’envoi.",
+    "proof": "Photo du reçu",
+    "submit": "Déclarer",
+    "offsetSubmit": "Retenir sur mes gains",
+    "declared": "Versement déclaré. L’équipe le confirme dès réception.",
+    "offsetDone": "Montant retenu sur vos gains.",
+    "status": {
+      "pending": "En attente",
+      "confirmed": "Confirmé",
+      "rejected": "Refusé"
+    }
+  },
+  "riderStores": {
+    "title": "Mes boutiques",
+    "tab": {
+      "linked": "Liées ({{count}})",
+      "requests": "Demandes",
+      "find": "Trouver"
+    },
+    "linkedHint": "Ces boutiques vous proposent leurs livraisons en priorité.",
+    "empty": {
+      "linked": "Aucune boutique liée",
+      "requests": "Aucune demande"
+    },
+    "emptyLinkedText": "Rejoignez des boutiques de votre quartier pour recevoir plus de livraisons.",
+    "findAction": "Trouver une boutique",
+    "invitesYou": "Cette boutique vous invite à livrer pour elle.",
+    "invites_one": "{{count}} invitation",
+    "invites_other": "{{count}} invitations",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "joined": "Vous livrez maintenant pour {{name}}",
+    "declined": "Invitation refusée",
+    "requestSent": "Demande envoyée, en attente de la boutique",
+    "cancelRequest": "Annuler",
+    "cancelRequestTitle": "Annuler la demande ?",
+    "requestCancelled": "Demande annulée",
+    "leave": "Quitter",
+    "leaveTitle": "Quitter {{name}} ?",
+    "leaveText": "La boutique ne vous proposera plus ses livraisons en priorité.",
+    "left": "Vous ne livrez plus pour {{name}}",
+    "searchHint": "Nom de la boutique",
+    "askToJoin": "Demander",
+    "requested": "Demande envoyée à {{name}}",
+    "linked": "Liée",
+    "pending": "En attente",
+    "noResults": "Aucune boutique trouvée"
+  },
+  "kycRider": {
+    "steps": {
+      "type": "Type de livreur",
+      "vehicle": "Véhicule",
+      "identity": "Identité",
+      "routes": "Trajets",
+      "payout": "Paiement",
+      "review": "Vérification"
+    },
+    "typeHint": "Comment livrez-vous ?",
+    "partner": {
+      "moto": "Livreur moto",
+      "transit": "Chauffeur de bus"
+    },
+    "partnerHint": {
+      "moto": "Livraisons dans la ville : boutique → client, ou vers la gare routière.",
+      "transit": "Colis d’une gare routière à une autre, sur vos trajets habituels."
+    },
+    "partnerLabel": "Type",
+    "partnerRequired": "Choisissez votre type de livreur",
+    "vehicleType": "Véhicule",
+    "vehicleRequired": "Choisissez votre véhicule",
+    "brand": "Marque",
+    "brandHint": "Ex. : TVS, Haojue",
+    "color": "Couleur",
+    "plate": "Plaque d’immatriculation",
+    "vest": "Numéro de gilet",
+    "vestHint": "Si vous avez un gilet de moto-taxi",
+    "cityArea": "Ville / quartier où vous livrez",
+    "cityAreaHint": "Ex. : Conakry, Ratoma",
+    "cityRequired": "Indiquez votre ville ou quartier",
+    "nationalId": "Numéro de pièce d’identité",
+    "nationalIdRequired": "Indiquez votre numéro de pièce d’identité",
+    "idPrivate": "Visible seulement par l’équipe Kadou24h.",
+    "documentsHint": "Ajoutez des photos lisibles : votre demande est validée plus vite.",
+    "doc": {
+      "national_id": "Pièce d’identité",
+      "driver_license": "Permis de conduire",
+      "vehicle_registration": "Carte grise"
+    },
+    "docStatus": {
+      "pending": "En vérification",
+      "verified": "Vérifié",
+      "rejected": "Refusé"
+    },
+    "routesHint": "Les trajets que vous faites régulièrement, d’une gare routière à une autre.",
+    "routeN": "Trajet {{n}}",
+    "from": "De",
+    "to": "À",
+    "pickStation": "Choisir une gare",
+    "addRoute": "Ajouter un trajet",
+    "routeRequired": "Ajoutez au moins un trajet complet",
+    "routeSame": "Un trajet relie deux gares différentes",
+    "payoutHint": "Où recevoir vos gains. Vous pourrez l’ajouter plus tard, avant votre premier retrait.",
+    "reviewNote": "L’équipe Kadou24h vérifie votre demande, en général sous 48 h. Vous recevrez une notification.",
+    "openRiderMode": "Ouvrir l’espace livreur",
+    "state": {
+      "pending": {
+        "title": "Demande envoyée",
+        "text": "L’équipe Kadou24h vérifie votre demande. Vous recevrez une notification."
+      },
+      "approved": {
+        "title": "Vous êtes livreur Kadou24h !",
+        "text": "Passez en ligne pour recevoir vos premières livraisons."
+      },
+      "suspended": {
+        "title": "Compte livreur suspendu",
+        "text": "Contactez le support pour en savoir plus."
+      }
+    }
+  },
+  "relay": {
+    "showTitle": "Votre code à montrer",
+    "inPerson": "Montrez l’écran, ne dictez pas le code au téléphone.",
+    "showIncoming": {
+      "busDriver": "Montrez ce code au chauffeur de bus à {{station}} : il le saisit en vous remettant le colis.",
+      "motoRider": "Montrez ce code au livreur moto qui apporte le colis à {{station}} : il le saisit en vous le remettant."
+    },
+    "showOutgoing": {
+      "busDriver": "Montrez ce code au chauffeur de bus à {{station}} : il le saisit en prenant le colis.",
+      "motoRider": "Montrez ce code au livreur moto qui prend le colis à {{station}} : il le saisit en le récupérant."
+    },
+    "askPickup": {
+      "store": "Demandez le code à 4 chiffres à la boutique {{name}} et saisissez-le.",
+      "busDriver": "Demandez son code au chauffeur de bus qui vous remet le colis, puis saisissez-le.",
+      "motoRider": "Demandez son code au livreur moto qui vous remet le colis, puis saisissez-le."
+    },
+    "askHandover": {
+      "customer": "Une fois le colis remis, demandez son code à {{name}} et saisissez-le.",
+      "busDriver": "Remettez le colis au chauffeur de bus, demandez-lui son code et saisissez-le.",
+      "motoRider": "Remettez le colis au livreur moto, demandez-lui son code et saisissez-le."
+    },
+    "atStation": "Le client vient le chercher à {{station}}"
   }
 }

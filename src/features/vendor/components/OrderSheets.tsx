@@ -72,7 +72,11 @@ export function CancelOrderSheet({ subOrderId, refuse, visible, onClose }: { sub
   );
 }
 
-/** Online riders for this delivery leg: my linked riders first, then the nearest. No phone numbers. */
+/**
+ * Online riders for this delivery leg, in the server's order: bus leg → the
+ * drivers of this route first; leg from my store → my linked riders first;
+ * then the nearest. No phone numbers.
+ */
 export function AssignRiderSheet({ deliveryId, onClose }: { deliveryId: string | null; onClose: () => void }) {
   const { t } = useTranslation();
   const toast = useToast();
@@ -128,11 +132,15 @@ export function AssignRiderSheet({ deliveryId, onClose }: { deliveryId: string |
                 <AppText variant="bodyMedium" numberOfLines={1} style={styles.shrink}>
                   {r.name}
                 </AppText>
-                {r.isLinked && (
+                {r.servesRoute ? (
+                  <AppText variant="caption" color={Colors.success} style={styles.linked}>
+                    {t('vendorOrders.runsRoute')}
+                  </AppText>
+                ) : r.isLinked && r.partnerType === 'moto' ? (
                   <AppText variant="caption" color={Colors.primary} style={styles.linked}>
                     {t('riders.linked')}
                   </AppText>
-                )}
+                ) : null}
               </View>
               <AppText variant="caption" color={Colors.textMuted} numberOfLines={1}>
                 {[

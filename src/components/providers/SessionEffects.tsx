@@ -15,7 +15,7 @@ import { connectSocket, disconnectSocket } from '@/lib/socket';
 import { signedOut, userUpdated } from '@/store/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-const WALLET_EVENTS = ['wallet:earning_released', 'withdrawal:requested', 'withdrawal:completed', 'withdrawal:rejected'];
+const WALLET_EVENTS = ['wallet:earning_released', 'withdrawal:requested', 'withdrawal:completed', 'withdrawal:rejected', 'cod_settlement:confirmed', 'cod_settlement:rejected'];
 const ORDER_EVENTS = ['new_notification', 'delivery:status_changed', 'delivery:assigned', 'payment:successful', 'refund:requested', 'refund:issued'];
 
 export function SessionEffects() {
@@ -48,10 +48,10 @@ export function SessionEffects() {
     const refreshChats = () => dispatch(api.util.invalidateTags(['Conversation']));
     const refreshTickets = () => dispatch(api.util.invalidateTags(['Ticket']));
     const refreshDisputes = () => dispatch(api.util.invalidateTags(['Dispute', 'Order']));
-    const refreshWallet = () => dispatch(api.util.invalidateTags(['Wallet']));
+    const refreshWallet = () => dispatch(api.util.invalidateTags(['Wallet', 'CodSettlement']));
     const refreshLinks = () => dispatch(api.util.invalidateTags(['RiderLink']));
     // Vendor / rider application reviewed: roles and status change
-    const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store']));
+    const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store', 'Rider']));
     socket.on('session:revoked', onRevoked);
     ORDER_EVENTS.forEach((e) => socket.on(e, refreshOrders));
     socket.on('dispute:resolved', refreshDisputes);

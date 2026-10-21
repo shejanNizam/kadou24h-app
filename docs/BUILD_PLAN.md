@@ -110,20 +110,28 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Dashboard: Payments → "Refunds to approve" card + tab (default filter), reason lines, Decide modal; manual refund takes a reference
 - [x] App: refund card on the order (being checked / refunded + reference / declined + reason); cancel texts no longer promise an instant refund
 - [x] Fixed: the payment lookup never matched (order id stored as a string), so refunds fell back to the order total, which shrinks after store changes
-- [ ] Contract test (scratchpad `refunds-contract.mjs`): first run 24/30, the failures were the payment-lookup bug above, now fixed; re-run blocked today by the OTP daily limit in the shared cloud Redis (see memory)
+- [x] Contract test (scratchpad `refunds-contract.mjs`): 30/30 on 2026-10-21 (first run 24/30 = the payment-lookup bug above)
 
-## Phase 8 — Rider (moto)
-- [ ] KYC (partner type, vehicle, ID)
-- [ ] Online toggle + location updates
-- [ ] Deliveries list (new/active/history), accept/decline
-- [ ] Active delivery step screen (going → pickup PIN → navigate → handover PIN, COD amount)
-- [ ] Cash to hand over + COD declaration + history; withdraw blocked while owing
-- [ ] Earnings, profile, my stores, quick-reply chat chips
+## Phase 8 — Rider (moto) ✅ (2026-10-21)
+- [x] KYC `app/kyc/rider.tsx`: partner type (moto / bus driver) → vehicle → identity + documents → routes (bus drivers: station pairs) → payout (optional) → review; draft saved per step; pending / approved (→ open rider mode) / suspended states
+- [x] Online toggle (Deliveries header + Profile): asks for location first (settings link if refused); `useRiderPresence` in `app/rider/_layout` sends the position every ~20 s while online and the app is open (the server forwards it live to the customers of my running legs)
+- [x] Deliveries tab: New · Ongoing · History (server `type=new|ongoing|completed`, paged); card = route, distance, my fee, cash to collect; Accept / Decline (reason chips) on new ones; cash-vs-limit strip; slide-in alert on `delivery:assigned`
+- [x] Step screen `app/rider/delivery/[id].tsx`: one big button (accept → leave → store's code → collect cash + customer's code → done), map, pickup + drop cards (landmark, directions, gate photo), Directions (Google Maps), Message store / customer, wrong-code countdown + lock banner, live refresh on `delivery:status_changed`; customer phone never shown (chat)
+- [x] Cash `app/rider/cash.tsx`: owed / declared / limit, declare (Orange Money · MoMo with reference · office · from earnings) + receipt photo, history with rejection reason; withdraw keeps the owed cash back (earnings hero says so)
+- [x] Earnings (shared screen, rider mode + cash row), Profile (online, rating, today, completed; cash, my stores, vehicle & identity, payout methods), `app/rider/stores.tsx` (linked · requests · find a store + ask to join), `app/rider/vehicle.tsx` (edit vehicle / vest / area; identity read-only)
+- [x] Chat: quick replies for rider → customer (J'arrive · Je suis arrivé · Je suis au portail · Pouvez-vous sortir ?)
+- [x] Server: rider list tabs + paging + cash to collect; items + cash on the rider's track; `GET /wallets/me/cod-settlements`; `cashDeclared` in the rider summary; COD rejection needs a reason + rider notified both ways (dashboard: reason modal, proof link); fixed: after the 15-min PIN lock the attempts never reset (one more mistake locked it again)
+- [x] Contract test (scratchpad `phase8-contract.mjs`) 47/47; jest 149/149; e2e 129/129; app + dashboard typecheck / lint clean
+- [ ] Open: APP_SPEC §10 #8 (COD above the rider cash limit) still waits for the client
 
-## Phase 9 — Bus driver (transit)
-- [ ] KYC routes (station pairs)
-- [ ] Line-haul deliveries list
-- [ ] Show code / Enter code relay screens (confirm the PIN ownership rules in the server first)
+## Phase 9 — Bus driver (transit) ✅ (2026-10-21)
+- [x] KYC routes (station pairs) — built in Phase 8; now a shared `RoutesEditor`, also on "Vehicle & identity" so an approved bus driver can update routes (`PATCH /riders/me` transitRoutes)
+- [x] Line-haul legs use the same Deliveries tabs, cards and step screen as moto riders (rider mode; "My stores" hidden for bus drivers)
+- [x] Station relay on the step screen: `ShowCode` (big digits + who to show it to) + the code sheet with the right person to ask. Rule checked in the server (e2e + contract): at a station each side shows one code and types the other's — the receiver shows `incomingHandoverPin` (the giver types it to hand over), the giver shows `outgoingPickupPin` (the receiver types it to pick up). `pickupFrom` / `handoverTo` in `features/rider/status.ts` name the store / customer / bus driver / moto rider
+- [x] Station pickup orders: the bus leg ends with the customer at the destination station (their name, their code, the cash)
+- [x] Vendor: assigning a bus leg lists the drivers of that exact route first ("Fait ce trajet"); a leg leaving a far station is sorted by distance (linked riders first only for legs leaving the store)
+- [x] Privacy (server): the customer's address / phone only reach the rider of the leg that ends with the customer (not the first-mile rider or a relay bus driver)
+- [x] Contract test (scratchpad `phase9-contract.mjs`) 30/30 (full intercity COD relay + station pickup); Phase 8 contract re-run 47/47; jest 149/149; e2e 129/129
 
 ## Phase 10 — Jobs, CV, subscriptions (shared)
 - [ ] Job list/details/apply, my applications + detail (interview)

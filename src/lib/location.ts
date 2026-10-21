@@ -46,3 +46,21 @@ export async function reverseGeocode({ lat, lng }: LatLng): Promise<PlaceGuess> 
     return {};
   }
 }
+
+/**
+ * Follows the position while the app is open (rider online). Returns a stop
+ * function, or null when the user refuses location.
+ */
+export async function watchPosition(onPosition: (p: LatLng & { heading?: number }) => void, intervalMs = 20_000): Promise<(() => void) | null> {
+  const { granted } = await Location.requestForegroundPermissionsAsync();
+  if (!granted) return null;
+  try {
+    const sub = await Location.watchPositionAsync(
+      { accuracy: Location.Accuracy.Balanced, timeInterval: intervalMs, distanceInterval: 25 },
+      (pos) => onPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude, heading: pos.coords.heading ?? undefined }),
+    );
+    return () => sub.remove();
+  } catch {
+    return null;
+  }
+}

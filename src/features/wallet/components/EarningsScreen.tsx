@@ -20,8 +20,9 @@ import { MIN_WITHDRAWAL, type EarningsBucket, type EarningsSummary, type Summary
 const RANGES: SummaryRange[] = ['7d', '30d', '6m', '12m'];
 
 /**
- * Earnings home (vendor now, rider in Phase 8): what I can withdraw, what is
- * still on its way and why, a chart of delivered work, and the money screens.
+ * Earnings home (vendor and rider): what I can withdraw, what is still on its
+ * way and why, a chart of delivered work, and the money screens. A rider's
+ * withdrawable is the balance minus the COD cash still owed.
  */
 export function EarningsScreen({ mode }: { mode: WalletMode }) {
   const { t } = useTranslation();
@@ -71,6 +72,9 @@ export function EarningsScreen({ mode }: { mode: WalletMode }) {
             </View>
 
             <MenuSection title={t('earnings.money')}>
+              {mode === 'rider' && (
+                <MenuRow icon="dollar-sign" label={t('cash.title')} value={formatGNF(data.balances.cashOwed ?? 0)} onPress={() => router.push('/rider/cash')} />
+              )}
               <MenuRow icon="arrow-up-right" label={t('earnings.withdrawals')} onPress={() => router.push({ pathname: '/withdrawals', params: { mode } })} />
               <MenuRow icon="credit-card" label={t('earnings.payoutMethods')} onPress={() => router.push({ pathname: '/payout-methods', params: { mode } })} />
               <MenuRow icon="list" label={t('earnings.history')} onPress={() => router.push({ pathname: '/wallet-history', params: { mode } })} last />
@@ -94,7 +98,11 @@ function Hero({ mode, data }: { mode: WalletMode; data: EarningsSummary }) {
         {formatGNF(amount)}
       </AppText>
       <AppText variant="caption" color={Colors.textOnPrimary} style={styles.heroHint}>
-        {amount >= MIN_WITHDRAWAL ? t('earnings.withdrawableHint') : t('earnings.minWithdrawal', { amount: formatGNF(MIN_WITHDRAWAL) })}
+        {mode === 'rider' && (data.balances.cashOwed ?? 0) > 0
+          ? t('earnings.riderCashKept', { amount: formatGNF(data.balances.cashOwed ?? 0) })
+          : amount >= MIN_WITHDRAWAL
+            ? t('earnings.withdrawableHint')
+            : t('earnings.minWithdrawal', { amount: formatGNF(MIN_WITHDRAWAL) })}
       </AppText>
       <Button
         title={t('earnings.withdraw')}

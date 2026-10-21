@@ -14,6 +14,19 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
     router.push({ pathname: '/chat/[id]', params: { id: str('conversationId')! } });
     return true;
   }
+  // Rider: a delivery (assigned, cancelled…) or my COD cash hand-over
+  if (mode === 'rider' && str('deliveryId')) {
+    router.push({ pathname: '/rider/delivery/[id]', params: { id: str('deliveryId')! } });
+    return true;
+  }
+  if (mode === 'rider' && str('settlementId')) {
+    router.push('/rider/cash');
+    return true;
+  }
+  if (mode === 'rider' && (str('subOrderId') || str('orderId'))) {
+    router.push('/rider/deliveries');
+    return true;
+  }
   if (mode === 'vendor' && str('subOrderId')) {
     router.push({ pathname: '/vendor/order/[id]', params: { id: str('subOrderId')! } });
     return true;

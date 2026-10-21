@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { Screen } from '@/components/ui/Screen';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { useLogoutMutation } from '@/features/auth/api';
+import { RiderSection } from '@/features/rider/components/RiderSection';
 import { StoreSection } from '@/features/vendor/components/StoreSection';
 import { getPushToken } from '@/lib/push';
 import { signedOut } from '@/store/authSlice';
@@ -96,6 +97,8 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
         {user && <ModeCard />}
 
         {user && mode === AppMode.vendor && <StoreSection />}
+
+        {user && mode === AppMode.rider && <RiderSection />}
 
         {user && mode === AppMode.customer && (
           <MenuSection title={t('profile.myShopping')}>

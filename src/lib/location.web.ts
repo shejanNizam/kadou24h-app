@@ -44,3 +44,16 @@ export async function reverseGeocode({ lat, lng }: LatLng): Promise<PlaceGuess> 
     return {};
   }
 }
+
+export async function watchPosition(onPosition: (p: LatLng & { heading?: number }) => void): Promise<(() => void) | null> {
+  if (!navigator.geolocation) return null;
+  const first = await getCurrentPosition();
+  if (!first) return null;
+  onPosition(first);
+  const id = navigator.geolocation.watchPosition(
+    (pos) => onPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude, heading: pos.coords.heading ?? undefined }),
+    () => undefined,
+    { enableHighAccuracy: true, maximumAge: 15_000 },
+  );
+  return () => navigator.geolocation.clearWatch(id);
+}

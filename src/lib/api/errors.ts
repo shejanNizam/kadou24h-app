@@ -59,6 +59,19 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/you have deliveries in progress/i.test(message)) return t('errors.deleteDeliveries');
   if (/cash on delivery money/i.test(message)) return t('errors.deleteCash');
   if (/wallet still has money/i.test(message)) return t('errors.deleteWallet');
+  // Rider: deliveries and COD cash
+  const locked = message.match(/try again in (\d+) min/i);
+  if (locked) return t('errors.pinLocked', { count: Number(locked[1]) });
+  const cashLimit = message.match(/exceeds authorized partner limit \(([\d\s,. ]+) GNF\)/i);
+  if (cashLimit) return t('errors.cashLimit', { limit: `${cashLimit[1].trim()} GNF` });
+  if (/no assigned delivery found|no longer assigned to you|assigned delivery not found/i.test(message)) return t('errors.deliveryGone');
+  if (/already updated\. please refresh|cannot verify (pickup|handover) while/i.test(message)) return t('errors.deliveryChanged');
+  const owedCap = message.match(/cannot exceed the cash you still owe \((\d+) GNF\)/i);
+  if (owedCap) return t('errors.codTooMuch', { amount: `${Number(owedCap[1]).toLocaleString('fr-FR')} GNF` });
+  if (/insufficient available balance for offset/i.test(message)) return t('errors.offsetTooMuch');
+  if (/unremitted COD cash/i.test(message)) return t('errors.withdrawCashOwed');
+  if (/currently offline/i.test(message)) return t('errors.riderOffline');
+  if (/only local delivery partners can join/i.test(message)) return t('errors.onlyMotoJoin');
   // Chat
   if (/no rider is assigned/i.test(message)) return t('errors.noRiderYet');
   if (/not part of this/i.test(message)) return t('errors.notYourOrder');

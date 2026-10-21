@@ -70,6 +70,8 @@ export interface EarningsSummary {
     /** Rider */
     cashOwed?: number;
     cashLimit?: number;
+    /** Rider: declared hand-overs waiting for an admin (still inside cashOwed) */
+    cashDeclared?: number;
   };
   counts: { newOrders?: number; activeOrders?: number; newRequests?: number; activeDeliveries?: number };
   series: EarningsBucket[];

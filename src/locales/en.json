@@ -22,7 +22,9 @@
     "edit": "Edit",
     "save": "Save",
     "add": "Add",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "saved": "Saved",
+    "remove": "Remove"
   },
   "language": {
     "title": "Choose your language",
@@ -148,7 +150,16 @@
     "deleteWallet": "Your wallet still has money. Withdraw your balance before deleting your account.",
     "noRiderYet": "No rider is assigned to this order yet.",
     "notYourOrder": "You're not part of this order.",
-    "chatRestricted": "Your messaging is temporarily restricted."
+    "chatRestricted": "Your messaging is temporarily restricted.",
+    "pinLocked": "Too many wrong codes. Try again in {{count}} min.",
+    "cashLimit": "You hold too much cash (limit {{limit}}). Hand it over before accepting this cash-on-delivery order.",
+    "deliveryGone": "This delivery is no longer yours.",
+    "deliveryChanged": "This delivery changed. Refresh.",
+    "codTooMuch": "More than you still owe ({{amount}}).",
+    "offsetTooMuch": "Your available earnings are not enough.",
+    "withdrawCashOwed": "Hand over the cash you collected first: it is kept back from withdrawals.",
+    "riderOffline": "This rider is offline.",
+    "onlyMotoJoin": "Only moto riders can join a store."
   },
   "tabs": {
     "home": "Home",
@@ -764,7 +775,13 @@
     "reportDetails": "Details",
     "reportInfo": "The Kadou24h team reviews every report. The person isn't told.",
     "reportSend": "Report",
-    "reported": "Thanks, report sent"
+    "reported": "Thanks, report sent",
+    "quick": {
+      "coming": "On my way",
+      "arrived": "I’ve arrived",
+      "atGate": "I’m at the gate",
+      "comeOut": "Can you come out?"
+    }
   },
   "mode": {
     "current": "Current",
@@ -913,7 +930,8 @@
     "motorbike": "Motorbike",
     "bicycle": "Bicycle",
     "car": "Car",
-    "bus": "Bus"
+    "bus": "Bus",
+    "minibus": "Minibus"
   },
   "suspended": {
     "title": "Account suspended",
@@ -1093,7 +1111,7 @@
     "assignRider": "Choose a rider",
     "assignBus": "Choose a bus driver",
     "assignTitle": "Choose a rider",
-    "assignHint": "Online riders: your partners first, then the nearest.",
+    "assignHint": "Online riders. Bus: drivers of this route first. From your store: your partners first. Then the nearest.",
     "assignTo": "Give to {{name}}",
     "riderAssigned": "Request sent to {{name}}",
     "noRiders": "No rider online",
@@ -1125,7 +1143,8 @@
     "modifySave": "Save changes",
     "modified": "Order changed",
     "newAlert": "New order!",
-    "newAlertOpen": "Tap to open it"
+    "newAlertOpen": "Tap to open it",
+    "runsRoute": "Runs this route"
   },
   "riders": {
     "title": "My riders",
@@ -1225,7 +1244,8 @@
     "money": "My money",
     "withdrawals": "My withdrawals",
     "payoutMethods": "Payout methods",
-    "history": "Wallet history"
+    "history": "Wallet history",
+    "riderCashKept": "{{amount}} of cash to hand over is kept back from your withdrawals."
   },
   "withdraw": {
     "amount": "Amount to withdraw",
@@ -1287,5 +1307,268 @@
     "completed": "{{amount}} has been refunded to you.",
     "rejected": "The refund of {{amount}} was declined:",
     "reference": "Transfer reference: {{ref}}"
+  },
+  "rider": {
+    "online": "Online",
+    "offline": "Offline",
+    "onlineSwitch": "Be online",
+    "onlineHint": "Stores can give you deliveries.",
+    "offlineHint": "Go online to get deliveries.",
+    "nowOnline": "You are online",
+    "nowOffline": "You are offline",
+    "locationNeeded": "Allow location: stores pick the nearest riders.",
+    "openSettings": "Settings",
+    "tab": {
+      "new": "New",
+      "ongoing": "Ongoing",
+      "completed": "History"
+    },
+    "empty": {
+      "new": "No new deliveries",
+      "ongoing": "No deliveries in progress",
+      "completed": "No finished deliveries"
+    },
+    "emptyNewOnline": "Stay online: stores will send you their deliveries here.",
+    "emptyNewOffline": "You are offline. Go online to get deliveries.",
+    "cashStrip": "Cash to hand over: {{amount}}",
+    "cashLimit": "Limit: {{limit}}. Hand the cash over to accept more cash-on-delivery orders.",
+    "cashNearLimit": "Almost at your limit ({{limit}}): hand the cash over to accept more cash orders.",
+    "deliveryA11y": "Delivery from {{from}} to {{to}}",
+    "yourEarning": "You earn",
+    "collectShort": "Collect {{amount}}",
+    "accept": "Accept",
+    "accepted": "Delivery accepted",
+    "decline": "Decline",
+    "declined": "Delivery declined. The store will pick another rider.",
+    "declineTitle": "Decline this delivery?",
+    "declineHint": "The store is told and picks another rider. Tell them why.",
+    "declineReason": {
+      "tooFar": "Too far",
+      "busy": "Already busy",
+      "vehicle": "Vehicle problem",
+      "cashLimit": "Too much cash on me",
+      "other": "Other"
+    },
+    "reason": "Reason",
+    "newAlert": "New delivery · {{amount}}",
+    "deliveryTitle": "Delivery",
+    "me": "Me",
+    "leg": {
+      "first_mile": "To the bus station",
+      "line_haul": "Bus trip",
+      "last_mile": "From the bus station"
+    },
+    "stepA11y": "Step {{current}} of {{total}}",
+    "milestone": {
+      "accepted": "Accepted",
+      "pickedUp": "Picked up",
+      "delivered": "Delivered"
+    },
+    "cancelledBanner": "This delivery was cancelled. If you already have the parcel, contact the store or support.",
+    "deliveredBanner": "Delivered! {{amount}} added to your earnings.",
+    "pinLocked": "Too many wrong codes. Try again in {{count}} min.",
+    "mapA11y": "Delivery map",
+    "pickupAt": "Pick up at",
+    "dropAt": "Deliver to",
+    "landmark": "Landmark: {{text}}",
+    "gatePhoto": "Gate photo",
+    "navigate": "Directions",
+    "message": "Message",
+    "amountToCollect": "Amount to collect",
+    "paidOnline": "Already paid online: collect nothing.",
+    "parcel_one": "Parcel: {{count}} item",
+    "parcel_other": "Parcel: {{count}} items",
+    "step": {
+      "leave": "Head to pickup",
+      "pickupCode": "Enter the pickup code",
+      "handoverCode": "Enter the customer’s code",
+      "handoverCash": "Collect {{amount}} and enter the code"
+    },
+    "backToList": "Back to deliveries",
+    "pickupCodeTitle": "Pickup code",
+    "handoverCodeTitle": "Delivery code",
+    "collectFirst": "Collect first",
+    "confirmCode": "Confirm code",
+    "codeA11y": "4-digit code",
+    "codeSafety": "Codes are given in person: never share one or ask for one over the phone.",
+    "pickupDone": "Parcel picked up. On your way!",
+    "handoverDone": "Delivery done. Thank you!",
+    "statRating": "Rating",
+    "statToday": "Today",
+    "statDone": "Deliveries",
+    "menuTitle": "My rider work",
+    "vehicleTitle": "Vehicle & identity",
+    "identity": "Verified identity",
+    "identityLocked": "To change these details, contact support."
+  },
+  "cash": {
+    "title": "Cash to hand over",
+    "owed": "Collected cash to hand over",
+    "declaredWaiting": "{{amount}} of it declared, waiting for confirmation",
+    "limit": "Allowed limit: {{limit}}",
+    "declare": "Declare a hand-over",
+    "howTo": "Cash from cash-on-delivery orders belongs to the stores. Send it to Kadou24h (Orange Money, MoMo or at the office), then declare it here with the reference.",
+    "nothingOwed": "You owe nothing. Cash from your next cash-on-delivery orders will show here.",
+    "withdrawBlocked": "While cash is owed, it is kept back from your withdrawals.",
+    "history": "My hand-overs",
+    "emptyTitle": "No hand-overs",
+    "emptyText": "The hand-overs you declare will show here.",
+    "method": {
+      "orange_money": "Orange Money",
+      "mobile_money": "MTN MoMo",
+      "cash_at_office": "At the office",
+      "earnings_offset": "From my earnings"
+    },
+    "methodHint": {
+      "orange_money": "Send the money to Kadou24h’s Orange Money account, then type the transfer reference.",
+      "mobile_money": "Send the money to Kadou24h’s MoMo account, then type the transfer reference.",
+      "cash_at_office": "Bring the cash to the Kadou24h office. Add the receipt number if you have one.",
+      "earnings_offset": "Taken at once from your available earnings ({{amount}}). No confirmation needed."
+    },
+    "amount": "Amount (GNF)",
+    "all": "All ({{amount}})",
+    "tooBig": "At most {{amount}}",
+    "reference": "Transfer reference",
+    "referenceHint": "The code you got by SMS after sending.",
+    "proof": "Receipt photo",
+    "submit": "Declare",
+    "offsetSubmit": "Take from my earnings",
+    "declared": "Hand-over declared. The team confirms it when the money arrives.",
+    "offsetDone": "Amount taken from your earnings.",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "rejected": "Rejected"
+    }
+  },
+  "riderStores": {
+    "title": "My stores",
+    "tab": {
+      "linked": "Linked ({{count}})",
+      "requests": "Requests",
+      "find": "Find"
+    },
+    "linkedHint": "These stores offer you their deliveries first.",
+    "empty": {
+      "linked": "No linked stores",
+      "requests": "No requests"
+    },
+    "emptyLinkedText": "Join stores near you to get more deliveries.",
+    "findAction": "Find a store",
+    "invitesYou": "This store invites you to deliver for them.",
+    "invites_one": "{{count}} invitation",
+    "invites_other": "{{count}} invitations",
+    "accept": "Accept",
+    "decline": "Decline",
+    "joined": "You now deliver for {{name}}",
+    "declined": "Invitation declined",
+    "requestSent": "Request sent, waiting for the store",
+    "cancelRequest": "Cancel",
+    "cancelRequestTitle": "Cancel the request?",
+    "requestCancelled": "Request cancelled",
+    "leave": "Leave",
+    "leaveTitle": "Leave {{name}}?",
+    "leaveText": "The store will no longer offer you its deliveries first.",
+    "left": "You no longer deliver for {{name}}",
+    "searchHint": "Store name",
+    "askToJoin": "Ask to join",
+    "requested": "Request sent to {{name}}",
+    "linked": "Linked",
+    "pending": "Pending",
+    "noResults": "No stores found"
+  },
+  "kycRider": {
+    "steps": {
+      "type": "Partner type",
+      "vehicle": "Vehicle",
+      "identity": "Identity",
+      "routes": "Routes",
+      "payout": "Payout",
+      "review": "Review"
+    },
+    "typeHint": "How do you deliver?",
+    "partner": {
+      "moto": "Moto rider",
+      "transit": "Bus driver"
+    },
+    "partnerHint": {
+      "moto": "Deliveries in town: store → customer, or to the bus station.",
+      "transit": "Parcels from one bus station to another, on your usual routes."
+    },
+    "partnerLabel": "Type",
+    "partnerRequired": "Choose how you deliver",
+    "vehicleType": "Vehicle",
+    "vehicleRequired": "Choose your vehicle",
+    "brand": "Brand",
+    "brandHint": "E.g. TVS, Haojue",
+    "color": "Colour",
+    "plate": "Plate number",
+    "vest": "Vest number",
+    "vestHint": "If you have a moto-taxi vest",
+    "cityArea": "City / area where you deliver",
+    "cityAreaHint": "E.g. Conakry, Ratoma",
+    "cityRequired": "Enter your city or area",
+    "nationalId": "ID card number",
+    "nationalIdRequired": "Enter your ID card number",
+    "idPrivate": "Only the Kadou24h team can see it.",
+    "documentsHint": "Add clear photos: your application is approved faster.",
+    "doc": {
+      "national_id": "ID card",
+      "driver_license": "Driving licence",
+      "vehicle_registration": "Vehicle registration"
+    },
+    "docStatus": {
+      "pending": "Being checked",
+      "verified": "Verified",
+      "rejected": "Rejected"
+    },
+    "routesHint": "The trips you make regularly, from one bus station to another.",
+    "routeN": "Route {{n}}",
+    "from": "From",
+    "to": "To",
+    "pickStation": "Choose a station",
+    "addRoute": "Add a route",
+    "routeRequired": "Add at least one complete route",
+    "routeSame": "A route links two different stations",
+    "payoutHint": "Where to receive your earnings. You can add it later, before your first withdrawal.",
+    "reviewNote": "The Kadou24h team checks your application, usually within 48 h. You will get a notification.",
+    "openRiderMode": "Open rider mode",
+    "state": {
+      "pending": {
+        "title": "Application sent",
+        "text": "The Kadou24h team is checking your application. You will get a notification."
+      },
+      "approved": {
+        "title": "You are a Kadou24h rider!",
+        "text": "Go online to get your first deliveries."
+      },
+      "suspended": {
+        "title": "Rider account suspended",
+        "text": "Contact support to learn more."
+      }
+    }
+  },
+  "relay": {
+    "showTitle": "Your code to show",
+    "inPerson": "Show the screen; never read the code out on the phone.",
+    "showIncoming": {
+      "busDriver": "Show this code to the bus driver at {{station}}: they type it when handing you the parcel.",
+      "motoRider": "Show this code to the moto rider bringing the parcel to {{station}}: they type it when handing it over."
+    },
+    "showOutgoing": {
+      "busDriver": "Show this code to the bus driver at {{station}}: they type it when taking the parcel.",
+      "motoRider": "Show this code to the moto rider taking the parcel at {{station}}: they type it when picking it up."
+    },
+    "askPickup": {
+      "store": "Ask the store {{name}} for the 4-digit code and type it.",
+      "busDriver": "Ask the bus driver handing you the parcel for their code, then type it.",
+      "motoRider": "Ask the moto rider handing you the parcel for their code, then type it."
+    },
+    "askHandover": {
+      "customer": "Once the parcel is handed over, ask {{name}} for their code and type it.",
+      "busDriver": "Hand the parcel to the bus driver, ask for their code and type it.",
+      "motoRider": "Hand the parcel to the moto rider, ask for their code and type it."
+    },
+    "atStation": "The customer collects it at {{station}}"
   }
 }

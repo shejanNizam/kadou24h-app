@@ -223,6 +223,17 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app, Phase 9 — bus driver / relay (2026-10-21)
+- `GET /deliveries/:id/available-riders`: bus legs add `servesRoute` and list the drivers of that station → station route first; legs leaving the store list linked riders first; legs leaving a station are by distance.
+- Rider list / track: `orderId.deliveryType`; `orderId.addressSnapshot` and `toPhone` only when the leg ends with the customer (door, or the bus leg of a `station_pickup` order).
+
+## Changed for the app, Phase 8 — rider (2026-10-21)
+- `GET /deliveries/rider/my-deliveries?type=new|ongoing|completed|active&page&limit` → paged `{ data, meta }`; running tabs oldest first, history by last update. Rows: `subOrderId { subOrderNumber, total, items[name, qty, removed], codAmountToCollect }`, `orderId { orderNumber, paymentMethod, addressSnapshot }`. No PINs.
+- `GET /deliveries/:id/track` (rider): `subOrderId` now has `items` and `codAmountToCollect`.
+- PIN lock: 5 wrong codes → 429 "Too many wrong codes. Try again in N min."; after the lock a fresh round of 5.
+- `GET /wallets/me/cod-settlements?status&page&limit` (rider history; `rejectionReason` when rejected). `GET /wallets/me/summary?mode=rider` → `balances.cashDeclared` (pending declarations, still inside `cashOwed`).
+- `PATCH /wallets/admin/cod-settlements/:id` → `{ status, rejectionReason }` (reason required to reject). Rider notified (`earnings_updated`, data `settlementId`); socket `cod_settlement:confirmed` / `cod_settlement:rejected`.
+
 ## Refunds (2026-10-20)
 - `GET /orders/:id` now also returns `refunds: [{ amount, requestedAmount, status: pending | completed | rejected, source, transactionId, rejectionReason, processedAt, createdAt }]`.
 - Socket `refund:requested` (customer) when a request opens or grows; `refund:issued` when approved. Notification type `refund_update` (data `orderId`).
