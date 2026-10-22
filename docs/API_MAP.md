@@ -223,6 +223,11 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app — Promo codes, cancel one store, block (2026-10-22)
+- `couponCode` on checkout-summary / place order; summary `coupon { code, valid, discount, description?, message? }`, splits `discountShare`.
+- `POST /orders/:id/sub-orders/:subOrderId/cancel { reason }` (store not preparing yet; not unpaid online).
+- `POST|DELETE /conversations/:id/block`, `GET /conversations/blocked`, `DELETE /conversations/blocked/:userId`; conversation `blockedByMe`.
+
 ## Changed for the app — Worker bookings (2026-10-22)
 - `/bookings`: `POST` (book), `GET ?as=&status=` (meta.counts), `GET /:id`, `GET /me/standing`, `PATCH /:id/accept|decline|cancel|done|confirm|not-done`, `POST /:id/review`. Cancel returns `{ booking, penalty }`.
 - `GET /professional-profiles/workers/:id/reviews` (public). Worker summary adds `isVisible`, `listing`, `penalty`, `bookings`, `earnings`. Profile: `workPhotos` (≤ 10).

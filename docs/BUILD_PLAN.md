@@ -161,6 +161,12 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] **§10 #8 + #9 fixed (2026-10-21, best-practice options):** COD only up to the rider cash limit per store (summary `cod`, server refusal, greyed COD option); online orders reach the store once paid (`pending_payment`, 30-min window, sweep cancels + cart restore, late payment → refund). e2e 157/157 (28 new checks)
 - [ ] Client answers for APP_SPEC §10 #2–5, #7 (defaults stay until then)
 
+## Promo codes, cancel one store, block in chat (2026-10-22, client agreed)
+- [x] Server: coupon module (admin CRUD, checkout evaluation + spread over stores, one use per customer, total limit, released on full cancellation, revenue − discounts); `POST /orders/:id/sub-orders/:subOrderId/cancel` (COD service fee moves); chat block with hidden delivery + `blockedByMe`. e2e 285/285 (39 new)
+- [x] Dashboard: Promo codes page (stats, list, create/edit, uses drawer); order details show the code; overview revenue note
+- [x] App: checkout promo field (apply / remove, translated reasons), "Cancel this store" on each store card, chat ⋯ menu (block / unblock), blocked banner, Profile → Blocked people
+- [ ] WhatsApp support number — the client agreed but hasn't sent it
+
 ## Worker bookings (2026-10-22, client rules)
 - [x] Server: booking module (request → accept/decline/expire → done → confirm/auto 48 h → review), contacts only after acceptance, booking chat, penalties (rolling 30 days, worker 3 tiers, customer limit, admin lift/soften), worker reviews with photos (rating recomputed), paid visibility (30-day trial, service-provider plans extend `listedUntil`, reminders), work photos, sweep. e2e 246/246 (61 new)
 - [x] Dashboard: Bookings page (bookings with details + admin cancel, cancellation penalties with lift/soften, worker reviews hide/show), worker modal shows visibility, penalty and work photos; plan form hint
@@ -178,6 +184,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-10-22 — Promo codes (Kadou24h pays), cancel one store's part, block in chat (silent).
 - 2026-10-22 — Worker bookings with the client's rules: direct payment (no commission), penalties, reviews with photos, paid visibility (30 days free), safety notices.
 - 2026-10-21 — Become a worker with admin approval (server, dashboard, app); worker dashboard with real data only. Public worker responses no longer include CV files.
 - 2026-10-21 — §10 #8 (COD ≤ rider cash limit per store) and #9 (online orders: pay first, 30-min window, then the store) built in server, app and dashboard. e2e 157/157.

@@ -16,6 +16,7 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import {
   canCancelOrder,
+  canCancelPart,
   isOnlinePayment,
   newIdempotencyKey,
   useGetMyDisputesQuery,
@@ -44,6 +45,7 @@ export default function OrderScreen() {
   const disputes = useGetMyDisputesQuery(undefined, { skip: !signedIn });
   const [initiate, payState] = useInitiatePaymentMutation();
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [cancelPart, setCancelPart] = useState<{ subOrderId: string; storeName: string; paidOnline: boolean } | null>(null);
   const [disputeOpen, setDisputeOpen] = useState(false);
   const [reviewFor, setReviewFor] = useState<SubOrder | null>(null);
 
@@ -136,7 +138,18 @@ export default function OrderScreen() {
         )}
 
         {subOrders.map((so) => (
-          <SubOrderCard key={so._id} subOrder={so} deliveryType={order.deliveryType} isCod={order.paymentMethod === 'cod'} onReview={setReviewFor} />
+          <SubOrderCard
+            key={so._id}
+            subOrder={so}
+            deliveryType={order.deliveryType}
+            isCod={order.paymentMethod === 'cod'}
+            onReview={setReviewFor}
+            onCancelPart={
+              canCancelPart(order, subOrders, so)
+                ? () => setCancelPart({ subOrderId: so._id, storeName: so.vendorId.storeName, paidOnline: order.paymentMethod !== 'cod' })
+                : undefined
+            }
+          />
         ))}
 
         <View style={styles.card}>
@@ -220,6 +233,7 @@ export default function OrderScreen() {
       </ScrollView>
 
       <CancelSheet orderId={order._id} visible={cancelOpen} onClose={() => setCancelOpen(false)} />
+      <CancelSheet orderId={order._id} visible={Boolean(cancelPart)} part={cancelPart} onClose={() => setCancelPart(null)} />
       <DisputeSheet orderId={order._id} subOrders={subOrders} visible={disputeOpen} onClose={() => setDisputeOpen(false)} />
       <ReviewSheet subOrder={reviewFor} onClose={() => setReviewFor(null)} />
     </SafeAreaView>

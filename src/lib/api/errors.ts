@@ -48,6 +48,15 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/email is already in use/i.test(message)) return t('errors.emailTaken');
   if (/invalid referral code/i.test(message)) return t('errors.invalidReferral');
   if (/uses google or apple sign-in/i.test(message)) return t('errors.socialAccount');
+  // Promo codes and cancelling one store's part (before the chat "pay first" rule below)
+  if (/promo code is not valid yet/i.test(message)) return t('checkout.promoNotYet');
+  if (/promo code is not valid/i.test(message)) return t('checkout.promoInvalid');
+  if (/promo code has expired/i.test(message)) return t('checkout.promoExpired');
+  if (/promo code has (just )?been fully used|has just been fully used/i.test(message)) return t('checkout.promoFull');
+  if (/already used this promo code/i.test(message)) return t('checkout.promoUsed');
+  if (/promo code needs a minimum order/i.test(message)) return t('checkout.promoInvalid');
+  if (/pay for this order first, or cancel the whole order/i.test(message)) return t('errors.partUnpaid');
+  if (/already started preparing your order/i.test(message)) return t('errors.partPreparing');
   // Checkout & payment
   const codLimit = message.match(/cash on delivery is not available above ([\d\s  .,]+) GNF/i);
   if (codLimit) return t('errors.codLimit', { limit: `${codLimit[1].trim()} GNF` });

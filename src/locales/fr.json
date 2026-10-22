@@ -187,7 +187,9 @@
     "bookingChanged": "Cette réservation vient de changer. Actualisez.",
     "bookingDone": "Le travail est indiqué comme terminé : confirmez-le ou dites qu’il n’est pas fini.",
     "reviewTooEarly": "Vous pourrez donner votre avis une fois le travail terminé.",
-    "reviewDuplicate": "Vous avez déjà donné votre avis."
+    "reviewDuplicate": "Vous avez déjà donné votre avis.",
+    "partUnpaid": "Payez d’abord la commande, ou annulez-la entièrement.",
+    "partPreparing": "Cette boutique a déjà commencé à préparer : elle ne peut plus être annulée."
   },
   "tabs": {
     "home": "Accueil",
@@ -708,7 +710,17 @@
     "placeShort": "Commander",
     "codUnavailable": "Indisponible au-delà de {{limit}} par boutique.",
     "codTooHigh": "Le paiement à la livraison est limité à {{limit}} par boutique (sécurité des livreurs). Choisissez un paiement en ligne.",
-    "payWithin": "Vous avez {{minutes}} minutes pour payer. La boutique reçoit la commande dès le paiement."
+    "payWithin": "Vous avez {{minutes}} minutes pour payer. La boutique reçoit la commande dès le paiement.",
+    "promo": "Code promo",
+    "promoPlaceholder": "Entrez votre code",
+    "promoApply": "Appliquer",
+    "promoApplied": "{{code}} : −{{amount}}",
+    "promoInvalid": "Ce code promo n’est pas valide.",
+    "promoExpired": "Ce code promo a expiré.",
+    "promoNotYet": "Ce code promo n’est pas encore valable.",
+    "promoFull": "Ce code promo a déjà été utilisé par trop de clients.",
+    "promoUsed": "Vous avez déjà utilisé ce code promo.",
+    "promoMin": "Ce code demande une commande d’au moins {{amount}} (produits)."
   },
   "payment": {
     "method": {
@@ -849,7 +861,13 @@
     "adminReply": "Réponse de Kadou24h : {{reply}}",
     "chatRider": "Écrire au livreur",
     "unpaidUntil": "Payez avant {{time}} : la boutique reçoit la commande dès le paiement. Sinon elle est annulée et les articles reviennent dans votre panier.",
-    "paymentExpired": "Annulée : le paiement n’a pas été reçu à temps. Les articles sont de retour dans votre panier."
+    "paymentExpired": "Annulée : le paiement n’a pas été reçu à temps. Les articles sont de retour dans votre panier.",
+    "cancelPart": "Annuler cette boutique",
+    "cancelPartTitle": "Annuler la partie {{store}} ?",
+    "cancelPartText": "Seuls les articles de {{store}} sont annulés. Les autres boutiques continuent votre commande.",
+    "cancelPartTextPaid": "Seuls les articles de {{store}} sont annulés ; leur montant vous sera remboursé après vérification. Les autres boutiques continuent.",
+    "cancelPartConfirm": "Annuler cette partie",
+    "partCancelled": "La partie {{store}} est annulée."
   },
   "track": {
     "title": "Suivi de livraison",
@@ -965,7 +983,21 @@
       "arrived": "Je suis arrivé",
       "atGate": "Je suis au portail",
       "comeOut": "Pouvez-vous sortir ?"
-    }
+    },
+    "options": "Options",
+    "block": "Bloquer {{name}}",
+    "blockTitle": "Bloquer {{name}} ?",
+    "blockText": "Vous ne recevrez plus ses messages, et cette personne n’en sera pas informée. Les messages sur une commande ou une réservation en cours arrivent toujours.",
+    "blockConfirm": "Bloquer",
+    "blocked": "{{name}} est bloqué(e).",
+    "unblock": "Débloquer",
+    "unblocked": "{{name}} est débloqué(e).",
+    "blockedBanner": "Vous avez bloqué {{name}} : vous ne recevez plus ses messages (sauf pour une commande ou une réservation en cours).",
+    "reportHint": "Pour signaler un message, appuyez longuement dessus.",
+    "blockedTitle": "Personnes bloquées",
+    "blockedIntro": "Elles ne savent pas qu’elles sont bloquées. Vous ne recevez pas leurs messages, sauf pour une commande ou une réservation en cours.",
+    "blockedEmpty": "Vous n’avez bloqué personne",
+    "blockedSince": "Bloqué(e) le {{date}}"
   },
   "mode": {
     "current": "Actuel",

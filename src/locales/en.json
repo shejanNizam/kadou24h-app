@@ -187,7 +187,9 @@
     "bookingChanged": "This booking has just changed. Please refresh.",
     "bookingDone": "The job is marked as done: confirm it or say it is not finished.",
     "reviewTooEarly": "You can review once the job is completed.",
-    "reviewDuplicate": "You already left a review."
+    "reviewDuplicate": "You already left a review.",
+    "partUnpaid": "Pay for the order first, or cancel all of it.",
+    "partPreparing": "This store has already started preparing: it can no longer be cancelled."
   },
   "tabs": {
     "home": "Home",
@@ -708,7 +710,17 @@
     "placeShort": "Place order",
     "codUnavailable": "Not available above {{limit}} per store.",
     "codTooHigh": "Cash on delivery is limited to {{limit}} per store (rider safety). Choose an online payment.",
-    "payWithin": "You have {{minutes}} minutes to pay. The store receives the order as soon as it is paid."
+    "payWithin": "You have {{minutes}} minutes to pay. The store receives the order as soon as it is paid.",
+    "promo": "Promo code",
+    "promoPlaceholder": "Enter your code",
+    "promoApply": "Apply",
+    "promoApplied": "{{code}}: −{{amount}}",
+    "promoInvalid": "This promo code is not valid.",
+    "promoExpired": "This promo code has expired.",
+    "promoNotYet": "This promo code is not valid yet.",
+    "promoFull": "This promo code has been fully used.",
+    "promoUsed": "You have already used this promo code.",
+    "promoMin": "This code needs an order of at least {{amount}} (products)."
   },
   "payment": {
     "method": {
@@ -849,7 +861,13 @@
     "adminReply": "Kadou24h reply: {{reply}}",
     "chatRider": "Message the rider",
     "unpaidUntil": "Pay before {{time}}: the store receives the order as soon as it is paid. Otherwise it is cancelled and the items go back to your cart.",
-    "paymentExpired": "Cancelled: the payment was not received in time. The items are back in your cart."
+    "paymentExpired": "Cancelled: the payment was not received in time. The items are back in your cart.",
+    "cancelPart": "Cancel this store",
+    "cancelPartTitle": "Cancel the {{store}} part?",
+    "cancelPartText": "Only the {{store}} items are cancelled. The other stores carry on with your order.",
+    "cancelPartTextPaid": "Only the {{store}} items are cancelled; their amount will be refunded after review. The other stores carry on.",
+    "cancelPartConfirm": "Cancel this part",
+    "partCancelled": "The {{store}} part is cancelled."
   },
   "track": {
     "title": "Delivery tracking",
@@ -965,7 +983,21 @@
       "arrived": "I’ve arrived",
       "atGate": "I’m at the gate",
       "comeOut": "Can you come out?"
-    }
+    },
+    "options": "Options",
+    "block": "Block {{name}}",
+    "blockTitle": "Block {{name}}?",
+    "blockText": "You will no longer receive their messages, and they will not be told. Messages about an order or a booking in progress still arrive.",
+    "blockConfirm": "Block",
+    "blocked": "{{name}} is blocked.",
+    "unblock": "Unblock",
+    "unblocked": "{{name}} is unblocked.",
+    "blockedBanner": "You blocked {{name}}: you no longer receive their messages (except about an order or a booking in progress).",
+    "reportHint": "To report a message, press and hold it.",
+    "blockedTitle": "Blocked people",
+    "blockedIntro": "They don’t know they are blocked. You don’t receive their messages, except about an order or a booking in progress.",
+    "blockedEmpty": "You haven’t blocked anyone",
+    "blockedSince": "Blocked on {{date}}"
   },
   "mode": {
     "current": "Current",

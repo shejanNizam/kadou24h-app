@@ -27,6 +27,8 @@ export interface Conversation {
   updatedAt: string;
   myMode: AppMode;
   myUnread: number;
+  /** I blocked the other person (they are never told) */
+  blockedByMe?: boolean;
   /** The other person (a store shows as the store). Never a phone. */
   peer: { userId: string; mode: AppMode; name: string; avatar?: FileRef; vendorId?: string };
 }

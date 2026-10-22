@@ -59,6 +59,24 @@ export const chatApi = api.injectEndpoints({
       query: ({ id, mode }) => ({ url: `/conversations/${id}/read`, method: 'PATCH', params: { mode } }),
       invalidatesTags: ['Conversation'],
     }),
+    /** Their messages are kept for them only; an order / booking in progress still gets through */
+    blockPeer: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/conversations/${id}/block`, method: 'POST' }),
+      invalidatesTags: (_r, _e, id) => ['Conversation', { type: 'Conversation', id }],
+    }),
+    unblockPeer: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/conversations/${id}/block`, method: 'DELETE' }),
+      invalidatesTags: (_r, _e, id) => ['Conversation', { type: 'Conversation', id }],
+    }),
+    getBlocked: build.query<{ userId: string; name: string; avatar?: { url: string }; blockedAt: string }[], void>({
+      query: () => '/conversations/blocked',
+      transformResponse: unwrap<{ userId: string; name: string; avatar?: { url: string }; blockedAt: string }[]>,
+      providesTags: ['Conversation'],
+    }),
+    unblockUser: build.mutation<unknown, string>({
+      query: (userId) => ({ url: `/conversations/blocked/${userId}`, method: 'DELETE' }),
+      invalidatesTags: ['Conversation'],
+    }),
     report: build.mutation<
       unknown,
       { targetType: 'user' | 'message' | 'review' | 'order'; targetId: string; conversationId?: string; reason: string; description?: string }
@@ -78,6 +96,10 @@ export const addMessageToThread = (conversationId: string, message: Message) =>
   });
 
 export const {
+  useBlockPeerMutation,
+  useUnblockPeerMutation,
+  useGetBlockedQuery,
+  useUnblockUserMutation,
   useGetConversationsInfiniteQuery,
   useGetChatUnreadQuery,
   useGetConversationQuery,

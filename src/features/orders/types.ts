@@ -196,6 +196,8 @@ export interface CheckoutInput {
   destinationStationId?: string;
   specialInstructions?: string;
   paymentMethod: PaymentMethod;
+  /** Promo code typed at checkout */
+  couponCode?: string;
 }
 
 export interface StationRoute {
@@ -214,6 +216,8 @@ export interface CheckoutSplit {
   deliveryFee: number;
   deliveryDistanceKm?: number;
   stationRoute?: StationRoute;
+  /** This store's part of the promo discount */
+  discountShare?: number;
   total: number;
 }
 
@@ -231,6 +235,8 @@ export interface CheckoutSummary {
     discount: number;
     total: number;
   };
+  /** The promo code typed: valid (with the discount) or why it can't be used (English server text) */
+  coupon?: { code: string; valid: boolean; discount: number; description?: string; message?: string };
   vendorSplits: CheckoutSplit[];
 }
 

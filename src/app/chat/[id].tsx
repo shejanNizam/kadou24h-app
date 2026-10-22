@@ -12,12 +12,15 @@ import { Banner } from '@/components/ui/Banner';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
 import { Chip } from '@/components/ui/Chip';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { HeaderIconButton, StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 import {
+  useBlockPeerMutation,
+  useUnblockPeerMutation,
   addMessageToThread,
   useGetConversationQuery,
   useGetMessagesInfiniteQuery,
@@ -52,6 +55,10 @@ export default function ChatScreen() {
   const [markRead] = useMarkConversationReadMutation();
   const [peerTyping, setPeerTyping] = useState(false);
   const [reportFor, setReportFor] = useState<Message | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmBlock, setConfirmBlock] = useState(false);
+  const [blockPeer, blockState] = useBlockPeerMutation();
+  const [unblockPeer, unblockState] = useUnblockPeerMutation();
   const lastTypingSent = useRef(0);
   // Checked when the chat opens (a restriction lasts hours)
   const [openedAt] = useState(() => Date.now());
@@ -152,11 +159,14 @@ export default function ChatScreen() {
         <StackHeader
           title={c?.peer.name ?? ''}
           right={
-            c?.peer.vendorId ? (
-              <HeaderIconButton icon="shopping-bag" label={t('chat.viewStore')} onPress={() => router.push({ pathname: '/store/[id]', params: { id: c.peer.vendorId! } })} />
-            ) : c?.orderId && myMode === 'customer' ? (
-              <HeaderIconButton icon="file-text" label={t('chat.viewOrder')} onPress={() => router.push({ pathname: '/order/[id]', params: { id: c.orderId! } })} />
-            ) : undefined
+            <View style={styles.headerActions}>
+              {c?.peer.vendorId ? (
+                <HeaderIconButton icon="shopping-bag" label={t('chat.viewStore')} onPress={() => router.push({ pathname: '/store/[id]', params: { id: c.peer.vendorId! } })} />
+              ) : c?.orderId && myMode === 'customer' ? (
+                <HeaderIconButton icon="file-text" label={t('chat.viewOrder')} onPress={() => router.push({ pathname: '/order/[id]', params: { id: c.orderId! } })} />
+              ) : null}
+              {c && <HeaderIconButton icon="more-vertical" label={t('chat.options')} onPress={() => setMenuOpen(true)} />}
+            </View>
           }
         />
         {c && (
@@ -203,6 +213,23 @@ export default function ChatScreen() {
           keyboardShouldPersistTaps="handled"
         />
 
+        {c?.blockedByMe && (
+          <View style={[styles.inner, styles.blockedBar]}>
+            <Banner tone="info" message={t('chat.blockedBanner', { name: c.peer.name })} />
+            <Button
+              title={t('chat.unblock')}
+              size="sm"
+              variant="outline"
+              loading={unblockState.isLoading}
+              onPress={() =>
+                void unblockPeer(id)
+                  .unwrap()
+                  .then(() => toast.show(t('chat.unblocked', { name: c.peer.name })))
+                  .catch((e: unknown) => toast.show(getApiErrorMessage(e, t), 'danger'))
+              }
+            />
+          </View>
+        )}
         {restricted && (
           <View style={styles.inner}>
             <Banner
@@ -222,11 +249,64 @@ export default function ChatScreen() {
               ))}
             </ScrollView>
           )}
-          <Composer allowVoice={Boolean(c?.allowVoice)} disabled={restricted || !c} onSend={onSend} onTyping={onTyping} />
+          <Composer allowVoice={Boolean(c?.allowVoice)} disabled={restricted || !c || Boolean(c?.blockedByMe)} onSend={onSend} onTyping={onTyping} />
         </View>
       </KeyboardAvoidingView>
 
       <ReportSheet message={reportFor} conversationId={id} onClose={() => setReportFor(null)} />
+
+      <BottomSheet visible={menuOpen} title={c?.peer.name ?? t('chat.options')} onClose={() => setMenuOpen(false)}>
+        {c?.blockedByMe ? (
+          <Button
+            title={t('chat.unblock')}
+            icon="unlock"
+            variant="outline"
+            loading={unblockState.isLoading}
+            onPress={() =>
+              void unblockPeer(id)
+                .unwrap()
+                .then(() => {
+                  setMenuOpen(false);
+                  toast.show(t('chat.unblocked', { name: c.peer.name }));
+                })
+                .catch((e: unknown) => toast.show(getApiErrorMessage(e, t), 'danger'))
+            }
+          />
+        ) : (
+          <Button
+            title={t('chat.block', { name: c?.peer.name ?? '' })}
+            icon="slash"
+            variant="outline"
+            onPress={() => {
+              setMenuOpen(false);
+              setConfirmBlock(true);
+            }}
+          />
+        )}
+        <AppText variant="caption" color={Colors.textMuted}>
+          {t('chat.reportHint')}
+        </AppText>
+      </BottomSheet>
+
+      <ConfirmDialog
+        visible={confirmBlock}
+        icon="slash"
+        title={t('chat.blockTitle', { name: c?.peer.name ?? '' })}
+        message={t('chat.blockText')}
+        confirmLabel={t('chat.blockConfirm')}
+        destructive
+        loading={blockState.isLoading}
+        onCancel={() => setConfirmBlock(false)}
+        onConfirm={() =>
+          void blockPeer(id)
+            .unwrap()
+            .then(() => {
+              setConfirmBlock(false);
+              toast.show(t('chat.blocked', { name: c?.peer.name ?? '' }));
+            })
+            .catch((e: unknown) => toast.show(getApiErrorMessage(e, t), 'danger'))
+        }
+      />
     </SafeAreaView>
   );
 }
@@ -288,6 +368,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.lg },
   header: { borderBottomWidth: 1, borderBottomColor: Colors.border, paddingBottom: Spacing.sm },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
+  blockedBar: { gap: Spacing.sm, paddingVertical: Spacing.sm },
   peerRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginTop: -Spacing.sm, paddingLeft: 52 },
   avatar: { width: 22, height: 22, borderRadius: 11, backgroundColor: Colors.primarySoft, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   avatarImg: { width: 22, height: 22 },

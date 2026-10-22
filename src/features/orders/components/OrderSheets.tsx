@@ -13,28 +13,47 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, MinTouch, Spacing } from '@/constants/theme';
 import { getApiErrorMessage } from '@/lib/api/errors';
 
-import { useCancelOrderMutation, useCreateDisputeMutation, useCreateReviewMutation } from '../api';
+import { useCancelOrderMutation, useCancelStorePartMutation, useCreateDisputeMutation, useCreateReviewMutation } from '../api';
 import type { SubOrder } from '../types';
 
 const CANCEL_REASONS = ['changedMind', 'tooLong', 'wrongItems', 'betterPrice'] as const;
 const DISPUTE_REASONS = ['notReceived', 'damaged', 'wrongItem', 'missingItem', 'charged'] as const;
 
-/** Cancel the whole order (server rule: only before any store starts preparing). */
-export function CancelSheet({ orderId, visible, onClose }: { orderId: string; visible: boolean; onClose: () => void }) {
+/**
+ * Cancel the whole order (server rule: only before any store starts preparing), or —
+ * with `part` — only one store's part (the other stores carry on).
+ */
+export function CancelSheet({
+  orderId,
+  visible,
+  onClose,
+  part,
+}: {
+  orderId: string;
+  visible: boolean;
+  onClose: () => void;
+  part?: { subOrderId: string; storeName: string; paidOnline: boolean } | null;
+}) {
   const { t } = useTranslation();
   const toast = useToast();
   const [chip, setChip] = useState<(typeof CANCEL_REASONS)[number] | 'other' | null>(null);
   const [text, setText] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [cancel, { isLoading }] = useCancelOrderMutation();
+  const [cancelPart, partState] = useCancelStorePartMutation();
 
   const reason = chip && chip !== 'other' ? t(`order.cancelReason.${chip}`) + (text.trim() ? ` — ${text.trim()}` : '') : text.trim();
 
   const submit = async () => {
     setError(null);
     try {
-      await cancel({ id: orderId, reason }).unwrap();
-      toast.show(t('order.cancelled'));
+      if (part) {
+        await cancelPart({ id: orderId, subOrderId: part.subOrderId, reason }).unwrap();
+        toast.show(t('order.partCancelled', { store: part.storeName }));
+      } else {
+        await cancel({ id: orderId, reason }).unwrap();
+        toast.show(t('order.cancelled'));
+      }
       onClose();
     } catch (e) {
       setError(getApiErrorMessage(e, t));
@@ -44,7 +63,7 @@ export function CancelSheet({ orderId, visible, onClose }: { orderId: string; vi
   return (
     <BottomSheet
       visible={visible}
-      title={t('order.cancelTitle')}
+      title={part ? t('order.cancelPartTitle', { store: part.storeName }) : t('order.cancelTitle')}
       onClose={onClose}
       onShow={() => {
         setChip(null);
@@ -53,12 +72,18 @@ export function CancelSheet({ orderId, visible, onClose }: { orderId: string; vi
       }}
       footer={
         <>
-          <Button title={t('order.cancelConfirm')} variant="danger" loading={isLoading} disabled={reason.length < 3} onPress={() => void submit()} />
+          <Button
+            title={part ? t('order.cancelPartConfirm') : t('order.cancelConfirm')}
+            variant="danger"
+            loading={isLoading || partState.isLoading}
+            disabled={reason.length < 3}
+            onPress={() => void submit()}
+          />
           <Button title={t('order.keepOrder')} variant="ghost" onPress={onClose} />
         </>
       }>
       <AppText variant="small" color={Colors.textMuted}>
-        {t('order.cancelText')}
+        {part ? t(part.paidOnline ? 'order.cancelPartTextPaid' : 'order.cancelPartText', { store: part.storeName }) : t('order.cancelText')}
       </AppText>
       <View style={styles.chips}>
         {[...CANCEL_REASONS, 'other' as const].map((r) => (

@@ -22,11 +22,14 @@ export function SubOrderCard({
   deliveryType,
   isCod,
   onReview,
+  onCancelPart,
 }: {
   subOrder: SubOrder;
   deliveryType: DeliveryType;
   isCod: boolean;
   onReview: (subOrder: SubOrder) => void;
+  /** Set when this store's part can be cancelled alone */
+  onCancelPart?: () => void;
 }) {
   const { t } = useTranslation();
   const { open: openChat, opening } = useOpenChat();
@@ -162,6 +165,9 @@ export function SubOrderCard({
           <Button title={t('order.review')} icon="star" size="sm" variant="soft" style={styles.flex} onPress={() => onReview(subOrder)} />
         )}
       </View>
+      {onCancelPart && (
+        <Button title={t('order.cancelPart')} icon="x-circle" size="sm" variant="ghost" onPress={onCancelPart} />
+      )}
       {delivered && subOrder.reviewed && (
         <AppText variant="caption" color={Colors.success}>
           ✓ {t('order.reviewed')}

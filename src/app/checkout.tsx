@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
@@ -71,6 +72,9 @@ function Checkout() {
   const [notes, setNotes] = useState('');
   const instructions = useDebounced(notes.trim(), 600);
   const [placeError, setPlaceError] = useState<string | null>(null);
+  // Promo code: typed, then applied (the server says if it is valid)
+  const [codeText, setCodeText] = useState('');
+  const [couponCode, setCouponCode] = useState<string | undefined>();
 
   const needsStation = deliveryType !== 'local';
   const input: CheckoutInput = {
@@ -79,6 +83,7 @@ function Checkout() {
     ...(needsStation && station && { destinationStationId: station._id }),
     specialInstructions: instructions || undefined,
     paymentMethod,
+    couponCode,
   };
   const ready = Boolean(address) && (!needsStation || Boolean(station)) && (cart.data?.totalItems ?? 0) > 0;
   const summary = useGetCheckoutSummaryQuery(input, { skip: !ready });
@@ -90,7 +95,9 @@ function Checkout() {
   const onPlace = async () => {
     setPlaceError(null);
     try {
-      const { order } = await placeOrder({ ...input, specialInstructions: notes.trim() || undefined }).unwrap();
+      // A code the server refused is not sent (the order would be refused)
+      const validCode = summary.data?.coupon?.valid ? couponCode : undefined;
+      const { order } = await placeOrder({ ...input, couponCode: validCode, specialInstructions: notes.trim() || undefined }).unwrap();
       if (!isOnlinePayment(paymentMethod)) {
         router.replace({ pathname: '/order-placed/[id]', params: { id: order._id } });
         return;
@@ -226,7 +233,56 @@ function Checkout() {
           )}
         </Section>
 
-        {/* 5. Summary (server) */}
+        {/* 5. Promo code */}
+        <Section title={t('checkout.promo')}>
+          {couponCode && summary.data?.coupon?.valid ? (
+            <View style={styles.promoOn}>
+              <Feather name="tag" size={16} color={Colors.success} />
+              <View style={styles.flex}>
+                <AppText variant="bodyMedium" color={Colors.success}>
+                  {t('checkout.promoApplied', { code: summary.data.coupon.code, amount: formatGNF(summary.data.coupon.discount) })}
+                </AppText>
+                {summary.data.coupon.description ? (
+                  <AppText variant="caption" color={Colors.textMuted}>
+                    {summary.data.coupon.description}
+                  </AppText>
+                ) : null}
+              </View>
+              <Button
+                title={t('common.remove')}
+                size="sm"
+                variant="ghost"
+                onPress={() => {
+                  setCouponCode(undefined);
+                  setCodeText('');
+                }}
+              />
+            </View>
+          ) : (
+            <TextField
+              placeholder={t('checkout.promoPlaceholder')}
+              value={codeText}
+              onChangeText={(v) => setCodeText(v.toUpperCase().replace(/\s/g, ''))}
+              autoCapitalize="characters"
+              autoCorrect={false}
+              maxLength={20}
+              icon="tag"
+              error={couponCode && summary.data?.coupon && !summary.data.coupon.valid ? couponMessage(t, summary.data.coupon.message) : undefined}
+              right={
+                <Button
+                  title={t('checkout.promoApply')}
+                  size="sm"
+                  variant="soft"
+                  disabled={codeText.trim().length < 3 || !ready}
+                  loading={Boolean(couponCode) && summary.isFetching}
+                  onPress={() => setCouponCode(codeText.trim())}
+                />
+              }
+            />
+          )}
+        </Section>
+
+        {/* 6. Summary (server) */}
         <Section title={t('checkout.summary')}>
           {!ready ? (
             <AppText variant="small" color={Colors.textMuted}>
@@ -293,6 +349,18 @@ function Checkout() {
   );
 }
 
+/** The server explains a refused promo code in English: say it in the user's language */
+function couponMessage(t: TFunction, message?: string) {
+  const m = message ?? '';
+  const min = m.match(/minimum order of ([\d\s\u00a0\u202f.,]+) GNF/i);
+  if (min) return t('checkout.promoMin', { amount: `${min[1].trim()} GNF` });
+  if (/already used/i.test(m)) return t('checkout.promoUsed');
+  if (/expired/i.test(m)) return t('checkout.promoExpired');
+  if (/not valid yet/i.test(m)) return t('checkout.promoNotYet');
+  if (/fully used/i.test(m)) return t('checkout.promoFull');
+  return t('checkout.promoInvalid');
+}
+
 function Section({
   title,
   action,
@@ -344,6 +412,7 @@ const styles = StyleSheet.create({
   },
   stationMissing: { borderColor: Colors.warning, backgroundColor: Colors.warningSoft },
   route: { padding: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.surface, gap: 2 },
+  promoOn: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.successSoft },
   multiline: { minHeight: 64, textAlignVertical: 'top' },
   storeLine: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   footer: { paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Colors.border },

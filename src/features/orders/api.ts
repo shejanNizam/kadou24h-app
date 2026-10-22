@@ -93,6 +93,11 @@ export const ordersApi = api.injectEndpoints({
       query: ({ id, reason }) => ({ url: `/orders/${id}/cancel`, method: 'POST', body: { reason } }),
       invalidatesTags: ['Order', 'Product'],
     }),
+    /** One store's part only (while that store has not started preparing) */
+    cancelStorePart: build.mutation<unknown, { id: string; subOrderId: string; reason: string }>({
+      query: ({ id, subOrderId, reason }) => ({ url: `/orders/${id}/sub-orders/${subOrderId}/cancel`, method: 'POST', body: { reason } }),
+      invalidatesTags: ['Order', 'Product'],
+    }),
 
     // ── After delivery ─────────────────────────────────────────────
     createReview: build.mutation<unknown, { subOrderId: string; rating: number; comment?: string }>({
@@ -129,6 +134,7 @@ export const {
   useGetMyOrdersInfiniteQuery,
   useGetOrderQuery,
   useCancelOrderMutation,
+  useCancelStorePartMutation,
   useCreateReviewMutation,
   useGetMyDisputesQuery,
   useCreateDisputeMutation,
@@ -138,6 +144,10 @@ export const {
 /** Sub-orders that can still be cancelled by the buyer (server rule: before "preparing"). */
 export const canCancelOrder = (order: Order, subOrders: Pick<SubOrder, 'status'>[]) =>
   order.status === 'active' && subOrders.every((s) => ['pending_payment', 'new', 'accepted', 'cancelled'].includes(s.status));
+
+/** A store's part the customer can cancel alone: not prepared yet, and not the only part left */
+export const canCancelPart = (order: Order, subOrders: Pick<SubOrder, 'status'>[], part: Pick<SubOrder, 'status'>) =>
+  order.status === 'active' && ['new', 'accepted'].includes(part.status) && subOrders.filter((s) => s.status !== 'cancelled').length > 1;
 
 export const isOnlinePayment = (m: PaymentMethod): m is Exclude<PaymentMethod, 'cod'> => m !== 'cod';
 

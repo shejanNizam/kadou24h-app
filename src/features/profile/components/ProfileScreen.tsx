@@ -132,7 +132,8 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
         <MenuSection title={t('profile.settings')}>
           {user && <MenuRow icon="user" label={t('account.title')} onPress={() => router.push('/account')} />}
           {languageRow}
-          {user && <MenuRow icon="bell" label={t('notificationSettings.title')} onPress={() => router.push('/notification-settings')} last />}
+          {user && <MenuRow icon="bell" label={t('notificationSettings.title')} onPress={() => router.push('/notification-settings')} />}
+          {user && <MenuRow icon="slash" label={t('chat.blockedTitle')} onPress={() => router.push('/blocked')} last />}
         </MenuSection>
 
         <MenuSection title={t('profile.help')}>
