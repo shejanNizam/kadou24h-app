@@ -57,6 +57,25 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/must be approved before it can be listed/i.test(message)) return t('errors.workerNotApproved');
   if (/complete your worker profile first/i.test(message)) return t('errors.workerIncomplete');
   if (/application is under review/i.test(message)) return t('errors.workerInReview');
+  // Worker bookings
+  if (/at least 30 minutes from now/i.test(message)) return t('errors.bookingTooSoon');
+  if (/up to 60 days ahead/i.test(message)) return t('errors.bookingTooFar');
+  if (/already have an open booking with this worker/i.test(message)) return t('errors.bookingDuplicate');
+  if (/bookings are limited to one at a time/i.test(message)) return t('errors.bookingLimited');
+  if (/requests waiting for an answer/i.test(message)) return t('errors.bookingTooManyRequests');
+  if (/not available for bookings/i.test(message)) return t('errors.workerUnavailable');
+  if (/cannot book yourself/i.test(message)) return t('errors.bookSelf');
+  if (/address where the work will be done/i.test(message)) return t('booking.need.address');
+  if (/bookings are suspended until/i.test(message)) return t('errors.workerSuspended');
+  if (/only have one booking at a time until/i.test(message)) return t('errors.workerLimited');
+  if (/this request has expired/i.test(message)) return t('errors.bookingExpired');
+  if (/this booking (is \w+: you can't|has just changed)/i.test(message)) return t('errors.bookingChanged');
+  if (/give the reason for cancelling/i.test(message)) return t('booking.reasonRequired');
+  if (/job is marked as done/i.test(message)) return t('errors.bookingDone');
+  if (/once the job is completed/i.test(message)) return t('errors.reviewTooEarly');
+  if (/already reviewed this booking/i.test(message)) return t('errors.reviewDuplicate');
+  if (/worker profile is not approved/i.test(message)) return t('errors.workerNotApproved');
+  if (/not part of this booking/i.test(message)) return t('errors.notYourOrder');
   // Account & settings
   if (/old password does not match/i.test(message)) return t('errors.oldPasswordWrong');
   if (/new password cannot be the same/i.test(message)) return t('errors.samePassword');

@@ -223,6 +223,12 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app — Worker bookings (2026-10-22)
+- `/bookings`: `POST` (book), `GET ?as=&status=` (meta.counts), `GET /:id`, `GET /me/standing`, `PATCH /:id/accept|decline|cancel|done|confirm|not-done`, `POST /:id/review`. Cancel returns `{ booking, penalty }`.
+- `GET /professional-profiles/workers/:id/reviews` (public). Worker summary adds `isVisible`, `listing`, `penalty`, `bookings`, `earnings`. Profile: `workPhotos` (≤ 10).
+- `POST /conversations { type: "worker", bookingId }`. Socket `booking:updated`. Notification type `booking_update`; data kinds `booking`, `booking_penalty`, `worker_listing`.
+- Public workers: only while visibility is paid (trial / service-provider plan) and not suspended; penalised workers sort last.
+
 ## Changed for the app — Become a worker (2026-10-21)
 - Professional profile adds `approvalStatus` (draft | pending | approved | rejected | needs_changes | suspended), `reviewNote`, `submittedAt`, `workingHours { days 0–6, from, to "HH:mm" }`, `idDocument`. `PUT /professional-profiles/me` takes `workingHours` / `idDocument` (null clears).
 - `POST /professional-profiles/me/worker-application/submit` (400 lists missing fields; 409 when pending/approved/suspended). `GET /professional-profiles/me/worker-summary` → status, note, isWorkerListed, rating, `messages { conversations, unread, unreadChats }`, `recent[5]`.

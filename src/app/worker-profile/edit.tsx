@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { ImageUploadBox } from '@/components/media/ImageUploadBox';
+import { PhotoStrip } from '@/components/media/PhotoStrip';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
@@ -18,6 +19,7 @@ import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useUpdateMeMutation } from '@/features/auth/api';
+import { SafetyNotice } from '@/features/booking/components/SafetyNotice';
 import { useGetCategoriesQuery } from '@/features/catalog/api';
 import { useGetMyCvQuery, useSaveCvMutation, useSubmitWorkerApplicationMutation } from '@/features/cv/api';
 import { cvFileOf, type MyCv } from '@/features/cv/types';
@@ -77,6 +79,7 @@ function WorkerForm({ cv }: { cv: MyCv }) {
   const [summary, setSummary] = useState(cv.summary ?? '');
   const [skills, setSkills] = useState<string[]>(cv.skills);
   const [idDocument, setIdDocument] = useState<FileRef | undefined>(cv.idDocument);
+  const [workPhotos, setWorkPhotos] = useState<FileRef[]>(cv.workPhotos ?? []);
   const [error, setError] = useState<string | null>(null);
 
   const [save, saveState] = useSaveCvMutation();
@@ -139,6 +142,7 @@ function WorkerForm({ cv }: { cv: MyCv }) {
         summary: summary.trim(),
         skills,
         idDocument,
+        workPhotos,
       }).unwrap();
       if (sends) {
         await submit().unwrap();
@@ -242,6 +246,14 @@ function WorkerForm({ cv }: { cv: MyCv }) {
         <TagInput label={t('worker.form.skills')} values={skills} onChange={setSkills} max={20} />
 
         <View style={styles.gap}>
+          <AppText variant="label">{t('worker.form.workPhotos')}</AppText>
+          <AppText variant="caption" color={Colors.textMuted}>
+            {t('worker.form.workPhotosHint')}
+          </AppText>
+          <PhotoStrip value={workPhotos} onChange={setWorkPhotos} max={10} title={t('worker.form.workPhotos')} />
+        </View>
+
+        <View style={styles.gap}>
           <AppText variant="label">{t('worker.form.id')}</AppText>
           <ImageUploadBox value={idDocument} onChange={setIdDocument} title={t('worker.form.id')} icon="credit-card" height={140} />
           <AppText variant="caption" color={Colors.textMuted}>
@@ -260,6 +272,7 @@ function WorkerForm({ cv }: { cv: MyCv }) {
           <Feather name="chevron-right" size={18} color={Colors.textSubtle} />
         </Pressable>
 
+        <SafetyNotice step="register" />
         <Banner tone="danger" message={error} />
       </KeyboardScroll>
       <View style={[styles.inner, styles.footer]}>

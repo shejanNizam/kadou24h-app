@@ -1,6 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -14,9 +15,13 @@ import { StatusPill, type StatusTone } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
+import { useGetBookingsQuery } from '@/features/booking/api';
+import { BookingCard } from '@/features/booking/components/BookingCard';
+import { formatDay } from '@/features/booking/status';
 import { useGetWorkerSummaryQuery, useSetWorkerListingMutation } from '@/features/cv/api';
 import type { WorkerStatus, WorkerSummary } from '@/features/cv/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
+import { formatGNF } from '@/lib/format';
 import { img } from '@/lib/image';
 import { useAppSelector } from '@/store/hooks';
 
@@ -30,8 +35,10 @@ const TONE: Record<WorkerStatus, StatusTone> = {
 };
 
 /**
- * Become a worker: start, follow the review, and — once approved — the worker home
- * (who wrote, unread messages, rating). Only real data: there are no bookings or earnings.
+ * Become a worker: start, follow the review, and — once approved — the worker home:
+ * visibility (free trial, then a plan), penalties, booking requests and upcoming jobs,
+ * estimated earnings (prices the worker entered; payments are made outside the app),
+ * the customers who wrote and the rating.
  */
 export default function WorkerProfileScreen() {
   const { t } = useTranslation();
@@ -134,6 +141,7 @@ function StatusCard({ summary }: { summary: WorkerSummary }) {
         <Banner tone={s === 'needs_changes' ? 'warning' : 'danger'} message={t('worker.note', { note: summary.reviewNote })} />
       )}
 
+      {s === 'approved' && <Visibility summary={summary} />}
       {s === 'approved' && (
         <View style={[styles.row, styles.switchRow]}>
           <View style={styles.flex}>
@@ -177,12 +185,55 @@ function StatusCard({ summary }: { summary: WorkerSummary }) {
   );
 }
 
+/** Visible until… (trial or plan), or hidden with a "choose a plan" button; running penalties. */
+function Visibility({ summary }: { summary: WorkerSummary }) {
+  const { t, i18n } = useTranslation();
+  const { listing, penalty } = summary;
+  const until = listing.listedUntil ? formatDay(listing.listedUntil, i18n.language) : '';
+  const [now] = useState(Date.now);
+  const daysLeft = listing.listedUntil ? Math.ceil((new Date(listing.listedUntil).getTime() - now) / 86_400_000) : 0;
+  const plans = () => router.push({ pathname: '/subscriptions', params: { audience: 'service_provider' } });
+  return (
+    <>
+      {listing.active ? (
+        <View style={[styles.visBox, daysLeft <= 3 && styles.visSoon]}>
+          <Feather name="eye" size={16} color={daysLeft <= 3 ? Colors.warningText : Colors.success} />
+          <AppText variant="small" style={styles.flex} color={daysLeft <= 3 ? Colors.warningText : Colors.text}>
+            {t('worker.visibleUntil', { date: until, count: daysLeft })}
+          </AppText>
+          <Button title={t('worker.extend')} size="sm" variant="soft" onPress={plans} />
+        </View>
+      ) : (
+        <View style={[styles.visBox, styles.visOff]}>
+          <Feather name="eye-off" size={16} color={Colors.danger} />
+          <AppText variant="small" style={styles.flex} color={Colors.danger}>
+            {listing.listedUntil ? t('worker.visibilityEnded') : t('worker.visibilityNone')}
+          </AppText>
+          <Button title={t('worker.choosePlan')} size="sm" onPress={plans} />
+        </View>
+      )}
+      {penalty.suspendedUntil ? (
+        <Banner tone="danger" message={t('worker.penaltySuspended', { date: formatDay(penalty.suspendedUntil, i18n.language), limit: penalty.limitedUntil ? formatDay(penalty.limitedUntil, i18n.language) : '' })} />
+      ) : penalty.limitedUntil ? (
+        <Banner tone="warning" message={t('worker.penaltyLimited', { date: formatDay(penalty.limitedUntil, i18n.language) })} />
+      ) : penalty.lessVisibleUntil ? (
+        <Banner tone="warning" message={t('worker.penaltyLessVisible', { date: formatDay(penalty.lessVisibleUntil, i18n.language) })} />
+      ) : penalty.strikes.length ? (
+        <Banner tone="info" message={t('worker.penaltyCount', { count: penalty.strikes.length })} />
+      ) : null}
+    </>
+  );
+}
+
 function Dashboard({ summary }: { summary: WorkerSummary }) {
   const { t, i18n } = useTranslation();
-  const { messages, recent } = summary;
-  const stats: { icon: 'users' | 'message-circle' | 'star'; value: string; label: string }[] = [
-    { icon: 'users', value: String(messages.conversations), label: t('worker.statClients') },
-    { icon: 'message-circle', value: String(messages.unread), label: t('worker.statUnread') },
+  const { messages, recent, bookings, earnings } = summary;
+  const requests = useGetBookingsQuery({ as: 'worker', status: 'requested' });
+  const upcoming = useGetBookingsQuery({ as: 'worker', status: 'active' });
+  const upcomingJobs = (upcoming.data?.data ?? []).filter((b) => b.status !== 'requested');
+  const stats: { icon: 'inbox' | 'calendar' | 'star'; value: string; label: string; onPress?: () => void }[] = [
+    { icon: 'inbox', value: String(bookings.requested), label: t('worker.statRequests'), onPress: () => router.push({ pathname: '/worker-bookings', params: { tab: 'requested' } }) },
+    { icon: 'calendar', value: String(bookings.accepted + bookings.done), label: t('worker.statUpcoming'), onPress: () => router.push({ pathname: '/worker-bookings', params: { tab: 'upcoming' } }) },
     {
       icon: 'star',
       value: summary.ratingCount ? summary.ratingAvg.toFixed(1) : '—',
@@ -194,7 +245,12 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
     <>
       <View style={styles.stats}>
         {stats.map((s) => (
-          <View key={s.icon} style={[styles.card, styles.stat]}>
+          <Pressable
+            key={s.icon}
+            onPress={s.onPress}
+            disabled={!s.onPress}
+            accessibilityRole={s.onPress ? 'button' : undefined}
+            style={({ pressed }) => [styles.card, styles.stat, pressed && styles.pressed]}>
             <View style={styles.statIcon}>
               <Feather name={s.icon} size={18} color={Colors.primary} />
             </View>
@@ -202,9 +258,46 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
             <AppText variant="caption" color={Colors.textMuted}>
               {s.label}
             </AppText>
-          </View>
+          </Pressable>
         ))}
       </View>
+
+      <View style={[styles.card, styles.earnings]}>
+        <View style={styles.row}>
+          <View style={styles.flex}>
+            <AppText variant="caption" color={Colors.textMuted}>
+              {t('worker.earningsMonth')}
+            </AppText>
+            <AppText variant="h3" color={Colors.primary}>
+              {formatGNF(earnings.thisMonth)}
+            </AppText>
+          </View>
+          <View style={styles.flex}>
+            <AppText variant="caption" color={Colors.textMuted}>
+              {t('worker.earningsTotal')}
+            </AppText>
+            <AppText variant="h3">{formatGNF(earnings.total)}</AppText>
+          </View>
+        </View>
+        <AppText variant="caption" color={Colors.textMuted}>
+          {t('worker.earningsNote', { count: bookings.completed })}
+        </AppText>
+      </View>
+
+      <BookingSection
+        title={t('worker.requestsTitle')}
+        empty={t('worker.requestsEmpty')}
+        items={(requests.data?.data ?? []).slice(0, 3)}
+        total={bookings.requested}
+        onAll={() => router.push({ pathname: '/worker-bookings', params: { tab: 'requested' } })}
+      />
+      <BookingSection
+        title={t('worker.upcomingTitle')}
+        empty={t('worker.upcomingEmpty')}
+        items={upcomingJobs.slice(0, 3)}
+        total={bookings.accepted + bookings.done}
+        onAll={() => router.push({ pathname: '/worker-bookings', params: { tab: 'upcoming' } })}
+      />
 
       <View style={styles.gap}>
         <AppText variant="title">{t('worker.recentTitle')}</AppText>
@@ -268,6 +361,29 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
   );
 }
 
+function BookingSection({ title, empty, items, total, onAll }: { title: string; empty: string; items: Parameters<typeof BookingCard>[0]['booking'][]; total: number; onAll: () => void }) {
+  const { t } = useTranslation();
+  return (
+    <View style={styles.gap}>
+      <View style={styles.row}>
+        <AppText variant="title" style={styles.flex}>
+          {title}
+        </AppText>
+        {total > items.length && <Button title={t('worker.seeAll', { count: total })} variant="ghost" size="sm" onPress={onAll} />}
+      </View>
+      {items.length === 0 ? (
+        <View style={styles.card}>
+          <AppText variant="small" color={Colors.textMuted}>
+            {empty}
+          </AppText>
+        </View>
+      ) : (
+        items.map((b) => <BookingCard key={b._id} booking={b} />)
+      )}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.surface },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },
@@ -291,4 +407,8 @@ const styles = StyleSheet.create({
   right: { alignItems: 'flex-end', gap: Spacing.xs },
   badge: { minWidth: 20, height: 20, borderRadius: 10, paddingHorizontal: 6, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.85 },
+  earnings: { gap: Spacing.sm },
+  visBox: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.successSoft },
+  visSoon: { backgroundColor: Colors.warningSoft },
+  visOff: { backgroundColor: Colors.dangerSoft },
 });

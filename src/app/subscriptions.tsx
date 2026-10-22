@@ -1,5 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
-import { Redirect } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,7 +13,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetMySubscriptionQuery, useGetPlansQuery, useSubscribeMutation } from '@/features/cv/api';
-import type { Plan } from '@/features/cv/types';
+import type { Plan, PlanAudience } from '@/features/cv/types';
 import { PayFeeSheet } from '@/features/jobs/components/PayFeeSheet';
 import { openFeePayment } from '@/features/jobs/status';
 import { formatGNF } from '@/lib/format';
@@ -21,12 +21,16 @@ import { useAppSelector } from '@/store/hooks';
 
 /**
  * Plans (set by the admin): building a CV is free; a plan puts my profile at
- * the top of the workers list for its duration. Paid online.
+ * the top of the workers list for its duration. A service-provider plan also keeps a
+ * worker visible to customers (after the 30 free days). Paid online.
+ * ?audience=service_provider shows only the worker plans (from the worker home).
  */
 export default function SubscriptionsScreen() {
   const { t, i18n } = useTranslation();
   const signedIn = useAppSelector((s) => s.auth.status === 'signedIn');
-  const plans = useGetPlansQuery(undefined, { skip: !signedIn });
+  const params = useLocalSearchParams<{ audience?: string }>();
+  const audience: PlanAudience | undefined = params.audience === 'service_provider' || params.audience === 'job_seeker' ? params.audience : undefined;
+  const plans = useGetPlansQuery(audience, { skip: !signedIn });
   const mine = useGetMySubscriptionQuery(undefined, { skip: !signedIn });
   const [subscribe] = useSubscribeMutation();
   const [chosen, setChosen] = useState<Plan | null>(null);
@@ -42,7 +46,7 @@ export default function SubscriptionsScreen() {
         contentContainerStyle={[styles.inner, styles.content]}
         refreshControl={<RefreshControl refreshing={plans.isFetching && !plans.isLoading} onRefresh={() => void Promise.all([plans.refetch(), mine.refetch()])} />}>
         <AppText variant="body" color={Colors.textMuted}>
-          {t('plans.intro')}
+          {audience === 'service_provider' ? t('plans.introWorker') : t('plans.intro')}
         </AppText>
 
         {current && (
@@ -86,7 +90,11 @@ export default function SubscriptionsScreen() {
                   {t('plans.forDays', { count: p.durationDays })}
                 </AppText>
               </AppText>
-              {[...(p.features.includes('cv_visibility') ? [t('plans.featureVisibility')] : []), ...p.highlights].map((h) => (
+              {[
+                ...(p.audience === 'service_provider' ? [t('plans.featureListed', { count: p.durationDays })] : []),
+                ...(p.features.includes('cv_visibility') ? [t('plans.featureVisibility')] : []),
+                ...p.highlights,
+              ].map((h) => (
                 <View key={h} style={styles.row}>
                   <Feather name="check" size={14} color={Colors.success} />
                   <AppText variant="small" style={styles.flex}>

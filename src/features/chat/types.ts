@@ -9,6 +9,8 @@ export type ModerationStatus = 'clean' | 'masked' | 'blocked';
 export type StartConversation =
   | { type: 'buyer_seller'; vendorId: string }
   | { type: 'worker'; workerProfileId: string }
+  /** From a booking: the customer and the worker can write to each other */
+  | { type: 'worker'; bookingId: string }
   | { type: 'order'; subOrderId: string; with: 'vendor' | 'rider' | 'customer' }
   | { type: 'job_application'; applicationId: string };
 

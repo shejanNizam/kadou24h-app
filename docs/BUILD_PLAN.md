@@ -161,11 +161,16 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] **§10 #8 + #9 fixed (2026-10-21, best-practice options):** COD only up to the rider cash limit per store (summary `cod`, server refusal, greyed COD option); online orders reach the store once paid (`pending_payment`, 30-min window, sweep cancels + cart restore, late payment → refund). e2e 157/157 (28 new checks)
 - [ ] Client answers for APP_SPEC §10 #2–5, #7 (defaults stay until then)
 
+## Worker bookings (2026-10-22, client rules)
+- [x] Server: booking module (request → accept/decline/expire → done → confirm/auto 48 h → review), contacts only after acceptance, booking chat, penalties (rolling 30 days, worker 3 tiers, customer limit, admin lift/soften), worker reviews with photos (rating recomputed), paid visibility (30-day trial, service-provider plans extend `listedUntil`, reminders), work photos, sweep. e2e 246/246 (61 new)
+- [x] Dashboard: Bookings page (bookings with details + admin cancel, cancellation penalties with lift/soften, worker reviews hide/show), worker modal shows visibility, penalty and work photos; plan form hint
+- [x] App: Book button + `/book/[id]` (day/time chips, address, job, photos), `/booking/[id]` (both sides, all actions), `/bookings` + `/worker-bookings`, worker home (visibility, penalties, requests, upcoming, estimated earnings), worker page reviews + work photos, worker form work photos, safety notices (5 places), worker plans filter, notifications + socket
+
 ## Become a worker (2026-10-21)
 - [x] Server: worker approval on professional profiles (shared `reviewFields` / `applyReview`), `workingHours`, `idDocument`, `POST /me/worker-application/submit`, `GET /me/worker-summary`, admin list / detail / review, public = listed + approved (ID, CV files and review data never public — the CV files were public before: fixed), chat only with approved workers, legacy listed workers approved at start, demo seed workers submitted + approved. e2e 185/185 (28 new)
 - [x] Dashboard: Workers page (counts, status tabs, search) + details modal (profile, ID document, history, review actions)
 - [x] App: `/worker-profile` (start / status / dashboard with chats + rating + listing switch), `/worker-profile/edit` (Figma form), Profile "Become a worker" (customer + vendor), CV card links there (old worker form removed), working hours on the public worker page, notification → worker page
-- [ ] Bookings / "Accept job" / earnings — APP_SPEC §10 #11 (client)
+- [x] Bookings / "Accept job" / earnings — built 2026-10-22 (see Worker bookings)
 
 ## Backend tasks found while planning
 - [x] `GET /wallets/me/summary` (today/period earnings, counts, chart series) for vendor and rider — 2026-10-19
@@ -173,6 +178,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-10-22 — Worker bookings with the client's rules: direct payment (no commission), penalties, reviews with photos, paid visibility (30 days free), safety notices.
 - 2026-10-21 — Become a worker with admin approval (server, dashboard, app); worker dashboard with real data only. Public worker responses no longer include CV files.
 - 2026-10-21 — §10 #8 (COD ≤ rider cash limit per store) and #9 (online orders: pay first, 30-min window, then the store) built in server, app and dashboard. e2e 157/157.
 - 2026-10-21 — Phase 11 (polish & release): ads popup/interstitial + banner carousel, offline banner + refetch on reconnect, customers also bought (server `GET /cart/suggestions`), Cloudinary-sized images, contrast fixes, interim icon, OTA updates + channels + Maps key from EAS env. New native modules: netinfo, expo-updates.

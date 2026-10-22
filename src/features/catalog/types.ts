@@ -130,6 +130,8 @@ export interface Worker {
   serviceCategoryId?: CategoryRef;
   /** days 0 (Sunday) … 6, hours "HH:mm" */
   workingHours?: { days: number[]; from: string; to: string };
+  /** Photos of past work (max 10) */
+  workPhotos?: FileRef[];
   ratingAvg: number;
   ratingCount: number;
   isPremium?: boolean;

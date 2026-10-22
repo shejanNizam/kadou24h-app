@@ -44,6 +44,20 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
     router.push({ pathname: '/withdrawals', params: { mode } });
     return true;
   }
+  // Worker bookings: a request, an answer, a finished job…
+  if (str('bookingId')) {
+    router.push({ pathname: '/booking/[id]', params: { id: str('bookingId')! } });
+    return true;
+  }
+  // Cancellation penalty (worker or customer) and visibility (trial / plan) notices
+  if (str('kind') === 'booking_penalty') {
+    router.push(str('role') === 'customer' ? '/bookings' : '/worker-profile');
+    return true;
+  }
+  if (str('kind') === 'worker_listing') {
+    router.push('/worker-profile');
+    return true;
+  }
   // Vendor / rider application reviewed: { kind, status }
   if (str('kind') && str('status')) {
     const kind = str('kind');

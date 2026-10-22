@@ -57,6 +57,9 @@ export interface MyCv {
   workingHours?: WorkingHours;
   /** ID card photo — only the Kadou24h team sees it */
   idDocument?: FileRef;
+  /** Photos of past work, public (max 10) */
+  workPhotos?: FileRef[];
+  listedUntil?: string;
   /** Worker listing approval: customers see me only once approved */
   approvalStatus: WorkerStatus;
   reviewNote?: string;
@@ -80,6 +83,20 @@ export interface WorkerSummary {
   reviewNote?: string;
   submittedAt?: string;
   isWorkerListed: boolean;
+  /** Shown to customers right now (approved, listed, paid or trial, not suspended) */
+  isVisible: boolean;
+  /** Free 30 days after the first approval, then a service-provider plan */
+  listing: { listedUntil?: string; active: boolean; trialUsed: boolean };
+  /** Cancellation penalties still running, and the cancellations counted in the last 30 days */
+  penalty: {
+    lessVisibleUntil?: string;
+    suspendedUntil?: string;
+    limitedUntil?: string;
+    strikes: { _id: string; tier: number; penalty: string; createdAt: string }[];
+  };
+  bookings: { requested: number; accepted: number; done: number; completed: number };
+  /** Prices the worker entered when finishing (payments never go through the app) */
+  earnings: { total: number; thisMonth: number; pricedJobs: number };
   ratingAvg: number;
   ratingCount: number;
   messages: { conversations: number; unread: number; unreadChats: number };
@@ -110,6 +127,7 @@ export interface CvInput {
   /** null clears it */
   workingHours?: WorkingHours | null;
   idDocument?: FileRef | null;
+  workPhotos?: FileRef[];
 }
 
 export interface WorkerListingInput {

@@ -54,6 +54,8 @@ export function SessionEffects() {
     const refreshDisputes = () => dispatch(api.util.invalidateTags(['Dispute', 'Order']));
     const refreshWallet = () => dispatch(api.util.invalidateTags(['Wallet', 'CodSettlement']));
     const refreshLinks = () => dispatch(api.util.invalidateTags(['RiderLink']));
+    // A booking changed (request, answer, done, review): both people's screens
+    const refreshBookings = () => dispatch(api.util.invalidateTags(['Booking', 'Cv', 'Notification']));
     // Vendor / rider application reviewed: roles and status change
     const refreshApplication = () => dispatch(api.util.invalidateTags(['Me', 'Store', 'Rider', 'Cv']));
     socket.on('session:revoked', onRevoked);
@@ -65,6 +67,7 @@ export function SessionEffects() {
     socket.on('delivery:declined', refreshOrders);
     socket.on('rider_link:updated', refreshLinks);
     socket.on('application:reviewed', refreshApplication);
+    socket.on('booking:updated', refreshBookings);
     JOB_EVENTS.forEach((e) => socket.on(e, refreshJobs));
     return () => {
       socket.off('session:revoked', onRevoked);
@@ -76,6 +79,7 @@ export function SessionEffects() {
       socket.off('delivery:declined', refreshOrders);
       socket.off('rider_link:updated', refreshLinks);
       socket.off('application:reviewed', refreshApplication);
+      socket.off('booking:updated', refreshBookings);
       JOB_EVENTS.forEach((e) => socket.off(e, refreshJobs));
     };
   }, [signedIn, accessToken, dispatch]);

@@ -43,7 +43,7 @@ export const cvApi = api.injectEndpoints({
     getWorkerSummary: build.query<WorkerSummary, void>({
       query: () => '/professional-profiles/me/worker-summary',
       transformResponse: unwrap<WorkerSummary>,
-      providesTags: ['Cv', 'Conversation'],
+      providesTags: ['Cv', 'Conversation', 'Booking', 'Subscription'],
     }),
     /** Template-based summary suggestion; saves nothing */
     suggestSummary: build.mutation<{ summary: string }, { targetRole?: string; lang: 'fr' | 'en' }>({
