@@ -54,18 +54,37 @@ export async function uploadFile(uri: string, file: { name: string; type: string
     form.append('files', { uri, name: file.name, type: file.type } as unknown as Blob);
   }
 
-  const post = () => {
-    const token = store.getState().auth.accessToken;
-    return fetch(`${config.apiUrl}/upload`, {
-      method: 'POST',
-      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      body: form,
-    });
-  };
-  let res = await post();
+  let res = await post(form);
   // Expired token (chat left open a while): refresh once and retry, like every other API call
-  if (res.status === 401 && (await refreshSession(store.getState, store.dispatch))) res = await post();
-  const json = (await res.json().catch(() => null)) as ApiEnvelope<FileRef> | null;
-  if (!res.ok || !json?.data?.url) throw new UploadError(json?.message ?? 'upload');
+  if (res.status === 401 && (await refreshSession(store.getState, store.dispatch))) res = await post(form);
+  const json = res.json as ApiEnvelope<FileRef> | null;
+  if (res.status < 200 || res.status >= 300 || !json?.data?.url) throw new UploadError(json?.message ?? `upload ${res.status}`);
   return json.data;
+}
+
+/**
+ * XMLHttpRequest, not fetch: Expo SDK 58 replaces the global fetch with expo/fetch, which
+ * rejects React Native's { uri, name, type } file parts ("Unsupported FormDataPart
+ * implementation"). React Native's XMLHttpRequest still streams the file from its uri.
+ */
+function post(form: FormData): Promise<{ status: number; json: unknown }> {
+  const token = store.getState().auth.accessToken;
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${config.apiUrl}/upload`);
+    if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    xhr.onload = () => {
+      let json: unknown = null;
+      try {
+        json = JSON.parse(xhr.responseText);
+      } catch {
+        // Not JSON (proxy error page): the status says enough
+      }
+      resolve({ status: xhr.status, json });
+    };
+    xhr.onerror = () => reject(new UploadError('network'));
+    xhr.ontimeout = () => reject(new UploadError('network'));
+    xhr.timeout = 120_000;
+    xhr.send(form);
+  });
 }
