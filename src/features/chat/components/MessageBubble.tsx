@@ -10,6 +10,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 
 import { clock } from '../time';
 import type { Message } from '../types';
+import { playableAudio } from '@/lib/audio';
 import { img } from '@/lib/image';
 
 /** One message. Mine on the right (purple), theirs on the left, system notices centred. */
@@ -85,7 +86,7 @@ export function MessageBubble({ message, mine, onLongPress }: { message: Message
 
 function VoicePlayer({ url, duration, color, sub }: { url: string; duration?: number; color: string; sub: string }) {
   const { t } = useTranslation();
-  const player = useAudioPlayer(url);
+  const player = useAudioPlayer(playableAudio(url));
   const status = useAudioPlayerStatus(player);
   const total = status.duration || duration || 0;
   const progress = total ? Math.min(1, status.currentTime / total) : 0;

@@ -997,6 +997,7 @@
     "longPressHint": "Appui long pour signaler",
     "reportTitle": "Signaler ce message",
     "report": "Signaler",
+    "voiceFailed": "Le message vocal n'a pas pu être envoyé. Vérifiez votre connexion et réessayez.",
     "reportReason": {
       "contact": "Partage de coordonnées",
       "offPlatformPayment": "Paiement hors Kadou24h",

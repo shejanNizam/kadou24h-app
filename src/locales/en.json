@@ -997,6 +997,7 @@
     "longPressHint": "Long press to report",
     "reportTitle": "Report this message",
     "report": "Report",
+    "voiceFailed": "The voice message couldn't be sent. Check your connection and try again.",
     "reportReason": {
       "contact": "Sharing contact details",
       "offPlatformPayment": "Payment outside Kadou24h",

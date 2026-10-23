@@ -1,6 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import {
   RecordingPresets,
+  type RecordingOptions,
   requestRecordingPermissionsAsync,
   setAudioModeAsync,
   useAudioRecorder,
@@ -20,6 +21,8 @@ import { pickImage, uploadFile, uploadImage } from '@/lib/upload';
 import { clock } from '../time';
 
 const MAX_VOICE_SECONDS = 120;
+// AAC .m4a on every phone (LOW_QUALITY records AMR .3gp on Android, which iPhones and browsers can't play). Mono 32 kbps ≈ 0.5 MB for 2 min.
+const VOICE_PRESET: RecordingOptions = { ...RecordingPresets.HIGH_QUALITY, sampleRate: 22050, numberOfChannels: 1, bitRate: 32000 };
 const MAX_TEXT = 2000;
 
 export type Outgoing =
@@ -87,7 +90,7 @@ export function Composer({
             const file = await uploadFile(uri, web ? { name: 'voice.webm', type: 'audio/webm' } : { name: 'voice.m4a', type: 'audio/mp4' });
             await send({ type: 'voice', mediaUrl: file.url, mediaDurationSec: seconds });
           } catch {
-            toast.show(t('upload.failed'), 'danger');
+            toast.show(t('chat.voiceFailed'), 'danger');
           } finally {
             setBusy(false);
           }
@@ -158,7 +161,7 @@ export function Composer({
 function VoiceRecorder({ onDone, onCancel }: { onDone: (uri: string, seconds: number) => void; onCancel: () => void }) {
   const { t } = useTranslation();
   const toast = useToast();
-  const recorder = useAudioRecorder(RecordingPresets.LOW_QUALITY);
+  const recorder = useAudioRecorder(VOICE_PRESET);
   const state = useAudioRecorderState(recorder, 250);
   const [ready, setReady] = useState(false);
   const finishing = useRef(false);

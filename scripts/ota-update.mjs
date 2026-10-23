@@ -26,7 +26,7 @@ if (!message) {
 }
 
 console.log(`OTA update → channel "${channel}", API ${apiUrl}`);
-const child = spawn('npx', ['eas-cli', 'update', '--channel', channel, '--message', JSON.stringify(message)], {
+const child = spawn('npx', ['eas-cli', 'update', '--channel', channel, '--environment', channel, '--message', JSON.stringify(message)], {
   stdio: 'inherit',
   shell: true,
   // Real environment variables win over .env files

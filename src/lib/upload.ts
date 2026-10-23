@@ -6,6 +6,7 @@ import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
 
+import { refreshSession } from '@/lib/api/baseQuery';
 import { config } from '@/lib/config';
 import { store } from '@/store';
 import type { ApiEnvelope, FileRef } from '@/types/api';
@@ -53,12 +54,17 @@ export async function uploadFile(uri: string, file: { name: string; type: string
     form.append('files', { uri, name: file.name, type: file.type } as unknown as Blob);
   }
 
-  const token = store.getState().auth.accessToken;
-  const res = await fetch(`${config.apiUrl}/upload`, {
-    method: 'POST',
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-    body: form,
-  });
+  const post = () => {
+    const token = store.getState().auth.accessToken;
+    return fetch(`${config.apiUrl}/upload`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: form,
+    });
+  };
+  let res = await post();
+  // Expired token (chat left open a while): refresh once and retry, like every other API call
+  if (res.status === 401 && (await refreshSession(store.getState, store.dispatch))) res = await post();
   const json = (await res.json().catch(() => null)) as ApiEnvelope<FileRef> | null;
   if (!res.ok || !json?.data?.url) throw new UploadError(json?.message ?? 'upload');
   return json.data;

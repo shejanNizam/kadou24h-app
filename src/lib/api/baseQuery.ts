@@ -37,6 +37,35 @@ const NO_REFRESH = ['/auth/login', '/auth/register', '/auth/refresh-token', '/au
 
 let refreshing: Promise<boolean> | null = null;
 
+/**
+ * One silent token refresh, shared by every caller that got a 401 at the same time
+ * (RTK Query here, plain fetch uploads in lib/upload). Signs out when it fails.
+ */
+export function refreshSession(getState: () => unknown, dispatch: (action: unknown) => unknown): Promise<boolean> {
+  refreshing ??= (async () => {
+    const { auth } = getState() as StateShape;
+    if (!auth.refreshToken) return false;
+    const res = await fetch(`${config.apiUrl}/auth/refresh-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken: auth.refreshToken }),
+    }).catch(() => null);
+    // Offline: keep the session, the next call can try again
+    if (!res) return false;
+    const json = (await res.json().catch(() => null)) as ApiEnvelope<{ accessToken: string }> | null;
+    const token = json?.data?.accessToken;
+    if (token) {
+      dispatch(tokenRefreshed(token));
+      return true;
+    }
+    dispatch(signedOut({ reason: 'expired' }));
+    return false;
+  })().finally(() => {
+    refreshing = null;
+  });
+  return refreshing;
+}
+
 export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
   api,
@@ -53,24 +82,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   const { auth } = api.getState() as StateShape;
   if (!auth.refreshToken) return result;
 
-  refreshing ??= (async () => {
-    const refresh = await rawBaseQuery(
-      { url: '/auth/refresh-token', method: 'POST', body: { refreshToken: auth.refreshToken } },
-      api,
-      extraOptions,
-    );
-    const token = (refresh.data as ApiEnvelope<{ accessToken: string }> | undefined)?.data?.accessToken;
-    if (token) {
-      api.dispatch(tokenRefreshed(token));
-      return true;
-    }
-    api.dispatch(signedOut({ reason: 'expired' }));
-    return false;
-  })().finally(() => {
-    refreshing = null;
-  });
-
-  if (await refreshing) {
+  if (await refreshSession(api.getState, api.dispatch)) {
     result = await rawBaseQuery(args, api, extraOptions);
   }
   return result;
