@@ -977,7 +977,7 @@
     "voiceNote": "Message vocal",
     "photo": "Photo",
     "safetyShort": "Conversation ouverte",
-    "safetyNotice": "Pour votre sécurité, payez toujours via Kadou24h et ne partagez jamais votre numéro, vos coordonnées bancaires ou vos réseaux sociaux. Ils sont masqués automatiquement.",
+    "safetyNotice": "Pour votre sécurité, payez toujours via Kadou24h et ne partagez jamais votre numéro, vos coordonnées bancaires ou vos réseaux sociaux. Ils sont masqués automatiquement. Un message vocal qui en contient peut être signalé : le compte risque la suspension.",
     "maskedNotice": "Coordonnées masquées par Kadou24h",
     "typing": "écrit…",
     "viewStore": "Voir la boutique",
@@ -996,6 +996,7 @@
     "pause": "Pause",
     "longPressHint": "Appui long pour signaler",
     "reportTitle": "Signaler ce message",
+    "report": "Signaler",
     "reportReason": {
       "contact": "Partage de coordonnées",
       "offPlatformPayment": "Paiement hors Kadou24h",

@@ -21,7 +21,7 @@ export interface Conversation {
   subOrderId?: { _id: string; subOrderNumber: string; orderId?: string; status?: string } | null;
   applicationId?: string;
   workerProfileId?: string;
-  /** Voice notes: only buyer ↔ rider */
+  /** Voice notes: every chat except job applications (server decides) */
   allowVoice: boolean;
   lastMessage?: { text?: string; type: MessageType; senderId?: string; at: string };
   updatedAt: string;

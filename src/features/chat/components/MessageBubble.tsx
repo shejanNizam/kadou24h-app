@@ -56,6 +56,15 @@ export function MessageBubble({ message, mine, onLongPress }: { message: Message
           </AppText>
         )}
         <View style={styles.meta}>
+          {/* Voice can't be checked for phone numbers: make reporting one tap away */}
+          {message.type === 'voice' && !mine && onLongPress && (
+            <Pressable onPress={onLongPress} hitSlop={8} accessibilityRole="button" accessibilityLabel={t('chat.reportTitle')} style={styles.report}>
+              <Feather name="flag" size={11} color={sub} />
+              <AppText variant="caption" color={sub} style={styles.time}>
+                {t('chat.report')}
+              </AppText>
+            </Pressable>
+          )}
           <AppText variant="caption" color={sub} style={styles.time}>
             {time}
           </AppText>
@@ -128,6 +137,7 @@ const styles = StyleSheet.create({
   masked: { marginTop: 2, fontStyle: 'italic' },
   meta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 4, marginTop: 2 },
   time: { fontSize: 10, lineHeight: 14 },
+  report: { flexDirection: 'row', alignItems: 'center', gap: 2, marginRight: 'auto' },
   viewer: { flex: 1, backgroundColor: 'rgba(0,0,0,0.92)', alignItems: 'center', justifyContent: 'center' },
   full: { width: '100%', height: '80%' },
   voice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, minWidth: 190, paddingVertical: Spacing.xs },

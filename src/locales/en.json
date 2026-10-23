@@ -977,7 +977,7 @@
     "voiceNote": "Voice message",
     "photo": "Photo",
     "safetyShort": "Conversation started",
-    "safetyNotice": "For your safety, always pay through Kadou24h and never share your phone number, bank details or social accounts. They are hidden automatically.",
+    "safetyNotice": "For your safety, always pay through Kadou24h and never share your phone number, bank details or social accounts. They are hidden automatically. A voice message that contains them can be reported, and the account may be suspended.",
     "maskedNotice": "Contact details hidden by Kadou24h",
     "typing": "typing…",
     "viewStore": "View the store",
@@ -996,6 +996,7 @@
     "pause": "Pause",
     "longPressHint": "Long press to report",
     "reportTitle": "Report this message",
+    "report": "Report",
     "reportReason": {
       "contact": "Sharing contact details",
       "offPlatformPayment": "Payment outside Kadou24h",

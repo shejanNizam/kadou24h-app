@@ -27,7 +27,7 @@ export type Outgoing =
   | { type: 'image'; mediaUrl: string }
   | { type: 'voice'; mediaUrl: string; mediaDurationSec: number };
 
-/** Text + photo (+ voice note when allowed: buyer ↔ rider only). */
+/** Text + photo (+ voice note when the chat allows it: all but job applications). */
 export function Composer({
   allowVoice,
   disabled,
