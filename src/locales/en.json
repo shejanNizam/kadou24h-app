@@ -189,7 +189,26 @@
     "reviewTooEarly": "You can review once the job is completed.",
     "reviewDuplicate": "You already left a review.",
     "partUnpaid": "Pay for the order first, or cancel all of it.",
-    "partPreparing": "This store has already started preparing: it can no longer be cancelled."
+    "partPreparing": "This store has already started preparing: it can no longer be cancelled.",
+    "offerTaken": "Another rider has already taken this delivery.",
+    "offerOffline": "Go online to take deliveries.",
+    "offerNotForYou": "This delivery is no longer offered to you.",
+    "offerTooMany_one": "Finish your current delivery first ({{count}} at a time).",
+    "offerTooMany_other": "Finish your current deliveries first (at most {{count}} at a time).",
+    "feesAlreadyPaid": "The fees of this order are already paid.",
+    "feesOnline": "Pay the fees online (Orange Money, Mobile Money or card).",
+    "rideInProgress": "You already have a ride in progress.",
+    "rideTooClose": "The pickup and the destination are too close.",
+    "rideTooLong": "This trip is too long for a moto-taxi.",
+    "rideOff": "Moto-taxi is not available right now.",
+    "rideTaken": "Another rider has already taken this ride.",
+    "rideNotForYou": "This ride is no longer offered to you.",
+    "rideStarted": "The ride has started: it can no longer be cancelled.",
+    "rideRated": "You already rated this ride.",
+    "rideParcels": "Finish your deliveries before taking a passenger.",
+    "rideBusy": "Finish your current ride first.",
+    "rideOffline": "Go online to take rides.",
+    "rideDrop": "You can only drop a ride before it starts."
   },
   "tabs": {
     "home": "Home",
@@ -236,7 +255,8 @@
     "myApplications": "My applications",
     "postJob": "Post a job",
     "becomeWorker": "Become a worker",
-    "myBookings": "My bookings"
+    "myBookings": "My bookings",
+    "myRides": "My moto-taxi rides"
   },
   "kyc": {
     "vendorTitle": "Become a vendor",
@@ -519,8 +539,8 @@
     "form": {
       "title": "Worker profile",
       "pendingEdit": "Your profile is under review. The team will see your changes.",
-      "photo": "Profile photo",
-      "photoHint": "A clear photo of your face: customers recognise you.",
+      "photo": "Profile photo (optional)",
+      "photoHint": "Optional, but a clear photo of your face helps customers trust you.",
       "name": "Full name",
       "service": "Service type",
       "profession": "Profession",
@@ -687,7 +707,7 @@
     "instructionsHint": "e.g. call when you arrive, ring at the gate",
     "payment": "Payment",
     "paymentHint": {
-      "cod": "Pay the rider in cash on delivery.",
+      "cod": "Fees (service, delivery) paid online now; the items in cash to the rider.",
       "orange_money": "Approve the payment on your phone.",
       "mobile_money": "MTN Mobile Money: approve on your phone.",
       "card": "Visa / Mastercard."
@@ -704,8 +724,8 @@
     "platformFee": "Service fee",
     "discount": "Discount",
     "total": "Total",
-    "codSingle": "Have {{total}} in cash ready for the rider.",
-    "codMultiple": "{{count}} riders (one per store): each collects their store's amount, shown in the order.",
+    "codSingle": "Have {{total}} in cash ready for the rider (the items).",
+    "codMultiple": "{{count}} riders (one per store): each collects their store’s items in cash, shown in the order.",
     "place": "Place order · {{total}}",
     "placeShort": "Place order",
     "codUnavailable": "Not available above {{limit}} per store.",
@@ -720,7 +740,13 @@
     "promoNotYet": "This promo code is not valid yet.",
     "promoFull": "This promo code has been fully used.",
     "promoUsed": "You have already used this promo code.",
-    "promoMin": "This code needs an order of at least {{amount}} (products)."
+    "promoMin": "This code needs an order of at least {{amount}} (products).",
+    "feesWith": "Pay the fees with",
+    "payFeesWithin": "You have {{minutes}} minutes to pay the fees. The store receives the order as soon as they are paid.",
+    "payNowFees": "Fees to pay online now",
+    "feesPaid": "Fees paid online",
+    "payCash": "Cash on delivery (items)",
+    "placeCod": "Pay the fees · {{amount}}"
   },
   "payment": {
     "method": {
@@ -743,7 +769,7 @@
     "failedText": "The payment didn't go through. Nothing was charged.",
     "tryAgain": "Try again",
     "payLater": "Pay later",
-    "devOnly": "Development: no gateway connected",
+    "devOnly": "Demo payment: no real payment method is connected yet. No money is taken.",
     "devSuccess": "Simulate: paid",
     "devFail": "Simulate: failed"
   },
@@ -867,7 +893,10 @@
     "cancelPartText": "Only the {{store}} items are cancelled. The other stores carry on with your order.",
     "cancelPartTextPaid": "Only the {{store}} items are cancelled; their amount will be refunded after review. The other stores carry on.",
     "cancelPartConfirm": "Cancel this part",
-    "partCancelled": "The {{store}} part is cancelled."
+    "partCancelled": "The {{store}} part is cancelled.",
+    "feesUnpaidUntil": "Pay the fees ({{amount}}) before {{time}}: the store receives the order as soon as they are paid. Otherwise it is cancelled and the items go back to your cart.",
+    "payFees": "Pay the fees · {{amount}}",
+    "cancelPartTextFees": "Only the {{store}} items are cancelled. The delivery fee you paid online for this store will be refunded after review. The other stores carry on."
   },
   "track": {
     "title": "Delivery tracking",
@@ -1327,17 +1356,17 @@
     "assignRider": "Choose a rider",
     "assignBus": "Choose a bus driver",
     "assignTitle": "Choose a rider",
-    "assignHint": "Online riders. Bus: drivers of this route first. From your store: your partners first. Then the nearest.",
+    "assignHint": "Send it to one rider: they have 3 minutes to accept, then it goes back to the nearby riders. Bus: drivers of this route first. From your store: your partners first, then the nearest.",
     "assignTo": "Give to {{name}}",
     "riderAssigned": "Request sent to {{name}}",
     "noRiders": "No rider online",
     "noRidersText": "Try again in a few minutes, or invite riders to your network.",
-    "riderDeclined": "The rider declined: choose another one.",
+    "riderDeclined": "The rider declined: it is offered to the nearby riders again.",
     "km": "{{km}} km",
     "busy_one": "{{count}} delivery in progress",
     "busy_other": "{{count}} deliveries in progress",
     "legStatus": {
-      "pending_assignment": "Choose a rider",
+      "pending_assignment": "Looking for a rider",
       "assigned": "Waiting for the rider",
       "accepted": "Rider on the way",
       "declined": "Declined by the rider",
@@ -1360,7 +1389,11 @@
     "modified": "Order changed",
     "newAlert": "New order!",
     "newAlertOpen": "Tap to open it",
-    "runsRoute": "Runs this route"
+    "runsRoute": "Runs this route",
+    "legSearching": "Nearby riders can see it: the first to accept takes it. You can also send it to one rider.",
+    "legNobody": "Still nobody: choose a rider, or wait. The Kadou24h team has been told.",
+    "legWaitAccept": "Nearby riders will see it as soon as you accept the order.",
+    "legReserved": "Waiting for {{name}} to answer until {{time}}. Then it goes back to the nearby riders."
   },
   "riders": {
     "title": "My riders",
@@ -1528,23 +1561,24 @@
     "online": "Online",
     "offline": "Offline",
     "onlineSwitch": "Be online",
-    "onlineHint": "Stores can give you deliveries.",
+    "onlineHint": "You see the deliveries near you.",
     "offlineHint": "Go online to get deliveries.",
     "nowOnline": "You are online",
     "nowOffline": "You are offline",
     "locationNeeded": "Allow location: stores pick the nearest riders.",
     "openSettings": "Settings",
     "tab": {
-      "new": "New",
+      "new": "For me",
       "ongoing": "Ongoing",
-      "completed": "History"
+      "completed": "History",
+      "offers": "Near me"
     },
     "empty": {
       "new": "No new deliveries",
       "ongoing": "No deliveries in progress",
       "completed": "No finished deliveries"
     },
-    "emptyNewOnline": "Stay online: stores will send you their deliveries here.",
+    "emptyNewOnline": "Deliveries a store sends you arrive here. The others are under \"Near me\".",
     "emptyNewOffline": "You are offline. Go online to get deliveries.",
     "cashStrip": "Cash to hand over: {{amount}}",
     "cashLimit": "Limit: {{limit}}. Hand the cash over to accept more cash-on-delivery orders.",
@@ -1555,9 +1589,9 @@
     "accept": "Accept",
     "accepted": "Delivery accepted",
     "decline": "Decline",
-    "declined": "Delivery declined. The store will pick another rider.",
+    "declined": "Delivery declined. It is offered to other riders.",
     "declineTitle": "Decline this delivery?",
-    "declineHint": "The store is told and picks another rider. Tell them why.",
+    "declineHint": "The delivery is offered to other riders. Tell the store why.",
     "declineReason": {
       "tooFar": "Too far",
       "busy": "Already busy",
@@ -1615,7 +1649,31 @@
     "menuTitle": "My rider work",
     "vehicleTitle": "Vehicle & identity",
     "identity": "Verified identity",
-    "identityLocked": "To change these details, contact support."
+    "identityLocked": "To change these details, contact support.",
+    "offer": {
+      "intro": "Deliveries near you. The first rider to accept gets it.",
+      "empty": "No deliveries near you",
+      "emptyOnline": "Stay online: you are told as soon as a delivery comes up near you.",
+      "emptyOffline": "You are offline. Go online to see deliveries near you.",
+      "away": "{{km}} away",
+      "awayUnknown": "Distance unknown",
+      "trip": "Trip {{km}}",
+      "customer": "Customer",
+      "myStore": "Your store",
+      "myRoute": "Your route",
+      "take": "Take it",
+      "skip": "Not for me",
+      "taken": "The delivery is yours",
+      "blocked": {
+        "too_many": "Finish your current deliveries first.",
+        "cash_limit": "Too much cash on you: hand it over to take this delivery.",
+        "on_ride": "Finish your moto-taxi ride first."
+      },
+      "alert": "Delivery near you · {{amount}}",
+      "alertAway": "{{km}} km away. The first to accept gets it.",
+      "alertFirst": "The first to accept gets it."
+    },
+    "answerBefore": "Answer before {{time}}, or it is offered to other riders."
   },
   "cash": {
     "title": "Cash to hand over",
@@ -2328,6 +2386,110 @@
       "workerSuspended": "Third cancellation in 30 days: your profile is suspended until {{date}} (customers can’t see you). After that, one booking at a time until {{limit}}.",
       "customerWarning": "You cancelled an accepted booking. Please respect your commitments: after 3 cancellations in 30 days, your bookings will be limited.",
       "customerLimited": "After several cancellations this month, you can only have one booking at a time until {{date}}."
+    }
+  },
+  "ride": {
+    "entry": {
+      "title": "Moto-taxi",
+      "text": "Go from A to B. Price known before ordering, paid in cash.",
+      "current": "Your ride in progress"
+    },
+    "status": {
+      "searching": "Looking for a rider",
+      "accepted": "Rider on the way",
+      "arrived": "Rider is here",
+      "in_progress": "On the way",
+      "completed": "Finished",
+      "cancelled": "Cancelled",
+      "expired": "No rider"
+    },
+    "title": "Ride {{number}}",
+    "pickup": "Pickup",
+    "dropoff": "Destination",
+    "price": "Ride price",
+    "tripInfo": "{{km}} km · about {{min}} min",
+    "payCash": "Pay the rider in cash",
+    "mapA11y": "Ride map",
+    "new": {
+      "pickupTitle": "Pickup point",
+      "dropoffTitle": "Destination",
+      "pickupHint": "Put the pin where the rider should pick you up.",
+      "dropoffHint": "Put the pin on your destination.",
+      "confirmPickup": "Confirm the pickup",
+      "confirmDropoff": "Confirm the destination",
+      "pinned": "Point chosen on the map",
+      "reviewTitle": "Your ride",
+      "moveOnMap": "On the map",
+      "addressHint": "Neighbourhood, street, landmark…",
+      "ridersNearby_one": "{{count}} rider available near you. The first to accept comes to pick you up.",
+      "ridersNearby_other": "{{count}} riders available near you. The first to accept comes to pick you up.",
+      "noRiderNearby": "No rider available close by right now. You can still order: the request widens for 10 minutes.",
+      "note": "Note for the rider",
+      "noteHint": "E.g. in front of the pharmacy, blue gate",
+      "safety": "For your safety: check the rider’s name and plate before getting on, and wear a helmet.",
+      "order": "Order · {{amount}}",
+      "orderShort": "Order"
+    },
+    "searchingText": "Nearby riders can see your request. The first to accept comes to pick you up.",
+    "arrivedText": "Your rider is at the pickup point.",
+    "onTheWayText": "On the way to {{place}}.",
+    "completedText": "Ride finished. Pay {{amount}} in cash to the rider.",
+    "expiredText": "No rider accepted your ride. Try again in a few minutes.",
+    "cancelledBy": "Ride cancelled by {{by}}.",
+    "by": {
+      "passenger": "the passenger",
+      "rider": "the rider",
+      "admin": "Kadou24h"
+    },
+    "safety": "Never share bank details. If something goes wrong, contact Kadou24h support.",
+    "cancel": "Cancel the ride",
+    "cancelled": "Ride cancelled",
+    "cancelTitle": "Cancel the ride?",
+    "cancelTextSearching": "The request is withdrawn for every rider.",
+    "cancelTextRider": "Your rider is already on the way: they will be told.",
+    "again": "Order the same ride again",
+    "newRide": "New ride",
+    "riderRides_one": "{{count}} ride",
+    "riderRides_other": "{{count}} rides",
+    "yourRating": "Your rating",
+    "rateTitle": "Rate {{name}}",
+    "rateSend": "Send the rating",
+    "rated": "Thank you for your rating!",
+    "emptyTitle": "No rides yet",
+    "emptyPassenger": "Order a moto to go from A to B.",
+    "emptyRider": "Nearby passengers show up under \"Near me\" while you are online.",
+    "riderHistory": "My moto-taxi rides",
+    "rider": {
+      "title": "Moto-taxi ride",
+      "passengerRide": "Passenger",
+      "youGet": "You collect (cash)",
+      "accept": "Take the ride",
+      "accepted": "Ride accepted: go and pick up the passenger",
+      "alert": "Passenger near you · {{amount}}",
+      "current": "Ride in progress",
+      "call": "Call the passenger",
+      "directionsPickup": "Directions to the passenger",
+      "directionsDropoff": "Directions to the destination",
+      "step": {
+        "arrived": "I’m here",
+        "start": "Passenger on board: start",
+        "complete": "Finish · collect {{amount}}"
+      },
+      "done": {
+        "arrived": "The passenger has been told",
+        "start": "Have a safe ride!",
+        "complete": "Ride finished"
+      },
+      "collectAtEnd": "At the end, collect {{amount}} in cash.",
+      "completedText": "Ride finished: {{amount}} collected in cash.",
+      "cancelledBy": "Ride cancelled by {{by}}.",
+      "completeTitle": "Finish the ride?",
+      "completeText": "Confirm you received {{amount}} in cash.",
+      "completeConfirm": "I got the money",
+      "drop": "I can’t do this ride",
+      "dropTitle": "Drop the ride?",
+      "dropText": "It goes to the other nearby riders and you won’t see it again.",
+      "dropped": "Ride offered to other riders"
     }
   }
 }

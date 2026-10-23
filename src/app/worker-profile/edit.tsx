@@ -108,7 +108,6 @@ function WorkerForm({ cv }: { cv: MyCv }) {
   };
 
   const check = (): string | null => {
-    if (!photo) return t('worker.form.need.photo');
     if (name.trim().length < 2) return t('worker.form.need.name');
     if (!serviceId) return t('worker.form.need.service');
     if (profession.trim().length < 2) return t('worker.form.need.profession');

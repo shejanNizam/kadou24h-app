@@ -77,7 +77,46 @@ export type RiderUpdate = Pick<RiderInput, 'vestNumber' | 'cityArea' | 'transitR
 
 // ── Deliveries ───────────────────────────────────────────────────────
 /** new = waiting for my answer · ongoing = accepted → in transit · completed = finished */
-export type RiderTab = 'new' | 'ongoing' | 'completed';
+/** offers = open deliveries near me (first to accept); new = sent to me by a store */
+export type RiderTab = 'offers' | 'new' | 'ongoing' | 'completed';
+
+/** GET /deliveries/rider/offers row: no phone, the customer's area only until I accept */
+export interface DeliveryOffer {
+  _id: string;
+  legType: LegType;
+  legNumber: number;
+  deliveryType?: DeliveryType;
+  subOrderNumber?: string;
+  itemCount: number;
+  fromKind: EndpointKind;
+  fromName: string;
+  fromAddressText?: string;
+  fromLocation: GeoPoint;
+  toKind: EndpointKind;
+  /** Station name; absent when it ends with the customer */
+  toName?: string;
+  toArea?: string;
+  /** GNF: all of it is mine */
+  fee: number;
+  collectsCash: boolean;
+  cashToCollect: number;
+  /** Me → pickup (absent when my position is unknown) */
+  pickupKm?: number;
+  /** Pickup → drop-off, straight line */
+  tripKm: number;
+  /** A store I deliver for */
+  fromMyStore: boolean;
+  /** Bus: I run this route */
+  servesRoute?: boolean;
+  openedAt: string;
+  canTake: boolean;
+  blockedReason?: 'too_many' | 'cash_limit' | 'on_ride';
+}
+
+export interface OffersResult {
+  isOnline: boolean;
+  offers: DeliveryOffer[];
+}
 
 interface DeliverySubOrder {
   _id: string;
@@ -117,6 +156,8 @@ export interface RiderDelivery {
   collectsCash: boolean;
   declineReason?: string;
   pinLockedUntil?: string;
+  /** Sent to me by a store: answer before this, or it goes back to the nearby riders */
+  reservedUntil?: string;
   assignedAt?: string;
   acceptedAt?: string;
   pickedUpAt?: string;

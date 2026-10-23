@@ -151,6 +151,12 @@ export const canCancelPart = (order: Order, subOrders: Pick<SubOrder, 'status'>[
 
 export const isOnlinePayment = (m: PaymentMethod): m is Exclude<PaymentMethod, 'cod'> => m !== 'cod';
 
+/** Still to pay online: an online order, or the fees of a cash-on-delivery order (client, 2026-10-23) */
+export const needsOnlinePayment = (order: Pick<Order, 'paymentMethod' | 'paymentStatus' | 'status' | 'upfrontAmount' | 'feesPaidAt'>) =>
+  order.status === 'active' &&
+  order.paymentStatus === 'unpaid' &&
+  (isOnlinePayment(order.paymentMethod) || (Boolean(order.upfrontAmount) && !order.feesPaidAt));
+
 /** A fresh key per payment attempt: retries of the same tap never charge twice */
 export const newIdempotencyKey = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 

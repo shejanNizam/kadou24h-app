@@ -145,6 +145,12 @@ export interface VendorSubOrder extends Omit<SubOrder, 'vendorId' | 'currentRide
 
 export interface VendorLeg extends Omit<DeliveryLegSummary, 'riderId'> {
   riderId?: StoreRider | null;
+  /** Open dispatch: nearby riders see it since (first to accept takes it) */
+  offerOpenedAt?: string;
+  /** Sent to one rider: they must accept before this */
+  reservedUntil?: string;
+  /** Nobody took it for a while: the store and the Kadou24h team were told */
+  noRiderAlertedAt?: string;
 }
 
 export interface VendorSubOrderDetails {

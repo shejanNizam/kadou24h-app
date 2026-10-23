@@ -96,12 +96,34 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/you have deliveries in progress/i.test(message)) return t('errors.deleteDeliveries');
   if (/cash on delivery money/i.test(message)) return t('errors.deleteCash');
   if (/wallet still has money/i.test(message)) return t('errors.deleteWallet');
+  // Moto-taxi
+  if (/already have a ride in progress/i.test(message)) return t('errors.rideInProgress');
+  if (/pickup and the destination are too close/i.test(message)) return t('errors.rideTooClose');
+  if (/too long for a moto-taxi/i.test(message)) return t('errors.rideTooLong');
+  if (/moto-taxi is not available/i.test(message)) return t('errors.rideOff');
+  if (/another rider has already taken this ride/i.test(message)) return t('errors.rideTaken');
+  if (/this ride is not offered to you/i.test(message)) return t('errors.rideNotForYou');
+  if (/the ride has started/i.test(message)) return t('errors.rideStarted');
+  if (/already rated this ride/i.test(message)) return t('errors.rideRated');
+  if (/finish your deliveries before taking a passenger/i.test(message)) return t('errors.rideParcels');
+  if (/finish your current ride first/i.test(message)) return t('errors.rideBusy');
+  if (/go online to take rides/i.test(message)) return t('errors.rideOffline');
+  if (/only drop a ride before it starts/i.test(message)) return t('errors.rideDrop');
+  // Cash on delivery: the fees are paid online first
+  if (/fees of this order are already paid/i.test(message)) return t('errors.feesAlreadyPaid');
+  if (/pay the fees online/i.test(message)) return t('errors.feesOnline');
   // Rider: deliveries and COD cash
   const locked = message.match(/try again in (\d+) min/i);
   if (locked) return t('errors.pinLocked', { count: Number(locked[1]) });
   const cashLimit = message.match(/exceeds authorized partner limit \(([\d\s,. ]+) GNF\)/i);
   if (cashLimit) return t('errors.cashLimit', { limit: `${cashLimit[1].trim()} GNF` });
   if (/no assigned delivery found|no longer assigned to you|assigned delivery not found/i.test(message)) return t('errors.deliveryGone');
+  // Open dispatch (first to accept takes it)
+  if (/another rider has already taken this delivery|a rider has just taken this delivery/i.test(message)) return t('errors.offerTaken');
+  if (/go online to take deliveries/i.test(message)) return t('errors.offerOffline');
+  if (/not offered to (you|riders yet)/i.test(message)) return t('errors.offerNotForYou');
+  const tooMany = message.match(/finish your current deliveries first \(at most (\d+)/i);
+  if (tooMany) return t('errors.offerTooMany', { count: Number(tooMany[1]) });
   if (/already updated\. please refresh|cannot verify (pickup|handover) while/i.test(message)) return t('errors.deliveryChanged');
   const owedCap = message.match(/cannot exceed the cash you still owe \((\d+) GNF\)/i);
   if (owedCap) return t('errors.codTooMuch', { amount: `${Number(owedCap[1]).toLocaleString('fr-FR')} GNF` });

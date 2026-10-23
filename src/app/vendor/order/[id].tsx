@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState, type ReactNode } from 'react';
-import { Linking, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -188,6 +188,7 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
               <LegRow
                 key={leg._id}
                 leg={leg}
+                orderAccepted={so.status !== 'new'}
                 last={i === deliveries.length - 1}
                 onAssign={() => setAssignLeg(leg._id)}
                 onChat={() => openChat({ type: 'order', subOrderId: so._id, with: 'rider' })}
@@ -264,10 +265,41 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
   );
 }
 
-function LegRow({ leg, last, onAssign, onChat }: { leg: VendorLeg; last: boolean; onAssign: () => void; onChat: () => void }) {
-  const { t } = useTranslation();
+/**
+ * One delivery leg. Open dispatch: once the order is accepted, nearby riders
+ * see it and the first to accept takes it; the store may still send it to one
+ * rider, who has a few minutes to answer.
+ */
+function LegRow({
+  leg,
+  orderAccepted,
+  last,
+  onAssign,
+  onChat,
+}: {
+  leg: VendorLeg;
+  orderAccepted: boolean;
+  last: boolean;
+  onAssign: () => void;
+  onChat: () => void;
+}) {
+  const { t, i18n } = useTranslation();
   const rider = leg.riderId;
   const canAssign = ASSIGNABLE_LEG.includes(leg.status);
+  const searching = leg.status === 'pending_assignment' && Boolean(leg.offerOpenedAt);
+  const reserved = leg.status === 'assigned' && leg.reservedUntil;
+  const hint = reserved
+    ? t('vendorOrders.legReserved', {
+        name: rider?.userId?.name ?? '',
+        time: new Date(leg.reservedUntil!).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
+      })
+    : searching
+      ? leg.noRiderAlertedAt
+        ? t('vendorOrders.legNobody')
+        : t('vendorOrders.legSearching')
+      : leg.status === 'pending_assignment' && leg.legNumber === 1 && !orderAccepted
+        ? t('vendorOrders.legWaitAccept')
+        : null;
   return (
     <View style={[styles.leg, !last && styles.legDivider]}>
       <View style={styles.row}>
@@ -292,12 +324,20 @@ function LegRow({ leg, last, onAssign, onChat }: { leg: VendorLeg; last: boolean
         </View>
       ) : null}
       {leg.status === 'declined' && <AppText variant="caption" color={Colors.danger}>{t('vendorOrders.riderDeclined')}</AppText>}
+      {hint ? (
+        <View style={styles.row}>
+          {searching && !leg.noRiderAlertedAt && <ActivityIndicator size="small" color={Colors.primary} />}
+          <AppText variant="caption" color={leg.noRiderAlertedAt && searching ? Colors.warning : Colors.textMuted} style={styles.flex}>
+            {hint}
+          </AppText>
+        </View>
+      ) : null}
       {canAssign && (
         <Button
           title={leg.legType === 'line_haul' ? t('vendorOrders.assignBus') : t('vendorOrders.assignRider')}
           icon="user-plus"
           size="sm"
-          variant={leg.status === 'declined' ? 'primary' : 'soft'}
+          variant={leg.status === 'declined' || leg.noRiderAlertedAt ? 'primary' : 'soft'}
           onPress={onAssign}
         />
       )}

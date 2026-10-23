@@ -161,6 +161,15 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] **§10 #8 + #9 fixed (2026-10-21, best-practice options):** COD only up to the rider cash limit per store (summary `cod`, server refusal, greyed COD option); online orders reach the store once paid (`pending_payment`, 30-min window, sweep cancels + cart restore, late payment → refund). e2e 157/157 (28 new checks)
 - [ ] Client answers for APP_SPEC §10 #2–5, #7 (defaults stay until then)
 
+## Client feedback after installing (2026-10-23)
+- [x] Open dispatch: "Near me" tab for riders (distance, earnings, cash, Take it / Not for me), top banner + push for new offers; store legs show "Looking for a rider" / "Waiting for X until…" / "Still nobody"; the store's pick has 3 min. Server sweep + e2e (22 checks)
+- [x] COD: fees (service, tax, delivery) paid online first, products in cash; checkout "Pay the fees with", order "Pay the fees", online / cash split; dashboard order shows it. e2e (COD section + updated promo / part-cancel checks)
+- [x] Demo payments in release builds (server `PAYMENT_MODE=demo` until a gateway is connected)
+- [x] Worker profile photo optional
+- [ ] AI for the CV: only a template today — needs an AI provider account (client to decide)
+- [x] Moto-taxi (A → B): home card → pick start + destination on the map → price → order; live ride screen (rider on the map, cancel, rate); rider "Near me" shows passengers too, ride steps screen (call, directions, arrived / start / finish), history for both; dashboard Moto-taxi page + Settings → Moto-taxi prices. Server e2e 30 checks
+- [ ] Moto-taxi decisions to confirm with the client (commission or subscription, prices)
+
 ## Promo codes, cancel one store, block in chat (2026-10-22, client agreed)
 - [x] Server: coupon module (admin CRUD, checkout evaluation + spread over stores, one use per customer, total limit, released on full cancellation, revenue − discounts); `POST /orders/:id/sub-orders/:subOrderId/cancel` (COD service fee moves); chat block with hidden delivery + `blockedByMe`. e2e 285/285 (39 new)
 - [x] Dashboard: Promo codes page (stats, list, create/edit, uses drawer); order details show the code; overview revenue note
@@ -184,6 +193,8 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-10-23 — Moto-taxi (A → B rides): price first, nearest riders, cash, ratings; dashboard page + prices.
+- 2026-10-23 — Open dispatch (nearest riders, first to accept), COD fees paid online first, demo payments, worker photo optional.
 - 2026-10-22 — Promo codes (Kadou24h pays), cancel one store's part, block in chat (silent).
 - 2026-10-22 — Worker bookings with the client's rules: direct payment (no commission), penalties, reviews with photos, paid visibility (30 days free), safety notices.
 - 2026-10-21 — Become a worker with admin approval (server, dashboard, app); worker dashboard with real data only. Public worker responses no longer include CV files.

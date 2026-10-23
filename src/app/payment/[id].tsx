@@ -134,14 +134,14 @@ export default function PaymentScreen() {
           <Button title={orderId ? t('payment.payLater') : t('common.cancel')} variant="ghost" onPress={leave} />
         )}
 
-        {/* No gateway is connected yet: in development, finish the payment by hand */}
-        {__DEV__ && status === 'pending' && (
+        {/* No gateway is connected yet (server PAYMENT_MODE=demo, or development): finish the payment by hand */}
+        {(__DEV__ || payment?.demo) && status === 'pending' && (
           <View style={styles.dev}>
             <AppText variant="caption" color={Colors.textMuted} align="center">
               {t('payment.devOnly')}
             </AppText>
             <View style={styles.devRow}>
-              <Button title={t('payment.devSuccess')} size="sm" variant="soft" style={styles.flex} disabled={devState.isLoading} onPress={() => void devConfirm({ id, status: 'success' }).unwrap().then(() => refetch())} />
+              <Button title={t('payment.devSuccess')} size="sm" variant="primary" style={styles.flex} disabled={devState.isLoading} onPress={() => void devConfirm({ id, status: 'success' }).unwrap().then(() => refetch())} />
               <Button title={t('payment.devFail')} size="sm" variant="outline" style={styles.flex} disabled={devState.isLoading} onPress={() => void devConfirm({ id, status: 'failed' }).unwrap().then(() => refetch())} />
             </View>
           </View>

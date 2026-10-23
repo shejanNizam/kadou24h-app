@@ -9,6 +9,7 @@ import type { TFunction } from 'i18next';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { BottomSheet } from '@/components/ui/BottomSheet';
+import { Chip } from '@/components/ui/Chip';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { OptionCard } from '@/components/ui/OptionCard';
@@ -50,6 +51,8 @@ const PAYMENTS: { method: PaymentMethod; icon: 'dollar-sign' | 'smartphone' | 'c
   { method: 'mobile_money', icon: 'smartphone' },
   { method: 'card', icon: 'credit-card' },
 ];
+/** Cash on delivery: the fees are paid online first, with one of these */
+const FEE_METHODS: Exclude<PaymentMethod, 'cod'>[] = ['orange_money', 'mobile_money', 'card'];
 
 export default function CheckoutScreen() {
   const { t } = useTranslation();
@@ -69,6 +72,7 @@ function Checkout() {
   const [station, setStation] = useState<TransitStation | undefined>();
   const [stationSheet, setStationSheet] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
+  const [feesMethod, setFeesMethod] = useState<Exclude<PaymentMethod, 'cod'>>('orange_money');
   const [notes, setNotes] = useState('');
   const instructions = useDebounced(notes.trim(), 600);
   const [placeError, setPlaceError] = useState<string | null>(null);
@@ -98,15 +102,12 @@ function Checkout() {
       // A code the server refused is not sent (the order would be refused)
       const validCode = summary.data?.coupon?.valid ? couponCode : undefined;
       const { order } = await placeOrder({ ...input, couponCode: validCode, specialInstructions: notes.trim() || undefined }).unwrap();
-      if (!isOnlinePayment(paymentMethod)) {
-        router.replace({ pathname: '/order-placed/[id]', params: { id: order._id } });
-        return;
-      }
+      // Everything is paid online now, or (cash on delivery) the fees; the store gets the order once paid
       try {
         const payment = await initiatePayment({
           purpose: 'order',
           refId: order._id,
-          method: paymentMethod,
+          method: isOnlinePayment(paymentMethod) ? paymentMethod : feesMethod,
           idempotencyKey: newIdempotencyKey(),
         }).unwrap();
         router.replace({ pathname: '/payment/[id]', params: { id: payment._id, orderId: order._id } });
@@ -226,11 +227,19 @@ function Checkout() {
             />
           ))}
           {paymentMethod === 'cod' && codBlocked && <Banner tone="warning" message={t('checkout.codTooHigh', { limit: formatGNF(codLimit) })} />}
-          {isOnlinePayment(paymentMethod) && (
-            <AppText variant="caption" color={Colors.textMuted}>
-              {t('checkout.payWithin', { minutes: PAYMENT_WINDOW_MINUTES })}
-            </AppText>
+          {paymentMethod === 'cod' && !codBlocked && (
+            <View style={styles.gap}>
+              <AppText variant="label">{t('checkout.feesWith')}</AppText>
+              <View style={styles.feeChips}>
+                {FEE_METHODS.map((m) => (
+                  <Chip key={m} label={t(`payment.method.${m}`)} selected={feesMethod === m} onPress={() => setFeesMethod(m)} />
+                ))}
+              </View>
+            </View>
           )}
+          <AppText variant="caption" color={Colors.textMuted}>
+            {paymentMethod === 'cod' ? t('checkout.payFeesWithin', { minutes: PAYMENT_WINDOW_MINUTES }) : t('checkout.payWithin', { minutes: PAYMENT_WINDOW_MINUTES })}
+          </AppText>
         </Section>
 
         {/* 5. Promo code */}
@@ -306,11 +315,19 @@ function Checkout() {
                   </AppText>
                 </View>
               ))}
-              <PriceSummary pricing={summary.data.pricing} storeCount={splits.length} />
+              <PriceSummary
+                pricing={summary.data.pricing}
+                storeCount={splits.length}
+                split={paymentMethod === 'cod' ? { online: summary.data.pricing.payNow, cash: summary.data.pricing.payOnDelivery } : undefined}
+              />
               {paymentMethod === 'cod' && (
                 <Banner
                   tone="info"
-                  message={splits.length > 1 ? t('checkout.codMultiple', { count: splits.length }) : t('checkout.codSingle', { total: formatGNF(summary.data.pricing.total) })}
+                  message={
+                    splits.length > 1
+                      ? t('checkout.codMultiple', { count: splits.length })
+                      : t('checkout.codSingle', { total: formatGNF(summary.data.pricing.payOnDelivery) })
+                  }
                 />
               )}
             </View>
@@ -322,7 +339,13 @@ function Checkout() {
 
       <View style={[styles.inner, styles.footer]}>
         <Button
-          title={summary.data ? t('checkout.place', { total: formatGNF(summary.data.pricing.total) }) : t('checkout.placeShort')}
+          title={
+            summary.data
+              ? paymentMethod === 'cod'
+                ? t('checkout.placeCod', { amount: formatGNF(summary.data.pricing.payNow) })
+                : t('checkout.place', { total: formatGNF(summary.data.pricing.total) })
+              : t('checkout.placeShort')
+          }
           loading={placing}
           disabled={!ready || !summary.data || summary.isFetching || summary.isError || (paymentMethod === 'cod' && codBlocked)}
           onPress={() => void onPlace()}
@@ -397,6 +420,7 @@ const styles = StyleSheet.create({
   content: { gap: Spacing.xxl, paddingBottom: Spacing.xxl },
   flex: { flex: 1 },
   gap: { gap: Spacing.md },
+  feeChips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   dim: { opacity: 0.5 },
   section: { gap: Spacing.md },
   sectionHead: { flexDirection: 'row', alignItems: 'center' },

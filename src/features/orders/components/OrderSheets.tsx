@@ -32,7 +32,8 @@ export function CancelSheet({
   orderId: string;
   visible: boolean;
   onClose: () => void;
-  part?: { subOrderId: string; storeName: string; paidOnline: boolean } | null;
+  /** feesOnly: cash on delivery whose fees were paid online (that store's delivery fee comes back) */
+  part?: { subOrderId: string; storeName: string; paidOnline: boolean; feesOnly?: boolean } | null;
 }) {
   const { t } = useTranslation();
   const toast = useToast();
@@ -83,7 +84,9 @@ export function CancelSheet({
         </>
       }>
       <AppText variant="small" color={Colors.textMuted}>
-        {part ? t(part.paidOnline ? 'order.cancelPartTextPaid' : 'order.cancelPartText', { store: part.storeName }) : t('order.cancelText')}
+        {part
+          ? t(part.feesOnly ? 'order.cancelPartTextFees' : part.paidOnline ? 'order.cancelPartTextPaid' : 'order.cancelPartText', { store: part.storeName })
+          : t('order.cancelText')}
       </AppText>
       <View style={styles.chips}>
         {[...CANCEL_REASONS, 'other' as const].map((r) => (

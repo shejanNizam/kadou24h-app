@@ -23,6 +23,7 @@ import { ProductCard } from '@/features/catalog/components/ProductCard';
 import { ProductGridSkeleton, useGridItemWidth } from '@/features/catalog/components/ProductGrid';
 import { WorkerCard } from '@/features/catalog/components/WorkerCard';
 import { useGetUnreadCountQuery } from '@/features/notifications/api';
+import { RideEntryCard } from '@/features/ride/components/RideEntryCard';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useAppSelector } from '@/store/hooks';
 import { AppMode } from '@/types/api';
@@ -140,6 +141,8 @@ export default function HomeScreen() {
               : Array.from({ length: 4 }, (_, i) => <Skeleton key={i} width={80} height={96} radius={Radius.lg} />)}
           </ScrollView>
         </View>
+
+        <RideEntryCard />
 
         <AdBanner placement="home" />
 

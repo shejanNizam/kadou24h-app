@@ -189,7 +189,26 @@
     "reviewTooEarly": "Vous pourrez donner votre avis une fois le travail terminé.",
     "reviewDuplicate": "Vous avez déjà donné votre avis.",
     "partUnpaid": "Payez d’abord la commande, ou annulez-la entièrement.",
-    "partPreparing": "Cette boutique a déjà commencé à préparer : elle ne peut plus être annulée."
+    "partPreparing": "Cette boutique a déjà commencé à préparer : elle ne peut plus être annulée.",
+    "offerTaken": "Un autre livreur a déjà pris cette livraison.",
+    "offerOffline": "Passez en ligne pour accepter des livraisons.",
+    "offerNotForYou": "Cette livraison ne vous est plus proposée.",
+    "offerTooMany_one": "Terminez d’abord votre livraison en cours ({{count}} à la fois).",
+    "offerTooMany_other": "Terminez d’abord vos livraisons en cours ({{count}} à la fois au maximum).",
+    "feesAlreadyPaid": "Les frais de cette commande sont déjà payés.",
+    "feesOnline": "Payez les frais en ligne (Orange Money, Mobile Money ou carte).",
+    "rideInProgress": "Vous avez déjà une course en cours.",
+    "rideTooClose": "Le départ et la destination sont trop proches.",
+    "rideTooLong": "Ce trajet est trop long pour un moto-taxi.",
+    "rideOff": "Le moto-taxi n’est pas disponible pour le moment.",
+    "rideTaken": "Un autre chauffeur a déjà pris cette course.",
+    "rideNotForYou": "Cette course ne vous est plus proposée.",
+    "rideStarted": "La course a commencé : elle ne peut plus être annulée.",
+    "rideRated": "Vous avez déjà noté cette course.",
+    "rideParcels": "Terminez vos livraisons avant de prendre un passager.",
+    "rideBusy": "Terminez d’abord votre course en cours.",
+    "rideOffline": "Passez en ligne pour prendre des courses.",
+    "rideDrop": "Vous ne pouvez abandonner une course qu’avant le départ."
   },
   "tabs": {
     "home": "Accueil",
@@ -236,7 +255,8 @@
     "myApplications": "Mes candidatures",
     "postJob": "Publier une offre",
     "becomeWorker": "Devenir travailleur",
-    "myBookings": "Mes réservations"
+    "myBookings": "Mes réservations",
+    "myRides": "Mes courses moto-taxi"
   },
   "kyc": {
     "vendorTitle": "Devenir vendeur",
@@ -519,8 +539,8 @@
     "form": {
       "title": "Profil de travailleur",
       "pendingEdit": "Votre profil est en cours d’examen. Vos modifications seront vues par l’équipe.",
-      "photo": "Photo de profil",
-      "photoHint": "Une photo nette de votre visage : les clients vous reconnaissent.",
+      "photo": "Photo de profil (facultative)",
+      "photoHint": "Facultative, mais une photo nette de votre visage inspire confiance aux clients.",
       "name": "Nom complet",
       "service": "Type de service",
       "profession": "Métier",
@@ -687,7 +707,7 @@
     "instructionsHint": "Ex. : appeler en arrivant, sonner au portail",
     "payment": "Paiement",
     "paymentHint": {
-      "cod": "Payez en espèces au livreur à la réception.",
+      "cod": "Frais (service, livraison) payés en ligne maintenant ; les articles en espèces au livreur.",
       "orange_money": "Validez le paiement sur votre téléphone.",
       "mobile_money": "MTN Mobile Money : validez sur votre téléphone.",
       "card": "Visa / Mastercard."
@@ -704,8 +724,8 @@
     "platformFee": "Frais de service",
     "discount": "Réduction",
     "total": "Total",
-    "codSingle": "Préparez {{total}} en espèces pour le livreur.",
-    "codMultiple": "{{count}} livreurs (un par boutique) : chacun encaisse le montant de sa boutique, affiché dans la commande.",
+    "codSingle": "Préparez {{total}} en espèces pour le livreur (les articles).",
+    "codMultiple": "{{count}} livreurs (un par boutique) : chacun encaisse en espèces les articles de sa boutique, indiqués dans la commande.",
     "place": "Commander · {{total}}",
     "placeShort": "Commander",
     "codUnavailable": "Indisponible au-delà de {{limit}} par boutique.",
@@ -720,7 +740,13 @@
     "promoNotYet": "Ce code promo n’est pas encore valable.",
     "promoFull": "Ce code promo a déjà été utilisé par trop de clients.",
     "promoUsed": "Vous avez déjà utilisé ce code promo.",
-    "promoMin": "Ce code demande une commande d’au moins {{amount}} (produits)."
+    "promoMin": "Ce code demande une commande d’au moins {{amount}} (produits).",
+    "feesWith": "Payer les frais avec",
+    "payFeesWithin": "Vous avez {{minutes}} minutes pour payer les frais. La boutique reçoit la commande dès qu’ils sont payés.",
+    "payNowFees": "Frais à payer en ligne maintenant",
+    "feesPaid": "Frais payés en ligne",
+    "payCash": "En espèces à la livraison (articles)",
+    "placeCod": "Payer les frais · {{amount}}"
   },
   "payment": {
     "method": {
@@ -743,7 +769,7 @@
     "failedText": "Le paiement n'a pas abouti. Aucun montant n'a été débité.",
     "tryAgain": "Réessayer",
     "payLater": "Payer plus tard",
-    "devOnly": "Développement : aucune passerelle connectée",
+    "devOnly": "Paiement de démonstration : aucun vrai moyen de paiement n’est encore connecté. Aucun argent n’est pris.",
     "devSuccess": "Simuler : payé",
     "devFail": "Simuler : échec"
   },
@@ -867,7 +893,10 @@
     "cancelPartText": "Seuls les articles de {{store}} sont annulés. Les autres boutiques continuent votre commande.",
     "cancelPartTextPaid": "Seuls les articles de {{store}} sont annulés ; leur montant vous sera remboursé après vérification. Les autres boutiques continuent.",
     "cancelPartConfirm": "Annuler cette partie",
-    "partCancelled": "La partie {{store}} est annulée."
+    "partCancelled": "La partie {{store}} est annulée.",
+    "feesUnpaidUntil": "Payez les frais ({{amount}}) avant {{time}} : la boutique reçoit la commande dès qu’ils sont payés. Sinon elle est annulée et les articles reviennent dans votre panier.",
+    "payFees": "Payer les frais · {{amount}}",
+    "cancelPartTextFees": "Seuls les articles de {{store}} sont annulés. Les frais de livraison payés en ligne pour cette boutique vous seront remboursés après vérification. Les autres boutiques continuent."
   },
   "track": {
     "title": "Suivi de livraison",
@@ -1327,17 +1356,17 @@
     "assignRider": "Choisir un livreur",
     "assignBus": "Choisir un chauffeur de bus",
     "assignTitle": "Choisir un livreur",
-    "assignHint": "Livreurs en ligne. Bus : les chauffeurs de ce trajet d’abord. Depuis votre boutique : vos partenaires d’abord. Puis les plus proches.",
+    "assignHint": "Envoyez-la à un livreur : il a 3 minutes pour accepter, sinon elle repart aux livreurs proches. Bus : les chauffeurs de cette ligne d’abord. Depuis votre boutique : vos partenaires d’abord, puis les plus proches.",
     "assignTo": "Confier à {{name}}",
     "riderAssigned": "Demande envoyée à {{name}}",
     "noRiders": "Aucun livreur en ligne",
     "noRidersText": "Réessayez dans quelques minutes, ou invitez des livreurs dans votre réseau.",
-    "riderDeclined": "Le livreur a refusé : choisissez-en un autre.",
+    "riderDeclined": "Le livreur a refusé : la livraison est de nouveau proposée aux livreurs proches.",
     "km": "{{km}} km",
     "busy_one": "{{count}} livraison en cours",
     "busy_other": "{{count}} livraisons en cours",
     "legStatus": {
-      "pending_assignment": "Livreur à choisir",
+      "pending_assignment": "Recherche d’un livreur",
       "assigned": "En attente du livreur",
       "accepted": "Livreur en route",
       "declined": "Refusé par le livreur",
@@ -1360,7 +1389,11 @@
     "modified": "Commande modifiée",
     "newAlert": "Nouvelle commande !",
     "newAlertOpen": "Touchez pour la voir",
-    "runsRoute": "Fait ce trajet"
+    "runsRoute": "Fait ce trajet",
+    "legSearching": "Les livreurs proches la voient : le premier qui accepte la prend. Vous pouvez aussi l’envoyer à un livreur.",
+    "legNobody": "Toujours personne : choisissez un livreur, ou attendez. L’équipe Kadou24h est prévenue.",
+    "legWaitAccept": "Les livreurs proches la verront dès que vous acceptez la commande.",
+    "legReserved": "En attente de la réponse de {{name}} jusqu’à {{time}}. Ensuite, elle repart aux livreurs proches."
   },
   "riders": {
     "title": "Mes livreurs",
@@ -1528,23 +1561,24 @@
     "online": "En ligne",
     "offline": "Hors ligne",
     "onlineSwitch": "Être en ligne",
-    "onlineHint": "Les boutiques peuvent vous confier des livraisons.",
+    "onlineHint": "Vous voyez les livraisons près de vous.",
     "offlineHint": "Passez en ligne pour recevoir des livraisons.",
     "nowOnline": "Vous êtes en ligne",
     "nowOffline": "Vous êtes hors ligne",
     "locationNeeded": "Autorisez la localisation : les boutiques choisissent les livreurs les plus proches.",
     "openSettings": "Réglages",
     "tab": {
-      "new": "Nouvelles",
+      "new": "Pour moi",
       "ongoing": "En cours",
-      "completed": "Historique"
+      "completed": "Historique",
+      "offers": "Près de moi"
     },
     "empty": {
       "new": "Aucune nouvelle livraison",
       "ongoing": "Aucune livraison en cours",
       "completed": "Aucune livraison terminée"
     },
-    "emptyNewOnline": "Restez en ligne : les boutiques vous enverront leurs livraisons ici.",
+    "emptyNewOnline": "Les livraisons qu’une boutique vous envoie arrivent ici. Les autres sont dans « Près de moi ».",
     "emptyNewOffline": "Vous êtes hors ligne. Passez en ligne pour recevoir des livraisons.",
     "cashStrip": "Cash à reverser : {{amount}}",
     "cashLimit": "Limite : {{limit}}. Reversez le cash pour accepter d’autres commandes payées à la livraison.",
@@ -1555,9 +1589,9 @@
     "accept": "Accepter",
     "accepted": "Livraison acceptée",
     "decline": "Refuser",
-    "declined": "Livraison refusée. La boutique choisira un autre livreur.",
+    "declined": "Livraison refusée. Elle est proposée à d’autres livreurs.",
     "declineTitle": "Refuser la livraison ?",
-    "declineHint": "La boutique est prévenue et choisit un autre livreur. Dites-lui pourquoi.",
+    "declineHint": "La livraison est proposée à d’autres livreurs. Dites à la boutique pourquoi.",
     "declineReason": {
       "tooFar": "Trop loin",
       "busy": "Déjà occupé",
@@ -1615,7 +1649,31 @@
     "menuTitle": "Mon activité de livreur",
     "vehicleTitle": "Véhicule et identité",
     "identity": "Identité vérifiée",
-    "identityLocked": "Pour changer ces informations, contactez le support."
+    "identityLocked": "Pour changer ces informations, contactez le support.",
+    "offer": {
+      "intro": "Livraisons proches de vous. Le premier livreur qui accepte la prend.",
+      "empty": "Aucune livraison près de vous",
+      "emptyOnline": "Restez en ligne : vous êtes prévenu dès qu’une livraison arrive près de vous.",
+      "emptyOffline": "Vous êtes hors ligne. Passez en ligne pour voir les livraisons près de vous.",
+      "away": "à {{km}}",
+      "awayUnknown": "Distance inconnue",
+      "trip": "Trajet {{km}}",
+      "customer": "Client",
+      "myStore": "Votre boutique",
+      "myRoute": "Votre ligne",
+      "take": "Accepter la course",
+      "skip": "Pas pour moi",
+      "taken": "La livraison est à vous",
+      "blocked": {
+        "too_many": "Terminez d’abord vos livraisons en cours.",
+        "cash_limit": "Trop d’espèces sur vous : remettez-les pour accepter cette livraison.",
+        "on_ride": "Terminez d’abord votre course moto-taxi."
+      },
+      "alert": "Course près de vous · {{amount}}",
+      "alertAway": "À {{km}} km. Le premier qui accepte la prend.",
+      "alertFirst": "Le premier qui accepte la prend."
+    },
+    "answerBefore": "Répondez avant {{time}}, sinon elle est proposée à d’autres livreurs."
   },
   "cash": {
     "title": "Cash à reverser",
@@ -2328,6 +2386,110 @@
       "workerSuspended": "Troisième annulation en 30 jours : votre profil est suspendu jusqu’au {{date}} (les clients ne vous voient plus). Ensuite, une seule réservation à la fois jusqu’au {{limit}}.",
       "customerWarning": "Vous avez annulé une réservation acceptée. Merci de respecter vos engagements : après 3 annulations en 30 jours, vos réservations seront limitées.",
       "customerLimited": "Après plusieurs annulations ce mois-ci, vous ne pouvez avoir qu’une réservation à la fois jusqu’au {{date}}."
+    }
+  },
+  "ride": {
+    "entry": {
+      "title": "Moto-taxi",
+      "text": "Allez d’un point A à un point B. Prix connu avant de commander, payé en espèces.",
+      "current": "Votre course en cours"
+    },
+    "status": {
+      "searching": "Recherche d’un chauffeur",
+      "accepted": "Chauffeur en route",
+      "arrived": "Chauffeur arrivé",
+      "in_progress": "En route",
+      "completed": "Terminée",
+      "cancelled": "Annulée",
+      "expired": "Aucun chauffeur"
+    },
+    "title": "Course {{number}}",
+    "pickup": "Départ",
+    "dropoff": "Arrivée",
+    "price": "Prix de la course",
+    "tripInfo": "{{km}} km · environ {{min}} min",
+    "payCash": "À payer en espèces au chauffeur",
+    "mapA11y": "Carte de la course",
+    "new": {
+      "pickupTitle": "Point de départ",
+      "dropoffTitle": "Destination",
+      "pickupHint": "Placez le repère là où le chauffeur doit vous prendre.",
+      "dropoffHint": "Placez le repère sur votre destination.",
+      "confirmPickup": "Confirmer le départ",
+      "confirmDropoff": "Confirmer la destination",
+      "pinned": "Point choisi sur la carte",
+      "reviewTitle": "Votre course",
+      "moveOnMap": "Sur la carte",
+      "addressHint": "Quartier, rue, repère…",
+      "ridersNearby_one": "{{count}} chauffeur disponible près de vous. Le premier qui accepte vient vous chercher.",
+      "ridersNearby_other": "{{count}} chauffeurs disponibles près de vous. Le premier qui accepte vient vous chercher.",
+      "noRiderNearby": "Aucun chauffeur disponible tout près pour l’instant. Vous pouvez commander : la demande s’élargit pendant 10 minutes.",
+      "note": "Note pour le chauffeur",
+      "noteHint": "Ex. : devant la pharmacie, portail bleu",
+      "safety": "Pour votre sécurité : vérifiez le nom et la plaque du chauffeur avant de monter, et portez un casque.",
+      "order": "Commander · {{amount}}",
+      "orderShort": "Commander"
+    },
+    "searchingText": "Les chauffeurs proches voient votre demande. Le premier qui accepte vient vous chercher.",
+    "arrivedText": "Votre chauffeur est arrivé au point de départ.",
+    "onTheWayText": "En route vers {{place}}.",
+    "completedText": "Course terminée. Payez {{amount}} en espèces au chauffeur.",
+    "expiredText": "Aucun chauffeur n’a accepté votre course. Réessayez dans quelques minutes.",
+    "cancelledBy": "Course annulée par {{by}}.",
+    "by": {
+      "passenger": "le passager",
+      "rider": "le chauffeur",
+      "admin": "Kadou24h"
+    },
+    "safety": "Ne partagez jamais d’informations bancaires. En cas de problème, contactez le support Kadou24h.",
+    "cancel": "Annuler la course",
+    "cancelled": "Course annulée",
+    "cancelTitle": "Annuler la course ?",
+    "cancelTextSearching": "La demande est retirée pour tous les chauffeurs.",
+    "cancelTextRider": "Votre chauffeur est déjà en route : il sera prévenu.",
+    "again": "Recommander la même course",
+    "newRide": "Nouvelle course",
+    "riderRides_one": "{{count}} course",
+    "riderRides_other": "{{count}} courses",
+    "yourRating": "Votre note",
+    "rateTitle": "Notez {{name}}",
+    "rateSend": "Envoyer la note",
+    "rated": "Merci pour votre note !",
+    "emptyTitle": "Aucune course pour l’instant",
+    "emptyPassenger": "Commandez une moto pour aller d’un point A à un point B.",
+    "emptyRider": "Les passagers proches apparaissent dans « Près de moi » quand vous êtes en ligne.",
+    "riderHistory": "Mes courses moto-taxi",
+    "rider": {
+      "title": "Course moto-taxi",
+      "passengerRide": "Passager",
+      "youGet": "Vous encaissez (espèces)",
+      "accept": "Accepter la course",
+      "accepted": "Course acceptée : allez chercher le passager",
+      "alert": "Passager près de vous · {{amount}}",
+      "current": "Course en cours",
+      "call": "Appeler le passager",
+      "directionsPickup": "Itinéraire vers le passager",
+      "directionsDropoff": "Itinéraire vers la destination",
+      "step": {
+        "arrived": "Je suis arrivé",
+        "start": "Passager à bord : démarrer",
+        "complete": "Terminer · encaisser {{amount}}"
+      },
+      "done": {
+        "arrived": "Le passager est prévenu",
+        "start": "Bonne route !",
+        "complete": "Course terminée"
+      },
+      "collectAtEnd": "À l’arrivée, encaissez {{amount}} en espèces.",
+      "completedText": "Course terminée : {{amount}} encaissés en espèces.",
+      "cancelledBy": "Course annulée par {{by}}.",
+      "completeTitle": "Terminer la course ?",
+      "completeText": "Confirmez que vous avez reçu {{amount}} en espèces.",
+      "completeConfirm": "J’ai reçu l’argent",
+      "drop": "Je ne peux plus faire cette course",
+      "dropTitle": "Abandonner la course ?",
+      "dropText": "Elle sera proposée aux autres chauffeurs proches, et vous ne la reverrez pas.",
+      "dropped": "Course proposée à d’autres chauffeurs"
     }
   }
 }

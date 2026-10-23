@@ -160,6 +160,10 @@ export interface Order {
   placedAt: string;
   /** Online orders: pay before this or the order is cancelled (items back in the cart) */
   paymentDueAt?: string;
+  /** Cash on delivery: the service fee, tax and delivery, paid online first (absent on older COD orders) */
+  upfrontAmount?: number;
+  /** Cash on delivery: when those fees were paid (the order then reached the stores) */
+  feesPaidAt?: string;
   createdAt: string;
 }
 
@@ -234,6 +238,10 @@ export interface CheckoutSummary {
     platformFee: number;
     discount: number;
     total: number;
+    /** Paid online at checkout: everything, or (COD) the service fee, tax and delivery */
+    payNow: number;
+    /** COD: the products, in cash to the riders */
+    payOnDelivery: number;
   };
   /** The promo code typed: valid (with the discount) or why it can't be used (English server text) */
   coupon?: { code: string; valid: boolean; discount: number; description?: string; message?: string };
@@ -261,6 +269,8 @@ export interface Payment {
   status: PaymentStatus;
   paidAt?: string;
   createdAt: string;
+  /** No gateway connected yet: the app finishes the payment itself ("Demo payment") */
+  demo?: boolean;
 }
 
 // ── Disputes, reviews, tracking ──────────────────────────────────────

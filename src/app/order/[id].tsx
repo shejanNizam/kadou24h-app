@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
+import { Chip } from '@/components/ui/Chip';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
@@ -18,6 +19,7 @@ import {
   canCancelOrder,
   canCancelPart,
   isOnlinePayment,
+  needsOnlinePayment,
   newIdempotencyKey,
   useGetMyDisputesQuery,
   useGetOrderQuery,
@@ -27,7 +29,7 @@ import { CancelSheet, DisputeSheet, ReviewSheet } from '@/features/orders/compon
 import { PriceSummary } from '@/features/orders/components/PriceSummary';
 import { SubOrderCard } from '@/features/orders/components/SubOrderCard';
 import { DISPUTE_TONE, ORDER_TONE, PAYMENT_TONE, REFUND_TONE } from '@/features/orders/status';
-import type { SubOrder } from '@/features/orders/types';
+import type { PaymentMethod, SubOrder } from '@/features/orders/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
@@ -45,7 +47,9 @@ export default function OrderScreen() {
   const disputes = useGetMyDisputesQuery(undefined, { skip: !signedIn });
   const [initiate, payState] = useInitiatePaymentMutation();
   const [cancelOpen, setCancelOpen] = useState(false);
-  const [cancelPart, setCancelPart] = useState<{ subOrderId: string; storeName: string; paidOnline: boolean } | null>(null);
+  const [cancelPart, setCancelPart] = useState<{ subOrderId: string; storeName: string; paidOnline: boolean; feesOnly?: boolean } | null>(null);
+  // Cash on delivery: the fees are paid online with one of these
+  const [feesMethod, setFeesMethod] = useState<Exclude<PaymentMethod, 'cod'>>('orange_money');
   const [disputeOpen, setDisputeOpen] = useState(false);
   const [reviewFor, setReviewFor] = useState<SubOrder | null>(null);
 
@@ -73,7 +77,17 @@ export default function OrderScreen() {
 
   const { order, subOrders } = data;
   const address = order.addressSnapshot;
-  const unpaidOnline = isOnlinePayment(order.paymentMethod) && order.paymentStatus === 'unpaid' && order.status === 'active';
+  const unpaidOnline = needsOnlinePayment(order);
+  const isCod = order.paymentMethod === 'cod';
+  // Cash on delivery: the fees go online (paid, or still to pay), the products in cash
+  const codSplit =
+    isCod && order.upfrontAmount
+      ? {
+          online: order.upfrontAmount,
+          cash: subOrders.filter((s) => s.status !== 'cancelled').reduce((sum, s) => sum + (s.codAmountToCollect ?? 0), 0),
+          paid: Boolean(order.feesPaidAt),
+        }
+      : undefined;
   const cancellable = canCancelOrder(order, subOrders);
   const myDisputes = (disputes.data?.data ?? []).filter((d) => (typeof d.orderId === 'string' ? d.orderId : d.orderId._id) === order._id);
   const placedAt = new Date(order.placedAt ?? order.createdAt).toLocaleString(i18n.language, {
@@ -84,12 +98,11 @@ export default function OrderScreen() {
   });
 
   const payNow = async () => {
-    if (!isOnlinePayment(order.paymentMethod)) return;
     try {
       const payment = await initiate({
         purpose: 'order',
         refId: order._id,
-        method: order.paymentMethod,
+        method: isOnlinePayment(order.paymentMethod) ? order.paymentMethod : feesMethod,
         idempotencyKey: newIdempotencyKey(),
       }).unwrap();
       router.push({ pathname: '/payment/[id]', params: { id: payment._id, orderId: order._id } });
@@ -126,14 +139,33 @@ export default function OrderScreen() {
             <Banner
               tone="warning"
               message={
-                order.paymentDueAt
-                  ? t('order.unpaidUntil', {
-                      time: new Date(order.paymentDueAt).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
+                isCod
+                  ? t('order.feesUnpaidUntil', {
+                      amount: formatGNF(order.upfrontAmount ?? 0),
+                      time: order.paymentDueAt
+                        ? new Date(order.paymentDueAt).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' })
+                        : '',
                     })
-                  : t('order.unpaid')
+                  : order.paymentDueAt
+                    ? t('order.unpaidUntil', {
+                        time: new Date(order.paymentDueAt).toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }),
+                      })
+                    : t('order.unpaid')
               }
             />
-            <Button title={t('order.payNow')} icon="smartphone" loading={payState.isLoading} onPress={() => void payNow()} />
+            {isCod && (
+              <View style={styles.feeChips}>
+                {(['orange_money', 'mobile_money', 'card'] as const).map((m) => (
+                  <Chip key={m} label={t(`payment.method.${m}`)} selected={feesMethod === m} onPress={() => setFeesMethod(m)} />
+                ))}
+              </View>
+            )}
+            <Button
+              title={isCod ? t('order.payFees', { amount: formatGNF(order.upfrontAmount ?? 0) }) : t('order.payNow')}
+              icon="smartphone"
+              loading={payState.isLoading}
+              onPress={() => void payNow()}
+            />
           </View>
         )}
 
@@ -146,7 +178,13 @@ export default function OrderScreen() {
             onReview={setReviewFor}
             onCancelPart={
               canCancelPart(order, subOrders, so)
-                ? () => setCancelPart({ subOrderId: so._id, storeName: so.vendorId.storeName, paidOnline: order.paymentMethod !== 'cod' })
+                ? () =>
+                    setCancelPart({
+                      subOrderId: so._id,
+                      storeName: so.vendorId.storeName,
+                      paidOnline: !isCod || Boolean(order.feesPaidAt),
+                      feesOnly: isCod && Boolean(order.feesPaidAt),
+                    })
                 : undefined
             }
           />
@@ -176,7 +214,7 @@ export default function OrderScreen() {
         </View>
 
         <View style={styles.card}>
-          <PriceSummary pricing={order} storeCount={subOrders.length} />
+          <PriceSummary pricing={order} storeCount={subOrders.length} split={codSplit} />
         </View>
 
         {data.refunds?.map((r) => (
@@ -248,5 +286,6 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   card: { backgroundColor: Colors.background, borderRadius: Radius.lg, borderWidth: 1, borderColor: Colors.border, padding: Spacing.lg, gap: Spacing.md },
   payBox: { gap: Spacing.sm },
+  feeChips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   actions: { gap: Spacing.sm },
 });

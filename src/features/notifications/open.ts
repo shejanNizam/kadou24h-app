@@ -19,6 +19,18 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
     router.push({ pathname: '/jobs/application/[id]', params: { id: str('applicationId')! } });
     return true;
   }
+  // Moto-taxi: a request near me → "Near me"; otherwise the ride (as rider or passenger)
+  if (str('kind') === 'ride' && str('rideId')) {
+    if (mode === 'rider' && (data?.offer === true || data?.offer === 'true')) router.push({ pathname: '/rider/deliveries', params: { tab: 'offers' } });
+    else if (mode === 'rider') router.push({ pathname: '/rider/ride/[id]', params: { id: str('rideId')! } });
+    else router.push({ pathname: '/ride/[id]', params: { id: str('rideId')! } });
+    return true;
+  }
+  // Rider: an open delivery near me (not mine yet) → the "Near me" list
+  if (mode === 'rider' && (data?.offer === true || data?.offer === 'true')) {
+    router.push({ pathname: '/rider/deliveries', params: { tab: 'offers' } });
+    return true;
+  }
   // Rider: a delivery (assigned, cancelled…) or my COD cash hand-over
   if (mode === 'rider' && str('deliveryId')) {
     router.push({ pathname: '/rider/delivery/[id]', params: { id: str('deliveryId')! } });

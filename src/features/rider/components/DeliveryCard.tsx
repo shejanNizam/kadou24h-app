@@ -127,6 +127,13 @@ export function DeliveryCard({
         </View>
       </Pressable>
 
+      {isNew && delivery.reservedUntil && (
+        <AppText variant="caption" color={Colors.warning}>
+          {t("rider.answerBefore", {
+            time: new Date(delivery.reservedUntil).toLocaleTimeString(i18n.language, { hour: "2-digit", minute: "2-digit" }),
+          })}
+        </AppText>
+      )}
       {isNew && onDecline && (
         <View style={styles.row}>
           <Button

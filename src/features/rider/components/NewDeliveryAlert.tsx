@@ -15,11 +15,17 @@ interface Assigned {
   fee: number;
   fromName?: string;
   toName?: string;
+  /** An open delivery near me (first to accept), not one sent to me */
+  offer?: boolean;
+  /** A moto-taxi passenger (deliveryId holds the ride id) */
+  ride?: boolean;
+  pickupKm?: number;
 }
 
 /**
- * In rider mode, a store giving me a delivery slides in at the top (the push
- * also rings when the app is closed). Tap to see it and accept or decline.
+ * In rider mode, a store giving me a delivery — or an open delivery near me —
+ * slides in at the top (the push also rings when the app is closed). Tap to
+ * see it: a sent one opens, an open one shows the "Near me" list.
  */
 export function NewDeliveryAlert() {
   const { t } = useTranslation();
@@ -28,6 +34,20 @@ export function NewDeliveryAlert() {
 
   useSocketEvent<Assigned>("delivery:assigned", (d) => {
     if (d.deliveryId) setJob({ ...d, deliveryId: String(d.deliveryId) });
+  });
+  useSocketEvent<Assigned>("delivery:offer", (d) => {
+    if (d.deliveryId) setJob({ ...d, deliveryId: String(d.deliveryId), offer: true });
+  });
+  // A passenger near me (moto-taxi): same banner, opens "Near me"
+  useSocketEvent<{ rideId: string; fare: number; pickupKm?: number }>("ride:offer", (r) => {
+    if (r.rideId) setJob({ deliveryId: String(r.rideId), fee: r.fare, pickupKm: r.pickupKm, offer: true, ride: true });
+  });
+  useSocketEvent<{ rideId: string }>("ride:offer_gone", (r) => {
+    setJob((current) => (current?.ride && current.deliveryId === String(r.rideId) ? null : current));
+  });
+  // Someone else took the open delivery I'm being shown
+  useSocketEvent<{ deliveryId: string }>("delivery:offer_gone", (d) => {
+    setJob((current) => (current?.offer && current.deliveryId === String(d.deliveryId) ? null : current));
   });
 
   useEffect(() => {
@@ -46,10 +66,14 @@ export function NewDeliveryAlert() {
         <Pressable
           onPress={() => {
             setJob(null);
-            router.push({
-              pathname: "/rider/delivery/[id]",
-              params: { id: job.deliveryId },
-            });
+            if (job.offer) {
+              router.push({ pathname: "/rider/deliveries", params: { tab: "offers" } });
+            } else {
+              router.push({
+                pathname: "/rider/delivery/[id]",
+                params: { id: job.deliveryId },
+              });
+            }
           }}
           accessibilityRole="button"
           accessibilityLiveRegion="assertive"
@@ -60,14 +84,22 @@ export function NewDeliveryAlert() {
           </View>
           <View style={styles.flex}>
             <AppText variant="title" color={Colors.textOnPrimary}>
-              {t("rider.newAlert", { amount: formatGNF(job.fee) })}
+              {job.ride
+                ? t("ride.rider.alert", { amount: formatGNF(job.fee) })
+                : job.offer
+                  ? t("rider.offer.alert", { amount: formatGNF(job.fee) })
+                  : t("rider.newAlert", { amount: formatGNF(job.fee) })}
             </AppText>
             <AppText
               variant="small"
               color={Colors.textOnPrimary}
               numberOfLines={1}
             >
-              {[job.fromName, job.toName].filter(Boolean).join(" → ")}
+              {job.offer
+                ? job.pickupKm !== undefined
+                  ? t("rider.offer.alertAway", { km: job.pickupKm.toLocaleString(undefined, { maximumFractionDigits: 1 }) })
+                  : t("rider.offer.alertFirst")
+                : [job.fromName, job.toName].filter(Boolean).join(" → ")}
             </AppText>
           </View>
         </Pressable>

@@ -41,6 +41,7 @@ export function RiderSection() {
         {moto && (
           <MenuRow icon="shopping-bag" label={t('riderStores.title')} value={invites ? t('riderStores.invites', { count: invites }) : undefined} onPress={() => router.push('/rider/stores')} />
         )}
+        {moto && <MenuRow icon="navigation" label={t('ride.riderHistory')} onPress={() => router.push('/rider/rides')} />}
         <MenuRow icon="truck" label={t('rider.vehicleTitle')} onPress={() => router.push('/rider/vehicle')} />
         <MenuRow icon="credit-card" label={t('earnings.payoutMethods')} onPress={() => router.push({ pathname: '/payout-methods', params: { mode: 'rider' } })} last />
       </MenuSection>

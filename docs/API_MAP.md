@@ -223,6 +223,17 @@ GET    /reviews/product/:productId  [public]
 - `GET /conversations/:id/messages`: page 1 = the newest messages, oldest → newest inside a page.
 - `DELETE /device-token` only removes the caller's own token. Push uses Android channel `default` (the app creates it).
 
+## Changed for the app — Moto-taxi (2026-10-23)
+- Passenger: `POST /rides/estimate`, `POST /rides`, `GET /rides/my`, `GET /rides/my/current`, `GET /rides/:id`, `POST /rides/:id/cancel`, `POST /rides/:id/rate`.
+- Rider: `GET /rides/rider/offers`, `GET /rides/rider/current`, `GET /rides/rider/history`, `POST /rides/:id/accept | skip | arrived | start | complete | release`.
+- Sockets `ride:offer`, `ride:offer_gone`, `ride:updated`, `ride:location`; push type `ride_update` (`data.kind: "ride"`, `rideId`, `offer`). Public settings `rides`.
+
+## Changed for the app — Open dispatch, COD fees, demo payments (2026-10-23)
+- `GET /deliveries/rider/offers` → `{ isOnline, offers[] }`; `POST /deliveries/:id/claim` (409 = someone was faster); `POST /deliveries/:id/skip`. Sockets `delivery:offer`, `delivery:offer_gone`, `delivery:withdrawn`. Push `data.offer: true` → "Near me" tab.
+- Rider delivery rows: `reservedUntil` (a store's pick: answer before). Vendor legs: `offerOpenedAt`, `reservedUntil`, `noRiderAlertedAt`.
+- Checkout summary `pricing.payNow`, `pricing.payOnDelivery`; orders `upfrontAmount`, `feesPaidAt`. COD orders start `pending_payment` until the fees are paid (`POST /payments/initiate` with an online method).
+- Payments carry `demo` (server `PAYMENT_MODE=demo`): show "Simulate: paid / failed" (`POST /payments/:id/dev-confirm`).
+
 ## Changed for the app — Promo codes, cancel one store, block (2026-10-22)
 - `couponCode` on checkout-summary / place order; summary `coupon { code, valid, discount, description?, message? }`, splits `discountShare`.
 - `POST /orders/:id/sub-orders/:subOrderId/cancel { reason }` (store not preparing yet; not unpaid online).

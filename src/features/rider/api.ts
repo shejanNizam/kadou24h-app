@@ -7,7 +7,18 @@ import type { PublicVendor } from '@/features/catalog/types';
 import { api, unwrap, unwrapPage } from '@/lib/api/api';
 import type { Paginated } from '@/types/api';
 
-import type { CodInput, CodSettlement, MyRider, RiderDelivery, RiderDeliveryDetails, RiderInput, RiderTab, RiderUpdate, StoreLink } from './types';
+import type {
+  CodInput,
+  CodSettlement,
+  MyRider,
+  OffersResult,
+  RiderDelivery,
+  RiderDeliveryDetails,
+  RiderInput,
+  RiderTab,
+  RiderUpdate,
+  StoreLink,
+} from './types';
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);
 
@@ -70,13 +81,36 @@ export const riderApi = api.injectEndpoints({
       transformResponse: unwrap<RiderDeliveryDetails>,
       providesTags: (_r, _e, id) => [{ type: 'Delivery', id }, 'Delivery'],
     }),
+    // ── Open deliveries near me (first to accept takes it) ─────────
+    getOffers: build.query<OffersResult, void>({
+      query: () => '/deliveries/rider/offers',
+      transformResponse: unwrap<OffersResult>,
+      providesTags: ['DeliveryOffer'],
+    }),
+    claimOffer: build.mutation<RiderDelivery, string>({
+      query: (id) => ({ url: `/deliveries/${id}/claim`, method: 'POST' }),
+      transformResponse: unwrap<RiderDelivery>,
+      invalidatesTags: ['DeliveryOffer', 'Delivery', 'Wallet'],
+    }),
+    /** "Not for me": leaves my list at once */
+    skipOffer: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/deliveries/${id}/skip`, method: 'POST' }),
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patch = dispatch(
+          riderApi.util.updateQueryData('getOffers', undefined, (draft) => {
+            draft.offers = draft.offers.filter((o) => o._id !== id);
+          }),
+        );
+        queryFulfilled.catch(patch.undo);
+      },
+    }),
     acceptDelivery: build.mutation<unknown, string>({
       query: (id) => ({ url: `/deliveries/${id}/accept`, method: 'POST' }),
       invalidatesTags: ['Delivery', 'Wallet'],
     }),
     declineDelivery: build.mutation<unknown, { id: string; reason: string }>({
       query: ({ id, reason }) => ({ url: `/deliveries/${id}/decline`, method: 'POST', body: { reason } }),
-      invalidatesTags: ['Delivery', 'Wallet'],
+      invalidatesTags: ['Delivery', 'Wallet', 'DeliveryOffer'],
     }),
     goingToPickup: build.mutation<unknown, string>({
       query: (id) => ({ url: `/deliveries/${id}/going-to-pickup`, method: 'PATCH' }),
@@ -144,6 +178,9 @@ export const {
   useSendLocationMutation,
   useGetMyDeliveriesInfiniteQuery,
   useGetRiderDeliveryQuery,
+  useGetOffersQuery,
+  useClaimOfferMutation,
+  useSkipOfferMutation,
   useAcceptDeliveryMutation,
   useDeclineDeliveryMutation,
   useGoingToPickupMutation,
