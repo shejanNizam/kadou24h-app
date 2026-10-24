@@ -124,6 +124,12 @@
   "errors": {
     "crashTitle": "Oops, this screen had a problem",
     "generic": "Something went wrong. Please try again.",
+    "codesPaused": "Codes are paused for a moment. Please try again later or contact support.",
+    "loginLocked_one": "Too many wrong passwords. Try again in {{count}} minute or reset your password.",
+    "loginLocked_other": "Too many wrong passwords. Try again in {{count}} minutes or reset your password.",
+    "fileType": "Only photos, voice messages and PDF files can be sent.",
+    "fileTooBig": "This file is too large (10 MB maximum).",
+    "tooManyUploads": "Too many files sent. Please wait a few minutes.",
     "network": "No connection. Check your internet and try again.",
     "server": "The server isn't responding right now. Try again in a moment.",
     "tooManyRequests": "Too many attempts. Wait a little and try again.",

@@ -34,6 +34,8 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
 
   if (status === 'FETCH_ERROR' || status === 'TIMEOUT_ERROR') return t('errors.network');
   if (status === 'PARSING_ERROR') return t('errors.server');
+  // Daily SMS budget spent (a 503 with its own meaning)
+  if (/codes are temporarily unavailable/i.test(message)) return t('errors.codesPaused');
   if (typeof status === 'number' && status >= 500) return t('errors.server');
 
   // OTP / PIN: "Invalid code. 3 attempts remaining."
@@ -43,7 +45,12 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/expired or not found/i.test(message)) return t('errors.codeExpired');
   const wait = message.match(/wait (\d+)s/i);
   if (wait) return t('errors.waitSeconds', { count: Number(wait[1]) });
+  const loginLock = message.match(/too many wrong passwords\. try again in (\d+) min/i);
+  if (loginLock) return t('errors.loginLocked', { count: Number(loginLock[1]) });
   if (/invalid phone\/email or password/i.test(message)) return t('errors.invalidCredentials');
+  if (/only photos .* can be uploaded/i.test(message)) return t('errors.fileType');
+  if (/file too large/i.test(message)) return t('errors.fileTooBig');
+  if (/too many uploads/i.test(message)) return t('errors.tooManyUploads');
   if (/phone number already exists/i.test(message)) return t('errors.phoneTaken');
   if (/email is already in use/i.test(message)) return t('errors.emailTaken');
   if (/invalid referral code/i.test(message)) return t('errors.invalidReferral');

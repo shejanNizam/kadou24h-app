@@ -124,6 +124,12 @@
   "errors": {
     "crashTitle": "Oups, cet écran a rencontré un problème",
     "generic": "Une erreur s'est produite. Réessayez.",
+    "codesPaused": "L’envoi des codes est momentanément suspendu. Réessayez plus tard ou contactez le support.",
+    "loginLocked_one": "Trop de mots de passe incorrects. Réessayez dans {{count}} minute ou réinitialisez votre mot de passe.",
+    "loginLocked_other": "Trop de mots de passe incorrects. Réessayez dans {{count}} minutes ou réinitialisez votre mot de passe.",
+    "fileType": "Seuls les photos, messages vocaux et fichiers PDF peuvent être envoyés.",
+    "fileTooBig": "Ce fichier est trop lourd (10 Mo maximum).",
+    "tooManyUploads": "Trop de fichiers envoyés. Patientez quelques minutes.",
     "network": "Pas de connexion. Vérifiez votre internet et réessayez.",
     "server": "Le serveur ne répond pas pour le moment. Réessayez dans un instant.",
     "tooManyRequests": "Trop de tentatives. Patientez un peu puis réessayez.",
