@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import { SUB_ORDER_TONE } from '@/features/orders/status';
 import { useGetMyStoreQuery, useGetVendorOrdersInfiniteQuery, useUpdateAvailabilityMutation } from '@/features/vendor/api';
 import { PaymentChip } from '@/features/vendor/components/PaymentChip';
@@ -22,6 +23,7 @@ import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { img } from '@/lib/image';
+import { AppMode } from '@/types/api';
 
 const TABS = Object.keys(VENDOR_ORDER_TABS) as VendorOrdersTab[];
 
@@ -42,6 +44,7 @@ export default function VendorOrdersScreen() {
             {t('tabs.orders')}
           </AppText>
           <OpenSwitch />
+          <NotificationBell mode={AppMode.vendor} />
         </View>
         <SegmentTabs
           tabs={TABS.map((key) => ({ key, label: t(`vendorOrders.tab.${key}`), badge: key === 'new' ? counts.new : undefined }))}

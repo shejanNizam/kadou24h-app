@@ -1,5 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
-import { Redirect } from 'expo-router';
+import { Redirect, useLocalSearchParams } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -44,7 +44,9 @@ export default function NotificationsScreen() {
   const { t, i18n } = useTranslation();
   const l = useLocalized();
   const { status, user } = useAppSelector((s) => s.auth);
-  const mode = user?.lastActiveMode ?? AppMode.customer;
+  // The bell says which role's list (store / rider tabs); else the mode I was last in
+  const params = useLocalSearchParams<{ mode?: string }>();
+  const mode = Object.values(AppMode).includes(params.mode as AppMode) ? (params.mode as AppMode) : (user?.lastActiveMode ?? AppMode.customer);
   const { data, isLoading, isError, error, refetch, isFetching } = useGetNotificationsQuery({ mode }, { skip: status !== 'signedIn' });
   const [markRead] = useMarkNotificationReadMutation();
   const [markAll, markAllState] = useMarkAllNotificationsReadMutation();

@@ -11,6 +11,7 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { SegmentTabs } from '@/components/ui/SegmentTabs';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import { useGetMyDeliveriesInfiniteQuery, useGetMyRiderQuery, useGetOffersQuery } from '@/features/rider/api';
 import { DeliveryCard } from '@/features/rider/components/DeliveryCard';
 import { DeclineSheet } from '@/features/rider/components/DeliverySheets';
@@ -23,6 +24,7 @@ import { RideOfferCard } from '@/features/ride/components/RideOfferCard';
 import type { RideOffer } from '@/features/ride/types';
 import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
 import { formatGNF } from '@/lib/format';
+import { AppMode } from '@/types/api';
 
 const TABS: RiderTab[] = ['offers', 'new', 'ongoing', 'completed'];
 const isTab = (value: unknown): value is RiderTab => TABS.includes(value as RiderTab);
@@ -61,9 +63,12 @@ export default function RiderDeliveriesScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
       <View style={[styles.inner, styles.top]}>
-        <AppText variant="h2" accessibilityRole="header" style={styles.title}>
-          {t('tabs.deliveries')}
-        </AppText>
+        <View style={styles.titleRow}>
+          <AppText variant="h2" accessibilityRole="header" style={styles.flex}>
+            {t('tabs.deliveries')}
+          </AppText>
+          <NotificationBell mode={AppMode.rider} />
+        </View>
         <OnlineToggle />
         {currentRide && (
           <Pressable
@@ -209,7 +214,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.surface },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },
   top: { gap: Spacing.md, paddingBottom: Spacing.sm },
-  title: { paddingTop: Spacing.md },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingTop: Spacing.md },
   list: { gap: Spacing.md, paddingTop: Spacing.md, paddingBottom: Spacing.xxxl },
   flex: { flex: 1 },
   cash: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.md, borderRadius: Radius.lg, backgroundColor: Colors.warningSoft },
