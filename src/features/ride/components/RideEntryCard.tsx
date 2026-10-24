@@ -1,4 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,7 @@ export function RideEntryCard() {
       accessibilityLabel={current ? t('ride.entry.current') : t('ride.entry.title')}
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <View style={styles.icon}>
-        <Feather name="navigation" size={22} color={Colors.textOnPrimary} />
+        <MaterialCommunityIcons name="motorbike" size={26} color={Colors.textOnPrimary} />
       </View>
       <View style={styles.flex}>
         <AppText variant="title">{current ? t('ride.entry.current') : t('ride.entry.title')}</AppText>

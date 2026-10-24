@@ -107,6 +107,8 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
   if (/already rated this ride/i.test(message)) return t('errors.rideRated');
   if (/finish your deliveries before taking a passenger/i.test(message)) return t('errors.rideParcels');
   if (/finish your current ride first/i.test(message)) return t('errors.rideBusy');
+  if (/moto-taxi subscription has ended/i.test(message)) return t('ride.access.endedTitle');
+  if (/only approved moto riders can take a moto-taxi plan/i.test(message)) return t('errors.rideOnlyMoto');
   if (/go online to take rides/i.test(message)) return t('errors.rideOffline');
   if (/only drop a ride before it starts/i.test(message)) return t('errors.rideDrop');
   // Cash on delivery: the fees are paid online first

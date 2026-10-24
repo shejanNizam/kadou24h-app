@@ -105,7 +105,7 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
           <MenuSection title={t('profile.myShopping')}>
             <MenuRow icon="map-pin" label={t('address.title')} onPress={() => router.push('/addresses')} />
             <MenuRow icon="calendar" label={t('profile.myBookings')} onPress={() => router.push('/bookings')} />
-            <MenuRow icon="navigation" label={t('profile.myRides')} onPress={() => router.push('/rides')} />
+            <MenuRow icon="motorbike" label={t('profile.myRides')} onPress={() => router.push('/rides')} />
             <MenuRow icon="heart" label={t('profile.favorites')} onPress={() => router.push('/favorites')} />
             <MenuRow icon="credit-card" label={t('profile.payments')} onPress={() => router.push('/payments')} />
             <MenuRow icon="star" label={t('profile.myReviews')} onPress={() => router.push('/my-reviews')} last />

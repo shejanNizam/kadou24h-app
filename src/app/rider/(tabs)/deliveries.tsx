@@ -18,6 +18,7 @@ import { OfferCard } from '@/features/rider/components/OfferCard';
 import { OnlineToggle } from '@/features/rider/components/OnlineToggle';
 import type { DeliveryOffer, RiderTab } from '@/features/rider/types';
 import { useGetRideOffersQuery, useGetRiderCurrentRideQuery } from '@/features/ride/api';
+import { RideAccessBanner } from '@/features/ride/components/RideAccessBanner';
 import { RideOfferCard } from '@/features/ride/components/RideOfferCard';
 import type { RideOffer } from '@/features/ride/types';
 import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
@@ -116,11 +117,14 @@ export default function RiderDeliveriesScreen() {
             />
           }
           ListHeaderComponent={
-            near.length ? (
-              <AppText variant="caption" color={Colors.textMuted}>
-                {t('rider.offer.intro')}
-              </AppText>
-            ) : undefined
+            <>
+              {rider && rider.partnerType !== 'transit' && <RideAccessBanner />}
+              {near.length ? (
+                <AppText variant="caption" color={Colors.textMuted}>
+                  {t('rider.offer.intro')}
+                </AppText>
+              ) : null}
+            </>
           }
           ListEmptyComponent={
             offers.isLoading ? (

@@ -207,6 +207,7 @@
     "rideRated": "Vous avez déjà noté cette course.",
     "rideParcels": "Terminez vos livraisons avant de prendre un passager.",
     "rideBusy": "Terminez d’abord votre course en cours.",
+    "rideOnlyMoto": "Seuls les livreurs moto validés peuvent prendre un abonnement moto-taxi.",
     "rideOffline": "Passez en ligne pour prendre des courses.",
     "rideDrop": "Vous ne pouvez abandonner une course qu’avant le départ."
   },
@@ -246,15 +247,15 @@
     "myReviews": "Mes avis",
     "settings": "Paramètres",
     "help": "Aide",
-    "share": "Partager l'application",
+    "share": "Inviter un ami",
     "shareText": "Je commande sur Kadou24h : produits, livraison et services près de chez toi. Télécharge l’application !",
     "shareWithCode": "Je commande sur Kadou24h : produits, livraison et services près de chez toi. Inscris-toi avec mon code {{code}} !",
     "jobs": "Emploi",
     "findJob": "Offres d’emploi",
     "myCv": "Mon CV",
     "myApplications": "Mes candidatures",
-    "postJob": "Publier une offre",
-    "becomeWorker": "Devenir travailleur",
+    "postJob": "Publier une offre d’emploi",
+    "becomeWorker": "Proposer mes services",
     "myBookings": "Mes réservations",
     "myRides": "Mes courses moto-taxi"
   },
@@ -469,7 +470,7 @@
     "languages": "Langues",
     "skills": "Compétences",
     "message": "Envoyer un message",
-    "title": "Devenir travailleur",
+    "title": "Proposer mes services",
     "guest": "Connectez-vous pour proposer vos services aux clients.",
     "subtitle": "Gérez votre profil de travailleur et votre demande.",
     "dashboardTitle": "Espace travailleur",
@@ -755,6 +756,7 @@
       "mobile_money": "MTN Mobile Money",
       "card": "Carte bancaire"
     },
+    "openPage": "Ouvrir la page de paiement",
     "pendingTitle": "Paiement en attente",
     "pendingHint": {
       "orange_money": "Validez le paiement sur votre téléphone avec votre code Orange Money.",
@@ -2045,7 +2047,8 @@
     "activeUntil": "Active jusqu’au {{date}}",
     "audience": {
       "job_seeker": "Chercheur d’emploi",
-      "service_provider": "Prestataire"
+      "service_provider": "Prestataire",
+      "moto_driver": "Conducteur moto-taxi"
     },
     "forDays_one": "pour {{count}} jour",
     "forDays_other": "pour {{count}} jours",
@@ -2058,7 +2061,10 @@
     "noneText": "Revenez bientôt.",
     "introWorker": "Après vos 30 jours gratuits, un abonnement vous garde visible par les clients (profil, réalisations, compétences).",
     "featureListed_one": "Visible par les clients pendant {{count}} jour",
-    "featureListed_other": "Visible par les clients pendant {{count}} jours"
+    "featureListed_other": "Visible par les clients pendant {{count}} jours",
+    "introMoto": "Un abonnement vous permet de recevoir des passagers moto-taxi. Kadou24h ne prend aucune commission sur vos courses : le prix est entièrement pour vous.",
+    "featureRides_one": "Passagers moto-taxi pendant {{count}} jour",
+    "featureRides_other": "Passagers moto-taxi pendant {{count}} jours"
   },
   "spontaneous": {
     "cta": "Travailler chez {{store}} ? Envoyez votre CV",
@@ -2078,7 +2084,7 @@
     "statActive": "En ligne",
     "statApplicants": "Candidats",
     "statViews": "Vues",
-    "post": "Publier une offre",
+    "post": "Publier une offre d’emploi",
     "tab": {
       "active": "En ligne",
       "draft": "Brouillons",
@@ -2461,6 +2467,20 @@
     "emptyPassenger": "Commandez une moto pour aller d’un point A à un point B.",
     "emptyRider": "Les passagers proches apparaissent dans « Près de moi » quand vous êtes en ligne.",
     "riderHistory": "Mes courses moto-taxi",
+    "access": {
+      "title": "Abonnement moto-taxi",
+      "until": "Jusqu’au {{date}}",
+      "ended": "Terminé",
+      "endedTitle": "Votre abonnement moto-taxi est terminé",
+      "endedText": "Vous recevez toujours les livraisons, mais plus de passagers. Choisissez un abonnement pour recevoir à nouveau des passagers : le prix de la course reste entièrement pour vous.",
+      "choose": "Choisir un abonnement",
+      "extend": "Prolonger",
+      "endsSoon_one": "Passagers : votre abonnement se termine dans {{count}} jour ({{date}}).",
+      "endsSoon_other": "Passagers : votre abonnement se termine dans {{count}} jours ({{date}}).",
+      "activeUntil": "Passagers moto-taxi jusqu’au {{date}} · voir les abonnements",
+      "trialNext": "Vos {{count}} jours gratuits pour les passagers commencent à votre première offre."
+    },
+    "orderMoto": "Commander un moto-taxi",
     "rider": {
       "title": "Course moto-taxi",
       "passengerRide": "Passager",

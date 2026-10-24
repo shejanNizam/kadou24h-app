@@ -207,6 +207,7 @@
     "rideRated": "You already rated this ride.",
     "rideParcels": "Finish your deliveries before taking a passenger.",
     "rideBusy": "Finish your current ride first.",
+    "rideOnlyMoto": "Only approved moto riders can take a moto-taxi plan.",
     "rideOffline": "Go online to take rides.",
     "rideDrop": "You can only drop a ride before it starts."
   },
@@ -246,15 +247,15 @@
     "myReviews": "My reviews",
     "settings": "Settings",
     "help": "Help",
-    "share": "Share the app",
+    "share": "Invite a friend",
     "shareText": "I shop on Kadou24h: products, delivery and services near you. Get the app!",
     "shareWithCode": "I shop on Kadou24h: products, delivery and services near you. Sign up with my code {{code}}!",
     "jobs": "Jobs",
     "findJob": "Job offers",
     "myCv": "My CV",
     "myApplications": "My applications",
-    "postJob": "Post a job",
-    "becomeWorker": "Become a worker",
+    "postJob": "Publish a job",
+    "becomeWorker": "Offer my services",
     "myBookings": "My bookings",
     "myRides": "My moto-taxi rides"
   },
@@ -469,7 +470,7 @@
     "languages": "Languages",
     "skills": "Skills",
     "message": "Send a message",
-    "title": "Become a worker",
+    "title": "Offer my services",
     "guest": "Sign in to offer your services to customers.",
     "subtitle": "Manage your worker profile and application.",
     "dashboardTitle": "Worker dashboard",
@@ -755,6 +756,7 @@
       "mobile_money": "MTN Mobile Money",
       "card": "Card"
     },
+    "openPage": "Open the payment page",
     "pendingTitle": "Payment pending",
     "pendingHint": {
       "orange_money": "Approve the payment on your phone with your Orange Money code.",
@@ -2045,7 +2047,8 @@
     "activeUntil": "Active until {{date}}",
     "audience": {
       "job_seeker": "Job seeker",
-      "service_provider": "Service provider"
+      "service_provider": "Service provider",
+      "moto_driver": "Moto-taxi rider"
     },
     "forDays_one": "for {{count}} day",
     "forDays_other": "for {{count}} days",
@@ -2058,7 +2061,10 @@
     "noneText": "Come back soon.",
     "introWorker": "After your 30 free days, a subscription keeps you visible to customers (profile, work photos, skills).",
     "featureListed_one": "Visible to customers for {{count}} day",
-    "featureListed_other": "Visible to customers for {{count}} days"
+    "featureListed_other": "Visible to customers for {{count}} days",
+    "introMoto": "A subscription lets you receive moto-taxi passengers. Kadou24h takes no commission on your rides: the fare is all yours.",
+    "featureRides_one": "Moto-taxi passengers for {{count}} day",
+    "featureRides_other": "Moto-taxi passengers for {{count}} days"
   },
   "spontaneous": {
     "cta": "Work at {{store}}? Send your CV",
@@ -2078,7 +2084,7 @@
     "statActive": "Live",
     "statApplicants": "Candidates",
     "statViews": "Views",
-    "post": "Post a job",
+    "post": "Publish a job",
     "tab": {
       "active": "Live",
       "draft": "Drafts",
@@ -2461,6 +2467,20 @@
     "emptyPassenger": "Order a moto to go from A to B.",
     "emptyRider": "Nearby passengers show up under \"Near me\" while you are online.",
     "riderHistory": "My moto-taxi rides",
+    "access": {
+      "title": "Moto-taxi subscription",
+      "until": "Until {{date}}",
+      "ended": "Ended",
+      "endedTitle": "Your moto-taxi subscription has ended",
+      "endedText": "You still receive deliveries, but no more passengers. Choose a plan to get passengers again: the fare stays all yours.",
+      "choose": "Choose a plan",
+      "extend": "Extend",
+      "endsSoon_one": "Passengers: your subscription ends in {{count}} day ({{date}}).",
+      "endsSoon_other": "Passengers: your subscription ends in {{count}} days ({{date}}).",
+      "activeUntil": "Moto-taxi passengers until {{date}} · see the plans",
+      "trialNext": "Your {{count}} free days for passengers start with your first offer."
+    },
+    "orderMoto": "Order a moto-taxi",
     "rider": {
       "title": "Moto-taxi ride",
       "passengerRide": "Passenger",

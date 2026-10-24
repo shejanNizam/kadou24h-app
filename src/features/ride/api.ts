@@ -5,7 +5,7 @@
 import { api, unwrap, unwrapPage } from '@/lib/api/api';
 import type { Paginated } from '@/types/api';
 
-import type { Ride, RideEstimate, RideOffer, RidePlaceInput } from './types';
+import type { Ride, RideAccess, RideEstimate, RideOffer, RidePlaceInput } from './types';
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);
 
@@ -55,6 +55,11 @@ export const rideApi = api.injectEndpoints({
       transformResponse: unwrap<RideOffer[]>,
       providesTags: ['RideOffer'],
     }),
+    getRiderAccess: build.query<RideAccess, void>({
+      query: () => '/rides/rider/access',
+      transformResponse: unwrap<RideAccess>,
+      providesTags: ['Subscription'],
+    }),
     getRiderCurrentRide: build.query<Ride | null, void>({
       query: () => '/rides/rider/current',
       transformResponse: unwrap<Ride | null>,
@@ -101,6 +106,7 @@ export const {
   useRateRideMutation,
   useGetRideOffersQuery,
   useGetRiderCurrentRideQuery,
+  useGetRiderAccessQuery,
   useGetRiderRidesInfiniteQuery,
   useAcceptRideMutation,
   useSkipRideMutation,

@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/ui/AppText';
+import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -51,7 +52,7 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
               icon="navigation"
               title={t('ride.emptyTitle')}
               message={role === 'passenger' ? t('ride.emptyPassenger') : t('ride.emptyRider')}
-              actionLabel={role === 'passenger' ? t('ride.entry.title') : undefined}
+              actionLabel={role === 'passenger' ? t('ride.orderMoto') : undefined}
               onAction={role === 'passenger' ? () => router.push('/ride/new') : undefined}
             />
           )
@@ -62,6 +63,12 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
         }}
         onEndReachedThreshold={0.5}
       />
+      {/* With rides in the list the empty-state button is gone: keep ordering one tap away */}
+      {role === 'passenger' && rides.length > 0 && (
+        <View style={[styles.inner, styles.footer]}>
+          <Button title={t('ride.orderMoto')} onPress={() => router.push('/ride/new')} />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -116,6 +123,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   pressed: { opacity: 0.85 },
+  footer: { paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Colors.border, backgroundColor: Colors.surface },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   flex: { flex: 1 },
 });

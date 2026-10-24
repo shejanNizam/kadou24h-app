@@ -141,7 +141,7 @@ export interface WorkerListingInput {
 export const cvFileOf = (cv?: Pick<MyCv, 'uploadedResume' | 'generatedCv'> | null) => cv?.uploadedResume ?? cv?.generatedCv;
 
 // ── Subscriptions ────────────────────────────────────────────────────
-export type PlanAudience = 'job_seeker' | 'service_provider';
+export type PlanAudience = 'job_seeker' | 'service_provider' | 'moto_driver';
 
 export interface Plan {
   _id: string;

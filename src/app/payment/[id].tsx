@@ -1,6 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import { useEffect, useRef } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +44,17 @@ export default function PaymentScreen() {
   });
 
   const status = payment?.status;
+
+  // Live gateway: open its payment page once by itself; the button below reopens it
+  const openPage = () => {
+    if (payment?.checkoutUrl) void WebBrowser.openBrowserAsync(payment.checkoutUrl).then(() => refetch());
+  };
+  const opened = useRef(false);
+  useEffect(() => {
+    if (opened.current || status !== 'pending' || !payment?.checkoutUrl) return;
+    opened.current = true;
+    void WebBrowser.openBrowserAsync(payment.checkoutUrl).then(() => refetch());
+  }, [status, payment?.checkoutUrl, refetch]);
   useEffect(() => {
     if (status !== 'success' || !payment) return;
     const timer = setTimeout(() => goNext(payment, orderId), 1200);
@@ -127,6 +139,7 @@ export default function PaymentScreen() {
       </View>
 
       <View style={styles.footer}>
+        {status === 'pending' && payment?.checkoutUrl && <Button title={t('payment.openPage')} icon="external-link" onPress={openPage} />}
         {status === 'failed' && <Button title={t('payment.tryAgain')} icon="refresh-cw" loading={retryState.isLoading} onPress={() => void retry()} />}
         {status === 'success' && payment ? (
           <Button title={t('common.continue')} onPress={() => goNext(payment, orderId)} />

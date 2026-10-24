@@ -271,6 +271,8 @@ export interface Payment {
   createdAt: string;
   /** No gateway connected yet: the app finishes the payment itself ("Demo payment") */
   demo?: boolean;
+  /** Live gateway: its hosted payment page */
+  checkoutUrl?: string;
 }
 
 // ── Disputes, reviews, tracking ──────────────────────────────────────

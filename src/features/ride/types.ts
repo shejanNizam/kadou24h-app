@@ -75,3 +75,13 @@ export interface RideOffer {
   pickupKm: number;
   searchStartedAt: string;
 }
+
+/** My moto-taxi subscription (only while Kadou24h requires one; rides are free otherwise) */
+export interface RideAccess {
+  required: boolean;
+  allowed: boolean;
+  until: string | null;
+  trialAvailable: boolean;
+  trialDays: number;
+  justStartedTrial: boolean;
+}

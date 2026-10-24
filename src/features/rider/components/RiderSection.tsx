@@ -6,6 +6,8 @@ import { AppText } from '@/components/ui/AppText';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 import { MenuRow, MenuSection } from '@/features/profile/components/Menu';
+import { useGetRiderAccessQuery } from '@/features/ride/api';
+import { openRidePlans } from '@/features/ride/components/RideAccessBanner';
 import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
 import { formatGNF } from '@/lib/format';
 
@@ -14,12 +16,13 @@ import { OnlineToggle } from './OnlineToggle';
 
 /** Rider profile extras: online switch + today at a glance, then my rider settings. */
 export function RiderSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: rider, isLoading } = useGetMyRiderQuery();
   const { data: summary } = useGetEarningsSummaryQuery({ mode: 'rider', range: '7d' });
   const { data: links = [] } = useGetStoreLinksQuery();
   const invites = links.filter((l) => l.status === 'invited' && l.initiatedBy === 'vendor').length;
   const moto = rider?.partnerType !== 'transit';
+  const { data: access } = useGetRiderAccessQuery(undefined, { skip: !rider || !moto });
 
   return (
     <>
@@ -41,7 +44,21 @@ export function RiderSection() {
         {moto && (
           <MenuRow icon="shopping-bag" label={t('riderStores.title')} value={invites ? t('riderStores.invites', { count: invites }) : undefined} onPress={() => router.push('/rider/stores')} />
         )}
-        {moto && <MenuRow icon="navigation" label={t('ride.riderHistory')} onPress={() => router.push('/rider/rides')} />}
+        {moto && <MenuRow icon="motorbike" label={t('ride.riderHistory')} onPress={() => router.push('/rider/rides')} />}
+        {moto && access?.required && (
+          <MenuRow
+            icon="award"
+            label={t('ride.access.title')}
+            value={
+              !access.allowed
+                ? t('ride.access.ended')
+                : access.until
+                  ? t('ride.access.until', { date: new Date(access.until).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short' }) })
+                  : undefined
+            }
+            onPress={openRidePlans}
+          />
+        )}
         <MenuRow icon="truck" label={t('rider.vehicleTitle')} onPress={() => router.push('/rider/vehicle')} />
         <MenuRow icon="credit-card" label={t('earnings.payoutMethods')} onPress={() => router.push({ pathname: '/payout-methods', params: { mode: 'rider' } })} last />
       </MenuSection>

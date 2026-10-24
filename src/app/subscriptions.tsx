@@ -29,7 +29,8 @@ export default function SubscriptionsScreen() {
   const { t, i18n } = useTranslation();
   const signedIn = useAppSelector((s) => s.auth.status === 'signedIn');
   const params = useLocalSearchParams<{ audience?: string }>();
-  const audience: PlanAudience | undefined = params.audience === 'service_provider' || params.audience === 'job_seeker' ? params.audience : undefined;
+  const audience: PlanAudience | undefined =
+    params.audience === 'service_provider' || params.audience === 'job_seeker' || params.audience === 'moto_driver' ? params.audience : undefined;
   const plans = useGetPlansQuery(audience, { skip: !signedIn });
   const mine = useGetMySubscriptionQuery(undefined, { skip: !signedIn });
   const [subscribe] = useSubscribeMutation();
@@ -46,7 +47,7 @@ export default function SubscriptionsScreen() {
         contentContainerStyle={[styles.inner, styles.content]}
         refreshControl={<RefreshControl refreshing={plans.isFetching && !plans.isLoading} onRefresh={() => void Promise.all([plans.refetch(), mine.refetch()])} />}>
         <AppText variant="body" color={Colors.textMuted}>
-          {audience === 'service_provider' ? t('plans.introWorker') : t('plans.intro')}
+          {audience === 'service_provider' ? t('plans.introWorker') : audience === 'moto_driver' ? t('plans.introMoto') : t('plans.intro')}
         </AppText>
 
         {current && (
@@ -92,6 +93,7 @@ export default function SubscriptionsScreen() {
               </AppText>
               {[
                 ...(p.audience === 'service_provider' ? [t('plans.featureListed', { count: p.durationDays })] : []),
+                ...(p.audience === 'moto_driver' ? [t('plans.featureRides', { count: p.durationDays })] : []),
                 ...(p.features.includes('cv_visibility') ? [t('plans.featureVisibility')] : []),
                 ...p.highlights,
               ].map((h) => (

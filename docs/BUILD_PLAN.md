@@ -20,7 +20,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] `formatGNF`, phone helpers (`toE164`, `formatNationalPhone`), countdown
 - [x] UI kit v1: AppText, Button, TextField, PhoneField, OtpInput, Banner, Divider, TextLink, OptionCard, Screen, PageHeader, EmptyState, ComingSoon, Toast
 - [x] UI kit v2 (added in Phases 3–6): Money, Skeleton, BottomSheet, ConfirmDialog, StatusPill + status maps, Switch rows
-- [ ] OfflineBanner (needs NetInfo)
+- [x] OfflineBanner (NetInfo)
 - [x] Route groups + 3 tab bars (customer/vendor/rider) with placeholder screens; vendor/rider guarded by role
 - [x] Boot redirect by `lastActiveMode` + mode switch (`PATCH /user/me/mode`) in ProfileBasics
 - [x] Socket session effects (connect after login, `session:revoked` → sign out)
@@ -34,7 +34,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Guest mode: "Continue without an account"; orders/chat/profile show a sign-in prompt
 - [x] API contract checked against a throwaway server: 21/21 (scratchpad `app-auth-flow.mjs`)
 - [x] `useRequireAuth` guard (toast → login → back to the same screen; used by cart, favorite, chat, apply)
-- [ ] Suspended screen (now: the login error shows the reason; session:revoked signs out)
+- [x] Suspended screen (app/suspended.tsx)
 - [ ] Social login (native only; needs Google/Apple client IDs → `EXPO_PUBLIC_GOOGLE_CLIENT_ID`)
 - [ ] Real KADOU 24H logo asset (BrandLogo is a temporary icon + wordmark)
 
@@ -65,7 +65,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Notification tap → order
 - [x] Demo seed: 2 delivered + reviewed orders, 1 on its way with the demo rider
 - [x] Contract test 37/37 (scratchpad `phase4-contract.mjs`), server jest 149/149, e2e 129/129
-- [ ] "Customers also bought" in the cart (no endpoint yet)
+- [x] "Customers also bought" in the cart
 - [ ] Android release: Google Maps API key in app.json
 
 ## Phase 5 — Chat + notifications + push ✅ (2026-10-20)
@@ -168,7 +168,9 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Worker profile photo optional
 - [ ] AI for the CV: only a template today — needs an AI provider account (client to decide)
 - [x] Moto-taxi (A → B): home card → pick start + destination on the map → price → order; live ride screen (rider on the map, cancel, rate); rider "Near me" shows passengers too, ride steps screen (call, directions, arrived / start / finish), history for both; dashboard Moto-taxi page + Settings → Moto-taxi prices. Server e2e 30 checks
-- [ ] Moto-taxi decisions to confirm with the client (commission or subscription, prices)
+- [x] Moto-taxi: client chose free first, then a monthly rider subscription (never a commission). Built 2026-10-24, OFF by default: dashboard Settings → Moto-taxi → "Riders need a subscription" + free days; plans with audience moto_driver; rider banner on "Near me" + profile row
+- [x] Payment gateway adapter (server modules/payment/gateway): demo now; an aggregator = one gateway file + PAYMENT_MODE=live + PAYMENT_PROVIDER; app opens payment.checkoutUrl
+- [x] Client wording (2026-10-24): Offer my services, Publish a job, Invite a friend, Order a moto-taxi, motorbike icons
 
 ## Promo codes, cancel one store, block in chat (2026-10-22, client agreed)
 - [x] Server: coupon module (admin CRUD, checkout evaluation + spread over stores, one use per customer, total limit, released on full cancellation, revenue − discounts); `POST /orders/:id/sub-orders/:subOrderId/cancel` (COD service fee moves); chat block with hidden delivery + `blockedByMe`. e2e 285/285 (39 new)
@@ -193,6 +195,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-10-24 — Client wording + motorbike icons; moto-taxi rider subscription (off by default); payment gateway adapter; phone uploads via XMLHttpRequest (expo/fetch rejects uri parts); voice notes recorded as AAC and played as MP3.
 - 2026-10-23 — Moto-taxi (A → B rides): price first, nearest riders, cash, ratings; dashboard page + prices.
 - 2026-10-23 — Open dispatch (nearest riders, first to accept), COD fees paid online first, demo payments, worker photo optional.
 - 2026-10-22 — Promo codes (Kadou24h pays), cancel one store's part, block in chat (silent).

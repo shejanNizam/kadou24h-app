@@ -1,11 +1,13 @@
 import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import type { ComponentProps, ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/ui/AppText';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 
-type Icon = ComponentProps<typeof Feather>['name'];
+// Feather has no motorcycle: "motorbike" comes from MaterialCommunityIcons (moto-taxi rows)
+type Icon = ComponentProps<typeof Feather>['name'] | 'motorbike';
 
 /** A titled group of rows (one bordered card). */
 export function MenuSection({ title, children }: { title?: string; children: ReactNode }) {
@@ -48,7 +50,11 @@ export function MenuRow({
       accessibilityLabel={value ? `${label}, ${value}` : label}
       style={({ pressed }) => [styles.row, !last && styles.divider, pressed && onPress && styles.pressed]}>
       <View style={[styles.icon, danger && styles.iconDanger]}>
-        <Feather name={icon} size={18} color={danger ? Colors.danger : Colors.primary} />
+        {icon === 'motorbike' ? (
+          <MaterialCommunityIcons name="motorbike" size={20} color={danger ? Colors.danger : Colors.primary} />
+        ) : (
+          <Feather name={icon} size={18} color={danger ? Colors.danger : Colors.primary} />
+        )}
       </View>
       <AppText variant="bodyMedium" color={color} style={styles.flex} numberOfLines={1}>
         {label}
