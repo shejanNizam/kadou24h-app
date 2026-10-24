@@ -32,6 +32,11 @@ import type { FileRef } from '@/types/api';
 /** Monday first, as people read a week here; values are 0 (Sunday) … 6 */
 const WEEK = [1, 2, 3, 4, 5, 6, 0];
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
+/** Digits only (many Android keypads have no ":"): "0830" → "08:30", "8" stays "8" while typing */
+const asTime = (value: string) => {
+  const digits = value.replace(/\D/g, '').slice(0, 4);
+  return digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits;
+};
 /** Same minimum as the server */
 const MIN_DESCRIPTION = 20;
 
@@ -188,22 +193,25 @@ function WorkerForm({ cv }: { cv: MyCv }) {
         </View>
         <TextField label={t('worker.form.profession')} hint={t('cv.professionHint')} value={profession} onChangeText={setProfession} maxLength={100} />
 
+        {/* TextField's style goes to the input: the column width comes from a wrapping View */}
         <View style={styles.twoCols}>
-          <TextField
-            label={t('worker.form.years')}
-            value={years}
-            onChangeText={(v) => setYears(v.replace(/\D/g, '').slice(0, 2))}
-            keyboardType="number-pad"
-            style={styles.flex}
-          />
-          <TextField
-            label={t('worker.form.rate')}
-            hint={t('cv.rateHint')}
-            value={rate}
-            onChangeText={(v) => setRate(v.replace(/\D/g, '').slice(0, 9))}
-            keyboardType="number-pad"
-            style={styles.flex}
-          />
+          <View style={styles.flex}>
+            <TextField
+              label={t('worker.form.years')}
+              value={years}
+              onChangeText={(v) => setYears(v.replace(/\D/g, '').slice(0, 2))}
+              keyboardType="number-pad"
+            />
+          </View>
+          <View style={styles.flex}>
+            <TextField
+              label={t('worker.form.rate')}
+              hint={t('cv.rateHint')}
+              value={rate}
+              onChangeText={(v) => setRate(v.replace(/\D/g, '').slice(0, 9))}
+              keyboardType="number-pad"
+            />
+          </View>
         </View>
 
         <View style={styles.gap}>
@@ -216,8 +224,12 @@ function WorkerForm({ cv }: { cv: MyCv }) {
             ))}
           </View>
           <View style={styles.twoCols}>
-            <TextField label={t('worker.form.from')} placeholder="08:00" value={from} onChangeText={setFrom} maxLength={5} keyboardType="numbers-and-punctuation" style={styles.flex} />
-            <TextField label={t('worker.form.to')} placeholder="18:00" value={to} onChangeText={setTo} maxLength={5} keyboardType="numbers-and-punctuation" style={styles.flex} />
+            <View style={styles.flex}>
+              <TextField label={t('worker.form.from')} placeholder="08:00" value={from} onChangeText={(v) => setFrom(asTime(v))} maxLength={5} keyboardType="number-pad" icon="clock" />
+            </View>
+            <View style={styles.flex}>
+              <TextField label={t('worker.form.to')} placeholder="18:00" value={to} onChangeText={(v) => setTo(asTime(v))} maxLength={5} keyboardType="number-pad" icon="clock" />
+            </View>
           </View>
         </View>
 
