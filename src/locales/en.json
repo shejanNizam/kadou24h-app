@@ -460,6 +460,7 @@
     "activeCount_other": "{{count}} active filters"
   },
   "notifications": {
+    "team": "Kadou24h Team",
     "title": "Notifications",
     "today": "Today",
     "earlier": "Earlier",
@@ -2366,7 +2367,7 @@
     "leaveReview": "Leave a review",
     "bookAgain": "Book again",
     "acceptTitle": "Accept the request?",
-    "acceptText": "The customer will see your number and you will see their full address. Cancelling later counts as a cancellation (warning, then reduced visibility, then suspension).",
+    "acceptText": "By accepting, you share your contact details with the customer. Please honour your commitment: repeated cancellations without a reason could reduce your visibility, or even lead to suspension.",
     "acceptedToast": "Request accepted. Call the customer to agree on the details.",
     "declineTitle": "Decline the request?",
     "declineText": "Declining never leads to a penalty.",

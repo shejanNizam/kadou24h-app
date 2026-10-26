@@ -460,6 +460,7 @@
     "activeCount_other": "{{count}} filtres actifs"
   },
   "notifications": {
+    "team": "Équipe Kadou24h",
     "title": "Notifications",
     "today": "Aujourd'hui",
     "earlier": "Plus tôt",
@@ -2366,7 +2367,7 @@
     "leaveReview": "Donner mon avis",
     "bookAgain": "Réserver à nouveau",
     "acceptTitle": "Accepter la demande ?",
-    "acceptText": "Le client verra votre numéro et vous verrez son adresse complète. Annuler ensuite compte comme une annulation (avertissement, puis visibilité réduite, puis suspension).",
+    "acceptText": "En acceptant, vous partagez vos informations de contact avec le client. Merci d’honorer votre engagement : des annulations répétées sans motif pourraient réduire votre visibilité, voire entraîner une suspension.",
     "acceptedToast": "Demande acceptée. Appelez le client pour vous mettre d’accord.",
     "declineTitle": "Refuser la demande ?",
     "declineText": "Refuser n’entraîne aucune sanction.",

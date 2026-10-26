@@ -27,7 +27,9 @@ export type NotificationType =
   | 'profile_approved'
   | 'moderation_warning'
   | 'account_suspended'
-  | 'system_alert';
+  | 'system_alert'
+  // Written by the Kadou24h team to this user (dashboard)
+  | 'team_message';
 
 export interface AppNotification {
   _id: string;

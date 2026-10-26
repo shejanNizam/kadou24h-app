@@ -35,6 +35,7 @@ const ICONS: Partial<Record<NotificationType, ComponentProps<typeof Feather>['na
   special_offer: 'gift',
   moderation_warning: 'alert-triangle',
   account_suspended: 'slash',
+  team_message: 'shield',
 };
 
 const isToday = (iso: string) => new Date(iso).toDateString() === new Date().toDateString();
@@ -102,8 +103,17 @@ export default function NotificationsScreen() {
                 <Feather name={ICONS[item.type] ?? 'bell'} size={18} color={Colors.primary} />
               </View>
               <View style={styles.flex}>
+                {/* Official: written by the Kadou24h team (a scammer can't send this one) */}
+                {item.type === 'team_message' && (
+                  <View style={styles.team}>
+                    <Feather name="check-circle" size={11} color={Colors.textOnPrimary} />
+                    <AppText variant="caption" color={Colors.textOnPrimary}>
+                      {t('notifications.team')}
+                    </AppText>
+                  </View>
+                )}
                 <AppText variant={item.isRead ? 'bodyMedium' : 'title'}>{l(item.title)}</AppText>
-                <AppText variant="small" color={Colors.textMuted} numberOfLines={2}>
+                <AppText variant="small" color={Colors.textMuted} numberOfLines={item.type === 'team_message' ? undefined : 2}>
                   {l(item.body)}
                 </AppText>
                 <AppText variant="caption" color={Colors.textSubtle}>
@@ -149,6 +159,17 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  team: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: 4,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 2,
+    borderRadius: Radius.pill,
+    backgroundColor: Colors.primary,
+    marginBottom: 2,
   },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: Colors.primary, marginTop: 6 },
   loading: { marginTop: Spacing.xxxl },
