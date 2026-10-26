@@ -1367,7 +1367,7 @@
     "assignRider": "Choose a rider",
     "assignBus": "Choose a bus driver",
     "assignTitle": "Choose a rider",
-    "assignHint": "Send it to one rider: they have 3 minutes to accept, then it goes back to the nearby riders. Bus: drivers of this route first. From your store: your partners first, then the nearest.",
+    "assignHint": "Send it to one rider: they have 10 minutes to accept, then it goes back to the nearby riders. Bus: drivers of this route first. From your store: your partners first, then the nearest.",
     "assignTo": "Give to {{name}}",
     "riderAssigned": "Request sent to {{name}}",
     "noRiders": "No rider online",
@@ -1684,7 +1684,12 @@
       "alertAway": "{{km}} km away. The first to accept gets it.",
       "alertFirst": "The first to accept gets it."
     },
-    "answerBefore": "Answer before {{time}}, or it is offered to other riders."
+    "answerBefore": "Answer before {{time}}, or it is offered to other riders.",
+    "safetyIds": {
+      "title": "Add your plate and vest number",
+      "text": "For passenger safety, moto-taxis need both. Until then you get deliveries but no passengers.",
+      "action": "Complete my vehicle"
+    }
   },
   "cash": {
     "title": "Cash to hand over",
@@ -1831,7 +1836,10 @@
         "title": "Rider account suspended",
         "text": "Contact support to learn more."
       }
-    }
+    },
+    "plateRequired": "Enter your plate number",
+    "vestRequired": "Enter your vest number",
+    "safetyHint": "Required: customers and passengers check it before getting on"
   },
   "relay": {
     "showTitle": "Your code to show",
@@ -2441,7 +2449,7 @@
       "noRiderNearby": "No rider available close by right now. You can still order: the request widens for 10 minutes.",
       "note": "Note for the rider",
       "noteHint": "E.g. in front of the pharmacy, blue gate",
-      "safety": "For your safety: check the rider’s name and plate before getting on, and wear a helmet.",
+      "safety": "For your safety: check the rider’s name, plate and vest number before getting on, wear a helmet, and share your trip with a close one.",
       "order": "Order · {{amount}}",
       "orderShort": "Order"
     },
@@ -2519,6 +2527,12 @@
       "dropTitle": "Drop the ride?",
       "dropText": "It goes to the other nearby riders and you won’t see it again.",
       "dropped": "Ride offered to other riders"
+    },
+    "plate": "Plate",
+    "vest": "Vest",
+    "share": {
+      "button": "Share my trip",
+      "message": "I’m on a Kadou24h moto-taxi. Follow my trip live (driver, plate, position): {{url}}"
     }
   }
 }

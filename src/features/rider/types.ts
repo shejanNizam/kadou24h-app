@@ -18,7 +18,12 @@ export const VEHICLES_BY_PARTNER: Record<PartnerType, VehicleType[]> = {
   moto: ['motorbike', 'bicycle', 'car'],
   transit: ['bus', 'minibus', 'car'],
 };
-export const RIDER_DOCS: RiderDocumentType[] = ['national_id', 'driver_license', 'vehicle_registration'];
+/** Same rule as the server: a motorised moto partner shows a plate; a moto-taxi also its vest */
+export const safetyIdsNeeded = (partnerType?: PartnerType, vehicleType?: VehicleType) => ({
+  plate: partnerType === 'moto' && (vehicleType === 'motorbike' || vehicleType === 'car'),
+  vest: partnerType === 'moto' && vehicleType === 'motorbike',
+});
+export const RIDER_DOCS: RiderDocumentType[] =['national_id', 'driver_license', 'vehicle_registration'];
 
 export interface RiderVehicle {
   type?: VehicleType;

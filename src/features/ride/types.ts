@@ -40,6 +40,8 @@ export interface Ride {
     name?: string;
     avatar?: FileRef;
     vehicle?: { type?: string; brand?: string; model?: string; color?: string; plateNumber?: string };
+    /** Moto-taxi vest: the passenger checks it with the plate */
+    vestNumber?: string;
     rating: number;
     ratingCount: number;
     rides: number;

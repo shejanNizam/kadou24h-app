@@ -23,7 +23,7 @@ import { useSwitchModeMutation } from '@/features/auth/api';
 import { homeFor } from '@/features/auth/session';
 import { useGetMyRiderQuery, useSaveRiderApplicationMutation, useSubmitRiderApplicationMutation } from '@/features/rider/api';
 import { RoutesEditor, routesFrom, routesPayload, type RouteDraft } from '@/features/rider/components/RoutesEditor';
-import { RIDER_DOCS, VEHICLES_BY_PARTNER, type MyRider, type PartnerType, type RiderDocumentType, type VehicleType } from '@/features/rider/types';
+import { RIDER_DOCS, safetyIdsNeeded, VEHICLES_BY_PARTNER, type MyRider, type PartnerType, type RiderDocumentType, type VehicleType } from '@/features/rider/types';
 import { APPLICATION_TONE } from '@/features/vendor/status';
 import { useGetWalletQuery } from '@/features/wallet/api';
 import { PAYOUT_ICON, PayoutMethodForm, payoutAccountLabel } from '@/features/wallet/components/PayoutMethodForm';
@@ -124,6 +124,7 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
   const [color, setColor] = useState(rider?.vehicle?.color ?? '');
   const [plate, setPlate] = useState(rider?.vehicle?.plateNumber ?? '');
   const [vest, setVest] = useState(rider?.vestNumber ?? '');
+  const needs = safetyIdsNeeded(partnerType, vehicleType);
   // Step 3 — identity
   const [cityArea, setCityArea] = useState(rider?.cityArea ?? '');
   const [nationalId, setNationalId] = useState(rider?.nationalIdNumber ?? '');
@@ -158,6 +159,8 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
       body = { partnerType };
     } else if (step === 'vehicle') {
       if (!vehicleType) next.vehicleType = t('kycRider.vehicleRequired');
+      if (needs.plate && !plate.trim()) next.plate = t('kycRider.plateRequired');
+      if (needs.vest && !vest.trim()) next.vest = t('kycRider.vestRequired');
       body = {
         vehicle: { type: vehicleType, brand: brand.trim(), color: color.trim(), plateNumber: plate.trim().toUpperCase() },
         vestNumber: vest.trim(),
@@ -259,8 +262,27 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
             </View>
             <TextField label={t('kycRider.brand')} hint={t('kycRider.brandHint')} optional value={brand} onChangeText={setBrand} maxLength={40} />
             <TextField label={t('kycRider.color')} optional value={color} onChangeText={setColor} maxLength={30} />
-            <TextField label={t('kycRider.plate')} optional value={plate} onChangeText={setPlate} autoCapitalize="characters" maxLength={20} />
-            {partnerType === 'moto' && <TextField label={t('kycRider.vest')} hint={t('kycRider.vestHint')} optional value={vest} onChangeText={setVest} maxLength={20} />}
+            <TextField
+              label={t('kycRider.plate')}
+              hint={needs.plate ? t('kycRider.safetyHint') : undefined}
+              optional={!needs.plate}
+              value={plate}
+              onChangeText={setPlate}
+              error={errors.plate}
+              autoCapitalize="characters"
+              maxLength={20}
+            />
+            {partnerType === 'moto' && (
+              <TextField
+                label={t('kycRider.vest')}
+                hint={needs.vest ? t('kycRider.safetyHint') : t('kycRider.vestHint')}
+                optional={!needs.vest}
+                value={vest}
+                onChangeText={setVest}
+                error={errors.vest}
+                maxLength={20}
+              />
+            )}
           </>
         )}
 

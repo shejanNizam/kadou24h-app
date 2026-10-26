@@ -43,6 +43,11 @@ export const rideApi = api.injectEndpoints({
       transformResponse: unwrap<Ride>,
       invalidatesTags: ['Ride'],
     }),
+    // "Share my trip": a link a close one opens in the browser (closes when the ride ends)
+    shareRide: build.mutation<{ token: string; url: string }, string>({
+      query: (id) => ({ url: `/rides/${id}/share`, method: 'POST' }),
+      transformResponse: unwrap<{ token: string; url: string }>,
+    }),
     rateRide: build.mutation<Ride, { id: string; stars: number; comment?: string }>({
       query: ({ id, ...body }) => ({ url: `/rides/${id}/rate`, method: 'POST', body }),
       transformResponse: unwrap<Ride>,
@@ -104,6 +109,7 @@ export const {
   useGetMyRidesInfiniteQuery,
   useCancelRideMutation,
   useRateRideMutation,
+  useShareRideMutation,
   useGetRideOffersQuery,
   useGetRiderCurrentRideQuery,
   useGetRiderAccessQuery,

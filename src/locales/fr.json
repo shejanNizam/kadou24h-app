@@ -1367,7 +1367,7 @@
     "assignRider": "Choisir un livreur",
     "assignBus": "Choisir un chauffeur de bus",
     "assignTitle": "Choisir un livreur",
-    "assignHint": "Envoyez-la à un livreur : il a 3 minutes pour accepter, sinon elle repart aux livreurs proches. Bus : les chauffeurs de cette ligne d’abord. Depuis votre boutique : vos partenaires d’abord, puis les plus proches.",
+    "assignHint": "Envoyez-la à un livreur : il a 10 minutes pour accepter, sinon elle repart aux livreurs proches. Bus : les chauffeurs de cette ligne d’abord. Depuis votre boutique : vos partenaires d’abord, puis les plus proches.",
     "assignTo": "Confier à {{name}}",
     "riderAssigned": "Demande envoyée à {{name}}",
     "noRiders": "Aucun livreur en ligne",
@@ -1684,7 +1684,12 @@
       "alertAway": "À {{km}} km. Le premier qui accepte la prend.",
       "alertFirst": "Le premier qui accepte la prend."
     },
-    "answerBefore": "Répondez avant {{time}}, sinon elle est proposée à d’autres livreurs."
+    "answerBefore": "Répondez avant {{time}}, sinon elle est proposée à d’autres livreurs.",
+    "safetyIds": {
+      "title": "Ajoutez votre plaque et votre numéro de gilet",
+      "text": "Pour la sécurité des passagers, les moto-taxis doivent renseigner les deux. En attendant, vous recevez des livraisons mais pas de passagers.",
+      "action": "Compléter mon véhicule"
+    }
   },
   "cash": {
     "title": "Cash à reverser",
@@ -1831,7 +1836,10 @@
         "title": "Compte livreur suspendu",
         "text": "Contactez le support pour en savoir plus."
       }
-    }
+    },
+    "plateRequired": "Saisissez votre numéro de plaque",
+    "vestRequired": "Saisissez votre numéro de gilet",
+    "safetyHint": "Obligatoire : clients et passagers le vérifient avant de monter"
   },
   "relay": {
     "showTitle": "Votre code à montrer",
@@ -2441,7 +2449,7 @@
       "noRiderNearby": "Aucun chauffeur disponible tout près pour l’instant. Vous pouvez commander : la demande s’élargit pendant 10 minutes.",
       "note": "Note pour le chauffeur",
       "noteHint": "Ex. : devant la pharmacie, portail bleu",
-      "safety": "Pour votre sécurité : vérifiez le nom et la plaque du chauffeur avant de monter, et portez un casque.",
+      "safety": "Pour votre sécurité : vérifiez le nom, la plaque et le numéro de gilet du chauffeur avant de monter, portez un casque et partagez votre course avec un proche.",
       "order": "Commander · {{amount}}",
       "orderShort": "Commander"
     },
@@ -2519,6 +2527,12 @@
       "dropTitle": "Abandonner la course ?",
       "dropText": "Elle sera proposée aux autres chauffeurs proches, et vous ne la reverrez pas.",
       "dropped": "Course proposée à d’autres chauffeurs"
+    },
+    "plate": "Plaque",
+    "vest": "Gilet",
+    "share": {
+      "button": "Partager ma course",
+      "message": "Je suis dans un moto-taxi Kadou24h. Suivez ma course en direct (chauffeur, plaque, position) : {{url}}"
     }
   }
 }

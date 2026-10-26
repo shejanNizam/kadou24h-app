@@ -15,7 +15,7 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetMyRiderQuery, useUpdateMyRiderMutation } from '@/features/rider/api';
 import { RoutesEditor, routesFrom, routesPayload, type RouteDraft } from '@/features/rider/components/RoutesEditor';
-import type { MyRider } from '@/features/rider/types';
+import { safetyIdsNeeded, type MyRider } from '@/features/rider/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
 
 /**
@@ -50,6 +50,7 @@ function VehicleForm({ rider }: { rider: MyRider }) {
   const [vest, setVest] = useState(rider.vestNumber ?? '');
   const [cityArea, setCityArea] = useState(rider.cityArea ?? '');
   const bus = rider.partnerType === 'transit';
+  const needs = safetyIdsNeeded(rider.partnerType, rider.vehicle?.type);
   const [routes, setRoutes] = useState<RouteDraft[]>(() => routesFrom(rider.transitRoutes));
   const [routesError, setRoutesError] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +58,8 @@ function VehicleForm({ rider }: { rider: MyRider }) {
 
   const save = async () => {
     setError(null);
+    if (needs.plate && !plate.trim()) return setError(t('kycRider.plateRequired'));
+    if (needs.vest && !vest.trim()) return setError(t('kycRider.vestRequired'));
     if (cityArea.trim().length < 2) return setError(t('kycRider.cityRequired'));
     // Bus drivers: stores pick drivers by route
     const payload = bus ? routesPayload(routes) : null;
@@ -100,8 +103,25 @@ function VehicleForm({ rider }: { rider: MyRider }) {
         <Banner tone="danger" message={error} />
         <TextField label={t('kycRider.brand')} optional value={brand} onChangeText={setBrand} maxLength={40} />
         <TextField label={t('kycRider.color')} optional value={color} onChangeText={setColor} maxLength={30} />
-        <TextField label={t('kycRider.plate')} optional value={plate} onChangeText={setPlate} autoCapitalize="characters" maxLength={20} />
-        {rider.partnerType !== 'transit' && <TextField label={t('kycRider.vest')} optional value={vest} onChangeText={setVest} maxLength={20} />}
+        <TextField
+          label={t('kycRider.plate')}
+          hint={needs.plate ? t('kycRider.safetyHint') : undefined}
+          optional={!needs.plate}
+          value={plate}
+          onChangeText={setPlate}
+          autoCapitalize="characters"
+          maxLength={20}
+        />
+        {rider.partnerType !== 'transit' && (
+          <TextField
+            label={t('kycRider.vest')}
+            hint={needs.vest ? t('kycRider.safetyHint') : undefined}
+            optional={!needs.vest}
+            value={vest}
+            onChangeText={setVest}
+            maxLength={20}
+          />
+        )}
         <TextField label={t('kycRider.cityArea')} hint={t('kycRider.cityAreaHint')} value={cityArea} onChangeText={setCityArea} maxLength={80} />
         {bus && (
           <>

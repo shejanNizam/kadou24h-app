@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, RefreshControl, ScrollView, Share, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +21,7 @@ import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import { toLatLng } from '@/features/orders/types';
-import { useCancelRideMutation, useGetRideQuery, useRateRideMutation, useRequestRideMutation } from '@/features/ride/api';
+import { useCancelRideMutation, useGetRideQuery, useRateRideMutation, useRequestRideMutation, useShareRideMutation } from '@/features/ride/api';
 import { RIDE_TONE } from '@/features/ride/status';
 import { RUNNING_RIDE, type Ride } from '@/features/ride/types';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
@@ -89,6 +89,7 @@ function RideBody({
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [cancel, cancelState] = useCancelRideMutation();
   const [requestRide, requestState] = useRequestRideMutation();
+  const [shareRide, shareState] = useShareRideMutation();
   const running = RUNNING_RIDE.includes(ride.status);
   const canCancel = ['searching', 'accepted', 'arrived'].includes(ride.status);
   const from = toLatLng(ride.pickup.location)!;
@@ -107,6 +108,16 @@ function RideBody({
       toast.show(t('ride.cancelled'));
     } catch (e) {
       setConfirmCancel(false);
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    }
+  };
+
+  // A close one follows the trip from a link (browser, no app); it closes when the ride ends
+  const onShare = async () => {
+    try {
+      const { url } = await shareRide(ride._id).unwrap();
+      await Share.share({ message: t('ride.share.message', { url }) });
+    } catch (e) {
       toast.show(getApiErrorMessage(e, t), 'danger');
     }
   };
@@ -198,6 +209,7 @@ function RideBody({
       </ScrollView>
 
       <View style={[styles.inner, styles.footer]}>
+        {running && <Button title={t('ride.share.button')} icon="share-2" variant="soft" loading={shareState.isLoading} onPress={() => void onShare()} />}
         {canCancel && <Button title={t('ride.cancel')} variant="outline" onPress={() => setConfirmCancel(true)} />}
         {(ride.status === 'expired' || ride.status === 'cancelled') && (
           <Button title={t('ride.again')} icon="refresh-cw" loading={requestState.isLoading} onPress={() => void again()} />
@@ -222,7 +234,12 @@ function RideBody({
 function RiderCard({ ride }: { ride: Ride }) {
   const { t } = useTranslation();
   const r = ride.rider!;
-  const vehicle = [r.vehicle?.brand, r.vehicle?.color, r.vehicle?.plateNumber].filter(Boolean).join(' · ');
+  const vehicle = [r.vehicle?.brand, r.vehicle?.color].filter(Boolean).join(' · ');
+  // What the passenger checks before getting on
+  const ids = [
+    { label: t('ride.plate'), value: r.vehicle?.plateNumber },
+    { label: t('ride.vest'), value: r.vestNumber },
+  ].filter((x) => x.value);
   return (
     <View style={styles.rider}>
       <View style={styles.avatar}>
@@ -238,6 +255,18 @@ function RiderCard({ ride }: { ride: Ride }) {
           <AppText variant="small" color={Colors.textMuted}>
             {vehicle}
           </AppText>
+        ) : null}
+        {ids.length ? (
+          <View style={styles.ids}>
+            {ids.map((x) => (
+              <View key={x.label} style={styles.idBox}>
+                <AppText variant="caption" color={Colors.textMuted}>
+                  {x.label}
+                </AppText>
+                <AppText variant="title">{x.value}</AppText>
+              </View>
+            ))}
+          </View>
         ) : null}
         <View style={styles.row}>
           {r.ratingCount ? <Stars value={r.rating} size={12} /> : null}
@@ -327,6 +356,8 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   flex: { flex: 1 },
   rider: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingTop: Spacing.sm, borderTopWidth: 1, borderTopColor: Colors.border },
+  ids: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginVertical: Spacing.xs },
+  idBox: { paddingHorizontal: Spacing.sm, paddingVertical: 2, borderRadius: Radius.sm, borderWidth: 2, borderColor: Colors.text },
   avatar: {
     width: 48,
     height: 48,

@@ -20,6 +20,7 @@ import { OnlineToggle } from '@/features/rider/components/OnlineToggle';
 import type { DeliveryOffer, RiderTab } from '@/features/rider/types';
 import { useGetRideOffersQuery, useGetRiderCurrentRideQuery } from '@/features/ride/api';
 import { RideAccessBanner } from '@/features/ride/components/RideAccessBanner';
+import { SafetyIdsBanner } from '@/features/rider/components/SafetyIdsBanner';
 import { RideOfferCard } from '@/features/ride/components/RideOfferCard';
 import type { RideOffer } from '@/features/ride/types';
 import { useGetEarningsSummaryQuery } from '@/features/wallet/api';
@@ -123,6 +124,7 @@ export default function RiderDeliveriesScreen() {
           }
           ListHeaderComponent={
             <>
+              {rider && rider.partnerType !== 'transit' && <SafetyIdsBanner rider={rider} />}
               {rider && rider.partnerType !== 'transit' && <RideAccessBanner />}
               {near.length ? (
                 <AppText variant="caption" color={Colors.textMuted}>
