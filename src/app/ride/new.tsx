@@ -1,6 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -44,6 +44,8 @@ export default function NewRideScreen() {
   const [naming, setNaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [requestRide, requestState] = useRequestRideMutation();
+  // Once the person moves the map or picks a place, a late first GPS fix must not move the pin
+  const userMoved = useRef(false);
 
   const estimate = useEstimateRideQuery(
     { pickup: { lat: pickup?.lat ?? 0, lng: pickup?.lng ?? 0 }, dropoff: { lat: dropoff?.lat ?? 0, lng: dropoff?.lng ?? 0 } },
@@ -51,6 +53,7 @@ export default function NewRideScreen() {
   );
 
   const locateMe = async () => {
+    userMoved.current = true;
     setLocating(true);
     const here = await getCurrentPosition();
     setLocating(false);
@@ -66,7 +69,7 @@ export default function NewRideScreen() {
   useEffect(() => {
     let cancelled = false;
     void getCurrentPosition().then((here) => {
-      if (cancelled || !here) return;
+      if (cancelled || !here || userMoved.current) return;
       setPin(here);
       setFocus({ ...here, zoom: 17 });
     });
@@ -76,6 +79,7 @@ export default function NewRideScreen() {
   }, []);
 
   const confirmPin = async () => {
+    userMoved.current = true;
     setNaming(true);
     const guess = await reverseGeocode(pin);
     setNaming(false);
@@ -93,6 +97,7 @@ export default function NewRideScreen() {
   };
 
   const goTo = (target: 'pickup' | 'dropoff') => {
+    userMoved.current = true;
     const place = target === 'pickup' ? pickup : dropoff;
     if (place) {
       setPin(place);
@@ -128,12 +133,13 @@ export default function NewRideScreen() {
           </AppText>
         </View>
         {saved.length > 0 && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[styles.inner, styles.chips]}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipsRow} contentContainerStyle={[styles.inner, styles.chips]}>
             {saved.map((a) => (
               <Chip
                 key={a._id}
                 label={a.customLabel || t(`address.label.${a.label}`, { defaultValue: a.label })}
                 onPress={() => {
+                  userMoved.current = true;
                   setPin(a.location);
                   setFocus({ ...a.location, zoom: 17 });
                 }}
@@ -141,7 +147,7 @@ export default function NewRideScreen() {
             ))}
           </ScrollView>
         )}
-        <View style={[styles.inner, styles.mapWrap]}>
+        <View style={[styles.inner, styles.mapWrap]} onTouchStart={() => (userMoved.current = true)}>
           <AppMap
             initialCenter={pin}
             initialZoom={15}
@@ -280,6 +286,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.surface },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },
   content: { gap: Spacing.lg, paddingTop: Spacing.sm, paddingBottom: Spacing.xxl },
+  chipsRow: { flexGrow: 0 },
   chips: { gap: Spacing.sm, paddingTop: Spacing.sm },
   mapWrap: { flex: 1, paddingVertical: Spacing.md },
   map: { flex: 1, minHeight: 280 },
