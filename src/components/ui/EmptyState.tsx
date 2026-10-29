@@ -1,4 +1,5 @@
 import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -8,7 +9,8 @@ import { AppText } from './AppText';
 import { Button } from './Button';
 
 export interface EmptyStateProps {
-  icon?: ComponentProps<typeof Feather>['name'];
+  /** Feather has no motorcycle: "motorbike" comes from MaterialCommunityIcons (moto-taxi screens) */
+  icon?: ComponentProps<typeof Feather>['name'] | 'motorbike';
   title: string;
   message?: string;
   actionLabel?: string;
@@ -23,7 +25,11 @@ export function EmptyState({ icon = 'inbox', title, message, actionLabel, onActi
   return (
     <View style={styles.container}>
       <View style={styles.iconCircle}>
-        <Feather name={icon} size={36} color={Colors.primary} />
+        {icon === 'motorbike' ? (
+          <MaterialCommunityIcons name="motorbike" size={40} color={Colors.primary} />
+        ) : (
+          <Feather name={icon} size={36} color={Colors.primary} />
+        )}
       </View>
       <AppText variant="h3" align="center">
         {title}

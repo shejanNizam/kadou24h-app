@@ -5,7 +5,7 @@ import {
   DMSans_700Bold,
   useFonts,
 } from '@expo-google-fonts/dm-sans';
-import { Stack } from 'expo-router';
+import { Stack, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -21,12 +21,16 @@ import { SessionEffects } from '@/components/providers/SessionEffects';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Colors } from '@/constants/theme';
 import { bootstrap } from '@/lib/bootstrap';
+import { installCrashReporter, setCrashScreen } from '@/lib/crashReport';
 import i18n from '@/lib/i18n';
 import { store } from '@/store';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 void SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// An error that would close the app is reported to the team first (see lib/crashReport)
+installCrashReporter(() => store.getState().auth.accessToken);
 
 // A screen that throws shows "Something went wrong · Try again" instead of closing the app
 export { CrashScreen as ErrorBoundary } from '@/components/ui/CrashScreen';
@@ -63,6 +67,7 @@ export default function RootLayout() {
             <KeyboardProvider>
               <ToastProvider>
                 <SessionEffects />
+                <CrashScreenTracker />
                 <PushEffects />
                 <StatusBar style="dark" />
                 <View style={{ flex: 1, backgroundColor: Colors.background }}>
@@ -85,4 +90,13 @@ export default function RootLayout() {
       </Provider>
     </GestureHandlerRootView>
   );
+}
+
+/** Route pattern (e.g. "ride/[id]"), never ids: attached to crash reports */
+function CrashScreenTracker() {
+  const segments = useSegments();
+  useEffect(() => {
+    setCrashScreen('/' + segments.join('/'));
+  }, [segments]);
+  return null;
 }

@@ -49,7 +49,7 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
             <ErrorState error={result.error} onRetry={() => void result.refetch()} />
           ) : (
             <EmptyState
-              icon="navigation"
+              icon="motorbike"
               title={t('ride.emptyTitle')}
               message={role === 'passenger' ? t('ride.emptyPassenger') : t('ride.emptyRider')}
               actionLabel={role === 'passenger' ? t('ride.orderMoto') : undefined}

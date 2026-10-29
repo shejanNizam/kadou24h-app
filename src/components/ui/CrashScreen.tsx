@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Colors } from '@/constants/theme';
+import { reportError } from '@/lib/crashReport';
 
 import { EmptyState } from './EmptyState';
 
@@ -16,6 +17,7 @@ export function CrashScreen({ error, retry }: ErrorBoundaryProps) {
   const { t } = useTranslation();
   useEffect(() => {
     console.error('Screen crashed', error);
+    void reportError(error, false);
   }, [error]);
   return (
     <View style={styles.container}>
