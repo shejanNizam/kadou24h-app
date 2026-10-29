@@ -986,7 +986,7 @@
     "voiceNote": "Message vocal",
     "photo": "Photo",
     "safetyShort": "Conversation ouverte",
-    "safetyNotice": "Pour votre sécurité, payez toujours via Kadou24h et ne partagez jamais votre numéro, vos coordonnées bancaires ou vos réseaux sociaux. Ils sont masqués automatiquement. Un message vocal qui en contient peut être signalé : le compte risque la suspension.",
+    "safetyNotice": "Pour votre sécurité, payez toujours via Kadou24h. Ne partagez jamais votre numéro, vos coordonnées bancaires ou vos réseaux sociaux, même par message vocal. Protégeons-nous : en cas de non-respect, le compte peut être suspendu.",
     "maskedNotice": "Coordonnées masquées par Kadou24h",
     "typing": "écrit…",
     "viewStore": "Voir la boutique",
@@ -2346,12 +2346,11 @@
     },
     "limitedBanner": "Après plusieurs annulations, vous ne pouvez avoir qu’une réservation à la fois jusqu’au {{date}}.",
     "safety": {
-      "title": "Kadou24h met en relation clients et travailleurs, mais ne garantit pas les paiements faits en dehors de l’application.",
-      "book": "Nous vous recommandons de vérifier le travail terminé avant de payer, et de ne jamais payer en avance la totalité d’un travail non fait.",
-      "confirm": "Vérifiez le travail terminé avant de payer et de confirmer. Ne payez jamais un travail non fait.",
-      "accept": "Nous vous recommandons de bien préciser le prix et les conditions de paiement avec le client avant de commencer le service.",
-      "register": "Les clients vous paient directement (espèces ou Orange Money). Précisez toujours le prix et les conditions de paiement avant de commencer.",
-      "complete": "Assurez-vous que le prix et le paiement ont bien été réglés avec le client comme convenu."
+      "book": "Pour votre sécurité, mettez-vous d’accord avec le prestataire sur le prix et le paiement avant de commencer. Vérifiez le travail terminé avant de payer, et ne payez jamais la totalité d’un travail non fait.",
+      "confirm": "Pour votre sécurité, vérifiez le travail terminé avant de payer et de confirmer. Kadou24h ne garantit pas les paiements faits en dehors de l’application.",
+      "accept": "Kadou24h ne garantit pas les paiements faits en dehors de l’application. Mettez-vous d’accord avec le client sur le prix et le paiement avant de commencer.",
+      "register": "Pour votre sécurité, Kadou24h vous met en relation avec des clients, mais ne garantit pas les paiements faits en dehors de l’application. Avant de commencer, mettez-vous toujours d’accord sur le prix, la méthode de travail et le paiement.",
+      "complete": "Assurez-vous que le prix et le paiement ont bien été réglés avec le client comme convenu. Kadou24h ne garantit pas les paiements faits en dehors de l’application."
     },
     "yourWorker": "Votre travailleur",
     "yourCustomer": "Le client",
@@ -2414,7 +2413,7 @@
   "ride": {
     "entry": {
       "title": "Moto-taxi",
-      "text": "Allez d’un point A à un point B. Prix connu avant de commander, payé en espèces.",
+      "text": "Déplacez-vous en moto-taxi. Prix connu avant de partir.",
       "current": "Votre course en cours"
     },
     "status": {
@@ -2479,7 +2478,7 @@
     "rateSend": "Envoyer la note",
     "rated": "Merci pour votre note !",
     "emptyTitle": "Aucune course pour l’instant",
-    "emptyPassenger": "Commandez une moto pour aller d’un point A à un point B.",
+    "emptyPassenger": "Déplacez-vous en moto-taxi, au prix annoncé avant le départ.",
     "emptyRider": "Les passagers proches apparaissent dans « Près de moi » quand vous êtes en ligne.",
     "riderHistory": "Mes courses moto-taxi",
     "access": {

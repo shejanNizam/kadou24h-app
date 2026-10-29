@@ -986,7 +986,7 @@
     "voiceNote": "Voice message",
     "photo": "Photo",
     "safetyShort": "Conversation started",
-    "safetyNotice": "For your safety, always pay through Kadou24h and never share your phone number, bank details or social accounts. They are hidden automatically. A voice message that contains them can be reported, and the account may be suspended.",
+    "safetyNotice": "For your safety, always pay through Kadou24h. Never share your number, your bank details or your social accounts, even by voice message. Let’s protect each other: if this rule isn’t respected, the account may be suspended.",
     "maskedNotice": "Contact details hidden by Kadou24h",
     "typing": "typing…",
     "viewStore": "View the store",
@@ -2346,12 +2346,11 @@
     },
     "limitedBanner": "After several cancellations you can only have one booking at a time until {{date}}.",
     "safety": {
-      "title": "Kadou24h connects clients and providers, but does not guarantee payments made outside the application.",
-      "book": "We recommend that you verify the completed work before making the payment, and never pay in advance in full for work not yet done.",
-      "confirm": "Check the completed work before paying and confirming. Never pay for work not yet done.",
-      "accept": "We recommend that you clearly clarify the price and payment terms with the client before starting the service.",
-      "register": "Customers pay you directly (cash or Orange Money). Always clarify the price and payment terms before you start.",
-      "complete": "Make sure the price and the payment were settled with the client as agreed."
+      "book": "For your safety, agree with the provider on the price and payment before starting. Check the completed work before paying, and never pay the full amount for work not done.",
+      "confirm": "For your safety, check the completed work before paying and confirming. Kadou24h does not guarantee payments made outside the app.",
+      "accept": "Kadou24h does not guarantee payments made outside the app. Agree on the price and payment with the customer before starting.",
+      "register": "For your safety, Kadou24h connects you with customers, but does not guarantee payments made outside the app. Before starting, always agree on the price, the way of working and the payment.",
+      "complete": "Make sure the price and payment were settled with the customer as agreed. Kadou24h does not guarantee payments made outside the app."
     },
     "yourWorker": "Your worker",
     "yourCustomer": "The customer",
@@ -2414,7 +2413,7 @@
   "ride": {
     "entry": {
       "title": "Moto-taxi",
-      "text": "Go from A to B. Price known before ordering, paid in cash.",
+      "text": "Get around by moto-taxi. Price known before you go.",
       "current": "Your ride in progress"
     },
     "status": {
@@ -2479,7 +2478,7 @@
     "rateSend": "Send the rating",
     "rated": "Thank you for your rating!",
     "emptyTitle": "No rides yet",
-    "emptyPassenger": "Order a moto to go from A to B.",
+    "emptyPassenger": "Get around by moto-taxi, at the price announced before departure.",
     "emptyRider": "Nearby passengers show up under \"Near me\" while you are online.",
     "riderHistory": "My moto-taxi rides",
     "access": {

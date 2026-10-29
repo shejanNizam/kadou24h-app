@@ -7,7 +7,7 @@ import { Colors, Radius, Spacing } from '@/constants/theme';
 
 /**
  * Client rule (2026-10-22): payments are made outside Kadou24h, so every step shows
- * that Kadou24h does not guarantee them, plus the advice for that step.
+ * the client's safety text for that step (wording from the client, 2026-10-29).
  *  - book / confirm: the customer, before booking and before confirming the job
  *  - accept / register / complete: the worker
  */
@@ -18,14 +18,9 @@ export function SafetyNotice({ step, compact }: { step: SafetyStep; compact?: bo
   return (
     <View style={[styles.box, compact && styles.compact]} accessibilityRole="alert">
       <Feather name="shield" size={18} color={Colors.warningText} style={styles.icon} />
-      <View style={styles.flex}>
-        <AppText variant="smallMedium" color={Colors.warningText}>
-          {t('booking.safety.title')}
-        </AppText>
-        <AppText variant="small" color={Colors.warningText}>
-          {t(`booking.safety.${step}`)}
-        </AppText>
-      </View>
+      <AppText variant="small" color={Colors.warningText} style={styles.flex}>
+        {t(`booking.safety.${step}`)}
+      </AppText>
     </View>
   );
 }
@@ -41,5 +36,5 @@ const styles = StyleSheet.create({
   },
   compact: { padding: Spacing.sm },
   icon: { marginTop: 2 },
-  flex: { flex: 1, gap: 2 },
+  flex: { flex: 1 },
 });
