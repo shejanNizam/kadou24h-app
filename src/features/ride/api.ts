@@ -43,6 +43,11 @@ export const rideApi = api.injectEndpoints({
       transformResponse: unwrap<Ride>,
       invalidatesTags: ['Ride'],
     }),
+    /** "Delete from my history": hidden for me only, a finished ride (client, 2026-10-30) */
+    hideRide: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/rides/my/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Ride'],
+    }),
     // "Share my trip": a link a close one opens in the browser (closes when the ride ends)
     shareRide: build.mutation<{ token: string; url: string }, string>({
       query: (id) => ({ url: `/rides/${id}/share`, method: 'POST' }),
@@ -102,6 +107,7 @@ export const rideApi = api.injectEndpoints({
 });
 
 export const {
+  useHideRideMutation,
   useEstimateRideQuery,
   useRequestRideMutation,
   useGetRideQuery,

@@ -29,6 +29,7 @@ import { CancelSheet, DisputeSheet, ReviewSheet } from '@/features/orders/compon
 import { PriceSummary } from '@/features/orders/components/PriceSummary';
 import { SubOrderCard } from '@/features/orders/components/SubOrderCard';
 import { DISPUTE_TONE, ORDER_TONE, PAYMENT_TONE, REFUND_TONE } from '@/features/orders/status';
+import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import type { PaymentMethod, SubOrder } from '@/features/orders/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
@@ -52,6 +53,7 @@ export default function OrderScreen() {
   const [feesMethod, setFeesMethod] = useState<Exclude<PaymentMethod, 'cod'>>('orange_money');
   const [disputeOpen, setDisputeOpen] = useState(false);
   const [reviewFor, setReviewFor] = useState<SubOrder | null>(null);
+  const remove = useDeleteFromHistory('order', () => router.back());
 
   if (isLoading) {
     return (
@@ -267,6 +269,7 @@ export default function OrderScreen() {
               </AppText>
             ))}
           <Button title={t('order.reportProblem')} variant="ghost" icon="alert-triangle" onPress={() => setDisputeOpen(true)} />
+          {order.status !== 'active' && <Button title={t('history.deleteAction')} variant="ghost" icon="trash-2" onPress={() => remove.ask(order._id)} />}
         </View>
       </ScrollView>
 
@@ -274,6 +277,7 @@ export default function OrderScreen() {
       <CancelSheet orderId={order._id} visible={Boolean(cancelPart)} part={cancelPart} onClose={() => setCancelPart(null)} />
       <DisputeSheet orderId={order._id} subOrders={subOrders} visible={disputeOpen} onClose={() => setDisputeOpen(false)} />
       <ReviewSheet subOrder={reviewFor} onClose={() => setReviewFor(null)} />
+      {remove.dialog}
     </SafeAreaView>
   );
 }

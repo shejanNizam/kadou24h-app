@@ -12,11 +12,12 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import { formatGNF } from '@/lib/format';
 
 import { useGetMyRidesInfiniteQuery, useGetRiderRidesInfiniteQuery } from '../api';
 import { RIDE_TONE } from '../status';
-import type { Ride } from '../types';
+import { RUNNING_RIDE, type Ride } from '../types';
 
 /** My moto-taxi rides, as a passenger or as a rider (newest first). */
 export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
@@ -25,6 +26,9 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
   const rider = useGetRiderRidesInfiniteQuery(undefined, { skip: role !== 'rider' });
   const result = role === 'passenger' ? passenger : rider;
   const rides = result.data?.pages.flatMap((p) => p.data) ?? [];
+  const remove = useDeleteFromHistory('ride');
+  // The passenger can delete a finished ride from their history (client, 2026-10-30)
+  const deletable = (r: Ride) => role === 'passenger' && !RUNNING_RIDE.includes(r.status);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
@@ -34,7 +38,14 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
       <FlatList
         data={rides}
         keyExtractor={(r) => r._id}
-        renderItem={({ item }) => <RideRow ride={item} role={role} />}
+        renderItem={({ item }) => <RideRow ride={item} role={role} onDelete={deletable(item) ? () => remove.ask(item._id) : undefined} />}
+        ListHeaderComponent={
+          rides.some(deletable) ? (
+            <AppText variant="caption" color={Colors.textSubtle}>
+              {t('history.holdHintRides')}
+            </AppText>
+          ) : undefined
+        }
         contentContainerStyle={[styles.inner, styles.list]}
         refreshControl={
           <RefreshControl refreshing={result.isFetching && !result.isLoading && !result.isFetchingNextPage} onRefresh={() => void result.refetch()} />
@@ -69,11 +80,12 @@ export function RideListScreen({ role }: { role: 'passenger' | 'rider' }) {
           <Button title={t('ride.orderMoto')} onPress={() => router.push('/ride/new')} />
         </View>
       )}
+      {remove.dialog}
     </SafeAreaView>
   );
 }
 
-function RideRow({ ride, role }: { ride: Ride; role: 'passenger' | 'rider' }) {
+function RideRow({ ride, role, onDelete }: { ride: Ride; role: 'passenger' | 'rider'; onDelete?: () => void }) {
   const { t, i18n } = useTranslation();
   return (
     <Pressable
@@ -82,6 +94,8 @@ function RideRow({ ride, role }: { ride: Ride; role: 'passenger' | 'rider' }) {
           role === 'passenger' ? { pathname: '/ride/[id]', params: { id: ride._id } } : { pathname: '/rider/ride/[id]', params: { id: ride._id } },
         )
       }
+      onLongPress={onDelete}
+      delayLongPress={400}
       accessibilityRole="button"
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <View style={styles.row}>

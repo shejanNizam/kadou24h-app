@@ -1,6 +1,7 @@
 import Feather from '@expo/vector-icons/Feather';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import type { ComponentProps } from 'react';
+import { useState } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/ui/AppText';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { TextLink } from '@/components/ui/TextLink';
+import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import {
+  useDeleteAllNotificationsMutation,
+  useDeleteNotificationMutation,
   useGetNotificationsQuery,
   useMarkAllNotificationsReadMutation,
   useMarkNotificationReadMutation,
@@ -20,6 +25,7 @@ import {
 } from '@/features/notifications/api';
 import { openNotification } from '@/features/notifications/open';
 import { useLocalized } from '@/hooks/useLocalized';
+import { getApiErrorMessage } from '@/lib/api/errors';
 import { useAppSelector } from '@/store/hooks';
 import { AppMode } from '@/types/api';
 
@@ -40,7 +46,10 @@ const ICONS: Partial<Record<NotificationType, ComponentProps<typeof Feather>['na
 
 const isToday = (iso: string) => new Date(iso).toDateString() === new Date().toDateString();
 
-/** Read/unread, grouped Today / Earlier, "mark all read". Deep links follow with their screens. */
+/**
+ * Read/unread, grouped Today / Earlier, "mark all read". Deep links follow with their screens.
+ * Long press deletes one, "Delete all" empties the list (client, 2026-10-30).
+ */
 export default function NotificationsScreen() {
   const { t, i18n } = useTranslation();
   const l = useLocalized();
@@ -51,6 +60,11 @@ export default function NotificationsScreen() {
   const { data, isLoading, isError, error, refetch, isFetching } = useGetNotificationsQuery({ mode }, { skip: status !== 'signedIn' });
   const [markRead] = useMarkNotificationReadMutation();
   const [markAll, markAllState] = useMarkAllNotificationsReadMutation();
+  const [deleteOne, deleteOneState] = useDeleteNotificationMutation();
+  const [deleteAll, deleteAllState] = useDeleteAllNotificationsMutation();
+  const toast = useToast();
+  // One notification's id, or 'all'
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   if (status !== 'signedIn') return <Redirect href="/login" />;
 
@@ -60,6 +74,17 @@ export default function NotificationsScreen() {
     { title: t('notifications.earlier'), data: items.filter((n) => !isToday(n.createdAt)) },
   ].filter((s) => s.data.length > 0);
   const hasUnread = items.some((n) => !n.isRead);
+
+  const confirmDelete = async () => {
+    try {
+      if (deleting === 'all') await deleteAll({ mode }).unwrap();
+      else if (deleting) await deleteOne(deleting).unwrap();
+      toast.show(t(deleting === 'all' ? 'notifications.deletedAll' : 'notifications.deleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    }
+    setDeleting(null);
+  };
 
   // Deep link: order, store order, chat, withdrawal, application (features/notifications/open.ts)
   const open = (n: AppNotification) => {
@@ -75,6 +100,8 @@ export default function NotificationsScreen() {
           right={
             hasUnread ? (
               <TextLink title={t('notifications.markAll')} onPress={() => markAll({ mode })} disabled={markAllState.isLoading} />
+            ) : items.length > 0 ? (
+              <TextLink title={t('notifications.deleteAll')} onPress={() => setDeleting('all')} />
             ) : undefined
           }
         />
@@ -87,6 +114,13 @@ export default function NotificationsScreen() {
           keyExtractor={(n) => n._id}
           contentContainerStyle={[styles.inner, styles.list]}
           stickySectionHeadersEnabled={false}
+          ListHeaderComponent={
+            items.length > 0 ? (
+              <AppText variant="caption" color={Colors.textSubtle}>
+                {t('notifications.holdHint')}
+              </AppText>
+            ) : undefined
+          }
           refreshControl={<RefreshControl refreshing={isFetching && !isLoading} onRefresh={() => void refetch()} tintColor={Colors.primary} />}
           renderSectionHeader={({ section }) => (
             <AppText variant="label" color={Colors.textMuted} style={styles.section}>
@@ -96,6 +130,8 @@ export default function NotificationsScreen() {
           renderItem={({ item }) => (
             <Pressable
               onPress={() => open(item)}
+              onLongPress={() => setDeleting(item._id)}
+              delayLongPress={400}
               accessibilityRole="button"
               accessibilityState={{ selected: !item.isRead }}
               style={[styles.item, !item.isRead && styles.unread]}>
@@ -132,6 +168,17 @@ export default function NotificationsScreen() {
           }
         />
       )}
+      <ConfirmDialog
+        visible={deleting !== null}
+        title={t(deleting === 'all' ? 'notifications.deleteAllTitle' : 'notifications.deleteTitle')}
+        message={deleting === 'all' ? t('notifications.deleteAllText') : undefined}
+        confirmLabel={t('history.delete')}
+        destructive
+        icon="trash-2"
+        loading={deleteOneState.isLoading || deleteAllState.isLoading}
+        onConfirm={() => void confirmDelete()}
+        onCancel={() => setDeleting(null)}
+      />
     </SafeAreaView>
   );
 }

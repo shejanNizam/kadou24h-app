@@ -467,7 +467,14 @@
     "markAll": "Mark all read",
     "unread": "Unread",
     "emptyTitle": "No notifications",
-    "emptyText": "Your orders, messages and offers will show up here."
+    "emptyText": "Your orders, messages and offers will show up here.",
+    "deleteAll": "Delete all",
+    "deleteTitle": "Delete this notification?",
+    "deleteAllTitle": "Delete all notifications?",
+    "deleteAllText": "They can't be recovered.",
+    "deleted": "Notification deleted",
+    "deletedAll": "Notifications deleted",
+    "holdHint": "Press and hold a notification to delete it."
   },
   "worker": {
     "experience": "Experience",
@@ -2549,5 +2556,15 @@
       "button": "Share my trip",
       "message": "I’m on a Kadou24h moto-taxi. Follow my trip live (driver, plate, position): {{url}}"
     }
+  },
+  "history": {
+    "deleteAction": "Delete from my history",
+    "deleteTitle": "Delete from your history?",
+    "deleteOrderText": "Only you will stop seeing this order. The store and Kadou24h keep it for payments and help.",
+    "deleteRideText": "Only you will stop seeing this ride. The rider and Kadou24h keep it.",
+    "delete": "Delete",
+    "deleted": "Deleted from your history",
+    "holdHintOrders": "Press and hold a finished order to delete it from your history.",
+    "holdHintRides": "Press and hold a finished ride to delete it from your history."
   }
 }

@@ -16,6 +16,7 @@ import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { ORDER_TABS, useGetMyOrdersInfiniteQuery, type OrdersTab } from '@/features/orders/api';
 import { ORDER_TONE } from '@/features/orders/status';
 import type { OrderListItem } from '@/features/orders/types';
+import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
 import { img } from '@/lib/image';
@@ -34,6 +35,7 @@ function Orders() {
   const [tab, setTab] = useState<OrdersTab>('all');
   const result = useGetMyOrdersInfiniteQuery(tab);
   const orders = result.data?.pages.flatMap((p) => p.data) ?? [];
+  const remove = useDeleteFromHistory('order');
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
@@ -60,7 +62,14 @@ function Orders() {
       <FlatList
         data={orders}
         keyExtractor={(o) => o._id}
-        renderItem={({ item }) => <OrderCard order={item} />}
+        renderItem={({ item }) => <OrderCard order={item} onDelete={item.status !== 'active' ? () => remove.ask(item._id) : undefined} />}
+        ListHeaderComponent={
+          orders.some((o) => o.status !== 'active') ? (
+            <AppText variant="caption" color={Colors.textSubtle}>
+              {t('history.holdHintOrders')}
+            </AppText>
+          ) : undefined
+        }
         contentContainerStyle={[styles.inner, styles.list]}
         refreshControl={<RefreshControl refreshing={result.isFetching && !result.isLoading && !result.isFetchingNextPage} onRefresh={() => void result.refetch()} />}
         ListEmptyComponent={
@@ -87,11 +96,13 @@ function Orders() {
         }}
         onEndReachedThreshold={0.5}
       />
+      {remove.dialog}
     </SafeAreaView>
   );
 }
 
-function OrderCard({ order }: { order: OrderListItem }) {
+/** Long press a finished order: delete it from my history */
+function OrderCard({ order, onDelete }: { order: OrderListItem; onDelete?: () => void }) {
   const { t, i18n } = useTranslation();
   const items = order.subOrders.flatMap((s) => s.items.filter((i) => !i.removed));
   const count = items.reduce((n, i) => n + i.qty, 0);
@@ -101,6 +112,8 @@ function OrderCard({ order }: { order: OrderListItem }) {
   return (
     <Pressable
       onPress={() => router.push({ pathname: '/order/[id]', params: { id: order._id } })}
+      onLongPress={onDelete}
+      delayLongPress={400}
       accessibilityRole="button"
       accessibilityLabel={t('order.number', { number: order.orderNumber })}
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}>

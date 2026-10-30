@@ -65,6 +65,15 @@ export const notificationsApi = api.injectEndpoints({
       transformResponse: unwrap,
       invalidatesTags: ['Notification'],
     }),
+    // The user's own notifications: really deleted (client, 2026-10-30)
+    deleteNotification: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/notifications/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Notification'],
+    }),
+    deleteAllNotifications: build.mutation<unknown, { mode: AppMode }>({
+      query: ({ mode }) => ({ url: '/notifications', method: 'DELETE', params: { mode } }),
+      invalidatesTags: ['Notification'],
+    }),
   }),
 });
 
@@ -73,4 +82,6 @@ export const {
   useGetUnreadCountQuery,
   useMarkNotificationReadMutation,
   useMarkAllNotificationsReadMutation,
+  useDeleteNotificationMutation,
+  useDeleteAllNotificationsMutation,
 } = notificationsApi;

@@ -24,6 +24,7 @@ import { toLatLng } from '@/features/orders/types';
 import { useCancelRideMutation, useGetRideQuery, useRateRideMutation, useRequestRideMutation, useShareRideMutation } from '@/features/ride/api';
 import { RIDE_TONE } from '@/features/ride/status';
 import { RUNNING_RIDE, type Ride } from '@/features/ride/types';
+import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
@@ -91,6 +92,7 @@ function RideBody({
   const [requestRide, requestState] = useRequestRideMutation();
   const [shareRide, shareState] = useShareRideMutation();
   const running = RUNNING_RIDE.includes(ride.status);
+  const remove = useDeleteFromHistory('ride', () => router.back());
   const canCancel = ['searching', 'accepted', 'arrived'].includes(ride.status);
   const from = toLatLng(ride.pickup.location)!;
   const to = toLatLng(ride.dropoff.location)!;
@@ -206,6 +208,7 @@ function RideBody({
             {t('ride.safety')}
           </AppText>
         )}
+        {!running && <Button title={t('history.deleteAction')} variant="ghost" icon="trash-2" onPress={() => remove.ask(ride._id)} />}
       </ScrollView>
 
       <View style={[styles.inner, styles.footer]}>
@@ -227,6 +230,7 @@ function RideBody({
         onConfirm={() => void onCancel()}
         onCancel={() => setConfirmCancel(false)}
       />
+      {remove.dialog}
     </>
   );
 }

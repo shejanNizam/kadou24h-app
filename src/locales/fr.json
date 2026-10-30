@@ -467,7 +467,14 @@
     "markAll": "Tout lire",
     "unread": "Non lue",
     "emptyTitle": "Aucune notification",
-    "emptyText": "Vos commandes, messages et offres apparaîtront ici."
+    "emptyText": "Vos commandes, messages et offres apparaîtront ici.",
+    "deleteAll": "Tout supprimer",
+    "deleteTitle": "Supprimer cette notification ?",
+    "deleteAllTitle": "Supprimer toutes les notifications ?",
+    "deleteAllText": "Elles ne pourront pas être récupérées.",
+    "deleted": "Notification supprimée",
+    "deletedAll": "Notifications supprimées",
+    "holdHint": "Appuyez longuement sur une notification pour la supprimer."
   },
   "worker": {
     "experience": "Expérience",
@@ -2549,5 +2556,15 @@
       "button": "Partager ma course",
       "message": "Je suis dans un moto-taxi Kadou24h. Suivez ma course en direct (chauffeur, plaque, position) : {{url}}"
     }
+  },
+  "history": {
+    "deleteAction": "Supprimer de mon historique",
+    "deleteTitle": "Supprimer de votre historique ?",
+    "deleteOrderText": "Cette commande disparaît seulement de votre historique : la boutique et Kadou24h la conservent pour les paiements et l’assistance.",
+    "deleteRideText": "Cette course disparaît seulement de votre historique : le chauffeur et Kadou24h la conservent.",
+    "delete": "Supprimer",
+    "deleted": "Supprimé de votre historique",
+    "holdHintOrders": "Appuyez longuement sur une commande terminée pour la supprimer de votre historique.",
+    "holdHintRides": "Appuyez longuement sur une course terminée pour la supprimer de votre historique."
   }
 }

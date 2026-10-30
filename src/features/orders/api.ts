@@ -93,6 +93,11 @@ export const ordersApi = api.injectEndpoints({
       query: ({ id, reason }) => ({ url: `/orders/${id}/cancel`, method: 'POST', body: { reason } }),
       invalidatesTags: ['Order', 'Product'],
     }),
+    /** "Delete from my history": hidden for me only, a finished order (client, 2026-10-30) */
+    hideOrder: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/orders/my-orders/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Order'],
+    }),
     /** One store's part only (while that store has not started preparing) */
     cancelStorePart: build.mutation<unknown, { id: string; subOrderId: string; reason: string }>({
       query: ({ id, subOrderId, reason }) => ({ url: `/orders/${id}/sub-orders/${subOrderId}/cancel`, method: 'POST', body: { reason } }),
@@ -134,6 +139,7 @@ export const {
   useGetMyOrdersInfiniteQuery,
   useGetOrderQuery,
   useCancelOrderMutation,
+  useHideOrderMutation,
   useCancelStorePartMutation,
   useCreateReviewMutation,
   useGetMyDisputesQuery,
