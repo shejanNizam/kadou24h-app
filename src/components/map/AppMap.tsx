@@ -2,7 +2,7 @@
  * Native map (react-native-maps). The web preview uses AppMap.web.tsx (Leaflet).
  * Android release builds need a Google Maps API key in app.json.
  */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, type Region } from 'react-native-maps';
 
@@ -23,15 +23,21 @@ export function AppMap({
 }: AppMapProps) {
   const ref = useRef<MapView>(null);
   const fitted = useRef(false);
+  // Android: moving the camera before the map is ready and has a size crashes the app
+  // natively ("Map size can't be 0"), out of reach of the JS error handler. Seen on a
+  // Samsung A16 opening a delivery (client, 2026-10-30): wait for both.
+  const [mapReady, setMapReady] = useState(false);
+  const [hasSize, setHasSize] = useState(false);
+  const ready = mapReady && hasSize;
 
   useEffect(() => {
-    if (!focus || typeof focus.lat !== 'number' || typeof focus.lng !== 'number' || isNaN(focus.lat) || isNaN(focus.lng)) return;
+    if (!ready || !focus || typeof focus.lat !== 'number' || typeof focus.lng !== 'number' || isNaN(focus.lat) || isNaN(focus.lng)) return;
     const delta = zoomToDelta(focus.zoom ?? 16);
     ref.current?.animateToRegion({ latitude: focus.lat, longitude: focus.lng, latitudeDelta: delta, longitudeDelta: delta });
-  }, [focus]);
+  }, [focus, ready]);
 
   useEffect(() => {
-    if (!fitToMarkers || fitted.current || markers.length < 2) return;
+    if (!ready || !fitToMarkers || fitted.current || markers.length < 2) return;
     const valid = markers.filter((m) => typeof m?.lat === 'number' && !isNaN(m.lat) && typeof m?.lng === 'number' && !isNaN(m.lng));
     if (valid.length < 2) return;
     fitted.current = true;
@@ -39,7 +45,7 @@ export function AppMap({
       valid.map((m) => ({ latitude: m.lat, longitude: m.lng })),
       { edgePadding: { top: 60, right: 60, bottom: 60, left: 60 }, animated: false },
     );
-  }, [fitToMarkers, markers]);
+  }, [fitToMarkers, markers, ready]);
 
   const delta = zoomToDelta(initialZoom);
   const centerLat = typeof initialCenter?.lat === 'number' && !isNaN(initialCenter.lat) ? initialCenter.lat : 9.537;
@@ -47,11 +53,15 @@ export function AppMap({
   const validMarkers = markers.filter((m) => typeof m?.lat === 'number' && !isNaN(m.lat) && typeof m?.lng === 'number' && !isNaN(m.lng));
 
   return (
-    <View style={[styles.box, style]} accessibilityLabel={accessibilityLabel}>
+    <View
+      style={[styles.box, style]}
+      accessibilityLabel={accessibilityLabel}
+      onLayout={(e) => setHasSize(e.nativeEvent.layout.width > 0 && e.nativeEvent.layout.height > 0)}>
       <MapView
         ref={ref}
         style={StyleSheet.absoluteFill}
         initialRegion={{ latitude: centerLat, longitude: centerLng, latitudeDelta: delta, longitudeDelta: delta }}
+        onMapReady={() => setMapReady(true)}
         onRegionChangeComplete={(r: Region) => onCenterChange?.({ lat: r.latitude, lng: r.longitude })}
         toolbarEnabled={false}>
         {validMarkers.map((m) => (
