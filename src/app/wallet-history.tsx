@@ -22,7 +22,15 @@ const DIRECTION: Partial<Record<TransactionType, 1 | -1>> = {
   withdrawal_fee: -1,
   refund_deduction: -1,
   earning_held_reversed: -1,
+  cod_offset: -1,
 };
+
+/**
+ * A rider's fee goes straight to available: for them it is money in, with its own
+ * name, not the vendor's "held → available" move (client, 2026-10-30).
+ */
+const label = (type: TransactionType, mode: string) => (mode === 'rider' && type === 'earning_released' ? 'delivery_fee' : type);
+const direction = (type: TransactionType, mode: string) => (mode === 'rider' && type === 'earning_released' ? 1 : DIRECTION[type]);
 
 /** Every movement of my wallet (the ledger), newest first. */
 export default function WalletHistoryScreen() {
@@ -39,7 +47,7 @@ export default function WalletHistoryScreen() {
       <FlatList
         data={rows}
         keyExtractor={(x) => x._id}
-        renderItem={({ item }) => <Row tx={item} />}
+        renderItem={({ item }) => <Row tx={item} mode={mode} />}
         contentContainerStyle={[styles.inner, styles.list]}
         refreshControl={<RefreshControl refreshing={result.isFetching && !result.isLoading && !result.isFetchingNextPage} onRefresh={() => void result.refetch()} />}
         ListEmptyComponent={
@@ -61,14 +69,14 @@ export default function WalletHistoryScreen() {
   );
 }
 
-function Row({ tx }: { tx: WalletTransaction }) {
+function Row({ tx, mode }: { tx: WalletTransaction; mode: string }) {
   const { t, i18n } = useTranslation();
-  const sign = DIRECTION[tx.type] ?? (tx.amount < 0 ? -1 : 0);
+  const sign = direction(tx.type, mode) ?? (tx.amount < 0 ? -1 : 0);
   const amount = Math.abs(tx.amount);
   return (
     <View style={styles.row}>
       <View style={styles.flex}>
-        <AppText variant="bodyMedium">{t(`walletHistory.type.${tx.type}`)}</AppText>
+        <AppText variant="bodyMedium">{t(`walletHistory.type.${label(tx.type, mode)}`)}</AppText>
         <AppText variant="caption" color={Colors.textMuted} numberOfLines={2}>
           {new Date(tx.createdAt).toLocaleString(i18n.language, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
           {tx.note ? ` · ${tx.note}` : ''}

@@ -6,9 +6,9 @@ import { AppText } from '@/components/ui/AppText';
 import { Colors, Fonts, Radius, Spacing } from '@/constants/theme';
 
 /**
- * Station relay: the code I show to the other driver, who types it on their
- * phone (APP_SPEC §8: at a station each side shows one code and types the
- * other's). Big digits, readable at arm's length.
+ * Station relay: the code I show to the next driver, who types it on their
+ * phone to take the parcel; that one code ends my leg (client, 2026-10-30).
+ * Big digits, readable at arm's length.
  */
 export function ShowCode({ code, title, hint }: { code: string; title: string; hint: string }) {
   const { t } = useTranslation();

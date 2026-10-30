@@ -176,8 +176,7 @@ export interface RiderDelivery {
 /** GET /deliveries/:id/track as the assigned rider */
 export interface RiderDeliveryDetails extends RiderDelivery {
   isRider: boolean;
-  /** Station relay (bus driver / relay legs): codes I show to the other rider */
-  incomingHandoverPin?: string;
+  /** Station relay: the code I show to the next driver, who types it to take the parcel */
   outgoingPickupPin?: string;
 }
 

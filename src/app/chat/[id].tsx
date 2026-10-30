@@ -201,7 +201,7 @@ export default function ChatScreen() {
                     {dayLabel(item.createdAt, i18n.language)}
                   </AppText>
                 )}
-                <MessageBubble message={item} mine={mine} onLongPress={!mine && item.type !== 'system' ? () => setReportFor(item) : undefined} />
+                <MessageBubble message={item} mine={mine} conversationType={c?.type} onLongPress={!mine && item.type !== 'system' ? () => setReportFor(item) : undefined} />
               </View>
             );
           }}

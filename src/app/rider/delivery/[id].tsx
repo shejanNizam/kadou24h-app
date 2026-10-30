@@ -97,6 +97,8 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
   const giver = pickupFrom(d);
   const receiver = handoverTo(d);
   const toCustomer = receiver === 'customer';
+  // At a station I only show my code: the next driver typing it ends my leg (client, 2026-10-30)
+  const relayOut = step === 'handoverCode' && !toCustomer;
   const fromStore = giver === 'store';
   const customerName = address?.fullName ?? d.toName;
   const lockedMin = useLockMinutes(d.pinLockedUntil);
@@ -155,11 +157,8 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
         {d.status === 'delivered' && <Banner tone="success" message={t('rider.deliveredBanner', { amount: formatGNF(d.fee) })} />}
         {lockedMin > 0 && step !== 'done' && <Banner tone="warning" message={t('rider.pinLocked', { count: lockedMin })} />}
 
-        {/* Bus station relay: each side shows one code and types the other's */}
-        {(step === 'leave' || step === 'pickupCode') && giver !== 'store' && d.incomingHandoverPin && (
-          <ShowCode code={d.incomingHandoverPin} title={t('relay.showTitle')} hint={t(`relay.showIncoming.${giver}`, { station: d.fromName })} />
-        )}
-        {step === 'handoverCode' && receiver !== 'customer' && d.outgoingPickupPin && (
+        {/* Bus station relay: one code, shown by the driver handing over, typed by the one taking it */}
+        {relayOut && d.outgoingPickupPin && (
           <ShowCode code={d.outgoingPickupPin} title={t('relay.showTitle')} hint={t(`relay.showOutgoing.${receiver}`, { station: d.toName })} />
         )}
 
@@ -275,7 +274,15 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
           {step === 'pickupCode' && (
             <Button title={t('rider.step.pickupCode')} icon="lock" style={styles.flex} disabled={lockedMin > 0} onPress={() => setPin('pickup')} />
           )}
-          {step === 'handoverCode' && (
+          {relayOut && (
+            <View style={[styles.row, styles.flex]}>
+              <Feather name="clock" size={16} color={Colors.textMuted} />
+              <AppText variant="small" color={Colors.textMuted} style={styles.flex}>
+                {t(`relay.waitNext.${receiver}`)}
+              </AppText>
+            </View>
+          )}
+          {step === 'handoverCode' && !relayOut && (
             <Button
               title={cash > 0 ? t('rider.step.handoverCash', { amount: formatGNF(cash) }) : t('rider.step.handoverCode')}
               icon="unlock"
@@ -296,7 +303,7 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
       <PinSheet
         deliveryId={d._id}
         kind={pin ?? 'pickup'}
-        hint={pin === 'handover' ? t(`relay.askHandover.${receiver}`, { name: customerName }) : t(`relay.askPickup.${giver}`, { name: d.fromName })}
+        hint={pin === 'handover' ? t('relay.askHandover', { name: customerName }) : t(`relay.askPickup.${giver}`, { name: d.fromName })}
         cash={pin === 'handover' && cash > 0 ? cash : undefined}
         visible={pin !== null}
         onClose={() => setPin(null)}

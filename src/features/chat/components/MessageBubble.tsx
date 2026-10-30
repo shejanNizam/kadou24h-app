@@ -9,12 +9,31 @@ import { AppText } from '@/components/ui/AppText';
 import { Colors, Radius, Spacing } from '@/constants/theme';
 
 import { clock } from '../time';
-import type { Message } from '../types';
+import type { ConversationType, Message } from '../types';
 import { playableAudio } from '@/lib/audio';
 import { img } from '@/lib/image';
 
+/**
+ * The safety notice at the start of a chat. Workers are paid outside the app, so
+ * "always pay via Kadou24h" would contradict the booking notices (client, 2026-10-30).
+ */
+const SAFETY_NOTICE: Partial<Record<ConversationType, string>> = {
+  worker: 'chat.safetyNoticeWorker',
+  job_application: 'chat.safetyNoticeJob',
+};
+
 /** One message. Mine on the right (purple), theirs on the left, system notices centred. */
-export function MessageBubble({ message, mine, onLongPress }: { message: Message; mine: boolean; onLongPress?: () => void }) {
+export function MessageBubble({
+  message,
+  mine,
+  conversationType,
+  onLongPress,
+}: {
+  message: Message;
+  mine: boolean;
+  conversationType?: ConversationType;
+  onLongPress?: () => void;
+}) {
   const { t, i18n } = useTranslation();
   const [viewer, setViewer] = useState(false);
 
@@ -23,7 +42,7 @@ export function MessageBubble({ message, mine, onLongPress }: { message: Message
       <View style={styles.system}>
         <Feather name="shield" size={14} color={Colors.info} />
         <AppText variant="caption" color={Colors.textMuted} style={styles.flexShrink}>
-          {t('chat.safetyNotice')}
+          {t((conversationType && SAFETY_NOTICE[conversationType]) ?? 'chat.safetyNotice')}
         </AppText>
       </View>
     );

@@ -163,7 +163,7 @@
     "deliveryChanged": "Cette livraison a changé. Actualisez.",
     "codTooMuch": "Plus que ce que vous devez encore ({{amount}}).",
     "offsetTooMuch": "Vos gains disponibles ne suffisent pas.",
-    "withdrawCashOwed": "Reversez d’abord le cash encaissé : il est retenu sur vos retraits.",
+    "withdrawCashOwed": "Reversez d’abord le cash encaissé pour Kadou24h : vos gains seront alors débloqués.",
     "riderOffline": "Ce livreur est hors ligne.",
     "onlyMotoJoin": "Seuls les livreurs moto peuvent rejoindre une boutique.",
     "alreadyApplied": "Vous avez déjà postulé à cette offre.",
@@ -987,6 +987,8 @@
     "photo": "Photo",
     "safetyShort": "Conversation ouverte",
     "safetyNotice": "Pour votre sécurité, payez toujours via Kadou24h. Ne partagez jamais votre numéro, vos coordonnées bancaires ou vos réseaux sociaux, même par message vocal. Protégeons-nous : en cas de non-respect, le compte peut être suspendu.",
+    "safetyNoticeWorker": "Pour votre sécurité, Kadou24h vous met en relation mais ne garantit pas les paiements faits en dehors de l’application. Mettez-vous d’accord sur le prix et le paiement avant de commencer, vérifiez le travail avant de payer, et ne partagez jamais vos coordonnées bancaires.",
+    "safetyNoticeJob": "Pour votre sécurité, ne payez jamais un employeur ou un recruteur pour obtenir un emploi, et ne partagez jamais vos coordonnées bancaires.",
     "maskedNotice": "Coordonnées masquées par Kadou24h",
     "typing": "écrit…",
     "viewStore": "Voir la boutique",
@@ -1505,7 +1507,7 @@
     "withdrawals": "Mes retraits",
     "payoutMethods": "Moyens de paiement",
     "history": "Historique du portefeuille",
-    "riderCashKept": "{{amount}} de cash à reverser sont retenus sur vos retraits."
+    "riderCashKept": "Vous avez encaissé {{amount}} pour Kadou24h. Reversez-les pour débloquer vos gains."
   },
   "withdraw": {
     "amount": "Montant à retirer",
@@ -1545,14 +1547,15 @@
       "earning_held": "Vente (en attente)",
       "earning_held_reversed": "Vente annulée ou modifiée",
       "earning_released": "Argent disponible",
+      "delivery_fee": "Gain de livraison",
       "commission": "Commission",
       "withdrawal": "Retrait",
       "withdrawal_fee": "Frais de retrait",
       "withdrawal_reversal": "Retrait refusé (remboursé)",
       "refund_deduction": "Remboursement client",
-      "cod_collected": "Espèces encaissées",
-      "cod_settled": "Espèces déposées",
-      "cod_offset": "Compensation espèces",
+      "cod_collected": "Cash à reverser à Kadou24h",
+      "cod_settled": "Cash reversé à Kadou24h",
+      "cod_offset": "Cash retenu sur vos gains",
       "adjustment": "Ajustement"
     }
   },
@@ -1699,7 +1702,7 @@
     "declare": "Déclarer un versement",
     "howTo": "L’argent des commandes payées à la livraison appartient aux boutiques. Envoyez-le à Kadou24h (Orange Money, MoMo ou au bureau), puis déclarez-le ici avec la référence.",
     "nothingOwed": "Vous ne devez rien. Le cash des prochaines commandes payées à la livraison apparaîtra ici.",
-    "withdrawBlocked": "Tant que du cash est dû, il est retenu sur vos retraits.",
+    "withdrawBlocked": "Vos gains pourront être retirés une fois ce cash reversé.",
     "history": "Mes versements",
     "emptyTitle": "Aucun versement",
     "emptyText": "Vos versements déclarés apparaîtront ici.",
@@ -1844,24 +1847,20 @@
   "relay": {
     "showTitle": "Votre code à montrer",
     "inPerson": "Montrez l’écran, ne dictez pas le code au téléphone.",
-    "showIncoming": {
-      "busDriver": "Montrez ce code au chauffeur de bus à {{station}} : il le saisit en vous remettant le colis.",
-      "motoRider": "Montrez ce code au livreur moto qui apporte le colis à {{station}} : il le saisit en vous le remettant."
-    },
     "showOutgoing": {
-      "busDriver": "Montrez ce code au chauffeur de bus à {{station}} : il le saisit en prenant le colis.",
-      "motoRider": "Montrez ce code au livreur moto qui prend le colis à {{station}} : il le saisit en le récupérant."
+      "busDriver": "Montrez ce code au chauffeur de bus à {{station}}. Dès qu’il le saisit, votre étape est terminée et vous êtes payé.",
+      "motoRider": "Montrez ce code au livreur moto qui prend le colis à {{station}}. Dès qu’il le saisit, votre étape est terminée et vous êtes payé."
+    },
+    "waitNext": {
+      "busDriver": "En attente : le chauffeur de bus doit saisir votre code.",
+      "motoRider": "En attente : le livreur moto doit saisir votre code."
     },
     "askPickup": {
       "store": "Demandez le code à 4 chiffres à la boutique {{name}} et saisissez-le.",
       "busDriver": "Demandez son code au chauffeur de bus qui vous remet le colis, puis saisissez-le.",
       "motoRider": "Demandez son code au livreur moto qui vous remet le colis, puis saisissez-le."
     },
-    "askHandover": {
-      "customer": "Une fois le colis remis, demandez son code à {{name}} et saisissez-le.",
-      "busDriver": "Remettez le colis au chauffeur de bus, demandez-lui son code et saisissez-le.",
-      "motoRider": "Remettez le colis au livreur moto, demandez-lui son code et saisissez-le."
-    },
+    "askHandover": "Une fois le colis remis, demandez son code à {{name}} et saisissez-le.",
     "atStation": "Le client vient le chercher à {{station}}"
   },
   "tags": {

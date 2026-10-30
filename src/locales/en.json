@@ -163,7 +163,7 @@
     "deliveryChanged": "This delivery changed. Refresh.",
     "codTooMuch": "More than you still owe ({{amount}}).",
     "offsetTooMuch": "Your available earnings are not enough.",
-    "withdrawCashOwed": "Hand over the cash you collected first: it is kept back from withdrawals.",
+    "withdrawCashOwed": "Hand over the cash you collected for Kadou24h first: your earnings unlock once it’s done.",
     "riderOffline": "This rider is offline.",
     "onlyMotoJoin": "Only moto riders can join a store.",
     "alreadyApplied": "You already applied to this offer.",
@@ -987,6 +987,8 @@
     "photo": "Photo",
     "safetyShort": "Conversation started",
     "safetyNotice": "For your safety, always pay through Kadou24h. Never share your number, your bank details or your social accounts, even by voice message. Let’s protect each other: if this rule isn’t respected, the account may be suspended.",
+    "safetyNoticeWorker": "For your safety, Kadou24h connects you but does not guarantee payments made outside the app. Agree on the price and payment before starting, check the work before paying, and never share your bank details.",
+    "safetyNoticeJob": "For your safety, never pay an employer or a recruiter to get a job, and never share your bank details.",
     "maskedNotice": "Contact details hidden by Kadou24h",
     "typing": "typing…",
     "viewStore": "View the store",
@@ -1505,7 +1507,7 @@
     "withdrawals": "My withdrawals",
     "payoutMethods": "Payout methods",
     "history": "Wallet history",
-    "riderCashKept": "{{amount}} of cash to hand over is kept back from your withdrawals."
+    "riderCashKept": "You collected {{amount}} in cash for Kadou24h. Hand it over to unlock your earnings."
   },
   "withdraw": {
     "amount": "Amount to withdraw",
@@ -1545,14 +1547,15 @@
       "earning_held": "Sale (pending)",
       "earning_held_reversed": "Sale cancelled or changed",
       "earning_released": "Money available",
+      "delivery_fee": "Delivery earning",
       "commission": "Commission",
       "withdrawal": "Withdrawal",
       "withdrawal_fee": "Withdrawal fee",
       "withdrawal_reversal": "Withdrawal rejected (refunded)",
       "refund_deduction": "Customer refund",
-      "cod_collected": "Cash collected",
-      "cod_settled": "Cash handed over",
-      "cod_offset": "Cash offset",
+      "cod_collected": "Cash to hand over to Kadou24h",
+      "cod_settled": "Cash handed over to Kadou24h",
+      "cod_offset": "Cash taken from your earnings",
       "adjustment": "Adjustment"
     }
   },
@@ -1699,7 +1702,7 @@
     "declare": "Declare a hand-over",
     "howTo": "Cash from cash-on-delivery orders belongs to the stores. Send it to Kadou24h (Orange Money, MoMo or at the office), then declare it here with the reference.",
     "nothingOwed": "You owe nothing. Cash from your next cash-on-delivery orders will show here.",
-    "withdrawBlocked": "While cash is owed, it is kept back from your withdrawals.",
+    "withdrawBlocked": "Your earnings can be withdrawn once this cash is handed over.",
     "history": "My hand-overs",
     "emptyTitle": "No hand-overs",
     "emptyText": "The hand-overs you declare will show here.",
@@ -1844,24 +1847,20 @@
   "relay": {
     "showTitle": "Your code to show",
     "inPerson": "Show the screen; never read the code out on the phone.",
-    "showIncoming": {
-      "busDriver": "Show this code to the bus driver at {{station}}: they type it when handing you the parcel.",
-      "motoRider": "Show this code to the moto rider bringing the parcel to {{station}}: they type it when handing it over."
-    },
     "showOutgoing": {
-      "busDriver": "Show this code to the bus driver at {{station}}: they type it when taking the parcel.",
-      "motoRider": "Show this code to the moto rider taking the parcel at {{station}}: they type it when picking it up."
+      "busDriver": "Show this code to the bus driver at {{station}}. When they type it, your leg is done and you’re paid.",
+      "motoRider": "Show this code to the moto rider taking the parcel at {{station}}. When they type it, your leg is done and you’re paid."
+    },
+    "waitNext": {
+      "busDriver": "Waiting for the bus driver to type your code.",
+      "motoRider": "Waiting for the moto rider to type your code."
     },
     "askPickup": {
       "store": "Ask the store {{name}} for the 4-digit code and type it.",
       "busDriver": "Ask the bus driver handing you the parcel for their code, then type it.",
       "motoRider": "Ask the moto rider handing you the parcel for their code, then type it."
     },
-    "askHandover": {
-      "customer": "Once the parcel is handed over, ask {{name}} for their code and type it.",
-      "busDriver": "Hand the parcel to the bus driver, ask for their code and type it.",
-      "motoRider": "Hand the parcel to the moto rider, ask for their code and type it."
-    },
+    "askHandover": "Once the parcel is handed over, ask {{name}} for their code and type it.",
     "atStation": "The customer collects it at {{station}}"
   },
   "tags": {
