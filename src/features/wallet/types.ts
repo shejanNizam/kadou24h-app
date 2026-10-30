@@ -101,6 +101,7 @@ export interface WalletTransaction {
   amount: number;
   balanceAfter: number;
   subOrderId?: string;
+  subOrderNumber?: string;
   note?: string;
   createdAt: string;
 }

@@ -82,7 +82,7 @@ export function PinSheet({
 }: {
   deliveryId: string;
   kind: 'pickup' | 'handover';
-  /** Who to ask for the code (store, customer, bus driver, moto rider) */
+  /** Who to ask for the code (store, customer, car driver, moto rider) */
   hint: string;
   /** COD: cash to take from the customer before typing their code */
   cash?: number;

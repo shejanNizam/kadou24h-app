@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useGetTransactionsInfiniteQuery } from '@/features/wallet/api';
+import { describeTransaction } from '@/features/wallet/describe';
 import type { TransactionType, WalletTransaction } from '@/features/wallet/types';
 import { useWalletMode } from '@/features/wallet/useWalletMode';
 import { formatGNF } from '@/lib/format';
@@ -73,13 +74,14 @@ function Row({ tx, mode }: { tx: WalletTransaction; mode: string }) {
   const { t, i18n } = useTranslation();
   const sign = direction(tx.type, mode) ?? (tx.amount < 0 ? -1 : 0);
   const amount = Math.abs(tx.amount);
+  const note = describeTransaction(tx, t);
   return (
     <View style={styles.row}>
       <View style={styles.flex}>
         <AppText variant="bodyMedium">{t(`walletHistory.type.${label(tx.type, mode)}`)}</AppText>
         <AppText variant="caption" color={Colors.textMuted} numberOfLines={2}>
           {new Date(tx.createdAt).toLocaleString(i18n.language, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-          {tx.note ? ` · ${tx.note}` : ''}
+          {note ? ` · ${note}` : ''}
         </AppText>
       </View>
       <AppText variant="title" color={sign > 0 ? Colors.success : sign < 0 ? Colors.danger : Colors.text}>

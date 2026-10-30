@@ -700,7 +700,7 @@
     },
     "typeHint": {
       "local": "Un livreur moto vous apporte la commande.",
-      "intercity": "Moto → bus → moto jusqu’à votre porte.",
+      "intercity": "Moto → véhicule → moto jusqu’à votre porte.",
       "station_pickup": "Vous récupérez le colis à la gare choisie."
     },
     "destinationStation": "Gare d'arrivée",
@@ -709,8 +709,8 @@
     "noStations": "Aucune gare disponible pour le moment.",
     "eta_one": "environ {{count}} h",
     "eta_other": "environ {{count}} h",
-    "legsIntercity": "3 étapes : moto → bus → moto. Suivi de chaque étape dans la commande.",
-    "legsPickup": "2 étapes : moto → bus. Nous vous prévenons à l’arrivée en gare.",
+    "legsIntercity": "3 étapes : moto → véhicule → moto. Suivi de chaque étape dans la commande.",
+    "legsPickup": "2 étapes : moto → véhicule. Nous vous prévenons à l’arrivée en gare.",
     "instructions": "Instructions spéciales",
     "instructionsHint": "Ex. : appeler en arrivant, sonner au portail",
     "payment": "Paiement",
@@ -830,12 +830,12 @@
     "rider": "Livreur",
     "partner": {
       "moto": "Livreur moto",
-      "transit": "Chauffeur de bus"
+      "transit": "Chauffeur"
     },
     "leg": {
       "local": "Moto",
       "first_mile": "Moto",
-      "line_haul": "Bus",
+      "line_haul": "Véhicule",
       "last_mile": "Moto"
     },
     "storeTotal": "Total boutique (livraison incluse)",
@@ -1049,7 +1049,7 @@
     "becomeVendor": "Devenir vendeur",
     "becomeVendorHint": "Ouvrez votre boutique et vendez sur Kadou24h",
     "becomeRider": "Devenir livreur",
-    "becomeRiderHint": "Livrez à moto ou en bus et gagnez de l’argent",
+    "becomeRiderHint": "Livrez à moto ou comme chauffeur et gagnez de l’argent",
     "vendorApplication": "Demande vendeur",
     "riderApplication": "Demande livreur",
     "status": {
@@ -1367,9 +1367,9 @@
     "refused": "Commande refusée",
     "cancelled": "Commande annulée",
     "assignRider": "Choisir un livreur",
-    "assignBus": "Choisir un chauffeur de bus",
+    "assignCar": "Choisir un chauffeur",
     "assignTitle": "Choisir un livreur",
-    "assignHint": "Envoyez-la à un livreur : il a 10 minutes pour accepter, sinon elle repart aux livreurs proches. Bus : les chauffeurs de cette ligne d’abord. Depuis votre boutique : vos partenaires d’abord, puis les plus proches.",
+    "assignHint": "Envoyez-la à un livreur : il a 10 minutes pour accepter, sinon elle repart aux livreurs proches. Entre gares : les chauffeurs de cette ligne d’abord. Depuis votre boutique : vos partenaires d’abord, puis les plus proches.",
     "assignTo": "Confier à {{name}}",
     "riderAssigned": "Demande envoyée à {{name}}",
     "noRiders": "Aucun livreur en ligne",
@@ -1557,6 +1557,23 @@
       "cod_settled": "Cash reversé à Kadou24h",
       "cod_offset": "Cash retenu sur vos gains",
       "adjustment": "Ajustement"
+    },
+    "note": {
+      "saleHeld": "Vente {{order}} : en attente de livraison",
+      "saleReleased": "Commande {{order}} versée sur votre solde",
+      "commission": "Commission Kadou24h sur {{order}}",
+      "saleCancelled": "Commande {{order}} annulée",
+      "saleChanged": "Commande {{order}} modifiée",
+      "checkoutFailed": "Paiement échoué : vente annulée",
+      "refund": "Remboursement client pour {{order}} : {{reason}}",
+      "deliveryFee": "Livraison {{order}}, étape {{leg}}",
+      "deliveryFeeNoOrder": "Livraison, étape {{leg}}",
+      "cashCollected": "Cash encaissé pour la commande {{order}}",
+      "cashOffset": "Cash dû retenu sur vos gains",
+      "cashSettled": "Versement confirmé ({{method}})",
+      "withdrawal": "Retrait {{ref}}",
+      "withdrawalFee": "Frais du retrait {{ref}}",
+      "withdrawalRejected": "Retrait {{ref}} refusé : {{reason}}"
     }
   },
   "refund": {
@@ -1619,7 +1636,7 @@
     "me": "Moi",
     "leg": {
       "first_mile": "Vers la gare routière",
-      "line_haul": "Trajet en bus",
+      "line_haul": "Trajet entre gares",
       "last_mile": "Depuis la gare routière"
     },
     "stepA11y": "Étape {{current}} sur {{total}}",
@@ -1782,7 +1799,7 @@
     "typeHint": "Comment livrez-vous ?",
     "partner": {
       "moto": "Livreur moto",
-      "transit": "Chauffeur de bus"
+      "transit": "Chauffeur"
     },
     "partnerHint": {
       "moto": "Livraisons dans la ville : boutique → client, ou vers la gare routière.",
@@ -1848,16 +1865,16 @@
     "showTitle": "Votre code à montrer",
     "inPerson": "Montrez l’écran, ne dictez pas le code au téléphone.",
     "showOutgoing": {
-      "busDriver": "Montrez ce code au chauffeur de bus à {{station}}. Dès qu’il le saisit, votre étape est terminée et vous êtes payé.",
+      "carDriver": "Montrez ce code au chauffeur à {{station}}. Dès qu’il le saisit, votre étape est terminée et vous êtes payé.",
       "motoRider": "Montrez ce code au livreur moto qui prend le colis à {{station}}. Dès qu’il le saisit, votre étape est terminée et vous êtes payé."
     },
     "waitNext": {
-      "busDriver": "En attente : le chauffeur de bus doit saisir votre code.",
+      "carDriver": "En attente : le chauffeur doit saisir votre code.",
       "motoRider": "En attente : le livreur moto doit saisir votre code."
     },
     "askPickup": {
       "store": "Demandez le code à 4 chiffres à la boutique {{name}} et saisissez-le.",
-      "busDriver": "Demandez son code au chauffeur de bus qui vous remet le colis, puis saisissez-le.",
+      "carDriver": "Demandez son code au chauffeur qui vous remet le colis, puis saisissez-le.",
       "motoRider": "Demandez son code au livreur moto qui vous remet le colis, puis saisissez-le."
     },
     "askHandover": "Une fois le colis remis, demandez son code à {{name}} et saisissez-le.",

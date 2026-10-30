@@ -334,7 +334,7 @@ function LegRow({
       ) : null}
       {canAssign && (
         <Button
-          title={leg.legType === 'line_haul' ? t('vendorOrders.assignBus') : t('vendorOrders.assignRider')}
+          title={leg.legType === 'line_haul' ? t('vendorOrders.assignCar') : t('vendorOrders.assignRider')}
           icon="user-plus"
           size="sm"
           variant={leg.status === 'declined' || leg.noRiderAlertedAt ? 'primary' : 'soft'}

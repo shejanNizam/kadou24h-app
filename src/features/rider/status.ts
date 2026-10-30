@@ -43,16 +43,16 @@ export function riderStep(status: DeliveryStatus): RiderStep {
 }
 
 /** Who stands on the other side of a handover */
-export type Party = 'store' | 'customer' | 'busDriver' | 'motoRider';
+export type Party = 'store' | 'customer' | 'carDriver' | 'motoRider';
 
 type LegLike = Pick<RiderDelivery, 'fromKind' | 'toKind' | 'legType' | 'orderId'>;
 
 /**
  * Who gives me the parcel: the store, or at a bus station the driver of the
- * previous leg (the moto rider for the bus, the bus driver for the last mile).
+ * previous leg (the moto rider for the car leg, the car driver for the last mile).
  */
 export const pickupFrom = (d: LegLike): Party =>
-  d.fromKind === 'vendor' ? 'store' : d.legType === 'line_haul' ? 'motoRider' : 'busDriver';
+  d.fromKind === 'vendor' ? 'store' : d.legType === 'line_haul' ? 'motoRider' : 'carDriver';
 
 /**
  * Who I give it to: the customer (at the door, or at the destination station
@@ -62,7 +62,7 @@ export const handoverTo = (d: LegLike): Party =>
   d.toKind === 'customer' || (d.legType === 'line_haul' && d.orderId?.deliveryType === 'station_pickup')
     ? 'customer'
     : d.legType === 'first_mile'
-      ? 'busDriver'
+      ? 'carDriver'
       : 'motoRider';
 
 /** Before pickup the rider heads to the giver; after, to the receiver */

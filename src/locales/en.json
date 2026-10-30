@@ -700,7 +700,7 @@
     },
     "typeHint": {
       "local": "A moto rider brings your order.",
-      "intercity": "Moto → bus → moto, right to your door.",
+      "intercity": "Moto → car → moto, right to your door.",
       "station_pickup": "You collect the parcel at the chosen station."
     },
     "destinationStation": "Destination station",
@@ -709,8 +709,8 @@
     "noStations": "No station available right now.",
     "eta_one": "about {{count}} h",
     "eta_other": "about {{count}} h",
-    "legsIntercity": "3 legs: moto → bus → moto. Each leg is tracked in the order.",
-    "legsPickup": "2 legs: moto → bus. We'll let you know when it reaches the station.",
+    "legsIntercity": "3 legs: moto → car → moto. Each leg is tracked in the order.",
+    "legsPickup": "2 legs: moto → car. We'll let you know when it reaches the station.",
     "instructions": "Special instructions",
     "instructionsHint": "e.g. call when you arrive, ring at the gate",
     "payment": "Payment",
@@ -830,12 +830,12 @@
     "rider": "Rider",
     "partner": {
       "moto": "Moto rider",
-      "transit": "Bus driver"
+      "transit": "Car driver"
     },
     "leg": {
       "local": "Moto",
       "first_mile": "Moto",
-      "line_haul": "Bus",
+      "line_haul": "Car",
       "last_mile": "Moto"
     },
     "storeTotal": "Store total (delivery included)",
@@ -1049,7 +1049,7 @@
     "becomeVendor": "Become a vendor",
     "becomeVendorHint": "Open your store and sell on Kadou24h",
     "becomeRider": "Become a rider",
-    "becomeRiderHint": "Deliver by moto or bus and earn money",
+    "becomeRiderHint": "Deliver by moto or as a car driver and earn money",
     "vendorApplication": "Vendor application",
     "riderApplication": "Rider application",
     "status": {
@@ -1367,9 +1367,9 @@
     "refused": "Order refused",
     "cancelled": "Order cancelled",
     "assignRider": "Choose a rider",
-    "assignBus": "Choose a bus driver",
+    "assignCar": "Choose a car driver",
     "assignTitle": "Choose a rider",
-    "assignHint": "Send it to one rider: they have 10 minutes to accept, then it goes back to the nearby riders. Bus: drivers of this route first. From your store: your partners first, then the nearest.",
+    "assignHint": "Send it to one rider: they have 10 minutes to accept, then it goes back to the nearby riders. Between stations: drivers of this route first. From your store: your partners first, then the nearest.",
     "assignTo": "Give to {{name}}",
     "riderAssigned": "Request sent to {{name}}",
     "noRiders": "No rider online",
@@ -1557,6 +1557,23 @@
       "cod_settled": "Cash handed over to Kadou24h",
       "cod_offset": "Cash taken from your earnings",
       "adjustment": "Adjustment"
+    },
+    "note": {
+      "saleHeld": "Sale {{order}}: waiting for delivery",
+      "saleReleased": "Order {{order}} paid to your balance",
+      "commission": "Kadou24h commission on {{order}}",
+      "saleCancelled": "Order {{order}} cancelled",
+      "saleChanged": "Order {{order}} changed",
+      "checkoutFailed": "Payment failed: sale cancelled",
+      "refund": "Customer refund for {{order}}: {{reason}}",
+      "deliveryFee": "Delivery {{order}}, leg {{leg}}",
+      "deliveryFeeNoOrder": "Delivery, leg {{leg}}",
+      "cashCollected": "Cash collected for order {{order}}",
+      "cashOffset": "Cash owed taken from your earnings",
+      "cashSettled": "Hand-over confirmed ({{method}})",
+      "withdrawal": "Withdrawal {{ref}}",
+      "withdrawalFee": "Fee for withdrawal {{ref}}",
+      "withdrawalRejected": "Withdrawal {{ref}} rejected: {{reason}}"
     }
   },
   "refund": {
@@ -1619,7 +1636,7 @@
     "me": "Me",
     "leg": {
       "first_mile": "To the bus station",
-      "line_haul": "Bus trip",
+      "line_haul": "Car trip",
       "last_mile": "From the bus station"
     },
     "stepA11y": "Step {{current}} of {{total}}",
@@ -1782,7 +1799,7 @@
     "typeHint": "How do you deliver?",
     "partner": {
       "moto": "Moto rider",
-      "transit": "Bus driver"
+      "transit": "Car driver"
     },
     "partnerHint": {
       "moto": "Deliveries in town: store → customer, or to the bus station.",
@@ -1848,16 +1865,16 @@
     "showTitle": "Your code to show",
     "inPerson": "Show the screen; never read the code out on the phone.",
     "showOutgoing": {
-      "busDriver": "Show this code to the bus driver at {{station}}. When they type it, your leg is done and you’re paid.",
+      "carDriver": "Show this code to the car driver at {{station}}. When they type it, your leg is done and you’re paid.",
       "motoRider": "Show this code to the moto rider taking the parcel at {{station}}. When they type it, your leg is done and you’re paid."
     },
     "waitNext": {
-      "busDriver": "Waiting for the bus driver to type your code.",
+      "carDriver": "Waiting for the car driver to type your code.",
       "motoRider": "Waiting for the moto rider to type your code."
     },
     "askPickup": {
       "store": "Ask the store {{name}} for the 4-digit code and type it.",
-      "busDriver": "Ask the bus driver handing you the parcel for their code, then type it.",
+      "carDriver": "Ask the car driver handing you the parcel for their code, then type it.",
       "motoRider": "Ask the moto rider handing you the parcel for their code, then type it."
     },
     "askHandover": "Once the parcel is handed over, ask {{name}} for their code and type it.",
