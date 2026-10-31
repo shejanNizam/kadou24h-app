@@ -2,7 +2,7 @@
   "expo": {
     "name": "Kadou24h",
     "slug": "kadou24h-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "runtimeVersion": {
       "policy": "appVersion"
     },
@@ -107,6 +107,13 @@
         "expo-notifications",
         {
           "color": "#8B5CF6"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "nizam-dd",
+          "project": "kadou24h-app"
         }
       ]
     ],

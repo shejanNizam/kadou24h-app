@@ -1,5 +1,4 @@
 import Feather from '@expo/vector-icons/Feather';
-import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -22,6 +21,7 @@ import { AppMode } from '@/types/api';
 
 import { MenuRow, MenuSection } from './Menu';
 import { ModeCard } from './ModeCard';
+import { VersionLine } from './SentryTest';
 import { img } from '@/lib/image';
 
 /** Profile tab of every mode: account, mode card, mode extras, settings, help, sign out. */
@@ -144,9 +144,7 @@ export function ProfileScreen({ mode }: { mode: AppMode }) {
 
         {user && <Button title={t('common.signOut')} variant="outline" icon="log-out" onPress={() => setConfirmSignOut(true)} />}
 
-        <AppText variant="caption" color={Colors.textSubtle} align="center">
-          Kadou24h · v{Constants.expoConfig?.version ?? '1.0.0'}
-        </AppText>
+        <VersionLine />
       </View>
 
       <ConfirmDialog

@@ -22,8 +22,10 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { Colors } from '@/constants/theme';
 import { bootstrap } from '@/lib/bootstrap';
 import { installCrashReporter, setCrashScreen } from '@/lib/crashReport';
+import { Sentry } from '@/lib/sentry';
 import i18n from '@/lib/i18n';
 import { store } from '@/store';
+import { useAppSelector } from '@/store/hooks';
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -35,7 +37,7 @@ installCrashReporter(() => store.getState().auth.accessToken);
 // A screen that throws shows "Something went wrong · Try again" instead of closing the app
 export { CrashScreen as ErrorBoundary } from '@/components/ui/CrashScreen';
 
-export default function RootLayout() {
+function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
     DMSans_400Regular,
     DMSans_500Medium,
@@ -92,11 +94,20 @@ export default function RootLayout() {
   );
 }
 
-/** Route pattern (e.g. "ride/[id]"), never ids: attached to crash reports */
+export default Sentry.wrap(RootLayout);
+
+/** Route pattern (e.g. "ride/[id]"), never ids, and the account id: attached to crash reports */
 function CrashScreenTracker() {
   const segments = useSegments();
+  const userId = useAppSelector((s) => s.auth.user?._id);
   useEffect(() => {
-    setCrashScreen('/' + segments.join('/'));
+    const screen = '/' + segments.join('/');
+    setCrashScreen(screen);
+    Sentry.setTag('screen', screen);
+    Sentry.addBreadcrumb({ category: 'navigation', message: screen });
   }, [segments]);
+  useEffect(() => {
+    Sentry.setUser(userId ? { id: userId } : null);
+  }, [userId]);
   return null;
 }

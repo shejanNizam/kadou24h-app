@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Colors } from '@/constants/theme';
 import { reportError } from '@/lib/crashReport';
+import { Sentry } from '@/lib/sentry';
 
 import { EmptyState } from './EmptyState';
 
@@ -18,6 +19,7 @@ export function CrashScreen({ error, retry }: ErrorBoundaryProps) {
   useEffect(() => {
     console.error('Screen crashed', error);
     void reportError(error, false);
+    Sentry.captureException(error);
   }, [error]);
   return (
     <View style={styles.container}>

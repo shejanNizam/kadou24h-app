@@ -32,6 +32,8 @@ export function usePhotoUpload(title: string) {
   const from = async (source: 'camera' | 'library') => {
     setOpen(false);
     try {
+      // This sheet can sit inside another (cash declaration): let it close before the camera opens
+      await new Promise((resolve) => setTimeout(resolve, 350));
       const uri = await pickImage(source);
       if (!uri) return finish(null);
       setUploading(true);

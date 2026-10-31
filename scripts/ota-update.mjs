@@ -7,6 +7,9 @@
  * The API URL comes from that profile in eas.json, never from .env, so an update can
  * never point phones at localhost or a LAN IP. Only for JS changes: a new native module
  * or an app.json change needs a new build (and a new "version", see runtimeVersion).
+ *
+ * With SENTRY_AUTH_TOKEN set (in the shell or .env.local), the update's source maps go to
+ * Sentry, so its errors show the real source lines. A failed upload doesn't undo the update.
  */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -30,6 +33,18 @@ const child = spawn('npx', ['eas-cli', 'update', '--channel', channel, '--enviro
   stdio: 'inherit',
   shell: true,
   // Real environment variables win over .env files
-  env: { ...process.env, EXPO_PUBLIC_API_URL: apiUrl },
+  env: { ...process.env, EXPO_PUBLIC_API_URL: apiUrl, EXPO_PUBLIC_SENTRY_DSN: profile.env.EXPO_PUBLIC_SENTRY_DSN ?? '' },
 });
-child.on('exit', (code) => process.exit(code ?? 1));
+child.on('exit', (code) => {
+  if (code !== 0) process.exit(code ?? 1);
+  const hasToken = process.env.SENTRY_AUTH_TOKEN || (fs.existsSync('.env.local') && fs.readFileSync('.env.local', 'utf8').includes('SENTRY_AUTH_TOKEN='));
+  if (!hasToken) {
+    console.warn('No SENTRY_AUTH_TOKEN: source maps not sent, errors from this update will show minified code.');
+    process.exit(0);
+  }
+  const upload = spawn('npx', ['sentry-expo-upload-sourcemaps', 'dist'], { stdio: 'inherit', shell: true });
+  upload.on('exit', (uploadCode) => {
+    if (uploadCode !== 0) console.warn('The update is live, but its source maps did not reach Sentry.');
+    process.exit(0);
+  });
+});
