@@ -52,7 +52,9 @@ export async function reverseGeocode({ lat, lng }: LatLng): Promise<PlaceGuess> 
  * function, or null when the user refuses location.
  */
 export async function watchPosition(onPosition: (p: LatLng & { heading?: number }) => void, intervalMs = 20_000): Promise<(() => void) | null> {
-  const { granted } = await Location.requestForegroundPermissionsAsync();
+  // Only checks: asking opens a system screen on Android, which sends the app to the background
+  // and back, and this runs on every return to the app (going online asks, see OnlineToggle)
+  const { granted } = await Location.getForegroundPermissionsAsync();
   if (!granted) return null;
   try {
     const sub = await Location.watchPositionAsync(
