@@ -31,4 +31,6 @@ export const StorageKeys = {
   prefs: 'k24.prefs',
   /** { [adId]: 'YYYY-MM-DD' } — popup / interstitial ads already shown today */
   adsSeen: 'k24.adsSeen',
+  /** See lib/exitWatch */
+  appAlive: 'k24.appAlive',
 } as const;

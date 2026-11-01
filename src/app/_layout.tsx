@@ -22,6 +22,7 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { Colors } from '@/constants/theme';
 import { bootstrap } from '@/lib/bootstrap';
 import { installCrashReporter, setCrashScreen } from '@/lib/crashReport';
+import { setLastScreen, startExitWatch } from '@/lib/exitWatch';
 import { Sentry } from '@/lib/sentry';
 import i18n from '@/lib/i18n';
 import { store } from '@/store';
@@ -33,6 +34,7 @@ void SplashScreen.preventAutoHideAsync().catch(() => {});
 
 // An error that would close the app is reported to the team first (see lib/crashReport)
 installCrashReporter(() => store.getState().auth.accessToken);
+startExitWatch();
 
 // A screen that throws shows "Something went wrong · Try again" instead of closing the app
 export { CrashScreen as ErrorBoundary } from '@/components/ui/CrashScreen';
@@ -103,6 +105,7 @@ function CrashScreenTracker() {
   useEffect(() => {
     const screen = '/' + segments.join('/');
     setCrashScreen(screen);
+    setLastScreen(screen);
     Sentry.setTag('screen', screen);
     Sentry.addBreadcrumb({ category: 'navigation', message: screen });
   }, [segments]);

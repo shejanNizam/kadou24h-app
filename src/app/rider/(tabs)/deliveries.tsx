@@ -52,6 +52,13 @@ export default function RiderDeliveriesScreen() {
   const offers = useGetOffersQuery(undefined, { pollingInterval: 30_000, refetchOnFocus: true });
   const rideOffers = useGetRideOffersQuery(undefined, { pollingInterval: 30_000, refetchOnFocus: true });
   const { data: currentRide } = useGetRiderCurrentRideQuery();
+  // The spinner answers a pull only: the poll and socket refreshes stay silent
+  const [pulling, setPulling] = useState(false);
+  const refreshNear = async () => {
+    setPulling(true);
+    await Promise.allSettled([offers.refetch(), rideOffers.refetch()]);
+    setPulling(false);
+  };
   const near: NearItem[] = [
     ...(rideOffers.data ?? []).map((offer) => ({ kind: 'ride' as const, offer })),
     ...(offers.data?.offers ?? []).map((offer) => ({ kind: 'delivery' as const, offer })),
@@ -113,15 +120,7 @@ export default function RiderDeliveriesScreen() {
           keyExtractor={(item) => `${item.kind}-${item.offer._id}`}
           renderItem={({ item }) => (item.kind === 'ride' ? <RideOfferCard offer={item.offer} /> : <OfferCard offer={item.offer} />)}
           contentContainerStyle={[styles.inner, styles.list]}
-          refreshControl={
-            <RefreshControl
-              refreshing={(offers.isFetching && !offers.isLoading) || (rideOffers.isFetching && !rideOffers.isLoading)}
-              onRefresh={() => {
-                void offers.refetch();
-                void rideOffers.refetch();
-              }}
-            />
-          }
+          refreshControl={<RefreshControl refreshing={pulling} onRefresh={() => void refreshNear()} />}
           ListHeaderComponent={
             <>
               {rider && rider.partnerType !== 'transit' && <SafetyIdsBanner rider={rider} />}

@@ -21,6 +21,8 @@ interface StateShape {
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: config.apiUrl,
+  // A request the server never answers ends in an error instead of loading forever
+  timeout: 30_000,
   prepareHeaders: (headers, { getState }) => {
     const { auth, prefs } = getState() as StateShape;
     // Some calls bring their own token (e.g. the password-reset token)
