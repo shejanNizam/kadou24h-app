@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, type Region } from 'react-native-maps';
 
-import { Radius } from '@/constants/theme';
+import { Colors, Radius } from '@/constants/theme';
 
 import { CenterPin } from './CenterPin';
 import { MARKER_COLORS, zoomToDelta, type AppMapProps } from './types';
@@ -29,6 +29,14 @@ export function AppMap({
   const [mapReady, setMapReady] = useState(false);
   const [hasSize, setHasSize] = useState(false);
   const ready = mapReady && hasSize;
+  // Android shows the map black until its first tiles are drawn: a light cover hides that.
+  // Lifted when the tiles are in, or soon after the map is ready (offline, no tiles come)
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    if (!mapReady || loaded) return;
+    const timer = setTimeout(() => setLoaded(true), 2500);
+    return () => clearTimeout(timer);
+  }, [mapReady, loaded]);
 
   useEffect(() => {
     if (!ready || !focus || typeof focus.lat !== 'number' || typeof focus.lng !== 'number' || isNaN(focus.lat) || isNaN(focus.lng)) return;
@@ -62,6 +70,7 @@ export function AppMap({
         style={StyleSheet.absoluteFill}
         initialRegion={{ latitude: centerLat, longitude: centerLng, latitudeDelta: delta, longitudeDelta: delta }}
         onMapReady={() => setMapReady(true)}
+        onMapLoaded={() => setLoaded(true)}
         onRegionChangeComplete={(r: Region) => onCenterChange?.({ lat: r.latitude, lng: r.longitude })}
         toolbarEnabled={false}>
         {validMarkers.map((m) => (
@@ -73,11 +82,13 @@ export function AppMap({
           />
         ))}
       </MapView>
+      {!loaded && <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.cover]} />}
       {onCenterChange && <CenterPin />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  box: { overflow: 'hidden', borderRadius: Radius.lg },
+  box: { overflow: 'hidden', borderRadius: Radius.lg, backgroundColor: Colors.surface },
+  cover: { backgroundColor: Colors.surface },
 });

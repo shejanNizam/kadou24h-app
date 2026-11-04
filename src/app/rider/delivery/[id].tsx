@@ -106,10 +106,12 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
 
   const from = toLatLng(d.fromLocation);
   const to = toLatLng(d.toLocation);
+  // My position only while the delivery is mine to do: on a finished one it means nothing
+  const showMe = !['delivered', 'cancelled', 'declined'].includes(d.status);
   const markers: MapMarker[] = [
     ...(from ? [{ id: 'from', kind: d.fromKind === 'station' ? ('station' as const) : ('store' as const), title: d.fromName, ...from }] : []),
     ...(to ? [{ id: 'to', kind: d.toKind === 'station' ? ('station' as const) : ('customer' as const), title: d.toName, ...to }] : []),
-    ...(me?.lastLocation ? [{ id: 'me', kind: 'rider' as const, title: t('rider.me'), ...me.lastLocation }] : []),
+    ...(showMe && me?.lastLocation ? [{ id: 'me', kind: 'rider' as const, title: t('rider.me'), ...me.lastLocation }] : []),
   ];
 
   const run = async (action: () => Promise<unknown>, done?: string) => {
