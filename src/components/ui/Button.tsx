@@ -68,7 +68,8 @@ export function Button({
         <View style={styles.content}>
           {leading}
           {icon && <Feather name={icon} size={18} color={colors.fg} />}
-          <AppText variant="button" color={colors.fg} numberOfLines={1}>
+          {/* Two lines rather than a cut label on small screens or with large text (client, Samsung A16) */}
+          <AppText variant="button" color={colors.fg} numberOfLines={2} align="center" style={styles.label}>
             {title}
           </AppText>
         </View>
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
   },
   small: { minHeight: MinTouch - 6, paddingHorizontal: Spacing.lg },
   content: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  label: { flexShrink: 1 },
   disabled: { opacity: 0.45 },
   pressed: { opacity: 0.85, transform: [{ scale: 0.99 }] },
 });

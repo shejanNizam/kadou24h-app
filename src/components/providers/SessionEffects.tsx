@@ -51,7 +51,8 @@ export function SessionEffects() {
     // (Cart: an unpaid online order that expires puts its items back in the cart)
     const refreshOrders = () =>
       dispatch(api.util.invalidateTags(['Order', 'SubOrder', 'Cart', 'Delivery', 'DeliveryOffer', 'Notification', 'Wallet', 'Job', 'Application', 'Cv', 'Subscription']));
-    const refreshOffers = () => dispatch(api.util.invalidateTags(['DeliveryOffer', 'RideOffer']));
+    // An offer that went away also loses its notification on the server
+    const refreshOffers = () => dispatch(api.util.invalidateTags(['DeliveryOffer', 'RideOffer', 'Notification']));
     // Moto-taxi: a ride changed (accepted, arrived, finished, cancelled…), for the passenger and the rider
     const refreshRides = () => dispatch(api.util.invalidateTags(['Ride', 'RideOffer']));
     const refreshJobs = () => dispatch(api.util.invalidateTags(['Job', 'Application']));
