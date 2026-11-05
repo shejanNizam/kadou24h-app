@@ -1327,6 +1327,7 @@
       "unpaid": "Payment pending"
     },
     "awaitingPayment": "The customer hasn’t paid online yet. Wait for the payment before preparing the order.",
+    "paymentExpired": "Cancelled: the customer didn't pay in time.",
     "by": {
       "customer": "the customer",
       "vendor": "your store",
@@ -1573,6 +1574,7 @@
       "saleChanged": "Order {{order}} changed",
       "checkoutFailed": "Payment failed: sale cancelled",
       "refund": "Customer refund for {{order}}: {{reason}}",
+      "refundNoReason": "Customer refund for {{order}}",
       "deliveryFee": "Delivery {{order}}, leg {{leg}}",
       "deliveryFeeNoOrder": "Delivery, leg {{leg}}",
       "cashCollected": "Cash collected for order {{order}}",

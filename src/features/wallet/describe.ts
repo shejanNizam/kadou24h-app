@@ -1,14 +1,32 @@
 import type { TFunction } from 'i18next';
 
-import type { WalletTransaction } from './types';
+import type { WalletEvent, WalletTransaction } from './types';
 
 type Rule = [RegExp, string, (m: RegExpMatchArray, tx: WalletTransaction) => Record<string, string>];
 
+/** The text of each wallet event (walletHistory.note.*) */
+const EVENT_KEYS: Record<WalletEvent, string> = {
+  sale_held: 'saleHeld',
+  sale_released: 'saleReleased',
+  commission: 'commission',
+  sale_cancelled: 'saleCancelled',
+  sale_changed: 'saleChanged',
+  checkout_failed: 'checkoutFailed',
+  refund: 'refund',
+  delivery_fee: 'deliveryFee',
+  cash_collected: 'cashCollected',
+  cash_offset: 'cashOffset',
+  cash_settled: 'cashSettled',
+  withdrawal: 'withdrawal',
+  withdrawal_fee: 'withdrawalFee',
+  withdrawal_rejected: 'withdrawalRejected',
+};
+
 /**
- * The server writes each wallet line's note in English ("Escrow released for
- * sub-order AP12-1"). These are the notes it writes; each is shown in the user's
- * language instead (client, 2026-10-30). A note typed by the team, or one not
- * listed here, is shown as written.
+ * Wallet lines written before the server sent `event` only have an English note
+ * ("Escrow released for sub-order AP12-1"): these are the notes it wrote, each
+ * shown in the user's language (client, 2026-10-30). A note typed by the team,
+ * or one not listed here, is shown as written.
  */
 const RULES: Rule[] = [
   [/^Escrow held for sub-order (\S+)$/, 'saleHeld', (m) => ({ order: m[1] })],
@@ -27,15 +45,25 @@ const RULES: Rule[] = [
   [/^Reversal of rejected withdrawal (\S+): (.*)$/s, 'withdrawalRejected', (m) => ({ ref: m[1], reason: m[2] })],
 ];
 
+/** One wallet line in the user's language */
 export function describeTransaction(tx: WalletTransaction, t: TFunction): string | undefined {
+  const key = tx.event && EVENT_KEYS[tx.event];
+  if (key) return describe(key, { ...stringify(tx.eventParams), order: String(tx.eventParams?.order ?? tx.subOrderNumber ?? '') }, t);
   if (!tx.note) return undefined;
   for (const [pattern, key, params] of RULES) {
     const m = tx.note.match(pattern);
     if (!m) continue;
-    const values = params(m, tx);
-    if (key === 'cashSettled') values.method = t(`cash.method.${values.method}`, { defaultValue: values.method });
-    if (key === 'deliveryFee' && !values.order) return t('walletHistory.note.deliveryFeeNoOrder', values);
-    return t(`walletHistory.note.${key}`, values);
+    return describe(key, params(m, tx), t);
   }
   return tx.note;
+}
+
+const stringify = (params?: Record<string, string | number>) =>
+  Object.fromEntries(Object.entries(params ?? {}).map(([k, v]) => [k, String(v)]));
+
+function describe(key: string, values: Record<string, string>, t: TFunction): string {
+  if (key === 'cashSettled') values.method = t(`cash.method.${values.method}`, { defaultValue: values.method });
+  if (key === 'deliveryFee' && !values.order) return t('walletHistory.note.deliveryFeeNoOrder', values);
+  if (key === 'refund' && !values.reason) return t('walletHistory.note.refundNoReason', values);
+  return t(`walletHistory.note.${key}`, values);
 }

@@ -113,7 +113,15 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
 
         {awaitingPayment && so.status !== 'cancelled' && <Banner tone="warning" message={t('vendorOrders.awaitingPayment')} />}
         {so.status === 'cancelled' && so.cancellation && (
-          <Banner tone="danger" message={t('order.cancelledBy', { by: t(`vendorOrders.by.${so.cancellation.by}`), reason: so.cancellation.reason })} />
+          <Banner
+            tone="danger"
+            message={
+              // Payment window over: the server's reason is English, say it in the user's language
+              so.cancellation.by === 'system'
+                ? t('vendorOrders.paymentExpired')
+                : t('order.cancelledBy', { by: t(`vendorOrders.by.${so.cancellation.by}`), reason: so.cancellation.reason })
+            }
+          />
         )}
 
         {pickupPin && (

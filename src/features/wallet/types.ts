@@ -102,9 +102,29 @@ export interface WalletTransaction {
   balanceAfter: number;
   subOrderId?: string;
   subOrderNumber?: string;
+  /** English text, for the team: shown only when there is no `event` (older lines) */
   note?: string;
+  /** What the line is (wallet.interface.ts WalletEvent), described in the user's language */
+  event?: WalletEvent;
+  eventParams?: Record<string, string | number>;
   createdAt: string;
 }
+
+export type WalletEvent =
+  | 'sale_held'
+  | 'sale_released'
+  | 'commission'
+  | 'sale_cancelled'
+  | 'sale_changed'
+  | 'checkout_failed'
+  | 'refund'
+  | 'delivery_fee'
+  | 'cash_collected'
+  | 'cash_offset'
+  | 'cash_settled'
+  | 'withdrawal'
+  | 'withdrawal_fee'
+  | 'withdrawal_rejected';
 
 export interface WithdrawalFee {
   method: PayoutMethodType;

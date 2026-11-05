@@ -1327,6 +1327,7 @@
       "unpaid": "Paiement en attente"
     },
     "awaitingPayment": "Le client n'a pas encore payé en ligne. Attendez le paiement avant de préparer la commande.",
+    "paymentExpired": "Annulée : le client n'a pas payé à temps.",
     "by": {
       "customer": "le client",
       "vendor": "votre boutique",
@@ -1573,6 +1574,7 @@
       "saleChanged": "Commande {{order}} modifiée",
       "checkoutFailed": "Paiement échoué : vente annulée",
       "refund": "Remboursement client pour {{order}} : {{reason}}",
+      "refundNoReason": "Remboursement client pour {{order}}",
       "deliveryFee": "Livraison {{order}}, étape {{leg}}",
       "deliveryFeeNoOrder": "Livraison, étape {{leg}}",
       "cashCollected": "Cash encaissé pour la commande {{order}}",
