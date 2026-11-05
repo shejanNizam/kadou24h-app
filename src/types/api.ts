@@ -26,10 +26,16 @@ export interface Paginated<T> {
   meta: PageMeta;
 }
 
-/** Error body: { success: false, message, errorSources: [{ path, message }] } */
+/**
+ * Error body: { success: false, code, message, errorSources: [{ path, message }], params? }
+ * `code` is a stable reason (e.g. OTP_INVALID); `message` is in the language sent as
+ * Accept-Language; `params` holds the values in it (e.g. { remaining: 2 }).
+ */
 export interface ApiErrorBody {
   success: false;
+  code?: string;
   message?: string;
+  params?: Record<string, string | number>;
   errorSources?: { path: string | number; message: string }[];
 }
 

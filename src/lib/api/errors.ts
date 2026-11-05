@@ -1,7 +1,10 @@
 /**
  * Turns an RTK Query error into something a person can read, in their language.
- * Server messages are English, so the common cases are translated here; anything
- * else falls back to the server's message.
+ *
+ * The server answers { code, message, params }: when the code is a specific reason
+ * the message is already in the app's language (we send Accept-Language), so it is
+ * shown as is. Errors the server has not given a code yet still come in English
+ * with a generic code: the common ones are matched and translated below.
  */
 import type { TFunction } from 'i18next';
 
@@ -19,8 +22,34 @@ export const statusOf = (error: unknown): number | string | undefined =>
 
 export const serverMessage = (error: unknown): string | undefined => bodyOf(error)?.message;
 
-/** "Your account is suspended: <reason>" (login / any call) → the Suspended screen */
+/** The server's stable reason, e.g. 'OTP_INVALID' */
+export const errorCode = (error: unknown): string | undefined => bodyOf(error)?.code;
+
+/** Codes the server also uses for errors without a reason of their own: their text may still be English */
+const GENERIC_CODES = new Set([
+  'BAD_REQUEST',
+  'UNAUTHORIZED',
+  'FORBIDDEN',
+  'NOT_FOUND',
+  'CONFLICT',
+  'UNPROCESSABLE',
+  'TOO_MANY_REQUESTS',
+  'INTERNAL_ERROR',
+  'SERVICE_UNAVAILABLE',
+]);
+
+/** Suspended / banned account (login or any call) → the Suspended screen */
 export function blockedAccount(error: unknown): { status: 'suspended' | 'banned'; reason?: string } | null {
+  const body = bodyOf(error);
+  if (body && (body.code === 'ACCOUNT_SUSPENDED' || body.code === 'ACCOUNT_BANNED')) {
+    const reason = body.params?.reason;
+    return {
+      status: body.code === 'ACCOUNT_BANNED' ? 'banned' : 'suspended',
+      // The server sends 'none' when the admin gave no reason
+      reason: typeof reason === 'string' && reason !== 'none' ? reason : undefined,
+    };
+  }
+  // Older server: "Your account is suspended: <reason>"
   const match = serverMessage(error)?.match(/your account is (suspended|banned)(?::\s*(.+))?/i);
   return match ? { status: match[1].toLowerCase() as 'suspended' | 'banned', reason: match[2] } : null;
 }
@@ -34,6 +63,11 @@ export function getApiErrorMessage(error: unknown, t: TFunction): string {
 
   if (status === 'FETCH_ERROR' || status === 'TIMEOUT_ERROR') return t('errors.network');
   if (status === 'PARSING_ERROR') return t('errors.server');
+  // A specific reason: the server's text is already in the app's language
+  const code = errorCode(error);
+  if (code && !GENERIC_CODES.has(code) && message) return message;
+
+  // ── Older server answers (English text), until every error has a code ──
   // Daily SMS budget spent (a 503 with its own meaning)
   if (/codes are temporarily unavailable/i.test(message)) return t('errors.codesPaused');
   if (typeof status === 'number' && status >= 500) return t('errors.server');

@@ -18,7 +18,7 @@ import { PasswordChecklist } from '@/features/auth/components/PasswordChecklist'
 import { pendingAuth } from '@/features/auth/pending';
 import type { SignupIntent } from '@/features/auth/types';
 import { registerSchema, type RegisterForm } from '@/features/auth/validation';
-import { getApiErrorMessage, serverMessage } from '@/lib/api/errors';
+import { errorCode, getApiErrorMessage, serverMessage } from '@/lib/api/errors';
 import { toE164 } from '@/lib/format';
 import { zodResolver } from '@/lib/form';
 import { useAppSelector } from '@/store/hooks';
@@ -64,11 +64,13 @@ export default function RegisterScreen() {
       router.push('/verify');
     } catch (error) {
       // Point at the field when the server says which one is wrong
+      // (the text checks are for an older server without error codes)
+      const code = errorCode(error);
       const message = serverMessage(error) ?? '';
       const text = getApiErrorMessage(error, t);
-      if (/phone number already exists/i.test(message)) setError('phone', { message: text });
-      else if (/email is already in use/i.test(message)) setError('email', { message: text });
-      else if (/referral code/i.test(message)) setError('referralCode', { message: text });
+      if (code === 'PHONE_ALREADY_REGISTERED' || /phone number already exists/i.test(message)) setError('phone', { message: text });
+      else if (code === 'EMAIL_TAKEN' || /email is already in use/i.test(message)) setError('email', { message: text });
+      else if (code === 'REFERRAL_CODE_INVALID' || /referral code/i.test(message)) setError('referralCode', { message: text });
       else setFormError(text);
     }
   });
