@@ -243,8 +243,20 @@ export interface CheckoutSummary {
     /** COD: the products, in cash to the riders */
     payOnDelivery: number;
   };
-  /** The promo code typed: valid (with the discount) or why it can't be used (English server text) */
-  coupon?: { code: string; valid: boolean; discount: number; description?: string; message?: string };
+  /**
+   * The promo code typed: valid (with the discount) or why it can't be used.
+   * `reason` is the error code (e.g. COUPON_EXPIRED) and `message` is then in the app's language;
+   * an older server sends only an English `message`.
+   */
+  coupon?: {
+    code: string;
+    valid: boolean;
+    discount: number;
+    description?: string;
+    reason?: string;
+    params?: Record<string, string | number>;
+    message?: string;
+  };
   vendorSplits: CheckoutSplit[];
 }
 

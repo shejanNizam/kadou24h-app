@@ -276,7 +276,7 @@ function Checkout() {
               autoCorrect={false}
               maxLength={20}
               icon="tag"
-              error={couponCode && summary.data?.coupon && !summary.data.coupon.valid ? couponMessage(t, summary.data.coupon.message) : undefined}
+              error={couponCode && summary.data?.coupon && !summary.data.coupon.valid ? couponMessage(t, summary.data.coupon) : undefined}
               right={
                 <Button
                   title={t('checkout.promoApply')}
@@ -372,9 +372,10 @@ function Checkout() {
   );
 }
 
-/** The server explains a refused promo code in English: say it in the user's language */
-function couponMessage(t: TFunction, message?: string) {
-  const m = message ?? '';
+/** Why a promo code was refused. The server says it in the app's language; an older server, in English (matched below). */
+function couponMessage(t: TFunction, coupon: { reason?: string; message?: string }) {
+  if (coupon.reason && coupon.message) return coupon.message;
+  const m = coupon.message ?? '';
   const min = m.match(/minimum order of ([\d\s\u00a0\u202f.,]+) GNF/i);
   if (min) return t('checkout.promoMin', { amount: `${min[1].trim()} GNF` });
   if (/already used/i.test(m)) return t('checkout.promoUsed');
