@@ -51,8 +51,12 @@ export function openFeePayment(payment: Payment | null | undefined, onPaid?: () 
 }
 
 /** What a job's state means for the recruiter (a published job past its 30 days is "expired") */
-export function jobState(job: { status: string; isOpen?: boolean }): { key: 'live' | 'draft' | 'unpaid' | 'closed' | 'expired'; tone: StatusTone } {
+export function jobState(job: { status: string; isOpen?: boolean }): {
+  key: 'live' | 'draft' | 'unpaid' | 'closed' | 'expired' | 'removed';
+  tone: StatusTone;
+} {
   if (job.isOpen) return { key: 'live', tone: 'green' };
+  if (job.status === 'removed') return { key: 'removed', tone: 'red' };
   if (job.status === 'draft') return { key: 'draft', tone: 'grey' };
   if (job.status === 'pending_payment') return { key: 'unpaid', tone: 'amber' };
   if (job.status === 'closed') return { key: 'closed', tone: 'red' };

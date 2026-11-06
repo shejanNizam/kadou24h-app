@@ -23,6 +23,8 @@ export type NotificationType =
   | 'withdrawal_update'
   | 'refund_update'
   | 'application_update'
+  // The Kadou24h team removed or restored my job offer
+  | 'job_update'
   | 'booking_update'
   | 'profile_approved'
   | 'moderation_warning'

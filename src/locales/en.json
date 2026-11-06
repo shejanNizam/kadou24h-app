@@ -1964,7 +1964,8 @@
     "viewJob": "View the offer",
     "ended": {
       "rejected": "Your application wasn’t selected this time. Don’t give up: other offers are waiting.",
-      "withdrawn": "You withdrew this application."
+      "withdrawn": "You withdrew this application.",
+      "jobRemoved": "The Kadou24h team removed this offer. Your application is no longer active."
     },
     "pendingPayment": "The payment isn’t confirmed yet: the store can’t see your application yet.",
     "interview": "Interview",
@@ -2141,7 +2142,8 @@
       "draft": "Draft",
       "unpaid": "Payment pending",
       "closed": "Closed",
-      "expired": "Expired"
+      "expired": "Expired",
+      "removed": "Removed"
     },
     "applicants_one": "{{count}} candidate",
     "applicants_other": "{{count}} candidates",
@@ -2169,7 +2171,10 @@
     },
     "noCandidates": "No candidates",
     "noCandidatesOpen": "Applications arrive here. You’re told about each new one.",
-    "noCandidatesClosed": "Publish the offer to get applications."
+    "noCandidatesClosed": "Publish the offer to get applications.",
+    "removedTitle": "Removed by the Kadou24h team",
+    "removedReason": "Reason: {{reason}}",
+    "removedText": "Candidates no longer see it and you can’t change it. Contact support if you think it’s a mistake."
   },
   "jobForm": {
     "newTitle": "New offer",

@@ -59,7 +59,9 @@ function Body({ application: a }: { application: MyApplication }) {
   const [askWithdraw, setAskWithdraw] = useState(false);
   const title = a.jobId?.title ?? t('myApplications.spontaneous');
   const org = a.jobId?.organizationName ?? a.targetVendorId?.storeName ?? '';
-  const ended = a.status === 'rejected' || a.status === 'withdrawn';
+  // The Kadou24h team removed the offer: nothing more happens on this application
+  const jobRemoved = a.jobId?.status === 'removed' && a.status !== 'rejected' && a.status !== 'withdrawn' && a.status !== 'hired';
+  const ended = a.status === 'rejected' || a.status === 'withdrawn' || jobRemoved;
   const reached = STEPS.indexOf(a.status);
 
   const run = async (action: () => Promise<unknown>, done: string) => {
@@ -88,15 +90,15 @@ function Body({ application: a }: { application: MyApplication }) {
           <AppText variant="caption" color={Colors.textSubtle}>
             {t('myApplications.sentOn', { date: new Date(a.createdAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'long' }) })}
           </AppText>
-          {a.jobId && <Button title={t('application.viewJob')} size="sm" variant="ghost" onPress={() => router.push({ pathname: '/job/[id]', params: { id: a.jobId!._id } })} />}
+          {a.jobId && !jobRemoved && <Button title={t('application.viewJob')} size="sm" variant="ghost" onPress={() => router.push({ pathname: '/job/[id]', params: { id: a.jobId!._id } })} />}
         </View>
 
         {/* Where it stands */}
         {ended ? (
           <View style={[styles.card, styles.ended]}>
-            <Feather name={a.status === 'rejected' ? 'x-circle' : 'corner-up-left'} size={18} color={Colors.textMuted} />
+            <Feather name={jobRemoved ? 'slash' : a.status === 'rejected' ? 'x-circle' : 'corner-up-left'} size={18} color={Colors.textMuted} />
             <AppText variant="small" style={styles.flex}>
-              {t(`application.ended.${a.status}`)}
+              {t(jobRemoved ? 'application.ended.jobRemoved' : `application.ended.${a.status}`)}
             </AppText>
           </View>
         ) : a.status === 'pending_payment' ? (
@@ -122,7 +124,7 @@ function Body({ application: a }: { application: MyApplication }) {
         )}
 
         {/* The interview */}
-        {a.status === 'interview' && interviewAt && (
+        {a.status === 'interview' && interviewAt && !jobRemoved && (
           <View style={[styles.card, styles.interview]}>
             <View style={styles.row}>
               <Feather name="calendar" size={18} color={Colors.warning} />

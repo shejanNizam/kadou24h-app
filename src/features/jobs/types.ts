@@ -9,7 +9,8 @@ import type { FileRef } from '@/types/api';
 
 export type { Job, JobType, WorkplaceType };
 
-export type JobStatus = 'draft' | 'pending_payment' | 'published' | 'closed' | 'expired';
+/** removed: taken down by the Kadou24h team; only the team can bring it back */
+export type JobStatus = 'draft' | 'pending_payment' | 'published' | 'closed' | 'expired' | 'removed';
 export type ApplicationStatus =
   | 'pending_payment'
   | 'applied'
@@ -31,6 +32,8 @@ export interface JobDetails extends Job {
   /** Published and not past its 30 days */
   isOpen?: boolean;
   myApplication?: { _id: string; status: ApplicationStatus; createdAt: string } | null;
+  /** Only its poster sees a removed offer, with the team's reason */
+  removal?: { at: string; reason: string };
   expiresAt?: string;
   stats?: JobStats;
 }

@@ -111,6 +111,7 @@ function JobHeader({ job }: { job: JobDetails }) {
   const [paying, setPaying] = useState(false);
   const [askClose, setAskClose] = useState(false);
   const state = jobState(job);
+  const removed = job.status === 'removed';
   const s = job.stats;
 
   return (
@@ -126,6 +127,22 @@ function JobHeader({ job }: { job: JobDetails }) {
           {t('recruiterJob.liveUntil', { date: new Date(job.expiresAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'long' }) })}
         </AppText>
       ) : null}
+      {removed && (
+        <View style={styles.removed}>
+          <Feather name="slash" size={18} color={Colors.danger} />
+          <View style={styles.flex}>
+            <AppText variant="title">{t('recruiterJob.removedTitle')}</AppText>
+            {job.removal?.reason ? (
+              <AppText variant="small" color={Colors.textMuted}>
+                {t('recruiterJob.removedReason', { reason: job.removal.reason })}
+              </AppText>
+            ) : null}
+            <AppText variant="small" color={Colors.textMuted}>
+              {t('recruiterJob.removedText')}
+            </AppText>
+          </View>
+        </View>
+      )}
       {s && (
         <View style={styles.stats}>
           <Stat label={t('recruiterJob.views')} value={s.views} />
@@ -134,20 +151,22 @@ function JobHeader({ job }: { job: JobDetails }) {
           <Stat label={t('recruiterJob.interviews')} value={s.interviews} />
         </View>
       )}
-      <View style={styles.row}>
-        <Button title={t('common.edit')} icon="edit-2" size="sm" variant="outline" style={styles.flex} onPress={() => router.push({ pathname: '/recruiter/job/form', params: { id: job._id } })} />
-        {job.isOpen ? (
-          <Button title={t('recruiterJob.close')} size="sm" variant="ghost" style={styles.flex} onPress={() => setAskClose(true)} />
-        ) : (
-          <Button
-            title={job.status === 'draft' || job.status === 'pending_payment' ? t('recruiterJob.publish') : t('recruiterJob.republish')}
-            icon="send"
-            size="sm"
-            style={styles.flex}
-            onPress={() => setPaying(true)}
-          />
-        )}
-      </View>
+      {!removed && (
+        <View style={styles.row}>
+          <Button title={t('common.edit')} icon="edit-2" size="sm" variant="outline" style={styles.flex} onPress={() => router.push({ pathname: '/recruiter/job/form', params: { id: job._id } })} />
+          {job.isOpen ? (
+            <Button title={t('recruiterJob.close')} size="sm" variant="ghost" style={styles.flex} onPress={() => setAskClose(true)} />
+          ) : (
+            <Button
+              title={job.status === 'draft' || job.status === 'pending_payment' ? t('recruiterJob.publish') : t('recruiterJob.republish')}
+              icon="send"
+              size="sm"
+              style={styles.flex}
+              onPress={() => setPaying(true)}
+            />
+          )}
+        </View>
+      )}
       {job.isOpen && <Button title={t('recruiterJob.seePublic')} size="sm" variant="ghost" onPress={() => router.push({ pathname: '/job/[id]', params: { id: job._id } })} />}
 
       <PayFeeSheet
@@ -212,4 +231,5 @@ const styles = StyleSheet.create({
   chips: { gap: Spacing.sm },
   sort: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   pressed: { opacity: 0.9 },
+  removed: { flexDirection: 'row', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.dangerSoft },
 });

@@ -19,6 +19,11 @@ export function openNotification(data: Record<string, unknown> | undefined, fall
     router.push({ pathname: '/jobs/application/[id]', params: { id: str('applicationId')! } });
     return true;
   }
+  // My job offer removed / restored by the team (an applicant's news carries applicationId, above)
+  if (str('jobId')) {
+    router.push({ pathname: '/recruiter/job/[id]', params: { id: str('jobId')! } });
+    return true;
+  }
   // Moto-taxi: a request near me → "Near me"; otherwise the ride (as rider or passenger)
   if (str('kind') === 'ride' && str('rideId')) {
     if (mode === 'rider' && (data?.offer === true || data?.offer === 'true')) router.push({ pathname: '/rider/deliveries', params: { tab: 'offers' } });

@@ -42,6 +42,7 @@ const ICONS: Partial<Record<NotificationType, ComponentProps<typeof Feather>['na
   moderation_warning: 'alert-triangle',
   account_suspended: 'slash',
   team_message: 'shield',
+  job_update: 'briefcase',
 };
 
 const isToday = (iso: string) => new Date(iso).toDateString() === new Date().toDateString();

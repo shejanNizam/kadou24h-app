@@ -1964,7 +1964,8 @@
     "viewJob": "Voir l’offre",
     "ended": {
       "rejected": "Votre candidature n’a pas été retenue cette fois. Ne vous découragez pas : d’autres offres vous attendent.",
-      "withdrawn": "Vous avez retiré cette candidature."
+      "withdrawn": "Vous avez retiré cette candidature.",
+      "jobRemoved": "L’équipe Kadou24h a retiré cette offre. Votre candidature n’est plus active."
     },
     "pendingPayment": "Le paiement n’est pas encore confirmé : la boutique ne voit pas encore votre candidature.",
     "interview": "Entretien",
@@ -2141,7 +2142,8 @@
       "draft": "Brouillon",
       "unpaid": "Paiement en attente",
       "closed": "Fermée",
-      "expired": "Expirée"
+      "expired": "Expirée",
+      "removed": "Retirée"
     },
     "applicants_one": "{{count}} candidat",
     "applicants_other": "{{count}} candidats",
@@ -2169,7 +2171,10 @@
     },
     "noCandidates": "Aucun candidat",
     "noCandidatesOpen": "Les candidatures arrivent ici. Vous êtes prévenu(e) à chaque nouvelle.",
-    "noCandidatesClosed": "Publiez l’offre pour recevoir des candidatures."
+    "noCandidatesClosed": "Publiez l’offre pour recevoir des candidatures.",
+    "removedTitle": "Retirée par l’équipe Kadou24h",
+    "removedReason": "Motif : {{reason}}",
+    "removedText": "Les candidats ne la voient plus et vous ne pouvez plus la modifier. Contactez le support si vous pensez qu’il s’agit d’une erreur."
   },
   "jobForm": {
     "newTitle": "Nouvelle offre",
