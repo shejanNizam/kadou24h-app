@@ -1,25 +1,37 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { AppText } from '@/components/ui/AppText';
-import { Colors, Spacing } from '@/constants/theme';
+const logoWhite = require('../../../assets/logo/logo-white.png');
+const logoColor = require('../../../assets/logo/logo-color.png');
 
-/**
- * TEMPORARY logo (icon + wordmark) until the real KADOU 24H logo is exported
- * from the Figma (SVG or 512px PNG) — then swap this body for an <Image>.
- */
-export function BrandLogo({ size = 96, color = Colors.textOnPrimary }: { size?: number; color?: string }) {
+const LOGO_ASPECT_RATIO = 623 / 555;
+
+export interface BrandLogoProps {
+  /** Logo height in density-independent pixels. Default: 80. */
+  size?: number;
+  /** 'white' for dark/gradient backgrounds, 'color' for light backgrounds. Default: 'white'. */
+  variant?: 'white' | 'color';
+  style?: StyleProp<ViewStyle>;
+}
+
+export function BrandLogo({ size = 80, variant = 'white', style }: BrandLogoProps) {
+  const height = size;
+  const width = Math.round(size * LOGO_ASPECT_RATIO);
+  const source = variant === 'color' ? logoColor : logoWhite;
+
   return (
-    <View style={styles.container} accessibilityRole="image" accessibilityLabel="Kadou24h">
-      <MaterialCommunityIcons name="home-heart" size={size} color={color} />
-      <AppText variant="h2" color={color} style={styles.wordmark}>
-        KADOU 24H
-      </AppText>
+    <View style={[styles.container, style]} accessibilityRole="image" accessibilityLabel="Kadou24h">
+      <Image
+        source={source}
+        style={{ width, height }}
+        resizeMode="contain"
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center', gap: Spacing.xs },
-  wordmark: { letterSpacing: 1 },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
