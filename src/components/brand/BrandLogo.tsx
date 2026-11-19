@@ -3,7 +3,8 @@ import { Image, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-n
 const logoWhite = require('../../../assets/logo/logo-white.png');
 const logoColor = require('../../../assets/logo/logo-color.png');
 
-const LOGO_ASPECT_RATIO = 623 / 555;
+// Both files are 1200x1072, trimmed with the same even padding
+const LOGO_ASPECT_RATIO = 1200 / 1072;
 
 export interface BrandLogoProps {
   /** Logo height in density-independent pixels. Default: 80. */
