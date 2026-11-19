@@ -985,7 +985,8 @@
       "order": "Commande",
       "buyer_seller": "Question produit",
       "worker": "Service",
-      "job_application": "Candidature"
+      "job_application": "Candidature",
+      "ride": "Course moto-taxi"
     },
     "aboutOrder": "Commande {{number}}",
     "unread_one": "{{count}} message non lu",
@@ -1046,7 +1047,15 @@
     "blockedTitle": "Personnes bloquées",
     "blockedIntro": "Elles ne savent pas qu’elles sont bloquées. Vous ne recevez pas leurs messages, sauf pour une commande ou une réservation en cours.",
     "blockedEmpty": "Vous n’avez bloqué personne",
-    "blockedSince": "Bloqué(e) le {{date}}"
+    "blockedSince": "Bloqué(e) le {{date}}",
+    "aboutRide": "Course {{number}}",
+    "peerRide": {
+      "customer": "Passager",
+      "rider": "Chauffeur moto-taxi"
+    },
+    "viewRide": "Voir la course",
+    "rideClosed": "Course terminée : la discussion est fermée.",
+    "safetyNoticeRide": "Pour votre sécurité, échangez dans l’application. Le prix de la course est fixé à l’avance et se paie en espèces à l’arrivée, rien de plus. Ne partagez jamais vos coordonnées bancaires."
   },
   "mode": {
     "current": "Actuel",
@@ -1414,7 +1423,32 @@
     "legSearching": "Les livreurs proches la voient : le premier qui accepte la prend. Vous pouvez aussi l’envoyer à un livreur.",
     "legNobody": "Toujours personne : choisissez un livreur, ou attendez. L’équipe Kadou24h est prévenue.",
     "legWaitAccept": "Les livreurs proches la verront dès que vous acceptez la commande.",
-    "legReserved": "En attente de la réponse de {{name}} jusqu’à {{time}}. Ensuite, elle repart aux livreurs proches."
+    "legReserved": "En attente de la réponse de {{name}} jusqu’à {{time}}. Ensuite, elle repart aux livreurs proches.",
+    "progress": {
+      "title": "Suivi",
+      "riderName": "Remise à {{name}}",
+      "riderComing": "{{name}} arrive pour la récupérer",
+      "leg": "Étape {{n}} sur {{total}} · vers {{to}}",
+      "paidAmount": "+ {{amount}} dans votre portefeuille",
+      "awaitingCod": "Le livreur doit d'abord remettre l'argent encaissé à Kadou24h",
+      "releasing": "Versement en cours",
+      "step": {
+        "received": "Commande reçue",
+        "accepted": "Acceptée",
+        "preparing": "En préparation",
+        "ready_for_pickup": "Prête à récupérer",
+        "handed_over": "Remise au livreur",
+        "on_the_way": "En route vers le client",
+        "delivered": "Livrée au client",
+        "paid": "Argent versé dans votre portefeuille"
+      },
+      "state": {
+        "done": "fait",
+        "current": "en cours",
+        "todo": "à venir",
+        "cancelled": "annulée"
+      }
+    }
   },
   "riders": {
     "title": "Mes livreurs",
@@ -2480,7 +2514,9 @@
       "noteHint": "Ex. : devant la pharmacie, portail bleu",
       "safety": "Pour votre sécurité : vérifiez le nom, la plaque et le numéro de gilet du chauffeur avant de monter, portez un casque et partagez votre course avec un proche.",
       "order": "Commander · {{amount}}",
-      "orderShort": "Commander"
+      "orderShort": "Commander",
+      "photo": "Photo du lieu de départ",
+      "photoHint": "Le portail, la boutique ou le repère où vous attendez : le chauffeur vous trouve plus vite."
     },
     "searchingText": "Les chauffeurs proches voient votre demande. Le premier qui accepte vient vous chercher.",
     "arrivedText": "Votre chauffeur est arrivé au point de départ.",
@@ -2555,14 +2591,17 @@
       "drop": "Je ne peux plus faire cette course",
       "dropTitle": "Abandonner la course ?",
       "dropText": "Elle sera proposée aux autres chauffeurs proches, et vous ne la reverrez pas.",
-      "dropped": "Course proposée à d’autres chauffeurs"
+      "dropped": "Course proposée à d’autres chauffeurs",
+      "chat": "Écrire au passager"
     },
     "plate": "Plaque",
     "vest": "Gilet",
     "share": {
       "button": "Partager ma course",
       "message": "Je suis dans un moto-taxi Kadou24h. Suivez ma course en direct (chauffeur, plaque, position) : {{url}}"
-    }
+    },
+    "chatRider": "Écrire au chauffeur",
+    "pickupPhoto": "Photo du lieu de départ"
   },
   "history": {
     "deleteAction": "Supprimer de mon historique",

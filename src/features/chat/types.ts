@@ -1,7 +1,7 @@
 /** Chat — mirrors kadou24h-server chat.interface.ts (+ the app-facing `peer`). */
 import type { AppMode, FileRef } from '@/types/api';
 
-export type ConversationType = 'order' | 'buyer_seller' | 'worker' | 'job_application';
+export type ConversationType = 'order' | 'buyer_seller' | 'worker' | 'job_application' | 'ride';
 export type MessageType = 'text' | 'voice' | 'image' | 'system';
 export type ModerationStatus = 'clean' | 'masked' | 'blocked';
 
@@ -12,7 +12,9 @@ export type StartConversation =
   /** From a booking: the customer and the worker can write to each other */
   | { type: 'worker'; bookingId: string }
   | { type: 'order'; subOrderId: string; with: 'vendor' | 'rider' | 'customer' }
-  | { type: 'job_application'; applicationId: string };
+  | { type: 'job_application'; applicationId: string }
+  /** Moto-taxi: the passenger ↔ the rider who took the ride (messages only while it is going on) */
+  | { type: 'ride'; rideId: string };
 
 export interface Conversation {
   _id: string;
@@ -21,6 +23,7 @@ export interface Conversation {
   subOrderId?: { _id: string; subOrderNumber: string; orderId?: string; status?: string } | null;
   applicationId?: string;
   workerProfileId?: string;
+  rideId?: { _id: string; rideNumber: string; status: string } | null;
   /** Voice notes: every chat except job applications (server decides) */
   allowVoice: boolean;
   lastMessage?: { text?: string; type: MessageType; senderId?: string; at: string };

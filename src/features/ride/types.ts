@@ -22,6 +22,8 @@ export interface Ride {
   /** GNF, paid in cash to the rider at the end */
   fare: number;
   note?: string;
+  /** The passenger's photo of the pickup spot (gate, landmark) */
+  pickupPhoto?: FileRef;
   searchStartedAt: string;
   acceptedAt?: string;
   arrivedAt?: string;
@@ -74,6 +76,7 @@ export interface RideOffer {
   durationMin: number;
   fare: number;
   note?: string;
+  pickupPhoto?: FileRef;
   pickupKm: number;
   searchStartedAt: string;
 }

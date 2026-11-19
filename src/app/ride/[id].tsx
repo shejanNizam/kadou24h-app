@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppMap } from '@/components/map/AppMap';
+import { PhotoPreview } from '@/components/media/PhotoPreview';
 import type { MapMarker } from '@/components/map/types';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
@@ -20,6 +21,8 @@ import { StatusPill } from '@/components/ui/StatusPill';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
+import { RIDE_CHAT_OPEN } from '@/features/chat/labels';
+import { useOpenChat } from '@/features/chat/useOpenChat';
 import { toLatLng } from '@/features/orders/types';
 import { useCancelRideMutation, useGetRideQuery, useRateRideMutation, useRequestRideMutation, useShareRideMutation } from '@/features/ride/api';
 import { RIDE_TONE } from '@/features/ride/status';
@@ -33,7 +36,8 @@ import { img } from '@/lib/image';
 /**
  * My moto-taxi ride: looking for a rider → the rider is coming (live on the map)
  * → arrived → on the way → finished (pay in cash, rate). The rider's phone is
- * never shown (client rule); the rider can call me.
+ * never shown (client rule): I write to them in the app (text, voice note, photo);
+ * the rider can also call me.
  */
 export default function RideScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -91,6 +95,8 @@ function RideBody({
   const [cancel, cancelState] = useCancelRideMutation();
   const [requestRide, requestState] = useRequestRideMutation();
   const [shareRide, shareState] = useShareRideMutation();
+  const { open: openChat, opening } = useOpenChat();
+  const canChat = Boolean(ride.rider) && RIDE_CHAT_OPEN.includes(ride.status);
   const running = RUNNING_RIDE.includes(ride.status);
   const remove = useDeleteFromHistory('ride', () => router.back());
   const canCancel = ['searching', 'accepted', 'arrived'].includes(ride.status);
@@ -131,6 +137,7 @@ function RideBody({
         pickup: { ...toLatLng(ride.pickup.location)!, address: ride.pickup.address },
         dropoff: { ...toLatLng(ride.dropoff.location)!, address: ride.dropoff.address },
         note: ride.note,
+        pickupPhoto: ride.pickupPhoto,
       }).unwrap();
       router.replace({ pathname: '/ride/[id]', params: { id: next._id } });
     } catch (e) {
@@ -200,6 +207,7 @@ function RideBody({
               “{ride.note}”
             </AppText>
           ) : null}
+          {ride.pickupPhoto?.url ? <PhotoPreview url={ride.pickupPhoto.url} label={t('ride.pickupPhoto')} height={120} /> : null}
         </View>
 
         {ride.status === 'completed' && <RateRide ride={ride} />}
@@ -212,6 +220,14 @@ function RideBody({
       </ScrollView>
 
       <View style={[styles.inner, styles.footer]}>
+        {canChat && (
+          <Button
+            title={t('ride.chatRider')}
+            icon="message-circle"
+            disabled={opening}
+            onPress={() => openChat({ type: 'ride', rideId: ride._id })}
+          />
+        )}
         {running && <Button title={t('ride.share.button')} icon="share-2" variant="soft" loading={shareState.isLoading} onPress={() => void onShare()} />}
         {canCancel && <Button title={t('ride.cancel')} variant="outline" onPress={() => setConfirmCancel(true)} />}
         {(ride.status === 'expired' || ride.status === 'cancelled') && (

@@ -141,7 +141,12 @@ export interface VendorSubOrder extends Omit<SubOrder, 'vendorId' | 'currentRide
   commissionAmount: number;
   vendorEarning: number;
   discountShare: number;
+  /** The store's money: held until delivery; COD waits for the rider's cash; then released to the wallet */
+  settlement: SettlementStatus;
+  releasedAt?: string;
 }
+
+export type SettlementStatus = 'held' | 'awaiting_cod' | 'released' | 'refunded' | 'cancelled';
 
 export interface VendorLeg extends Omit<DeliveryLegSummary, 'riderId'> {
   riderId?: StoreRider | null;

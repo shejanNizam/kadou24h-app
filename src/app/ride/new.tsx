@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppMap } from '@/components/map/AppMap';
+import { ImageUploadBox } from '@/components/media/ImageUploadBox';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
@@ -22,6 +23,7 @@ import type { RidePlaceInput } from '@/features/ride/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { CONAKRY, getCurrentPosition, reverseGeocode, type LatLng } from '@/lib/location';
+import type { FileRef } from '@/types/api';
 
 type Step = 'pickup' | 'dropoff' | 'review';
 
@@ -40,6 +42,7 @@ export default function NewRideScreen() {
   const [pickup, setPickup] = useState<RidePlaceInput | null>(null);
   const [dropoff, setDropoff] = useState<RidePlaceInput | null>(null);
   const [note, setNote] = useState('');
+  const [photo, setPhoto] = useState<FileRef | undefined>();
   const [locating, setLocating] = useState(false);
   const [naming, setNaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -115,6 +118,7 @@ export default function NewRideScreen() {
         pickup: { ...pickup, address: pickup.address.trim() },
         dropoff: { ...dropoff, address: dropoff.address.trim() },
         note: note.trim() || undefined,
+        pickupPhoto: photo,
       }).unwrap();
       router.replace({ pathname: '/ride/[id]', params: { id: ride._id } });
     } catch (e) {
@@ -231,6 +235,19 @@ export default function NewRideScreen() {
         )}
 
         <TextField label={t('ride.new.note')} optional placeholder={t('ride.new.noteHint')} value={note} onChangeText={setNote} maxLength={200} />
+        {/* A photo of where I wait: the rider finds me faster (I can also send one in the chat later) */}
+        <View style={styles.place}>
+          <AppText variant="label">
+            {t('ride.new.photo')}{' '}
+            <AppText variant="caption" color={Colors.textSubtle}>
+              ({t('common.optional')})
+            </AppText>
+          </AppText>
+          <AppText variant="caption" color={Colors.textMuted}>
+            {t('ride.new.photoHint')}
+          </AppText>
+          <ImageUploadBox value={photo} onChange={setPhoto} title={t('ride.new.photo')} icon="camera" height={120} removable />
+        </View>
         <AppText variant="caption" color={Colors.textMuted}>
           {t('ride.new.safety')}
         </AppText>

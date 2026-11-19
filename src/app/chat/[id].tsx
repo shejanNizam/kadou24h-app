@@ -30,6 +30,7 @@ import {
 } from '@/features/chat/api';
 import { Composer, type Outgoing } from '@/features/chat/components/Composer';
 import { MessageBubble } from '@/features/chat/components/MessageBubble';
+import { peerLabel, rideChatClosed, subjectOf } from '@/features/chat/labels';
 import { dayLabel, sameDay } from '@/features/chat/time';
 import { senderIdOf, type Message } from '@/features/chat/types';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
@@ -96,6 +97,10 @@ export default function ChatScreen() {
     setPeerTyping(false);
     if (myMode && senderIdOf(m) !== me?._id) void markRead({ id, mode: myMode });
   });
+  // A moto-taxi chat closes when the ride ends
+  useSocketEvent<{ rideId: string }>('ride:updated', (p) => {
+    if (c?.rideId && String(p.rideId) === c.rideId._id) void conversation.refetch();
+  });
   useSocketEvent<{ conversationId: string; userId: string }>('typing', (p) => {
     if (p.conversationId === id && String(p.userId) !== me?._id) setPeerTyping(true);
   });
@@ -135,6 +140,7 @@ export default function ChatScreen() {
 
   const restrictedUntil = me?.moderation?.chatRestrictedUntil;
   const restricted = Boolean(restrictedUntil && new Date(restrictedUntil).getTime() > openedAt);
+  const closed = rideChatClosed(c);
 
   if (conversation.isError) {
     return (
@@ -150,7 +156,7 @@ export default function ChatScreen() {
   const subtitle = c
     ? peerTyping
       ? t('chat.typing')
-      : [t(`chat.peer.${c.peer.mode}`), c.subOrderId?.subOrderNumber && t('chat.aboutOrder', { number: c.subOrderId.subOrderNumber })].filter(Boolean).join(' · ')
+      : [peerLabel(c, t), (c.rideId || c.subOrderId) && subjectOf(c, t)].filter(Boolean).join(' · ')
     : '';
 
   return (
@@ -162,6 +168,16 @@ export default function ChatScreen() {
             <View style={styles.headerActions}>
               {c?.peer.vendorId ? (
                 <HeaderIconButton icon="shopping-bag" label={t('chat.viewStore')} onPress={() => router.push({ pathname: '/store/[id]', params: { id: c.peer.vendorId! } })} />
+              ) : c?.rideId ? (
+                <HeaderIconButton
+                  icon="map"
+                  label={t('chat.viewRide')}
+                  onPress={() =>
+                    myMode === 'rider'
+                      ? router.push({ pathname: '/rider/ride/[id]', params: { id: c.rideId!._id } })
+                      : router.push({ pathname: '/ride/[id]', params: { id: c.rideId!._id } })
+                  }
+                />
               ) : c?.orderId && myMode === 'customer' ? (
                 <HeaderIconButton icon="file-text" label={t('chat.viewOrder')} onPress={() => router.push({ pathname: '/order/[id]', params: { id: c.orderId! } })} />
               ) : null}
@@ -230,6 +246,11 @@ export default function ChatScreen() {
             />
           </View>
         )}
+        {closed && (
+          <View style={styles.inner}>
+            <Banner tone="info" message={t('chat.rideClosed')} />
+          </View>
+        )}
         {restricted && (
           <View style={styles.inner}>
             <Banner
@@ -242,14 +263,14 @@ export default function ChatScreen() {
         )}
         <View style={styles.composer}>
           {/* Rider → customer: one tap at the door instead of typing on the moto */}
-          {myMode === 'rider' && c?.peer.mode === 'customer' && !restricted && (
+          {myMode === 'rider' && c?.peer.mode === 'customer' && !restricted && !closed && (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.quick}>
               {QUICK_REPLIES.map((key) => (
                 <Chip key={key} label={t(`chat.quick.${key}`)} onPress={() => void onSend({ type: 'text', text: t(`chat.quick.${key}`) })} />
               ))}
             </ScrollView>
           )}
-          <Composer allowVoice={Boolean(c?.allowVoice)} disabled={restricted || !c || Boolean(c?.blockedByMe)} onSend={onSend} onTyping={onTyping} />
+          <Composer allowVoice={Boolean(c?.allowVoice)} disabled={restricted || closed || !c || Boolean(c?.blockedByMe)} onSend={onSend} onTyping={onTyping} />
         </View>
       </KeyboardAvoidingView>
 

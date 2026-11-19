@@ -13,6 +13,7 @@ import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import type { AppMode } from '@/types/api';
 
 import { useGetConversationsInfiniteQuery } from '../api';
+import { peerLabel, subjectOf } from '../labels';
 import type { Conversation } from '../types';
 import { chatTime } from '../time';
 import { img } from '@/lib/image';
@@ -72,7 +73,7 @@ function Row({ conversation: c }: { conversation: Conversation }) {
   const last = c.lastMessage;
   const preview =
     last?.type === 'voice' ? `🎤 ${t('chat.voiceNote')}` : last?.type === 'image' ? `📷 ${t('chat.photo')}` : last?.type === 'system' ? t('chat.safetyShort') : (last?.text ?? '');
-  const context = c.subOrderId?.subOrderNumber ? t('chat.aboutOrder', { number: c.subOrderId.subOrderNumber }) : t(`chat.kind.${c.type}`);
+  const context = subjectOf(c, t);
 
   return (
     <Pressable
@@ -99,7 +100,7 @@ function Row({ conversation: c }: { conversation: Conversation }) {
           )}
         </View>
         <AppText variant="caption" color={Colors.textSubtle} numberOfLines={1}>
-          {t(`chat.peer.${c.peer.mode}`)} · {context}
+          {peerLabel(c, t)} · {context}
         </AppText>
         <View style={styles.line}>
           <AppText variant={unread ? 'smallMedium' : 'small'} color={unread ? Colors.text : Colors.textMuted} numberOfLines={1} style={styles.flex}>

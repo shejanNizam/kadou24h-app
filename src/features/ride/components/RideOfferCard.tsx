@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { PhotoPreview } from '@/components/media/PhotoPreview';
 import { AppText } from '@/components/ui/AppText';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
@@ -75,6 +76,7 @@ export function RideOfferCard({ offer }: { offer: RideOffer }) {
         {t('ride.tripInfo', { km: offer.distanceKm.toLocaleString(undefined, { maximumFractionDigits: 1 }), min: offer.durationMin })}
         {offer.note ? ` · “${offer.note}”` : ''}
       </AppText>
+      {offer.pickupPhoto?.url ? <PhotoPreview url={offer.pickupPhoto.url} label={t('ride.pickupPhoto')} height={100} /> : null}
       <View style={styles.row}>
         <Button
           title={t('rider.offer.skip')}

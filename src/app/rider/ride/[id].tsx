@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppMap } from '@/components/map/AppMap';
+import { PhotoPreview } from '@/components/media/PhotoPreview';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
@@ -17,6 +18,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { useOpenChat } from '@/features/chat/useOpenChat';
 import { toLatLng } from '@/features/orders/types';
 import { useGetRideQuery, useReleaseRideMutation, useRideStepMutation } from '@/features/ride/api';
 import { RIDE_TONE } from '@/features/ride/status';
@@ -78,6 +80,7 @@ function Body({ ride, refreshing, onRefresh }: { ride: Ride; refreshing: boolean
   const [step, stepState] = useRideStepMutation();
   const [release, releaseState] = useReleaseRideMutation();
   const [confirm, setConfirm] = useState<'complete' | 'release' | null>(null);
+  const { open: openChat, opening } = useOpenChat();
   const next = NEXT[ride.status];
   const toPickup = ride.status === 'accepted' || ride.status === 'arrived';
   const target = toPickup ? ride.pickup : ride.dropoff;
@@ -155,6 +158,16 @@ function Body({ ride, refreshing, onRefresh }: { ride: Ride; refreshing: boolean
                   </AppText>
                 ) : null}
               </View>
+              {next && (
+                <Pressable
+                  onPress={() => openChat({ type: 'ride', rideId: ride._id })}
+                  disabled={opening}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('ride.rider.chat')}
+                  style={styles.iconBtn}>
+                  <Feather name="message-circle" size={18} color={Colors.primary} />
+                </Pressable>
+              )}
               {phone && next && (
                 <Pressable
                   onPress={() => void Linking.openURL(`tel:${phone}`)}
@@ -185,6 +198,8 @@ function Body({ ride, refreshing, onRefresh }: { ride: Ride; refreshing: boolean
               “{ride.note}”
             </AppText>
           ) : null}
+          {/* Where the passenger waits (gate, shop): helps find them */}
+          {ride.pickupPhoto?.url && toPickup ? <PhotoPreview url={ride.pickupPhoto.url} label={t('ride.pickupPhoto')} /> : null}
           {next && (
             <Button
               title={toPickup ? t('ride.rider.directionsPickup') : t('ride.rider.directionsDropoff')}

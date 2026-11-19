@@ -3,7 +3,7 @@
  * every step; the app shows the one next action for the current state.
  */
 import { api, unwrap, unwrapPage } from '@/lib/api/api';
-import type { Paginated } from '@/types/api';
+import type { FileRef, Paginated } from '@/types/api';
 
 import type { Ride, RideAccess, RideEstimate, RideOffer, RidePlaceInput } from './types';
 
@@ -17,7 +17,7 @@ export const rideApi = api.injectEndpoints({
       transformResponse: unwrap<RideEstimate>,
       keepUnusedDataFor: 30,
     }),
-    requestRide: build.mutation<Ride, { pickup: RidePlaceInput; dropoff: RidePlaceInput; note?: string }>({
+    requestRide: build.mutation<Ride, { pickup: RidePlaceInput; dropoff: RidePlaceInput; note?: string; pickupPhoto?: FileRef }>({
       query: (body) => ({ url: '/rides', method: 'POST', body }),
       transformResponse: unwrap<Ride>,
       invalidatesTags: ['Ride'],

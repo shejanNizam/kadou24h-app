@@ -985,7 +985,8 @@
       "order": "Order",
       "buyer_seller": "Product question",
       "worker": "Service",
-      "job_application": "Application"
+      "job_application": "Application",
+      "ride": "Moto-taxi ride"
     },
     "aboutOrder": "Order {{number}}",
     "unread_one": "{{count}} unread message",
@@ -1046,7 +1047,15 @@
     "blockedTitle": "Blocked people",
     "blockedIntro": "They don’t know they are blocked. You don’t receive their messages, except about an order or a booking in progress.",
     "blockedEmpty": "You haven’t blocked anyone",
-    "blockedSince": "Blocked on {{date}}"
+    "blockedSince": "Blocked on {{date}}",
+    "aboutRide": "Ride {{number}}",
+    "peerRide": {
+      "customer": "Passenger",
+      "rider": "Moto-taxi rider"
+    },
+    "viewRide": "View the ride",
+    "rideClosed": "This ride is over: the chat is closed.",
+    "safetyNoticeRide": "For your safety, keep the conversation in the app. The fare is fixed in advance and paid in cash on arrival, nothing more. Never share your bank details."
   },
   "mode": {
     "current": "Current",
@@ -1414,7 +1423,32 @@
     "legSearching": "Nearby riders can see it: the first to accept takes it. You can also send it to one rider.",
     "legNobody": "Still nobody: choose a rider, or wait. The Kadou24h team has been told.",
     "legWaitAccept": "Nearby riders will see it as soon as you accept the order.",
-    "legReserved": "Waiting for {{name}} to answer until {{time}}. Then it goes back to the nearby riders."
+    "legReserved": "Waiting for {{name}} to answer until {{time}}. Then it goes back to the nearby riders.",
+    "progress": {
+      "title": "Progress",
+      "riderName": "Handed to {{name}}",
+      "riderComing": "{{name}} is coming to collect it",
+      "leg": "Leg {{n}} of {{total}} · to {{to}}",
+      "paidAmount": "+ {{amount}} in your wallet",
+      "awaitingCod": "The rider must first hand the cash collected to Kadou24h",
+      "releasing": "Payment on its way",
+      "step": {
+        "received": "Order received",
+        "accepted": "Accepted",
+        "preparing": "Preparing",
+        "ready_for_pickup": "Ready for pickup",
+        "handed_over": "Handed to the rider",
+        "on_the_way": "On the way to the customer",
+        "delivered": "Delivered to the customer",
+        "paid": "Money added to your wallet"
+      },
+      "state": {
+        "done": "done",
+        "current": "in progress",
+        "todo": "coming",
+        "cancelled": "cancelled"
+      }
+    }
   },
   "riders": {
     "title": "My riders",
@@ -2480,7 +2514,9 @@
       "noteHint": "E.g. in front of the pharmacy, blue gate",
       "safety": "For your safety: check the rider’s name, plate and vest number before getting on, wear a helmet, and share your trip with a close one.",
       "order": "Order · {{amount}}",
-      "orderShort": "Order"
+      "orderShort": "Order",
+      "photo": "Photo of the pickup spot",
+      "photoHint": "The gate, shop or landmark where you wait: the rider finds you faster."
     },
     "searchingText": "Nearby riders can see your request. The first to accept comes to pick you up.",
     "arrivedText": "Your rider is at the pickup point.",
@@ -2555,14 +2591,17 @@
       "drop": "I can’t do this ride",
       "dropTitle": "Drop the ride?",
       "dropText": "It goes to the other nearby riders and you won’t see it again.",
-      "dropped": "Ride offered to other riders"
+      "dropped": "Ride offered to other riders",
+      "chat": "Message the passenger"
     },
     "plate": "Plate",
     "vest": "Vest",
     "share": {
       "button": "Share my trip",
       "message": "I’m on a Kadou24h moto-taxi. Follow my trip live (driver, plate, position): {{url}}"
-    }
+    },
+    "chatRider": "Message the rider",
+    "pickupPhoto": "Photo of the pickup spot"
   },
   "history": {
     "deleteAction": "Delete from my history",

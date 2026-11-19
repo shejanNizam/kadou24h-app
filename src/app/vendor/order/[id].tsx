@@ -21,6 +21,7 @@ import { SUB_ORDER_TONE } from '@/features/orders/status';
 import { toLatLng, type SubOrderStatus } from '@/features/orders/types';
 import { useGetVendorOrderQuery, useUpdateOrderStatusMutation } from '@/features/vendor/api';
 import { AssignRiderSheet, CancelOrderSheet, ModifyOrderSheet } from '@/features/vendor/components/OrderSheets';
+import { OrderProgress } from '@/features/vendor/components/OrderProgress';
 import { PaymentChip } from '@/features/vendor/components/PaymentChip';
 import type { VendorLeg, VendorSubOrderDetails } from '@/features/vendor/types';
 import { useSocketEvent } from '@/hooks/useSocketEvent';
@@ -137,6 +138,11 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
             </AppText>
           </View>
         )}
+
+        {/* Every step up to the money in the wallet */}
+        <Section title={t('vendorOrders.progress.title')}>
+          <OrderProgress data={data} />
+        </Section>
 
         {/* Customer */}
         <Section title={t('vendorOrders.customer')}>

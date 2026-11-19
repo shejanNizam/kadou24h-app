@@ -20,6 +20,8 @@ import { img } from '@/lib/image';
 const SAFETY_NOTICE: Partial<Record<ConversationType, string>> = {
   worker: 'chat.safetyNoticeWorker',
   job_application: 'chat.safetyNoticeJob',
+  // The fare is paid in cash to the rider: "pay via Kadou24h" would be wrong here
+  ride: 'chat.safetyNoticeRide',
 };
 
 /** One message. Mine on the right (purple), theirs on the left, system notices centred. */

@@ -64,6 +64,8 @@ export interface TimelineEntry {
   _id: string;
   status: string;
   note?: string;
+  /** Facts shown with the step, e.g. { leg: 2, place: "Gare de Kindia" } */
+  params?: Record<string, string | number>;
   at: string;
 }
 
