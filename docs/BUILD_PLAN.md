@@ -157,7 +157,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] "Customers also bought" in the cart — `GET /cart/suggestions` — 2026-10-21
 - [ ] Social login — waits for the user: Google Cloud OAuth clients (Web client ID for the app, Android client with the EAS SHA-1), `GOOGLE_CLIENT_IDS` on the server. Then add `@react-native-google-signin/google-signin` (native, new APK), the button when `EXPO_PUBLIC_GOOGLE_CLIENT_ID` is set, and the phone step after `requiresPhone`. Not added before: it is not in Expo's tested module list for SDK 58, so it should go in with a test build
 - [ ] Real logo asset → BrandLogo, app icon, splash (interim icon in place)
-- [ ] User setup: deploy server to pagla7000, Firebase (google-services.json + FIREBASE_SERVICE_ACCOUNT_BASE64), real Google Maps key, then rebuild the APK
+- [ ] User setup: deploy server to nizam7000, Firebase (google-services.json + FIREBASE_SERVICE_ACCOUNT_BASE64), real Google Maps key, then rebuild the APK
 - [x] **§10 #8 + #9 fixed (2026-10-21, best-practice options):** COD only up to the rider cash limit per store (summary `cod`, server refusal, greyed COD option); online orders reach the store once paid (`pending_payment`, 30-min window, sweep cancels + cart restore, late payment → refund). e2e 157/157 (28 new checks)
 - [ ] Client answers for APP_SPEC §10 #2–5, #7 (defaults stay until then)
 

@@ -6,7 +6,7 @@
 | `npm run build:apk` | preview | APK to install directly (testers) | `preview` |
 | `npm run build:aab` | production | AAB for the Play Store (`versionCode` goes up by itself) | `production` |
 
-Both point at `EXPO_PUBLIC_API_URL` from `eas.json` (now `https://pagla7000.ilmifygroup.com/api/v1`).
+Both point at `EXPO_PUBLIC_API_URL` from `eas.json` (now `https://nizam7000.ilmifygroup.com/api/v1`).
 
 ## Over-the-air updates (expo-updates)
 JS and image changes reach phones **without a new APK**:

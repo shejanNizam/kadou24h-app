@@ -19,7 +19,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://pagla7000.ilmifygroup.com/api/v1",
+        "EXPO_PUBLIC_API_URL": "https://nizam7000.ilmifygroup.com/api/v1",
         "EXPO_PUBLIC_SENTRY_DSN": "https://1b4ac2764249504191122d8fa59229ee@o4512348909928448.ingest.de.sentry.io/4512348919038032"
       },
       "channel": "preview"
@@ -28,7 +28,7 @@
       "autoIncrement": true,
       "environment": "production",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://pagla7000.ilmifygroup.com/api/v1",
+        "EXPO_PUBLIC_API_URL": "https://nizam7000.ilmifygroup.com/api/v1",
         "EXPO_PUBLIC_SENTRY_DSN": "https://1b4ac2764249504191122d8fa59229ee@o4512348909928448.ingest.de.sentry.io/4512348919038032"
       },
       "channel": "production",
