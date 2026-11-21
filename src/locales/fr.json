@@ -912,7 +912,8 @@
     "partCancelled": "La partie {{store}} est annulée.",
     "feesUnpaidUntil": "Payez les frais ({{amount}}) avant {{time}} : la boutique reçoit la commande dès qu’ils sont payés. Sinon elle est annulée et les articles reviennent dans votre panier.",
     "payFees": "Payer les frais · {{amount}}",
-    "cancelPartTextFees": "Seuls les articles de {{store}} sont annulés. Les frais de livraison payés en ligne pour cette boutique vous seront remboursés après vérification. Les autres boutiques continuent."
+    "cancelPartTextFees": "Seuls les articles de {{store}} sont annulés. Les frais de livraison payés en ligne pour cette boutique vous seront remboursés après vérification. Les autres boutiques continuent.",
+    "notAccepted": "Annulée : la boutique n’a pas confirmé la commande à temps. Si vous avez déjà payé, vous serez remboursé."
   },
   "track": {
     "title": "Suivi de livraison",
@@ -946,7 +947,7 @@
       "pending_payment": "En attente de paiement"
     },
     "payment": {
-      "unpaid": "Non payée",
+      "unpaid": "À payer",
       "paid": "Payée",
       "partially_refunded": "Part. remboursée",
       "refunded": "Remboursée"
@@ -1448,7 +1449,9 @@
         "todo": "à venir",
         "cancelled": "annulée"
       }
-    }
+    },
+    "notAccepted": "Annulée automatiquement : vous ne l’avez pas acceptée à temps.",
+    "acceptBy": "Acceptez avant {{time}}, sinon la commande sera annulée automatiquement et le client prévenu."
   },
   "riders": {
     "title": "Mes livreurs",
@@ -1632,6 +1635,7 @@
     "reference": "Référence du transfert : {{ref}}"
   },
   "rider": {
+    "assignedToYou": "Course pour vous",
     "online": "En ligne",
     "offline": "Hors ligne",
     "onlineSwitch": "Être en ligne",
@@ -2492,7 +2496,7 @@
     "title": "Course {{number}}",
     "pickup": "Départ",
     "dropoff": "Arrivée",
-    "price": "Prix de la course",
+    "price": "Prix conseillé",
     "tripInfo": "{{km}} km · environ {{min}} min",
     "payCash": "À payer en espèces au chauffeur",
     "mapA11y": "Carte de la course",
@@ -2507,9 +2511,9 @@
       "reviewTitle": "Votre course",
       "moveOnMap": "Sur la carte",
       "addressHint": "Quartier, rue, repère…",
-      "ridersNearby_one": "{{count}} chauffeur disponible près de vous. Le premier qui accepte vient vous chercher.",
-      "ridersNearby_other": "{{count}} chauffeurs disponibles près de vous. Le premier qui accepte vient vous chercher.",
-      "noRiderNearby": "Aucun chauffeur disponible tout près pour l’instant. Vous pouvez commander : la demande s’élargit pendant 10 minutes.",
+      "ridersNearby_one": "{{count}} chauffeur disponible près de vous. Les chauffeurs vous envoient leur prix : vous choisissez.",
+      "ridersNearby_other": "{{count}} chauffeurs disponibles près de vous. Les chauffeurs vous envoient leur prix : vous choisissez.",
+      "noRiderNearby": "Aucun chauffeur disponible tout près pour l’instant. Vous pouvez commander : la demande reste ouverte 10 minutes.",
       "note": "Note pour le chauffeur",
       "noteHint": "Ex. : devant la pharmacie, portail bleu",
       "safety": "Pour votre sécurité : vérifiez le nom, la plaque et le numéro de gilet du chauffeur avant de monter, portez un casque et partagez votre course avec un proche.",
@@ -2518,7 +2522,7 @@
       "photo": "Photo du lieu de départ",
       "photoHint": "Le portail, la boutique ou le repère où vous attendez : le chauffeur vous trouve plus vite."
     },
-    "searchingText": "Les chauffeurs proches voient votre demande. Le premier qui accepte vient vous chercher.",
+    "searchingText": "Les chauffeurs proches voient votre demande et vous envoient leur prix. Vous choisissez.",
     "arrivedText": "Votre chauffeur est arrivé au point de départ.",
     "onTheWayText": "En route vers {{place}}.",
     "completedText": "Course terminée. Payez {{amount}} en espèces au chauffeur.",
@@ -2601,7 +2605,39 @@
       "message": "Je suis dans un moto-taxi Kadou24h. Suivez ma course en direct (chauffeur, plaque, position) : {{url}}"
     },
     "chatRider": "Écrire au chauffeur",
-    "pickupPhoto": "Photo du lieu de départ"
+    "pickupPhoto": "Photo du lieu de départ",
+    "bid": {
+      "suggested": "Prix conseillé par Kadou24h",
+      "youMayAsk": "Vous pouvez demander jusqu’à {{max}}",
+      "acceptAt": "Accepter · {{amount}}",
+      "ask": "Proposer mon prix",
+      "yourPrice": "Votre prix (pluie, nuit, route difficile)",
+      "send": "Envoyer · {{amount}}",
+      "sent": "Prix envoyé au passager",
+      "waiting": "Prix envoyé : {{amount}}. Le passager choisit…",
+      "answerIn": "Réponse attendue dans {{count}} s",
+      "withdraw": "Retirer mon prix",
+      "counter": "Le passager propose {{amount}} (votre prix : {{yours}})",
+      "decline": "Refuser",
+      "declined": "Le passager n’a pas retenu votre prix. Vous pouvez en proposer un autre.",
+      "noAnswer": "Pas de réponse à temps. Vous pouvez renvoyer un prix.",
+      "noMore": "Vous ne pouvez plus proposer de prix pour cette course.",
+      "less": "Baisser le prix",
+      "more": "Augmenter le prix",
+      "eta": "à {{km}} · {{min}} min",
+      "validFor": "Offre valable encore {{count}} s",
+      "youCountered": "Vous proposez {{amount}} · réponse du chauffeur dans {{count}} s",
+      "counterTitle": "Votre contre-proposition",
+      "sendCounter": "Proposer · {{amount}}",
+      "counterSent": "Contre-proposition envoyée au chauffeur",
+      "counterButton": "Contre-offre",
+      "choose": "Choisir",
+      "chosen": "Chauffeur choisi : il arrive",
+      "choosePrompt": "Choisissez l’offre qui vous convient. D’autres chauffeurs peuvent encore répondre.",
+      "range": "Prix conseillé {{fare}} · un chauffeur peut demander jusqu’à {{max}} (pluie, nuit, route difficile). Vous choisissez.",
+      "offersTitle_one": "{{count}} offre de chauffeur",
+      "offersTitle_other": "{{count}} offres de chauffeurs"
+    }
   },
   "history": {
     "deleteAction": "Supprimer de mon historique",

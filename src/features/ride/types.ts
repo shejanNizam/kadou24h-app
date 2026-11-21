@@ -6,6 +6,41 @@ export type RideStatus = 'searching' | 'accepted' | 'arrived' | 'in_progress' | 
 
 export const RUNNING_RIDE: RideStatus[] = ['searching', 'accepted', 'arrived', 'in_progress'];
 
+/** A rider's price for a searching ride (negotiable price, client 2026-11-21) */
+export type RideBidStatus = 'pending' | 'countered' | 'accepted' | 'declined' | 'withdrawn' | 'expired';
+export const LIVE_BID: RideBidStatus[] = ['pending', 'countered'];
+
+/** A price the passenger can choose: who offers it (never the phone) and until when */
+export interface RideBid {
+  _id: string;
+  price: number;
+  /** The passenger's counter-offer, waiting for the rider */
+  counterPrice?: number;
+  status: RideBidStatus;
+  expiresAt: string;
+  createdAt: string;
+  pickupKm: number;
+  etaMin: number;
+  rider?: {
+    _id: string;
+    name?: string;
+    avatar?: FileRef;
+    vehicle?: { type?: string; brand?: string; color?: string };
+    rating: number;
+    ratingCount: number;
+    rides: number;
+  };
+}
+
+/** My last price on a ride request (rider) */
+export interface MyRideBid {
+  _id: string;
+  price: number;
+  counterPrice?: number;
+  status: RideBidStatus;
+  expiresAt: string;
+}
+
 export interface RidePlace {
   location: GeoPoint;
   address: string;
@@ -19,8 +54,14 @@ export interface Ride {
   dropoff: RidePlace;
   distanceKm: number;
   durationMin: number;
-  /** GNF, paid in cash to the rider at the end */
+  /** GNF, paid in cash to the rider at the end: the suggested price while searching, the agreed one once a rider is chosen */
   fare: number;
+  /** GNF, Kadou24h's price */
+  suggestedFare: number;
+  /** GNF, the most a rider may ask */
+  maxFare: number;
+  /** The riders' live prices (passenger, while searching) */
+  bids?: RideBid[];
   note?: string;
   /** The passenger's photo of the pickup spot (gate, landmark) */
   pickupPhoto?: FileRef;
@@ -56,7 +97,10 @@ export interface Ride {
 export interface RideEstimate {
   distanceKm: number;
   durationMin: number;
+  /** Kadou24h's suggested price */
   fare: number;
+  /** The most a rider may ask */
+  maxFare: number;
   ridersNearby: number;
 }
 
@@ -75,10 +119,16 @@ export interface RideOffer {
   distanceKm: number;
   durationMin: number;
   fare: number;
+  suggestedFare: number;
+  maxFare: number;
   note?: string;
   pickupPhoto?: FileRef;
   pickupKm: number;
   searchStartedAt: string;
+  /** My last price for it */
+  myBid?: MyRideBid;
+  /** Prices I may still send for it */
+  bidsLeft: number;
 }
 
 /** My moto-taxi subscription (only while Kadou24h requires one; rides are free otherwise) */

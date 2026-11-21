@@ -53,6 +53,23 @@ export const rideApi = api.injectEndpoints({
       query: (id) => ({ url: `/rides/${id}/share`, method: 'POST' }),
       transformResponse: unwrap<{ token: string; url: string }>,
     }),
+    /** I choose this rider at their price */
+    acceptBid: build.mutation<Ride, { id: string; bidId: string }>({
+      query: ({ id, bidId }) => ({ url: `/rides/${id}/bids/${bidId}/accept`, method: 'POST' }),
+      transformResponse: unwrap<Ride>,
+      invalidatesTags: ['Ride'],
+    }),
+    declineBid: build.mutation<Ride, { id: string; bidId: string }>({
+      query: ({ id, bidId }) => ({ url: `/rides/${id}/bids/${bidId}/decline`, method: 'POST' }),
+      transformResponse: unwrap<Ride>,
+      invalidatesTags: ['Ride'],
+    }),
+    /** Once per price: between the suggested fare and the rider's price */
+    counterBid: build.mutation<Ride, { id: string; bidId: string; price: number }>({
+      query: ({ id, bidId, price }) => ({ url: `/rides/${id}/bids/${bidId}/counter`, method: 'POST', body: { price } }),
+      transformResponse: unwrap<Ride>,
+      invalidatesTags: ['Ride'],
+    }),
     rateRide: build.mutation<Ride, { id: string; stars: number; comment?: string }>({
       query: ({ id, ...body }) => ({ url: `/rides/${id}/rate`, method: 'POST', body }),
       transformResponse: unwrap<Ride>,
@@ -81,9 +98,19 @@ export const rideApi = api.injectEndpoints({
       transformResponse: unwrapPage<Ride>,
       providesTags: ['Ride'],
     }),
-    acceptRide: build.mutation<Ride, string>({
-      query: (id) => ({ url: `/rides/${id}/accept`, method: 'POST' }),
-      transformResponse: unwrap<Ride>,
+    // Negotiable price (client, 2026-11-21): I answer with a price (default the suggested one)
+    placeBid: build.mutation<{ rideId: string; price: number; expiresAt: string }, { id: string; price?: number }>({
+      query: ({ id, price }) => ({ url: `/rides/${id}/bid`, method: 'POST', body: price === undefined ? {} : { price } }),
+      transformResponse: unwrap<{ rideId: string; price: number; expiresAt: string }>,
+      invalidatesTags: ['RideOffer'],
+    }),
+    withdrawBid: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/rides/${id}/bid`, method: 'DELETE' }),
+      invalidatesTags: ['RideOffer'],
+    }),
+    /** My answer to the passenger's counter-offer: yes takes the ride at their price */
+    answerCounter: build.mutation<unknown, { id: string; accept: boolean }>({
+      query: ({ id, accept }) => ({ url: `/rides/${id}/bid/answer`, method: 'POST', body: { accept } }),
       invalidatesTags: ['Ride', 'RideOffer', 'DeliveryOffer'],
     }),
     skipRide: build.mutation<unknown, string>({
@@ -120,7 +147,12 @@ export const {
   useGetRiderCurrentRideQuery,
   useGetRiderAccessQuery,
   useGetRiderRidesInfiniteQuery,
-  useAcceptRideMutation,
+  usePlaceBidMutation,
+  useWithdrawBidMutation,
+  useAnswerCounterMutation,
+  useAcceptBidMutation,
+  useDeclineBidMutation,
+  useCounterBidMutation,
   useSkipRideMutation,
   useRideStepMutation,
   useReleaseRideMutation,

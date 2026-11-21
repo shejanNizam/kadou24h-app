@@ -22,7 +22,7 @@ import { toLatLng } from '@/features/orders/types';
 import { useAcceptDeliveryMutation, useGetMyRiderQuery, useGetRiderDeliveryQuery, useGoingToPickupMutation } from '@/features/rider/api';
 import { DeclineSheet, PinSheet } from '@/features/rider/components/DeliverySheets';
 import { ShowCode } from '@/features/rider/components/ShowCode';
-import { cashToCollect, DELIVERY_TONE, directionsUrl, handoverTo, pickupFrom, riderStep, type RiderStep } from '@/features/rider/status';
+import { cashToCollect, DELIVERY_TONE, directionsUrl, handoverTo, pickupFrom, riderStatusLabel, riderStep, type RiderStep } from '@/features/rider/status';
 import type { RiderDeliveryDetails } from '@/features/rider/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
@@ -128,7 +128,7 @@ function DeliveryBody({ delivery: d }: { delivery: RiderDeliveryDetails }) {
     <>
       <ScrollView contentContainerStyle={[styles.inner, styles.content]}>
         <View style={styles.row}>
-          <StatusPill label={t(`status.delivery.${d.status}`)} tone={DELIVERY_TONE[d.status]} />
+          <StatusPill label={riderStatusLabel(d.status, t)} tone={DELIVERY_TONE[d.status]} />
           <AppText variant="caption" color={Colors.textMuted} style={styles.flex}>
             {d.legType !== 'local' ? t(`rider.leg.${d.legType}`) : ''}
           </AppText>

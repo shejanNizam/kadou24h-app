@@ -12,7 +12,7 @@ import { getApiErrorMessage } from "@/lib/api/errors";
 import { formatGNF } from "@/lib/format";
 
 import { useAcceptDeliveryMutation } from "../api";
-import { cashToCollect, DELIVERY_TONE, legKm } from "../status";
+import { cashToCollect, DELIVERY_TONE, legKm, riderStatusLabel } from "../status";
 import type { RiderDelivery } from "../types";
 
 /** One leg in my list: where from → where to, my earning, the cash to collect. New ones: Accept / Decline. */
@@ -87,7 +87,7 @@ export function DeliveryCard({
             </AppText>
           </View>
           <StatusPill
-            label={t(`status.delivery.${delivery.status}`)}
+            label={riderStatusLabel(delivery.status, t)}
             tone={DELIVERY_TONE[delivery.status]}
           />
         </View>

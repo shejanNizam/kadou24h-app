@@ -24,6 +24,7 @@ import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/
 import { RIDE_CHAT_OPEN } from '@/features/chat/labels';
 import { useOpenChat } from '@/features/chat/useOpenChat';
 import { toLatLng } from '@/features/orders/types';
+import { BidCard } from '@/features/ride/components/BidCard';
 import { useCancelRideMutation, useGetRideQuery, useRateRideMutation, useRequestRideMutation, useShareRideMutation } from '@/features/ride/api';
 import { RIDE_TONE } from '@/features/ride/status';
 import { RUNNING_RIDE, type Ride } from '@/features/ride/types';
@@ -34,7 +35,8 @@ import { formatGNF } from '@/lib/format';
 import { img } from '@/lib/image';
 
 /**
- * My moto-taxi ride: looking for a rider → the rider is coming (live on the map)
+ * My moto-taxi ride: looking for a rider (riders send their price, I choose one or counter-offer)
+ * → the rider is coming (live on the map)
  * → arrived → on the way → finished (pay in cash, rate). The rider's phone is
  * never shown (client rule): I write to them in the app (text, voice note, photo);
  * the rider can also call me.
@@ -171,12 +173,19 @@ function RideBody({
           </View>
 
           {ride.status === 'searching' && (
-            <View style={styles.row}>
-              <ActivityIndicator color={Colors.primary} />
-              <AppText variant="small" color={Colors.textMuted} style={styles.flex}>
-                {t('ride.searchingText')}
-              </AppText>
-            </View>
+            <>
+              <View style={styles.row}>
+                <ActivityIndicator color={Colors.primary} />
+                <AppText variant="small" color={Colors.textMuted} style={styles.flex}>
+                  {ride.bids?.length ? t('ride.bid.choosePrompt') : t('ride.searchingText')}
+                </AppText>
+              </View>
+              {ride.maxFare > ride.suggestedFare && (
+                <AppText variant="caption" color={Colors.textMuted}>
+                  {t('ride.bid.range', { fare: formatGNF(ride.suggestedFare), max: formatGNF(ride.maxFare) })}
+                </AppText>
+              )}
+            </>
           )}
           {ride.status === 'arrived' && <Banner tone="success" message={t('ride.arrivedText')} />}
           {ride.status === 'in_progress' && <Banner tone="info" message={t('ride.onTheWayText', { place: ride.dropoff.address })} />}
@@ -194,6 +203,15 @@ function RideBody({
 
           {ride.rider && ride.status !== 'searching' && <RiderCard ride={ride} />}
         </View>
+
+        {ride.status === 'searching' && Boolean(ride.bids?.length) && (
+          <View style={styles.card}>
+            <AppText variant="title">{t('ride.bid.offersTitle', { count: ride.bids!.length })}</AppText>
+            {ride.bids!.map((bid) => (
+              <BidCard key={bid._id} ride={ride} bid={bid} />
+            ))}
+          </View>
+        )}
 
         <View style={styles.card}>
           <Place icon="circle" color={Colors.primary} label={t('ride.pickup')} value={ride.pickup.address} />

@@ -172,6 +172,9 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [x] Payment gateway adapter (server modules/payment/gateway): demo now; an aggregator = one gateway file + PAYMENT_MODE=live + PAYMENT_PROVIDER; app opens payment.checkoutUrl
 - [x] Client wording (2026-10-24): Offer my services, Publish a job, Invite a friend, Order a moto-taxi, motorbike icons
 - [x] Moto-taxi chat (2026-11-19): passenger ↔ rider chat (`type: ride`) with voice notes and photos, open while the ride is accepted / arrived / in progress, read-only after; "Message the rider" on the ride, chat icon on the rider's ride screen, ride number in the chat list, ride safety notice (fare in cash). Optional photo of the pickup spot when ordering, shown on the rider's offer and ride screen and in the dashboard ride details. Server e2e +13 checks (504/504)
+- [x] Client corrections (2026-11-21): "Non payée" → "À payer" (customer); the rider sees a job waiting for their answer as "Course pour vous" (customer screens keep "Assignée").
+- [x] Store accept delay (2026-11-21): a new order the store doesn't accept within `settings.orders.acceptMinutes` (default 30, dashboard Settings → Fees) is cancelled by the system (code `not_accepted`): stock back, escrow reversed, fees paid online into a refund request, the customer and the store told in their language. The store gets a reminder half-way and sees "Accept before HH:MM" on the order. Server e2e +9 checks
+- [x] Negotiable moto-taxi price (2026-11-21, client's answers): Kadou24h suggests the price; each nearby rider accepts it or asks up to `settings.rides.maxRaisePercent` more (default 30 %, steps of 500 GNF); the passenger sees the prices with each rider (name, photo, moto, rating, how far — no phone), chooses one, declines, or counter-offers once (never under the suggested price). 60 s to answer each way, one live price per rider, 3 per ride. Search radius capped by `settings.rides.searchRadiusKm` (default 5 km). Dashboard: both settings + every price in the ride details. Server e2e: the moto-taxi section rewritten (+25 checks)
 - [x] Store order progress (2026-11-19): step-by-step timeline on the store's order (received → accepted → preparing → ready → handed to the rider → on the way → delivered → money in the wallet, with times, rider name, intercity leg, COD "waiting for the rider's cash")
 
 ## Promo codes, cancel one store, block in chat (2026-10-22, client agreed)
@@ -197,6 +200,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-11-21 — Client corrections: wording, store accept delay with auto-cancel, negotiable moto-taxi price (riders bid, passenger chooses or counter-offers).
 - 2026-10-24 — Client wording + motorbike icons; moto-taxi rider subscription (off by default); payment gateway adapter; phone uploads via XMLHttpRequest (expo/fetch rejects uri parts); voice notes recorded as AAC and played as MP3.
 - 2026-10-23 — Moto-taxi (A → B rides): price first, nearest riders, cash, ratings; dashboard page + prices.
 - 2026-10-23 — Open dispatch (nearest riders, first to accept), COD fees paid online first, demo payments, worker photo optional.

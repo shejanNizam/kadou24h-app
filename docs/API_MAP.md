@@ -225,7 +225,8 @@ GET    /reviews/product/:productId  [public]
 
 ## Changed for the app — Moto-taxi (2026-10-23)
 - Passenger: `POST /rides/estimate`, `POST /rides`, `GET /rides/my`, `GET /rides/my/current`, `GET /rides/:id`, `POST /rides/:id/cancel`, `POST /rides/:id/rate`.
-- Rider: `GET /rides/rider/offers`, `GET /rides/rider/current`, `GET /rides/rider/history`, `POST /rides/:id/accept | skip | arrived | start | complete | release`.
+- Rider: `GET /rides/rider/offers`, `GET /rides/rider/current`, `GET /rides/rider/history`, `POST /rides/:id/skip | arrived | start | complete | release`.
+- Negotiable price (2026-11-21): rider `POST /rides/:id/bid { price? }`, `DELETE /rides/:id/bid`, `POST /rides/:id/bid/answer { accept }`; passenger `POST /rides/:id/bids/:bidId/accept | decline`, `POST /rides/:id/bids/:bidId/counter { price }`. `GET /rides/:id` → `suggestedFare`, `maxFare`, `bids[]` (passenger, while searching); offers rows → `suggestedFare`, `maxFare`, `myBid`, `bidsLeft`. (`POST /rides/:id/accept` is gone.)
 - Sockets `ride:offer`, `ride:offer_gone`, `ride:updated`, `ride:location`; push type `ride_update` (`data.kind: "ride"`, `rideId`, `offer`). Public settings `rides`.
 
 ## Changed for the app — Open dispatch, COD fees, demo payments (2026-10-23)

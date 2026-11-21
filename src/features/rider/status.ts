@@ -2,6 +2,8 @@
  * Delivery status → colour and the rider's one next action (APP_SPEC §7.4).
  * Labels live in i18n: status.delivery.<value>, rider.step.<action>.
  */
+import type { TFunction } from 'i18next';
+
 import type { StatusTone } from '@/components/ui/StatusPill';
 import type { DeliveryStatus, GeoPoint } from '@/features/orders/types';
 
@@ -18,6 +20,10 @@ export const DELIVERY_TONE: Record<DeliveryStatus, StatusTone> = {
   delivered: 'green',
   cancelled: 'red',
 };
+
+/** The rider sees a job waiting for their answer as "a trip for you" (client wording) */
+export const riderStatusLabel = (status: DeliveryStatus, t: TFunction) =>
+  status === 'assigned' ? t('rider.assignedToYou') : t(`status.delivery.${status}`);
 
 /**
  * What the big bottom button does now:

@@ -218,6 +218,11 @@ export default function NewRideScreen() {
             <AppText variant="h1" color={Colors.primary}>
               {formatGNF(est.fare)}
             </AppText>
+            {est.maxFare > est.fare && (
+              <AppText variant="caption" color={Colors.textMuted}>
+                {t('ride.bid.range', { fare: formatGNF(est.fare), max: formatGNF(est.maxFare) })}
+              </AppText>
+            )}
             <AppText variant="small" color={Colors.textMuted}>
               {t('ride.tripInfo', { km: est.distanceKm.toLocaleString(undefined, { maximumFractionDigits: 1 }), min: est.durationMin })}
             </AppText>

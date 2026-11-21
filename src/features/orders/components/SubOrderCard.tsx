@@ -66,9 +66,9 @@ export function SubOrderCard({
           <Banner
             tone="danger"
             message={
-              // Payment window over: the server's reason is English, say it in the user's language
+              // Cancelled by Kadou24h itself: the server's reason is English, say it in the user's language
               subOrder.cancellation.by === 'system'
-                ? t('order.paymentExpired')
+                ? t(subOrder.cancellation.code === 'not_accepted' ? 'order.notAccepted' : 'order.paymentExpired')
                 : t('order.cancelledBy', { by: t(`order.by.${subOrder.cancellation.by}`), reason: subOrder.cancellation.reason })
             }
           />

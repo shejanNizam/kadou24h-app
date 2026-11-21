@@ -56,6 +56,8 @@ export interface PublicSettings {
   withdrawalFees?: WithdrawalFee[];
   /** GNF: job publishing, CV unlock, spontaneous application */
   pricing?: { jobPublishFee: number; cvUnlockFee: number; spontaneousApplicationFee: number };
+  /** A store must accept a new order within acceptMinutes, or it is cancelled automatically */
+  orders?: { acceptMinutes: number };
 }
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);

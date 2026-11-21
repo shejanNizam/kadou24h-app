@@ -912,7 +912,8 @@
     "partCancelled": "The {{store}} part is cancelled.",
     "feesUnpaidUntil": "Pay the fees ({{amount}}) before {{time}}: the store receives the order as soon as they are paid. Otherwise it is cancelled and the items go back to your cart.",
     "payFees": "Pay the fees · {{amount}}",
-    "cancelPartTextFees": "Only the {{store}} items are cancelled. The delivery fee you paid online for this store will be refunded after review. The other stores carry on."
+    "cancelPartTextFees": "Only the {{store}} items are cancelled. The delivery fee you paid online for this store will be refunded after review. The other stores carry on.",
+    "notAccepted": "Cancelled: the store didn’t confirm the order in time. If you already paid, you will be refunded."
   },
   "track": {
     "title": "Delivery tracking",
@@ -946,7 +947,7 @@
       "pending_payment": "Awaiting payment"
     },
     "payment": {
-      "unpaid": "Unpaid",
+      "unpaid": "To be paid",
       "paid": "Paid",
       "partially_refunded": "Partly refunded",
       "refunded": "Refunded"
@@ -1448,7 +1449,9 @@
         "todo": "coming",
         "cancelled": "cancelled"
       }
-    }
+    },
+    "notAccepted": "Cancelled automatically: you didn’t accept it in time.",
+    "acceptBy": "Accept before {{time}}, or the order will be cancelled automatically and the customer told."
   },
   "riders": {
     "title": "My riders",
@@ -1632,6 +1635,7 @@
     "reference": "Transfer reference: {{ref}}"
   },
   "rider": {
+    "assignedToYou": "Trip for you",
     "online": "Online",
     "offline": "Offline",
     "onlineSwitch": "Be online",
@@ -2492,7 +2496,7 @@
     "title": "Ride {{number}}",
     "pickup": "Pickup",
     "dropoff": "Destination",
-    "price": "Ride price",
+    "price": "Suggested price",
     "tripInfo": "{{km}} km · about {{min}} min",
     "payCash": "Pay the rider in cash",
     "mapA11y": "Ride map",
@@ -2507,9 +2511,9 @@
       "reviewTitle": "Your ride",
       "moveOnMap": "On the map",
       "addressHint": "Neighbourhood, street, landmark…",
-      "ridersNearby_one": "{{count}} rider available near you. The first to accept comes to pick you up.",
-      "ridersNearby_other": "{{count}} riders available near you. The first to accept comes to pick you up.",
-      "noRiderNearby": "No rider available close by right now. You can still order: the request widens for 10 minutes.",
+      "ridersNearby_one": "{{count}} rider available near you. Riders send you their price: you choose.",
+      "ridersNearby_other": "{{count}} riders available near you. Riders send you their price: you choose.",
+      "noRiderNearby": "No rider available close by right now. You can still order: the request stays open for 10 minutes.",
       "note": "Note for the rider",
       "noteHint": "E.g. in front of the pharmacy, blue gate",
       "safety": "For your safety: check the rider’s name, plate and vest number before getting on, wear a helmet, and share your trip with a close one.",
@@ -2518,7 +2522,7 @@
       "photo": "Photo of the pickup spot",
       "photoHint": "The gate, shop or landmark where you wait: the rider finds you faster."
     },
-    "searchingText": "Nearby riders can see your request. The first to accept comes to pick you up.",
+    "searchingText": "Nearby riders can see your request and send you their price. You choose.",
     "arrivedText": "Your rider is at the pickup point.",
     "onTheWayText": "On the way to {{place}}.",
     "completedText": "Ride finished. Pay {{amount}} in cash to the rider.",
@@ -2601,7 +2605,39 @@
       "message": "I’m on a Kadou24h moto-taxi. Follow my trip live (driver, plate, position): {{url}}"
     },
     "chatRider": "Message the rider",
-    "pickupPhoto": "Photo of the pickup spot"
+    "pickupPhoto": "Photo of the pickup spot",
+    "bid": {
+      "suggested": "Kadou24h’s suggested price",
+      "youMayAsk": "You may ask up to {{max}}",
+      "acceptAt": "Accept · {{amount}}",
+      "ask": "Propose my price",
+      "yourPrice": "Your price (rain, night, bad road)",
+      "send": "Send · {{amount}}",
+      "sent": "Price sent to the passenger",
+      "waiting": "Price sent: {{amount}}. The passenger is choosing…",
+      "answerIn": "Answer expected within {{count}} s",
+      "withdraw": "Take my price back",
+      "counter": "The passenger offers {{amount}} (your price: {{yours}})",
+      "decline": "Decline",
+      "declined": "The passenger didn’t take your price. You can propose another one.",
+      "noAnswer": "No answer in time. You can send a price again.",
+      "noMore": "You can’t send more prices for this ride.",
+      "less": "Lower the price",
+      "more": "Raise the price",
+      "eta": "{{km}} away · {{min}} min",
+      "validFor": "Offer valid for {{count}} s",
+      "youCountered": "You offer {{amount}} · rider’s answer within {{count}} s",
+      "counterTitle": "Your counter-offer",
+      "sendCounter": "Offer · {{amount}}",
+      "counterSent": "Counter-offer sent to the rider",
+      "counterButton": "Counter-offer",
+      "choose": "Choose",
+      "chosen": "Rider chosen: they are on their way",
+      "choosePrompt": "Choose the offer that suits you. Other riders may still answer.",
+      "range": "Suggested price {{fare}} · a rider may ask up to {{max}} (rain, night, bad road). You choose.",
+      "offersTitle_one": "{{count}} rider offer",
+      "offersTitle_other": "{{count}} rider offers"
+    }
   },
   "history": {
     "deleteAction": "Delete from my history",

@@ -19,6 +19,7 @@ import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useOpenChat } from '@/features/chat/useOpenChat';
 import { SUB_ORDER_TONE } from '@/features/orders/status';
 import { toLatLng, type SubOrderStatus } from '@/features/orders/types';
+import { useGetPublicSettingsQuery } from '@/features/profile/api';
 import { useGetVendorOrderQuery, useUpdateOrderStatusMutation } from '@/features/vendor/api';
 import { AssignRiderSheet, CancelOrderSheet, ModifyOrderSheet } from '@/features/vendor/components/OrderSheets';
 import { OrderProgress } from '@/features/vendor/components/OrderProgress';
@@ -84,6 +85,13 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
   const where = toLatLng(address.location);
   const next = NEXT_STEP[so.status];
   const awaitingPayment = order.paymentMethod !== 'cod' && order.paymentStatus === 'unpaid';
+  // A new order must be accepted in time, or Kadou24h cancels it (client, 2026-11-21)
+  const { data: settings } = useGetPublicSettingsQuery(undefined, { skip: so.status !== 'new' });
+  const acceptMinutes = settings?.orders?.acceptMinutes;
+  const acceptBy =
+    so.status === 'new' && acceptMinutes
+      ? new Date(new Date(so.awaitingSince ?? so.createdAt).getTime() + acceptMinutes * 60_000)
+      : null;
   const items = so.items;
   const phone = so.customerId?.phone;
   const canCall = Boolean(phone && !phone.includes('•'));
@@ -113,13 +121,19 @@ function OrderBody({ data, refreshing, onRefresh }: { data: VendorSubOrderDetail
         </View>
 
         {awaitingPayment && so.status !== 'cancelled' && <Banner tone="warning" message={t('vendorOrders.awaitingPayment')} />}
+        {acceptBy && (
+          <Banner
+            tone="warning"
+            message={t('vendorOrders.acceptBy', { time: acceptBy.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }) })}
+          />
+        )}
         {so.status === 'cancelled' && so.cancellation && (
           <Banner
             tone="danger"
             message={
-              // Payment window over: the server's reason is English, say it in the user's language
+              // Cancelled by Kadou24h itself: the server's reason is English, say it in the user's language
               so.cancellation.by === 'system'
-                ? t('vendorOrders.paymentExpired')
+                ? t(so.cancellation.code === 'not_accepted' ? 'vendorOrders.notAccepted' : 'vendorOrders.paymentExpired')
                 : t('order.cancelledBy', { by: t(`vendorOrders.by.${so.cancellation.by}`), reason: so.cancellation.reason })
             }
           />

@@ -130,7 +130,10 @@ export interface SubOrder {
   total: number;
   status: SubOrderStatus;
   estimatedDeliveryAt?: string;
-  cancellation?: { by: 'customer' | 'vendor' | 'admin' | 'system'; reason: string; at: string };
+  /** code says why Kadou24h cancelled it by itself (by = system): the reason text is English */
+  cancellation?: { by: 'customer' | 'vendor' | 'admin' | 'system'; code?: 'payment_expired' | 'not_accepted'; reason: string; at: string };
+  /** When the store got it: it must accept within settings.orders.acceptMinutes */
+  awaitingSince?: string;
   /** COD: what this store's rider collects */
   codAmountToCollect?: number;
   deliveredAt?: string;
