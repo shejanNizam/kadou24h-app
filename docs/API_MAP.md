@@ -68,6 +68,7 @@ GET    /user/me  [...ALL_ROLES]
 PATCH  /user/me  [...ALL_ROLES]
 DELETE /user/me  [...ALL_ROLES]
 PATCH  /user/me/mode  [...ALL_ROLES]
+GET    /user/me/alerts  [...ALL_ROLES]  → red dot on my other modes (features/profile/modeAlerts.ts)
 PATCH  /user/me/notification-preferences  [...ALL_ROLES]
 POST   /user/me/phone/request  [...ALL_ROLES]
 POST   /user/me/phone/verify  [...ALL_ROLES]

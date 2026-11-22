@@ -6,12 +6,14 @@ import {
   tabScreenOptions,
   useChatBadge,
 } from "@/components/navigation/tabOptions";
+import { useOtherModesAlert } from "@/features/profile/modeAlerts";
 import { AppMode } from "@/types/api";
 
 /** Figma had a centre "Create" tab; Products replaces it (the list has its own "+"). */
 export default function VendorTabs() {
   const { t } = useTranslation();
   const chatBadge = useChatBadge(AppMode.vendor);
+  const otherModes = useOtherModesAlert(AppMode.vendor);
   return (
     <Tabs screenOptions={tabScreenOptions}>
       <Tabs.Screen
@@ -39,7 +41,10 @@ export default function VendorTabs() {
       />
       <Tabs.Screen
         name="profile"
-        options={{ title: t("tabs.profile"), tabBarIcon: tabIcon("user") }}
+        options={{
+          title: t("tabs.profile"),
+          tabBarIcon: tabIcon("user", otherModes),
+        }}
       />
     </Tabs>
   );

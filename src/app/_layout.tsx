@@ -17,6 +17,7 @@ import { Provider } from 'react-redux';
 
 import { OfflineBanner } from '@/components/providers/OfflineBanner';
 import { PushEffects } from '@/components/providers/PushEffects';
+import { RiderPresenceEffects } from '@/components/providers/RiderPresenceEffects';
 import { SessionEffects } from '@/components/providers/SessionEffects';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Colors } from '@/constants/theme';
@@ -73,6 +74,7 @@ function RootLayout() {
                 <SessionEffects />
                 <CrashScreenTracker />
                 <PushEffects />
+                <RiderPresenceEffects />
                 <StatusBar style="dark" />
                 <View style={{ flex: 1, backgroundColor: Colors.background }}>
                   <OfflineBanner />

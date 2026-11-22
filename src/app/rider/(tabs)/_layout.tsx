@@ -2,17 +2,19 @@ import { Tabs } from 'expo-router/js-tabs';
 import { useTranslation } from 'react-i18next';
 
 import { tabIcon, tabScreenOptions, useChatBadge } from '@/components/navigation/tabOptions';
+import { useOtherModesAlert } from '@/features/profile/modeAlerts';
 import { AppMode } from '@/types/api';
 
 export default function RiderTabs() {
   const { t } = useTranslation();
   const chatBadge = useChatBadge(AppMode.rider);
+  const otherModes = useOtherModesAlert(AppMode.rider);
   return (
     <Tabs screenOptions={tabScreenOptions}>
       <Tabs.Screen name="deliveries" options={{ title: t('tabs.deliveries'), tabBarIcon: tabIcon('truck') }} />
       <Tabs.Screen name="earnings" options={{ title: t('tabs.earnings'), tabBarIcon: tabIcon('dollar-sign') }} />
       <Tabs.Screen name="chat" options={{ title: t('tabs.chat'), tabBarIcon: tabIcon('message-circle'), tabBarBadge: chatBadge }} />
-      <Tabs.Screen name="profile" options={{ title: t('tabs.profile'), tabBarIcon: tabIcon('user') }} />
+      <Tabs.Screen name="profile" options={{ title: t('tabs.profile'), tabBarIcon: tabIcon('user', otherModes) }} />
     </Tabs>
   );
 }

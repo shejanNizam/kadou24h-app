@@ -1,6 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
 import type { ComponentProps } from 'react';
-import type { ColorValue } from 'react-native';
+import { StyleSheet, View, type ColorValue } from 'react-native';
 
 import { Colors, Fonts } from '@/constants/theme';
 import { useGetChatUnreadQuery } from '@/features/chat/api';
@@ -18,10 +18,31 @@ export const tabScreenOptions = {
   tabBarStyle: { borderTopColor: Colors.border, backgroundColor: Colors.background, minHeight: 60 },
 } as const;
 
-export const tabIcon = (name: IconName) =>
+/** `dot`: a small red dot on the icon (Profile: something waits in another of my modes) */
+export const tabIcon = (name: IconName, dot = false) =>
   function TabIcon({ color, size }: { color: ColorValue; size: number }) {
-    return <Feather name={name} size={size - 2} color={color as string} />;
+    if (!dot) return <Feather name={name} size={size - 2} color={color as string} />;
+    return (
+      <View>
+        <Feather name={name} size={size - 2} color={color as string} />
+        <View style={styles.dot} />
+      </View>
+    );
   };
+
+const styles = StyleSheet.create({
+  dot: {
+    position: 'absolute',
+    top: -2,
+    right: -4,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: Colors.danger,
+    borderWidth: 1.5,
+    borderColor: Colors.background,
+  },
+});
 
 /** Unread chat messages for this mode → Chat tab badge (hidden at 0). */
 export function useChatBadge(mode: AppMode) {

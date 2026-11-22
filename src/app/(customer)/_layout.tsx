@@ -2,12 +2,15 @@ import { Tabs } from 'expo-router/js-tabs';
 import { useTranslation } from 'react-i18next';
 
 import { tabIcon, tabScreenOptions, useChatBadge } from '@/components/navigation/tabOptions';
+import { useOtherModesAlert } from '@/features/profile/modeAlerts';
 import { AppMode } from '@/types/api';
 
 /** Customer mode (also used by guests). */
 export default function CustomerTabs() {
   const { t } = useTranslation();
   const chatBadge = useChatBadge(AppMode.customer);
+  // A seller / rider shopping here still sees that work waits in their other mode
+  const otherModes = useOtherModesAlert(AppMode.customer);
   return (
     <Tabs screenOptions={tabScreenOptions}>
       <Tabs.Screen name="home" options={{ title: t('tabs.home'), tabBarIcon: tabIcon('home') }} />
@@ -15,7 +18,7 @@ export default function CustomerTabs() {
       {/* Receipt icon, not a cart: the cart lives in the home header */}
       <Tabs.Screen name="orders" options={{ title: t('tabs.orders'), tabBarIcon: tabIcon('file-text') }} />
       <Tabs.Screen name="chat" options={{ title: t('tabs.chat'), tabBarIcon: tabIcon('message-circle'), tabBarBadge: chatBadge }} />
-      <Tabs.Screen name="profile" options={{ title: t('tabs.profile'), tabBarIcon: tabIcon('user') }} />
+      <Tabs.Screen name="profile" options={{ title: t('tabs.profile'), tabBarIcon: tabIcon('user', otherModes) }} />
     </Tabs>
   );
 }

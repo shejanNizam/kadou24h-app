@@ -1063,6 +1063,16 @@
     "customerHint": "Shop and track your orders",
     "vendorHint": "Manage your store",
     "riderHint": "Your deliveries and earnings",
+    "alert": {
+      "vendorPending_one": "1 order to accept",
+      "vendorPending_other": "{{count}} orders to accept",
+      "riderPending_one": "1 request for you",
+      "riderPending_other": "{{count}} requests for you",
+      "messages_one": "1 new message",
+      "messages_other": "{{count}} new messages",
+      "notifications": "New notifications",
+      "riderOnline": "Online · you receive requests"
+    },
     "becomeVendor": "Become a vendor",
     "becomeVendorHint": "Open your store and sell on Kadou24h",
     "becomeRider": "Become a rider",
