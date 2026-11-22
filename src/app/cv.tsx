@@ -10,13 +10,14 @@ import { useTranslation } from 'react-i18next';
 import { usePhotoUpload } from '@/components/media/ImageUploadBox';
 import { AppText } from '@/components/ui/AppText';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { useGetMyCvQuery, useSaveCvMutation } from '@/features/cv/api';
+import { useDeleteCvMutation, useGetMyCvQuery, useSaveCvMutation } from '@/features/cv/api';
 import { makeCvPdf } from '@/features/cv/pdf';
 import type { MyCv } from '@/features/cv/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
@@ -85,6 +86,7 @@ export default function CvScreen() {
           />
           <WorkerCard cv={cv} />
           <VisibilityCard cv={cv} />
+          <DeleteCv cv={cv} />
         </ScrollView>
       )}
     </SafeAreaView>
@@ -155,9 +157,22 @@ function Document({ cv }: { cv: MyCv }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const user = useAppSelector((s) => s.auth.user);
-  const [save] = useSaveCvMutation();
+  const [save, saveState] = useSaveCvMutation();
   const [making, setMaking] = useState(false);
   const [uploading, setUploading] = useState(false);
+  /** Which file I asked to delete (confirmed first) */
+  const [removing, setRemoving] = useState<'generatedCv' | 'uploadedResume' | null>(null);
+  const removeFile = async () => {
+    if (!removing) return;
+    try {
+      await save({ [removing]: null }).unwrap();
+      toast.show(t('cv.fileDeleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    } finally {
+      setRemoving(null);
+    }
+  };
 
   const makePdf = async () => {
     if (!user) return;
@@ -212,6 +227,7 @@ function Document({ cv }: { cv: MyCv }) {
           </AppText>
         </View>
         {cv.generatedCv && !cv.uploadedResume && <StatusPill label={t('cv.sent')} tone="green" />}
+        {cv.generatedCv && <TrashButton label={t('cv.deleteKadouCv')} onPress={() => setRemoving('generatedCv')} />}
       </View>
       <View style={styles.row}>
         <Button title={cv.generatedCv ? t('cv.updatePdf') : t('cv.makePdf')} icon="refresh-cw" size="sm" style={styles.flex} loading={making} onPress={() => void makePdf()} />
@@ -228,20 +244,74 @@ function Document({ cv }: { cv: MyCv }) {
           </AppText>
         </View>
         {cv.uploadedResume && <StatusPill label={t('cv.sent')} tone="green" />}
+        {cv.uploadedResume && <TrashButton label={t('cv.deleteOwnCv')} onPress={() => setRemoving('uploadedResume')} />}
       </View>
       <View style={styles.row}>
         <Button title={cv.uploadedResume ? t('cv.replace') : t('cv.import')} icon="upload" size="sm" variant="soft" style={styles.flex} loading={uploading} onPress={() => void importCv()} />
         {cv.uploadedResume && <Button title={t('cv.open')} size="sm" variant="outline" onPress={() => void Linking.openURL(cv.uploadedResume!.url)} />}
-        {cv.uploadedResume && (
-          <Button
-            title={t('common.remove')}
-            size="sm"
-            variant="ghost"
-            onPress={() => void save({ uploadedResume: null }).unwrap().catch((e: unknown) => toast.show(getApiErrorMessage(e, t), 'danger'))}
-          />
-        )}
       </View>
+
+      <ConfirmDialog
+        visible={removing !== null}
+        destructive
+        icon="trash-2"
+        title={removing === 'generatedCv' ? t('cv.deleteKadouCv') : t('cv.deleteOwnCv')}
+        message={t('cv.deleteFileMessage')}
+        confirmLabel={t('common.delete')}
+        loading={saveState.isLoading}
+        onConfirm={() => void removeFile()}
+        onCancel={() => setRemoving(null)}
+      />
     </View>
+  );
+}
+
+function TrashButton({ label, onPress }: { label: string; onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress} hitSlop={8} accessibilityRole="button" accessibilityLabel={label} style={styles.trash}>
+      <Feather name="trash-2" size={18} color={Colors.danger} />
+    </Pressable>
+  );
+}
+
+/** "Delete my CV": everything above goes (a worker keeps their worker page) */
+function DeleteCv({ cv }: { cv: MyCv }) {
+  const { t } = useTranslation();
+  const toast = useToast();
+  const [remove, { isLoading }] = useDeleteCvMutation();
+  const [asking, setAsking] = useState(false);
+  const isWorker = cv.isWorkerListed || (cv.approvalStatus ?? 'draft') !== 'draft';
+  const hasCv = Boolean(
+    cv.summary || cv.generatedCv || cv.uploadedResume || cv.skills.length || cv.languages.length || cv.profileExperience.length || cv.profileEducation.length || (!isWorker && cv.profession),
+  );
+  if (!hasCv) return null;
+
+  const onDelete = async () => {
+    try {
+      await remove().unwrap();
+      toast.show(t('cv.deleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    } finally {
+      setAsking(false);
+    }
+  };
+
+  return (
+    <>
+      <Button title={t('cv.deleteAll')} icon="trash-2" variant="ghost" onPress={() => setAsking(true)} />
+      <ConfirmDialog
+        visible={asking}
+        destructive
+        icon="trash-2"
+        title={t('cv.deleteAllTitle')}
+        message={isWorker ? t('cv.deleteAllWorker') : t('cv.deleteAllMessage')}
+        confirmLabel={t('common.delete')}
+        loading={isLoading}
+        onConfirm={() => void onDelete()}
+        onCancel={() => setAsking(false)}
+      />
+    </>
   );
 }
 
@@ -330,5 +400,6 @@ const styles = StyleSheet.create({
   barFill: { height: 6, borderRadius: 3, backgroundColor: Colors.primary },
   file: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingTop: Spacing.sm },
   boost: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  trash: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.dangerSoft },
   pressed: { opacity: 0.9 },
 });

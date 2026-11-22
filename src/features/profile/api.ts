@@ -58,6 +58,8 @@ export interface PublicSettings {
   pricing?: { jobPublishFee: number; cvUnlockFee: number; spontaneousApplicationFee: number };
   /** A store must accept a new order within acceptMinutes, or it is cancelled automatically */
   orders?: { acceptMinutes: number };
+  /** Chat messages older than this are deleted (client, 2026-11-22) */
+  chat?: { retentionDays: number };
 }
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);
@@ -126,11 +128,17 @@ export const profileApi = api.injectEndpoints({
       transformResponse: unwrapPage<MyReview>,
       providesTags: ['Order'],
     }),
+    /** "Delete my review" (client, 2026-11-22): the store and product ratings are redone */
+    deleteMyReview: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/reviews/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Order', 'Product', 'Store'],
+    }),
   }),
 });
 
 export const {
   useRequestPhoneChangeMutation,
+  useDeleteMyReviewMutation,
   useVerifyPhoneChangeMutation,
   useChangePasswordMutation,
   useDeleteAccountMutation,

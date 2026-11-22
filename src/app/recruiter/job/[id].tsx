@@ -16,7 +16,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { useCloseJobMutation, useGetJobCandidatesInfiniteQuery, useGetJobDetailsQuery, usePublishJobMutation } from '@/features/jobs/api';
+import { useCloseJobMutation, useDeleteJobMutation, useGetJobCandidatesInfiniteQuery, useGetJobDetailsQuery, usePublishJobMutation } from '@/features/jobs/api';
 import { PayFeeSheet } from '@/features/jobs/components/PayFeeSheet';
 import { CandidateRow } from '@/features/jobs/components/CandidateRow';
 import { jobState, openFeePayment } from '@/features/jobs/status';
@@ -110,6 +110,10 @@ function JobHeader({ job }: { job: JobDetails }) {
   const [close, closeState] = useCloseJobMutation();
   const [paying, setPaying] = useState(false);
   const [askClose, setAskClose] = useState(false);
+  const [remove, removeState] = useDeleteJobMutation();
+  const [askDelete, setAskDelete] = useState(false);
+  // A draft, closed or expired offer can be deleted (a live one is closed first; the server decides)
+  const canDelete = ['draft', 'closed', 'expired'].includes(job.status) && !job.isOpen;
   const state = jobState(job);
   const removed = job.status === 'removed';
   const s = job.stats;
@@ -168,6 +172,30 @@ function JobHeader({ job }: { job: JobDetails }) {
         </View>
       )}
       {job.isOpen && <Button title={t('recruiterJob.seePublic')} size="sm" variant="ghost" onPress={() => router.push({ pathname: '/job/[id]', params: { id: job._id } })} />}
+      {canDelete && <Button title={t('recruiterJob.delete')} icon="trash-2" size="sm" variant="ghost" onPress={() => setAskDelete(true)} />}
+      <ConfirmDialog
+        visible={askDelete}
+        destructive
+        icon="trash-2"
+        title={t('recruiterJob.deleteTitle')}
+        message={t('recruiterJob.deleteText')}
+        confirmLabel={t('common.delete')}
+        loading={removeState.isLoading}
+        onConfirm={() =>
+          void remove(job._id)
+            .unwrap()
+            .then(() => {
+              setAskDelete(false);
+              toast.show(t('recruiterJob.deleted'), 'success');
+              router.back();
+            })
+            .catch((e: unknown) => {
+              setAskDelete(false);
+              toast.show(getApiErrorMessage(e, t), 'danger');
+            })
+        }
+        onCancel={() => setAskDelete(false)}
+      />
 
       <PayFeeSheet
         visible={paying}

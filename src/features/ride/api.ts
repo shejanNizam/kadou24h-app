@@ -25,12 +25,13 @@ export const rideApi = api.injectEndpoints({
     getRide: build.query<Ride, string>({
       query: (id) => `/rides/${id}`,
       transformResponse: unwrap<Ride>,
-      providesTags: (_r, _e, id) => [{ type: 'Ride', id }, 'Ride'],
+      // Conversation: the unread count on the chat button follows new messages
+      providesTags: (_r, _e, id) => [{ type: 'Ride', id }, 'Ride', 'Conversation'],
     }),
     getMyCurrentRide: build.query<Ride | null, void>({
       query: () => '/rides/my/current',
       transformResponse: unwrap<Ride | null>,
-      providesTags: ['Ride'],
+      providesTags: ['Ride', 'Conversation'],
     }),
     getMyRides: build.infiniteQuery<Paginated<Ride>, void, number>({
       infiniteQueryOptions: { initialPageParam: 1, getNextPageParam: nextPage },
@@ -90,7 +91,7 @@ export const rideApi = api.injectEndpoints({
     getRiderCurrentRide: build.query<Ride | null, void>({
       query: () => '/rides/rider/current',
       transformResponse: unwrap<Ride | null>,
-      providesTags: ['Ride'],
+      providesTags: ['Ride', 'Conversation'],
     }),
     getRiderRides: build.infiniteQuery<Paginated<Ride>, void, number>({
       infiniteQueryOptions: { initialPageParam: 1, getNextPageParam: nextPage },

@@ -203,7 +203,7 @@ export interface CodInput {
   proofImage?: FileRef;
 }
 
-// ── My stores ────────────────────────────────────────────────────────
+// ── Partner shops ────────────────────────────────────────────────────────
 export interface StoreLink {
   _id: string;
   vendorId: {

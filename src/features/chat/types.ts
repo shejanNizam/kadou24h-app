@@ -16,6 +16,12 @@ export type StartConversation =
   /** Moto-taxi: the passenger ↔ the rider who took the ride (messages only while it is going on) */
   | { type: 'ride'; rideId: string };
 
+/** The order a store chat message is about */
+export interface ChatTopic {
+  subOrderId: string;
+  subOrderNumber: string;
+}
+
 export interface Conversation {
   _id: string;
   type: ConversationType;
@@ -26,7 +32,10 @@ export interface Conversation {
   rideId?: { _id: string; rideNumber: string; status: string } | null;
   /** Voice notes: every chat except job applications (server decides) */
   allowVoice: boolean;
-  lastMessage?: { text?: string; type: MessageType; senderId?: string; at: string };
+  /** subOrderNumber: the order the last message was about (store chat) */
+  lastMessage?: { text?: string; type: MessageType; senderId?: string; at: string; subOrderNumber?: string };
+  /** Store chat opened from an order (POST /conversations only): the messages I send are about it */
+  topic?: ChatTopic;
   updatedAt: string;
   myMode: AppMode;
   myUnread: number;
@@ -45,6 +54,12 @@ export interface Message {
   text?: string;
   mediaUrl?: string;
   mediaDurationSec?: number;
+  /**
+   * Store chat (client, 2026-11-22): one chat per customer and store; each message
+   * keeps the order it was written about
+   */
+  subOrderId?: string;
+  subOrderNumber?: string;
   moderationStatus: ModerationStatus;
   createdAt: string;
   /** Local only: still sending */

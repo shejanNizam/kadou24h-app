@@ -61,6 +61,15 @@ export function MessageBubble({
         delayLongPress={350}
         accessibilityHint={onLongPress ? t('chat.longPressHint') : undefined}
         style={[styles.bubble, mine ? styles.mine : styles.theirs, message.type === 'image' && styles.imageBubble, message.pending && styles.pending]}>
+        {/* Store chat: the order this message is about (client, 2026-11-22) */}
+        {message.subOrderNumber ? (
+          <View style={styles.order}>
+            <Feather name="file-text" size={11} color={sub} />
+            <AppText variant="caption" color={sub} numberOfLines={1}>
+              {t('chat.aboutOrder', { number: message.subOrderNumber })}
+            </AppText>
+          </View>
+        ) : null}
         {message.type === 'image' && message.mediaUrl ? (
           <Pressable onPress={() => setViewer(true)} accessibilityRole="imagebutton" accessibilityLabel={t('chat.photo')}>
             <Image source={img(message.mediaUrl, 'card')} style={styles.image} contentFit="cover" />
@@ -157,6 +166,7 @@ const styles = StyleSheet.create({
   pending: { opacity: 0.6 },
   image: { width: 220, height: 220, borderRadius: Radius.md },
   masked: { marginTop: 2, fontStyle: 'italic' },
+  order: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 2 },
   meta: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 4, marginTop: 2 },
   time: { fontSize: 10, lineHeight: 14 },
   report: { flexDirection: 'row', alignItems: 'center', gap: 2, marginRight: 'auto' },

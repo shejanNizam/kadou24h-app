@@ -45,7 +45,7 @@ export const chatApi = api.injectEndpoints({
     }),
     sendMessage: build.mutation<
       Message,
-      { conversationId: string; type: MessageType; text?: string; mediaUrl?: string; mediaDurationSec?: number }
+      { conversationId: string; type: MessageType; text?: string; mediaUrl?: string; mediaDurationSec?: number; subOrderId?: string }
     >({
       query: ({ conversationId, ...body }) => ({ url: `/conversations/${conversationId}/messages`, method: 'POST', body }),
       transformResponse: unwrap<Message>,
@@ -57,6 +57,11 @@ export const chatApi = api.injectEndpoints({
     }),
     markConversationRead: build.mutation<unknown, { id: string; mode: AppMode }>({
       query: ({ id, mode }) => ({ url: `/conversations/${id}/read`, method: 'PATCH', params: { mode } }),
+      invalidatesTags: ['Conversation'],
+    }),
+    /** "Delete the chat" for me only (client, 2026-11-22): it comes back with a new message */
+    deleteConversation: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/conversations/${id}`, method: 'DELETE' }),
       invalidatesTags: ['Conversation'],
     }),
     /** Their messages are kept for them only; an order / booking in progress still gets through */
@@ -96,6 +101,7 @@ export const addMessageToThread = (conversationId: string, message: Message) =>
   });
 
 export const {
+  useDeleteConversationMutation,
   useBlockPeerMutation,
   useUnblockPeerMutation,
   useGetBlockedQuery,

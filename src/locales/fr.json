@@ -990,6 +990,13 @@
       "ride": "Course moto-taxi"
     },
     "aboutOrder": "Commande {{number}}",
+    "newMessage": "Nouveau message",
+    "topicClear": "Ne plus parler de cette commande",
+    "deleteChat": "Supprimer la conversation",
+    "deleteChatTitle": "Supprimer la conversation ?",
+    "deleteChatText": "Les messages disparaissent seulement pour vous ; {{name}} garde les siens. La conversation revient si un nouveau message arrive.",
+    "chatDeleted": "Conversation supprimée",
+    "retentionNote": "Pour votre vie privée, les messages sont supprimés après {{days}} jours (sauf litige ou commande en cours).",
     "unread_one": "{{count}} message non lu",
     "unread_other": "{{count}} messages non lus",
     "voiceNote": "Message vocal",
@@ -1159,6 +1166,12 @@
       "failed": "Échoué",
       "refunded": "Remboursé"
     }
+  },
+  "review": {
+    "delete": "Supprimer mon avis",
+    "deleteTitle": "Supprimer votre avis ?",
+    "deleteText": "Votre avis et sa note disparaissent, avec ses photos. Vous pourrez en laisser un nouveau.",
+    "deleted": "Avis supprimé"
   },
   "myReviews": {
     "emptyTitle": "Aucun avis",
@@ -1809,7 +1822,7 @@
     }
   },
   "riderStores": {
-    "title": "Mes boutiques",
+    "title": "Boutiques partenaires",
     "tab": {
       "linked": "Liées ({{count}})",
       "requests": "Demandes",
@@ -2031,6 +2044,15 @@
   },
   "cv": {
     "title": "Mon CV",
+    "deleteKadouCv": "Supprimer le CV Kadou24h",
+    "deleteOwnCv": "Supprimer mon propre CV",
+    "deleteFileMessage": "Ce fichier sera supprimé de votre profil. Les recruteurs à qui vous avez déjà postulé gardent la copie reçue.",
+    "fileDeleted": "Fichier supprimé",
+    "deleteAll": "Supprimer mon CV",
+    "deleteAllTitle": "Supprimer tout votre CV ?",
+    "deleteAllMessage": "Votre présentation, vos expériences, formations, compétences, votre métier et vos fichiers CV seront supprimés. Les recruteurs à qui vous avez déjà postulé gardent la copie reçue.",
+    "deleteAllWorker": "Votre présentation, vos expériences, formations, compétences et vos fichiers CV seront supprimés. Votre page de prestataire (métier, photo, ville, avis) reste en place.",
+    "deleted": "CV supprimé",
     "photo": "Photo de profil",
     "noProfession": "Ajoutez votre métier",
     "complete": "Votre CV est complet. Bravo !",
@@ -2198,6 +2220,10 @@
     "until": "Jusqu’au {{date}}"
   },
   "recruiterJob": {
+    "delete": "Supprimer l’offre",
+    "deleteTitle": "Supprimer cette offre ?",
+    "deleteText": "Elle disparaît de vos offres. Les candidats gardent leur candidature.",
+    "deleted": "Offre supprimée",
     "title": "Mon offre",
     "notYours": "Cette offre n’est pas à vous",
     "liveUntil": "En ligne jusqu’au {{date}}",
@@ -2654,6 +2680,7 @@
     "deleteTitle": "Supprimer de votre historique ?",
     "deleteOrderText": "Cette commande disparaît seulement de votre historique : la boutique et Kadou24h la conservent pour les paiements et l’assistance.",
     "deleteRideText": "Cette course disparaît seulement de votre historique : le chauffeur et Kadou24h la conservent.",
+    "deleteBookingText": "Cette réservation disparaît seulement de votre historique : l’autre personne et Kadou24h la conservent.",
     "delete": "Supprimer",
     "deleted": "Supprimé de votre historique",
     "holdHintOrders": "Appuyez longuement sur une commande terminée pour la supprimer de votre historique.",

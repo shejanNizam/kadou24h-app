@@ -1,8 +1,8 @@
 import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +17,10 @@ import { ErrorState } from '@/components/ui/ErrorState';
 import { HeaderIconButton, StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import {
   useBlockPeerMutation,
+  useDeleteConversationMutation,
   useUnblockPeerMutation,
   addMessageToThread,
   useGetConversationQuery,
@@ -44,7 +45,7 @@ const REPORT_REASONS = ['contact', 'offPlatformPayment', 'abuse', 'scam', 'other
 const QUICK_REPLIES = ['coming', 'arrived', 'atGate', 'comeOut'] as const;
 
 export default function ChatScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, topicId, topicNumber } = useLocalSearchParams<{ id: string; topicId?: string; topicNumber?: string }>();
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const dispatch = useAppDispatch();
@@ -60,9 +61,13 @@ export default function ChatScreen() {
   const [confirmBlock, setConfirmBlock] = useState(false);
   const [blockPeer, blockState] = useBlockPeerMutation();
   const [unblockPeer, unblockState] = useUnblockPeerMutation();
+  const [deleteChat, deleteState] = useDeleteConversationMutation();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const lastTypingSent = useRef(0);
   // Checked when the chat opens (a restriction lasts hours)
   const [openedAt] = useState(() => Date.now());
+  // Store chat opened from an order: what I send is about it (removable, for a general question)
+  const [topic, setTopic] = useState(topicId && topicNumber ? { subOrderId: topicId, subOrderNumber: topicNumber } : null);
 
   const c = conversation.data;
   const myMode = c?.myMode;
@@ -80,22 +85,26 @@ export default function ChatScreen() {
     };
   }, [id, token]);
 
-  // No push banner for this chat while it is open
-  useEffect(() => {
-    setActiveChat(id);
-    return () => setActiveChat(null);
-  }, [id]);
-
-  // Opening the chat reads it
-  useEffect(() => {
-    if (myMode) void markRead({ id, mode: myMode });
-  }, [id, myMode, markRead]);
+  // On screen (not just open under another screen): no banner for this chat, and its messages are read.
+  // A chat left open under another screen keeps its new messages unread (badge, banner)
+  const focused = useRef(false);
+  useFocusEffect(
+    useCallback(() => {
+      focused.current = true;
+      setActiveChat(id);
+      if (myMode) void markRead({ id, mode: myMode });
+      return () => {
+        focused.current = false;
+        setActiveChat(null);
+      };
+    }, [id, myMode, markRead]),
+  );
 
   useSocketEvent<Message>('new_message', (m) => {
     if (String(m.conversationId) !== id) return;
     dispatch(addMessageToThread(id, m));
     setPeerTyping(false);
-    if (myMode && senderIdOf(m) !== me?._id) void markRead({ id, mode: myMode });
+    if (focused.current && myMode && senderIdOf(m) !== me?._id) void markRead({ id, mode: myMode });
   });
   // A moto-taxi chat closes when the ride ends
   useSocketEvent<{ rideId: string }>('ride:updated', (p) => {
@@ -123,7 +132,7 @@ export default function ChatScreen() {
 
   const onSend = async (m: Outgoing) => {
     try {
-      await send({ conversationId: id, ...m }).unwrap();
+      await send({ conversationId: id, ...m, ...(topic && c?.type === 'buyer_seller' && { subOrderId: topic.subOrderId }) }).unwrap();
       if (token) connectSocket(token).emit('stop_typing', { conversationId: id });
       return true;
     } catch (e) {
@@ -262,6 +271,17 @@ export default function ChatScreen() {
           </View>
         )}
         <View style={styles.composer}>
+          {topic && c?.type === 'buyer_seller' && !restricted && (
+            <View style={styles.topic}>
+              <Feather name="file-text" size={14} color={Colors.primary} />
+              <AppText variant="smallMedium" color={Colors.primary} numberOfLines={1} style={styles.flex}>
+                {t('chat.aboutOrder', { number: topic.subOrderNumber })}
+              </AppText>
+              <Pressable onPress={() => setTopic(null)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('chat.topicClear')}>
+                <Feather name="x" size={16} color={Colors.textMuted} />
+              </Pressable>
+            </View>
+          )}
           {/* Rider → customer: one tap at the door instead of typing on the moto */}
           {myMode === 'rider' && c?.peer.mode === 'customer' && !restricted && !closed && (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.quick}>
@@ -304,10 +324,43 @@ export default function ChatScreen() {
             }}
           />
         )}
+        <Button
+          title={t('chat.deleteChat')}
+          icon="trash-2"
+          variant="outline"
+          onPress={() => {
+            setMenuOpen(false);
+            setConfirmDelete(true);
+          }}
+        />
         <AppText variant="caption" color={Colors.textMuted}>
           {t('chat.reportHint')}
         </AppText>
       </BottomSheet>
+
+      <ConfirmDialog
+        visible={confirmDelete}
+        icon="trash-2"
+        title={t('chat.deleteChatTitle')}
+        message={t('chat.deleteChatText', { name: c?.peer.name ?? '' })}
+        confirmLabel={t('common.delete')}
+        destructive
+        loading={deleteState.isLoading}
+        onCancel={() => setConfirmDelete(false)}
+        onConfirm={() =>
+          void deleteChat(id)
+            .unwrap()
+            .then(() => {
+              setConfirmDelete(false);
+              toast.show(t('chat.chatDeleted'), 'success');
+              router.back();
+            })
+            .catch((e: unknown) => {
+              setConfirmDelete(false);
+              toast.show(getApiErrorMessage(e, t), 'danger');
+            })
+        }
+      />
 
       <ConfirmDialog
         visible={confirmBlock}
@@ -398,6 +451,7 @@ const styles = StyleSheet.create({
   day: { marginVertical: Spacing.md },
   loading: { marginVertical: Spacing.lg },
   composer: { borderTopWidth: 1, borderTopColor: Colors.border, backgroundColor: Colors.background },
+  topic: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginHorizontal: Spacing.lg, marginTop: Spacing.sm, paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderRadius: Radius.md, backgroundColor: Colors.primarySoft },
   quick: { gap: Spacing.sm, paddingHorizontal: Spacing.lg, paddingTop: Spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
 });

@@ -12,6 +12,7 @@ import type { MapMarker } from '@/components/map/types';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
+import { CountBadge } from '@/components/ui/CountBadge';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Stars } from '@/components/ui/Rating';
@@ -239,12 +240,16 @@ function RideBody({
 
       <View style={[styles.inner, styles.footer]}>
         {canChat && (
-          <Button
-            title={t('ride.chatRider')}
-            icon="message-circle"
-            disabled={opening}
-            onPress={() => openChat({ type: 'ride', rideId: ride._id })}
-          />
+          <View>
+            <Button
+              title={t('ride.chatRider')}
+              icon="message-circle"
+              disabled={opening}
+              accessibilityHint={ride.chatUnread ? t('chat.unread', { count: ride.chatUnread }) : undefined}
+              onPress={() => openChat({ type: 'ride', rideId: ride._id })}
+            />
+            <CountBadge count={ride.chatUnread ?? 0} corner />
+          </View>
         )}
         {running && <Button title={t('ride.share.button')} icon="share-2" variant="soft" loading={shareState.isLoading} onPress={() => void onShare()} />}
         {canCancel && <Button title={t('ride.cancel')} variant="outline" onPress={() => setConfirmCancel(true)} />}

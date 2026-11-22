@@ -160,6 +160,7 @@ GET    /professional-profiles/workers/:id  [public]
 GET    /professional-profiles/me  [...APP_ROLES]
 PUT    /professional-profiles/me  [...APP_ROLES]
 PATCH  /professional-profiles/me/worker-listing  [...APP_ROLES]
+DELETE /professional-profiles/me/cv  [...APP_ROLES]  → "Supprimer mon CV" (a worker keeps trade, photo, city)
 POST   /professional-profiles/me/generate-ai-cv  [...APP_ROLES]
 GET    /jobs  [public]
 GET    /jobs/:id  [public]
@@ -167,6 +168,7 @@ POST   /jobs  [...APP_ROLES]
 PATCH  /jobs/:id  [...APP_ROLES]
 POST   /jobs/:id/publish  [...APP_ROLES]
 POST   /jobs/:id/close  [...APP_ROLES]
+DELETE /jobs/:id  [...APP_ROLES]  → draft / closed / expired offer only
 GET    /jobs/:id/applicants  [...APP_ROLES]
 PATCH  /jobs/applications/:applicationId/status  [...APP_ROLES]
 POST   /jobs/applications/:applicationId/interview  [...APP_ROLES]
@@ -182,8 +184,9 @@ POST   /conversations  [...ALL_ROLES]
 GET    /conversations  [...ALL_ROLES]
 GET    /conversations/:id  [...ALL_ROLES]
 PATCH  /conversations/:id/read  [...ALL_ROLES]
+DELETE /conversations/:id  [...ALL_ROLES]  → delete the chat for me only (comes back with a new message)
 GET    /conversations/:id/messages  [...ALL_ROLES]
-POST   /conversations/:id/messages  [...ALL_ROLES]
+POST   /conversations/:id/messages  [...ALL_ROLES]  (store chat: + subOrderId → the message keeps its order number)
 POST   /reports  [...ALL_ROLES]
 GET    /reports/me  [...ALL_ROLES]
 GET    /notifications  [...ALL_ROLES]
@@ -199,6 +202,7 @@ POST   /advertisements/:id/click  [public]
 POST   /reviews  [...APP_ROLES]
 GET    /reviews/me  [...ALL_ROLES]
 POST   /reviews/:id/report  [...ALL_ROLES]
+DELETE /reviews/:id  [...ALL_ROLES]  → my review (ratings redone)
 GET    /reviews/vendor/:vendorId  [public]
 GET    /reviews/product/:productId  [public]
 ```
@@ -242,7 +246,7 @@ GET    /reviews/product/:productId  [public]
 - `POST|DELETE /conversations/:id/block`, `GET /conversations/blocked`, `DELETE /conversations/blocked/:userId`; conversation `blockedByMe`.
 
 ## Changed for the app — Worker bookings (2026-10-22)
-- `/bookings`: `POST` (book), `GET ?as=&status=` (meta.counts), `GET /:id`, `GET /me/standing`, `PATCH /:id/accept|decline|cancel|done|confirm|not-done`, `POST /:id/review`. Cancel returns `{ booking, penalty }`.
+- `/bookings`: `POST` (book), `GET ?as=&status=` (meta.counts), `GET /:id`, `GET /me/standing`, `PATCH /:id/accept|decline|cancel|done|confirm|not-done`, `POST /:id/review`, `DELETE /:id/review` (my review), `DELETE /:id` (finished booking out of my history, my side only). Cancel returns `{ booking, penalty }`.
 - `GET /professional-profiles/workers/:id/reviews` (public). Worker summary adds `isVisible`, `listing`, `penalty`, `bookings`, `earnings`. Profile: `workPhotos` (≤ 10).
 - `POST /conversations { type: "worker", bookingId }`. Socket `booking:updated`. Notification type `booking_update`; data kinds `booking`, `booking_penalty`, `worker_listing`.
 - Public workers: only while visibility is paid (trial / service-provider plan) and not suspended; penalised workers sort last.

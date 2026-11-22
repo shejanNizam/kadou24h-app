@@ -62,6 +62,8 @@ export interface Ride {
   maxFare: number;
   /** The riders' live prices (passenger, while searching) */
   bids?: RideBid[];
+  /** Unread messages for me in this ride's chat (passenger or rider) */
+  chatUnread?: number;
   note?: string;
   /** The passenger's photo of the pickup spot (gate, landmark) */
   pickupPhoto?: FileRef;

@@ -11,6 +11,7 @@ import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Stars } from '@/components/ui/Rating';
 import { StackHeader } from '@/components/ui/StackHeader';
@@ -20,6 +21,7 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { addressLine } from '@/features/address/api';
 import {
+  useDeleteBookingReviewMutation,
   useAcceptBookingMutation,
   useCancelBookingMutation,
   useConfirmBookingMutation,
@@ -33,6 +35,7 @@ import { SafetyNotice } from '@/features/booking/components/SafetyNotice';
 import { BOOKING_TONE, formatBookingDate, penaltyMessage, timeLeft } from '@/features/booking/status';
 import type { Booking } from '@/features/booking/types';
 import { useOpenChat } from '@/features/chat/useOpenChat';
+import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import { getApiErrorMessage } from '@/lib/api/errors';
 import { formatGNF } from '@/lib/format';
 import { img } from '@/lib/image';
@@ -50,6 +53,8 @@ export default function BookingScreen() {
   const { data: b, isLoading, isError, error, refetch, isFetching } = useGetBookingQuery(id);
   const [sheet, setSheet] = useState<Sheet>(null);
   const [penalty, setPenalty] = useState<string | null>(null);
+  // "Delete from my history" once it is finished (client, 2026-11-22)
+  const remove = useDeleteFromHistory('booking', () => router.back());
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
@@ -70,9 +75,13 @@ export default function BookingScreen() {
             <PersonCard b={b} />
             <Details b={b} />
             {b.review && <ReviewCard b={b} />}
+            {FINISHED.includes(b.status) && (
+              <Button title={t('history.deleteAction')} variant="ghost" icon="trash-2" onPress={() => remove.ask(b._id)} />
+            )}
           </ScrollView>
           <Actions b={b} open={setSheet} />
           <Sheets b={b} sheet={sheet} close={() => setSheet(null)} onPenalty={setPenalty} />
+          {remove.dialog}
         </>
       )}
     </SafeAreaView>
@@ -258,12 +267,48 @@ function Fact({ icon, label, children }: { icon: React.ComponentProps<typeof Fea
   );
 }
 
+/** A booking I can delete from my history (the server refuses one still going on) */
+const FINISHED = ['declined', 'expired', 'cancelled', 'completed'];
+
 function ReviewCard({ b }: { b: Booking }) {
   const { t } = useTranslation();
+  const toast = useToast();
+  const [remove, { isLoading }] = useDeleteBookingReviewMutation();
+  const [asking, setAsking] = useState(false);
   const r = b.review!;
+  const onDelete = async () => {
+    try {
+      await remove(b._id).unwrap();
+      toast.show(t('review.deleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    } finally {
+      setAsking(false);
+    }
+  };
   return (
     <View style={styles.card}>
-      <AppText variant="title">{b.role === 'customer' ? t('booking.yourReview') : t('booking.customerReview')}</AppText>
+      <View style={styles.reviewHead}>
+        <AppText variant="title" style={styles.flex}>
+          {b.role === 'customer' ? t('booking.yourReview') : t('booking.customerReview')}
+        </AppText>
+        {b.role === 'customer' && (
+          <Pressable onPress={() => setAsking(true)} hitSlop={8} accessibilityRole="button" accessibilityLabel={t('review.delete')}>
+            <Feather name="trash-2" size={18} color={Colors.danger} />
+          </Pressable>
+        )}
+      </View>
+      <ConfirmDialog
+        visible={asking}
+        destructive
+        icon="trash-2"
+        title={t('review.deleteTitle')}
+        message={t('review.deleteText')}
+        confirmLabel={t('common.delete')}
+        loading={isLoading}
+        onConfirm={() => void onDelete()}
+        onCancel={() => setAsking(false)}
+      />
       <Stars value={r.rating} size={18} />
       {r.comment ? <AppText variant="body">{r.comment}</AppText> : null}
       {r.photos.length > 0 && (
@@ -566,6 +611,7 @@ function Sheets({ b, sheet, close, onPenalty }: { b: Booking; sheet: Sheet; clos
 }
 
 const styles = StyleSheet.create({
+  reviewHead: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   safe: { flex: 1, backgroundColor: Colors.surface },
   inner: {
     width: '100%',

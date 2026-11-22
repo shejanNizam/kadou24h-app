@@ -28,6 +28,19 @@ export const cvApi = api.injectEndpoints({
         }
       },
     }),
+    /** "Delete my CV": text and both files (a worker keeps trade, photo and city) */
+    deleteCv: build.mutation<MyCv, void>({
+      query: () => ({ url: '/professional-profiles/me/cv', method: 'DELETE' }),
+      transformResponse: unwrap<MyCv>,
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(cvApi.util.upsertQueryData('getMyCv', undefined, data));
+        } catch {
+          // the screen shows the error
+        }
+      },
+    }),
     setWorkerListing: build.mutation<MyCv, WorkerListingInput>({
       query: (body) => ({ url: '/professional-profiles/me/worker-listing', method: 'PATCH', body }),
       transformResponse: unwrap<MyCv>,
@@ -72,6 +85,7 @@ export const cvApi = api.injectEndpoints({
 export const {
   useGetMyCvQuery,
   useSaveCvMutation,
+  useDeleteCvMutation,
   useSetWorkerListingMutation,
   useSubmitWorkerApplicationMutation,
   useGetWorkerSummaryQuery,

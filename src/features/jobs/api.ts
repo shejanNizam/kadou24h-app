@@ -110,6 +110,11 @@ export const jobsApi = api.injectEndpoints({
       query: (id) => ({ url: `/jobs/${id}/close`, method: 'POST' }),
       invalidatesTags: ['Job'],
     }),
+    /** "Delete my offer" (client, 2026-11-22): a draft, closed or expired one; candidates keep their application */
+    deleteJob: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/jobs/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Job'],
+    }),
     getJobCandidates: build.infiniteQuery<
       Paginated<Candidate>,
       { jobId: string; status?: ApplicationStatus; sortBy?: 'match' | 'date' },
@@ -163,6 +168,7 @@ export const {
   useUpdateJobMutation,
   usePublishJobMutation,
   useCloseJobMutation,
+  useDeleteJobMutation,
   useGetJobCandidatesInfiniteQuery,
   useGetReceivedApplicationsInfiniteQuery,
   useSetApplicationStatusMutation,

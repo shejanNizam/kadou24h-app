@@ -990,6 +990,13 @@
       "ride": "Moto-taxi ride"
     },
     "aboutOrder": "Order {{number}}",
+    "newMessage": "New message",
+    "topicClear": "Stop talking about this order",
+    "deleteChat": "Delete the chat",
+    "deleteChatTitle": "Delete the chat?",
+    "deleteChatText": "The messages go for you only; {{name}} keeps theirs. The chat comes back if a new message arrives.",
+    "chatDeleted": "Chat deleted",
+    "retentionNote": "For your privacy, messages are deleted after {{days}} days (except during a dispute or an order in progress).",
     "unread_one": "{{count}} unread message",
     "unread_other": "{{count}} unread messages",
     "voiceNote": "Voice message",
@@ -1159,6 +1166,12 @@
       "failed": "Failed",
       "refunded": "Refunded"
     }
+  },
+  "review": {
+    "delete": "Delete my review",
+    "deleteTitle": "Delete your review?",
+    "deleteText": "Your review and its rating go, with its photos. You can leave a new one.",
+    "deleted": "Review deleted"
   },
   "myReviews": {
     "emptyTitle": "No reviews yet",
@@ -1809,7 +1822,7 @@
     }
   },
   "riderStores": {
-    "title": "My stores",
+    "title": "Partner shops",
     "tab": {
       "linked": "Linked ({{count}})",
       "requests": "Requests",
@@ -2031,6 +2044,15 @@
   },
   "cv": {
     "title": "My CV",
+    "deleteKadouCv": "Delete the Kadou24h CV",
+    "deleteOwnCv": "Delete my own CV",
+    "deleteFileMessage": "This file will be removed from your profile. Recruiters you already applied to keep the copy they received.",
+    "fileDeleted": "File deleted",
+    "deleteAll": "Delete my CV",
+    "deleteAllTitle": "Delete your whole CV?",
+    "deleteAllMessage": "Your summary, experience, education, skills, trade and CV files will be deleted. Recruiters you already applied to keep the copy they received.",
+    "deleteAllWorker": "Your summary, experience, education, skills and CV files will be deleted. Your worker page (trade, photo, city, reviews) stays.",
+    "deleted": "CV deleted",
     "photo": "Profile photo",
     "noProfession": "Add your job title",
     "complete": "Your CV is complete. Well done!",
@@ -2198,6 +2220,10 @@
     "until": "Until {{date}}"
   },
   "recruiterJob": {
+    "delete": "Delete the offer",
+    "deleteTitle": "Delete this offer?",
+    "deleteText": "It leaves your offers. Candidates keep their application.",
+    "deleted": "Offer deleted",
     "title": "My offer",
     "notYours": "This offer isn’t yours",
     "liveUntil": "Live until {{date}}",
@@ -2654,6 +2680,7 @@
     "deleteTitle": "Delete from your history?",
     "deleteOrderText": "Only you will stop seeing this order. The store and Kadou24h keep it for payments and help.",
     "deleteRideText": "Only you will stop seeing this ride. The rider and Kadou24h keep it.",
+    "deleteBookingText": "Only you will stop seeing this booking. The other person and Kadou24h keep it.",
     "delete": "Delete",
     "deleted": "Deleted from your history",
     "holdHintOrders": "Press and hold a finished order to delete it from your history.",

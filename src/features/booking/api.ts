@@ -104,6 +104,16 @@ export const bookingApi = api.injectEndpoints({
       transformResponse: unwrap<WorkerReview>,
       invalidatesTags: ['Booking', 'Cv'],
     }),
+    /** "Delete my review" (client, 2026-11-22): the worker's rating is redone; I may review again */
+    deleteBookingReview: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/bookings/${id}/review`, method: 'DELETE' }),
+      invalidatesTags: ['Booking', 'Cv'],
+    }),
+    /** "Delete from my history": a finished booking, hidden for my side only */
+    hideBooking: build.mutation<unknown, string>({
+      query: (id) => ({ url: `/bookings/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Booking'],
+    }),
     /** Public: reviews from completed bookings (meta.stars = count per rating) */
     getWorkerReviews: build.query<Paginated<WorkerReview>, { profileId: string; page?: number }>({
       query: ({ profileId, page }) => ({
@@ -128,5 +138,7 @@ export const {
   useConfirmBookingMutation,
   useReportNotDoneMutation,
   useReviewBookingMutation,
+  useDeleteBookingReviewMutation,
+  useHideBookingMutation,
   useGetWorkerReviewsQuery,
 } = bookingApi;

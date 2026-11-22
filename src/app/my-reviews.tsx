@@ -1,17 +1,21 @@
 import Feather from '@expo/vector-icons/Feather';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { AppText } from '@/components/ui/AppText';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StackHeader } from '@/components/ui/StackHeader';
+import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { useGetMyReviewsInfiniteQuery, type MyReview } from '@/features/profile/api';
+import { useDeleteMyReviewMutation, useGetMyReviewsInfiniteQuery, type MyReview } from '@/features/profile/api';
+import { getApiErrorMessage } from '@/lib/api/errors';
 import { img } from '@/lib/image';
 
 /** Reviews I wrote (one per delivered store order). */
@@ -56,7 +60,20 @@ export default function MyReviewsScreen() {
 
 function ReviewRow({ review: r }: { review: MyReview }) {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
+  const [remove, { isLoading }] = useDeleteMyReviewMutation();
+  const [asking, setAsking] = useState(false);
   const store = r.vendorId;
+  const onDelete = async () => {
+    try {
+      await remove(r._id).unwrap();
+      toast.show(t('review.deleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    } finally {
+      setAsking(false);
+    }
+  };
   return (
     <View style={styles.card}>
       <Pressable
@@ -73,6 +90,9 @@ function ReviewRow({ review: r }: { review: MyReview }) {
         <AppText variant="caption" color={Colors.textMuted}>
           {new Date(r.createdAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short' })}
         </AppText>
+        <Pressable onPress={() => setAsking(true)} hitSlop={8} accessibilityRole="button" accessibilityLabel={t('review.delete')}>
+          <Feather name="trash-2" size={18} color={Colors.danger} />
+        </Pressable>
       </Pressable>
       <View style={styles.stars} accessibilityLabel={t('order.stars', { count: r.rating })}>
         {[1, 2, 3, 4, 5].map((n) => (
@@ -85,6 +105,17 @@ function ReviewRow({ review: r }: { review: MyReview }) {
           {t('myReviews.hidden')}
         </AppText>
       )}
+      <ConfirmDialog
+        visible={asking}
+        destructive
+        icon="trash-2"
+        title={t('review.deleteTitle')}
+        message={t('review.deleteText')}
+        confirmLabel={t('common.delete')}
+        loading={isLoading}
+        onConfirm={() => void onDelete()}
+        onCancel={() => setAsking(false)}
+      />
     </View>
   );
 }

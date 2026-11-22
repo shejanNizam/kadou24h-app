@@ -11,6 +11,7 @@ import { PhotoPreview } from '@/components/media/PhotoPreview';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
+import { CountBadge } from '@/components/ui/CountBadge';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
@@ -163,9 +164,10 @@ function Body({ ride, refreshing, onRefresh }: { ride: Ride; refreshing: boolean
                   onPress={() => openChat({ type: 'ride', rideId: ride._id })}
                   disabled={opening}
                   accessibilityRole="button"
-                  accessibilityLabel={t('ride.rider.chat')}
+                  accessibilityLabel={`${t('ride.rider.chat')}${ride.chatUnread ? `, ${t('chat.unread', { count: ride.chatUnread })}` : ''}`}
                   style={styles.iconBtn}>
                   <Feather name="message-circle" size={18} color={Colors.primary} />
+                  <CountBadge count={ride.chatUnread ?? 0} corner />
                 </Pressable>
               )}
               {phone && next && (

@@ -20,6 +20,7 @@ import { PushEffects } from '@/components/providers/PushEffects';
 import { RiderPresenceEffects } from '@/components/providers/RiderPresenceEffects';
 import { SessionEffects } from '@/components/providers/SessionEffects';
 import { ToastProvider } from '@/components/ui/Toast';
+import { MessageAlert } from '@/features/chat/components/MessageAlert';
 import { Colors } from '@/constants/theme';
 import { bootstrap } from '@/lib/bootstrap';
 import { installCrashReporter, setCrashScreen } from '@/lib/crashReport';
@@ -87,6 +88,8 @@ function RootLayout() {
                         animation: 'slide_from_right',
                       }}
                     />
+                    {/* A new chat message on any screen, in any mode */}
+                    <MessageAlert />
                   </SafeAreaProvider>
                 </View>
               </ToastProvider>

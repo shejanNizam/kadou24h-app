@@ -9,6 +9,7 @@ import { AndroidImportance } from 'expo-notifications';
 import { Platform } from 'react-native';
 
 import { config } from '@/lib/config';
+import { getSocket } from '@/lib/socket';
 
 let currentToken: string | null = null;
 let activeConversationId: string | null = null;
@@ -17,12 +18,17 @@ let activeConversationId: string | null = null;
 export const setActiveChat = (id: string | null) => {
   activeConversationId = id;
 };
+export const getActiveChat = () => activeConversationId;
 
-// While the app is open: show the banner too, except for the chat being read
+// While the app is open: show the banner too, except for the chat being read.
+// A chat message gets the in-app banner instead (MessageAlert) when the socket is live,
+// so it shows once; the phone still rings and keeps it in the list.
 Notifications.setNotificationHandler({
   handleNotification: async (notification) => {
-    const show = notification.request.content.data?.conversationId !== activeConversationId || !activeConversationId;
-    return { shouldShowBanner: show, shouldShowList: show, shouldPlaySound: show, shouldSetBadge: false };
+    const chatId = notification.request.content.data?.conversationId;
+    const show = !chatId || chatId !== activeConversationId;
+    const inApp = Boolean(chatId) && Boolean(getSocket()?.connected);
+    return { shouldShowBanner: show && !inApp, shouldShowList: show, shouldPlaySound: show, shouldSetBadge: false };
   },
 });
 

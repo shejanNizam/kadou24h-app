@@ -19,7 +19,13 @@ export function useOpenChat() {
     requireAuth(() => {
       void start(subject)
         .unwrap()
-        .then((c) => router.push({ pathname: '/chat/[id]', params: { id: c._id } }))
+        // From an order, the store chat opens on that order: what I write is about it
+        .then((c) =>
+          router.push({
+            pathname: '/chat/[id]',
+            params: c.topic ? { id: c._id, topicId: c.topic.subOrderId, topicNumber: c.topic.subOrderNumber } : { id: c._id },
+          }),
+        )
         .catch((e: unknown) => toast.show(getApiErrorMessage(e, t), 'danger'));
     });
 

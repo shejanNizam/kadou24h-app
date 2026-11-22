@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
+import { useGetPublicSettingsQuery } from '@/features/profile/api';
 import type { AppMode } from '@/types/api';
 
 import { useGetConversationsInfiniteQuery } from '../api';
@@ -23,6 +24,9 @@ export function ConversationList({ mode, emptyText }: { mode: AppMode; emptyText
   const { t } = useTranslation();
   const result = useGetConversationsInfiniteQuery(mode);
   const conversations = result.data?.pages.flatMap((p) => p.data) ?? [];
+  // How long messages are kept (admin setting, client 2026-11-22)
+  const { data: settings } = useGetPublicSettingsQuery();
+  const keepDays = settings?.chat?.retentionDays;
 
   // New messages refresh this list through SessionEffects (conversation_unread)
 
@@ -53,7 +57,15 @@ export function ConversationList({ mode, emptyText }: { mode: AppMode; emptyText
             <EmptyState icon="message-circle" title={t('chat.emptyTitle')} message={emptyText} />
           )
         }
-        ListFooterComponent={result.isFetchingNextPage ? <ActivityIndicator color={Colors.primary} /> : undefined}
+        ListFooterComponent={
+          result.isFetchingNextPage ? (
+            <ActivityIndicator color={Colors.primary} />
+          ) : keepDays && conversations.length ? (
+            <AppText variant="caption" color={Colors.textSubtle} align="center" style={styles.note}>
+              {t('chat.retentionNote', { days: keepDays })}
+            </AppText>
+          ) : undefined
+        }
         onEndReached={() => {
           if (result.hasNextPage && !result.isFetchingNextPage) void result.fetchNextPage();
         }}
@@ -120,6 +132,7 @@ function Row({ conversation: c }: { conversation: Conversation }) {
 }
 
 const styles = StyleSheet.create({
+  note: { paddingVertical: Spacing.lg, paddingHorizontal: Spacing.md },
   safe: { flex: 1, backgroundColor: Colors.background },
   inner: { width: '100%', maxWidth: MaxContentWidth, alignSelf: 'center', paddingHorizontal: Spacing.xl },
   title: { paddingTop: Spacing.md, paddingBottom: Spacing.sm },
