@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { StackHeader } from '@/components/ui/StackHeader';
 import { StatusPill, type StatusTone } from '@/components/ui/StatusPill';
@@ -18,6 +19,7 @@ import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { useGetBookingsQuery } from '@/features/booking/api';
 import { BookingCard } from '@/features/booking/components/BookingCard';
 import { formatDay } from '@/features/booking/status';
+import { useDeleteConversationMutation } from '@/features/chat/api';
 import { useGetWorkerSummaryQuery, useSetWorkerListingMutation } from '@/features/cv/api';
 import type { WorkerStatus, WorkerSummary } from '@/features/cv/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
@@ -226,7 +228,7 @@ function Visibility({ summary }: { summary: WorkerSummary }) {
 }
 
 function Dashboard({ summary }: { summary: WorkerSummary }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { messages, recent, bookings, earnings } = summary;
   const requests = useGetBookingsQuery({ as: 'worker', status: 'requested' });
   const upcoming = useGetBookingsQuery({ as: 'worker', status: 'active' });
@@ -299,6 +301,36 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
         onAll={() => router.push({ pathname: '/worker-bookings', params: { tab: 'upcoming' } })}
       />
 
+      <CustomerRequests recent={recent} conversations={messages.conversations} />
+    </>
+  );
+}
+
+/**
+ * The customers who wrote (client, 2026-11-23): the worker can remove a chat from their list
+ * ("delete for me"). Nothing is erased on the server: the customer keeps theirs, reports and
+ * disputes still have the messages, and the chat comes back with the next message.
+ */
+function CustomerRequests({ recent, conversations }: { recent: WorkerSummary['recent']; conversations: number }) {
+  const { t, i18n } = useTranslation();
+  const toast = useToast();
+  const [removing, setRemoving] = useState<WorkerSummary['recent'][number] | null>(null);
+  const [deleteChat, deleteState] = useDeleteConversationMutation();
+
+  const remove = async () => {
+    if (!removing) return;
+    try {
+      await deleteChat(removing._id).unwrap();
+      toast.show(t('chat.chatDeleted'), 'success');
+    } catch (e) {
+      toast.show(getApiErrorMessage(e, t), 'danger');
+    } finally {
+      setRemoving(null);
+    }
+  };
+
+  return (
+    <>
       <View style={styles.gap}>
         <AppText variant="title">{t('worker.recentTitle')}</AppText>
         {recent.length === 0 ? (
@@ -312,6 +344,7 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
             <Pressable
               key={c._id}
               onPress={() => router.push({ pathname: '/chat/[id]', params: { id: c._id } })}
+              onLongPress={() => setRemoving(c)}
               accessibilityRole="button"
               accessibilityLabel={c.peer?.name ?? t('worker.customer')}
               style={({ pressed }) => [styles.card, styles.row, pressed && styles.pressed]}>
@@ -350,13 +383,31 @@ function Dashboard({ summary }: { summary: WorkerSummary }) {
                   </View>
                 )}
               </View>
+              <Pressable
+                onPress={() => setRemoving(c)}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel={t('chat.deleteChat')}
+                style={({ pressed }) => [styles.remove, pressed && styles.pressed]}>
+                <Feather name="trash-2" size={16} color={Colors.textMuted} />
+              </Pressable>
             </Pressable>
           ))
         )}
-        {messages.conversations > recent.length && (
-          <Button title={t('worker.allMessages')} variant="ghost" onPress={() => router.push('/chat')} />
-        )}
+        {conversations > recent.length && <Button title={t('worker.allMessages')} variant="ghost" onPress={() => router.push('/chat')} />}
       </View>
+
+      <ConfirmDialog
+        visible={Boolean(removing)}
+        icon="trash-2"
+        title={t('chat.deleteChatTitle')}
+        message={t('chat.deleteChatText', { name: removing?.peer?.name ?? t('worker.customer') })}
+        confirmLabel={t('common.delete')}
+        destructive
+        loading={deleteState.isLoading}
+        onCancel={() => setRemoving(null)}
+        onConfirm={() => void remove()}
+      />
     </>
   );
 }
@@ -407,6 +458,7 @@ const styles = StyleSheet.create({
   right: { alignItems: 'flex-end', gap: Spacing.xs },
   badge: { minWidth: 20, height: 20, borderRadius: 10, paddingHorizontal: 6, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
   pressed: { opacity: 0.85 },
+  remove: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.surface },
   earnings: { gap: Spacing.sm },
   visBox: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md, backgroundColor: Colors.successSoft },
   visSoon: { backgroundColor: Colors.warningSoft },
