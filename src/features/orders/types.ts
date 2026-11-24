@@ -189,6 +189,8 @@ export interface OrderRefund {
   transactionId?: string;
   rejectionReason?: string;
   processedAt?: string;
+  /** Refunded within 1 to 7 days (client, 2026-11-24): the latest date */
+  dueBy?: string;
   createdAt: string;
 }
 

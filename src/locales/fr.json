@@ -471,10 +471,11 @@
     "deleteAll": "Tout supprimer",
     "deleteTitle": "Supprimer cette notification ?",
     "deleteAllTitle": "Supprimer toutes les notifications ?",
-    "deleteAllText": "Elles ne pourront pas être récupérées.",
+    "deleteAllText": "Elles ne pourront pas être récupérées. Les notifications importantes (remboursements, annulations, paiements, sécurité, équipe Kadou24h) restent.",
     "deleted": "Notification supprimée",
     "deletedAll": "Notifications supprimées",
-    "holdHint": "Appuyez longuement sur une notification pour la supprimer."
+    "holdHint": "Appuyez longuement sur une notification pour la supprimer. Celles avec un cadenas sont importantes et restent.",
+    "kept": "Notification importante : elle reste dans votre historique."
   },
   "worker": {
     "experience": "Expérience",
@@ -680,6 +681,10 @@
     "customLabelHint": "Ex. : Chez maman",
     "city": "Ville",
     "cityRequired": "Indiquez la ville",
+    "neighborhoodRequired": "Indiquez votre quartier",
+    "neighborhoodMissing": "Quartier à compléter",
+    "completeNeighborhood": "Ajoutez votre quartier à cette adresse : le livreur ou le travailleur en a besoin pour vous trouver.",
+    "complete": "Compléter l’adresse",
     "commune": "Commune",
     "neighborhood": "Quartier",
     "landmark": "Point de repère",
@@ -1653,6 +1658,7 @@
       "rejected": "Refusé"
     },
     "pending": "{{amount}} vont vous être remboursés. L'équipe Kadou24h vérifie la demande et vous renvoie l'argent sur le moyen de paiement utilisé.",
+    "dueBy": "Remboursement sous 1 à 7 jours, au plus tard le {{date}}.",
     "completed": "{{amount}} vous ont été remboursés.",
     "rejected": "Le remboursement de {{amount}} a été refusé :",
     "reference": "Référence du transfert : {{ref}}"

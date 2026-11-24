@@ -43,6 +43,8 @@ export interface AppNotification {
   data?: Record<string, string>;
   isRead: boolean;
   createdAt: string;
+  /** false = important (refund, cancellation, payment, security, team): it can't be deleted */
+  canDelete?: boolean;
 }
 
 export const notificationsApi = api.injectEndpoints({

@@ -235,6 +235,11 @@ export default function OrderScreen() {
                   ? t('refund.pending', { amount: formatGNF(r.amount) })
                   : t('refund.rejected', { amount: formatGNF(r.requestedAmount ?? r.amount) })}
             </AppText>
+            {r.status === 'pending' && r.dueBy ? (
+              <AppText variant="caption" color={Colors.textMuted}>
+                {t('refund.dueBy', { date: new Date(r.dueBy).toLocaleDateString(i18n.language, { day: 'numeric', month: 'long' }) })}
+              </AppText>
+            ) : null}
             {r.status === 'completed' && r.transactionId ? (
               <AppText variant="caption" color={Colors.textMuted}>
                 {t('refund.reference', { ref: r.transactionId })}

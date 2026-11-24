@@ -18,7 +18,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
-import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
+import { needsNeighborhood, pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
 import { AddressCard } from '@/features/address/components/AddressCard';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { useGetCartQuery } from '@/features/cart/api';
@@ -91,6 +91,7 @@ function Checkout() {
   };
   const ready = Boolean(address) && (!needsStation || Boolean(station)) && (cart.data?.totalItems ?? 0) > 0;
   const summary = useGetCheckoutSummaryQuery(input, { skip: !ready });
+  const noNeighborhood = Boolean(address && needsNeighborhood(address));
 
   const [placeOrder, placeState] = usePlaceOrderMutation();
   const [initiatePayment, payState] = useInitiatePaymentMutation();
@@ -148,7 +149,16 @@ function Checkout() {
           {addresses.isLoading ? (
             <Skeleton height={88} radius={Radius.lg} />
           ) : address ? (
-            <AddressCard address={address} />
+            <>
+              <AddressCard address={address} />
+              {/* The quartier is mandatory (client, 2026-11-24): an older address is completed first */}
+              {noNeighborhood && (
+                <>
+                  <Banner tone="warning" message={t('address.completeNeighborhood')} />
+                  <Button title={t('address.complete')} icon="edit-2" variant="outline" size="sm" onPress={() => router.push({ pathname: '/address-edit', params: { id: address._id } })} />
+                </>
+              )}
+            </>
           ) : (
             <Button title={t('address.add')} icon="map-pin" variant="outline" onPress={() => router.push('/address-edit')} />
           )}
@@ -347,7 +357,7 @@ function Checkout() {
               : t('checkout.placeShort')
           }
           loading={placing}
-          disabled={!ready || !summary.data || summary.isFetching || summary.isError || (paymentMethod === 'cod' && codBlocked)}
+          disabled={!ready || noNeighborhood || !summary.data || summary.isFetching || summary.isError || (paymentMethod === 'cod' && codBlocked)}
           onPress={() => void onPlace()}
         />
       </View>

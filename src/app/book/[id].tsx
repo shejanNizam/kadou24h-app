@@ -16,7 +16,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
-import { pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
+import { needsNeighborhood, pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
 import { AddressCard } from '@/features/address/components/AddressCard';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { useCreateBookingMutation, useGetStandingQuery } from '@/features/booking/api';
@@ -59,6 +59,8 @@ function BookForm() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const chosenAddress = addressId ?? pickDefaultAddress(addresses.data)?._id ?? null;
+  // The quartier is mandatory (client, 2026-11-24): an older address is completed first
+  const chosenIncomplete = (addresses.data ?? []).some((a) => a._id === chosenAddress && needsNeighborhood(a));
   const w = worker.data;
   const limitedUntil = standing.data?.customer.limitedUntil;
 
@@ -66,6 +68,7 @@ function BookForm() {
     const next: Record<string, string> = {};
     if (!day || !time) next.when = t('booking.need.when');
     if (!chosenAddress) next.address = t('booking.need.address');
+    else if (chosenIncomplete) next.address = t('address.completeNeighborhood');
     if (description.trim().length < MIN_DESCRIPTION)
       next.description = t('booking.need.description', {
         count: MIN_DESCRIPTION,
@@ -162,6 +165,9 @@ function BookForm() {
               {(addresses.data ?? []).map((a) => (
                 <AddressCard key={a._id} address={a} selected={a._id === chosenAddress} onPress={() => setAddressId(a._id)} />
               ))}
+              {chosenIncomplete && chosenAddress && (
+                <Button title={t('address.complete')} icon="edit-2" size="sm" onPress={() => router.push({ pathname: '/address-edit', params: { id: chosenAddress } })} />
+              )}
               <Button title={t('address.add')} icon="plus" variant="outline" size="sm" onPress={() => router.push('/address-edit')} />
             </>
           )}

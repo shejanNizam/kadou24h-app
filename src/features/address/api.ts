@@ -68,6 +68,9 @@ export const {
 } = addressApi;
 
 /** "Kipé, Ratoma" — the short line under a label */
+/** Saved before the quartier became mandatory (client, 2026-11-24): to complete before ordering or booking */
+export const needsNeighborhood = (a: Pick<Address, 'neighborhood'>) => !a.neighborhood?.trim();
+
 export const addressLine = (a: Pick<Address, 'neighborhood' | 'commune' | 'city'>) =>
   [a.neighborhood, a.commune, a.city].filter(Boolean).join(', ');
 

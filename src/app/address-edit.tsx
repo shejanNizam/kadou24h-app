@@ -49,7 +49,8 @@ const schema = (t: TFunction) =>
     region: z.string().trim().max(60),
     city: z.string().trim().min(2, t('address.cityRequired')).max(60),
     commune: z.string().trim().max(60),
-    neighborhood: z.string().trim().max(80),
+    // Mandatory (client, 2026-11-24): riders and workers find the customer by their quartier
+    neighborhood: z.string().trim().min(2, t('address.neighborhoodRequired')).max(80),
     landmark: z.string().trim().max(200),
     directions: z.string().trim().max(500),
     isDefault: z.boolean(),
@@ -161,7 +162,7 @@ function AddressEditor({ existing, isFirst }: { existing?: Address; isFirst: boo
       phone: toE164(values.phone),
       region: values.region || undefined,
       commune: values.commune || undefined,
-      neighborhood: values.neighborhood || undefined,
+      neighborhood: values.neighborhood,
       landmark: values.landmark || undefined,
       directions: values.directions || undefined,
       location: pin,
@@ -261,7 +262,7 @@ function AddressEditor({ existing, isFirst }: { existing?: Address; isFirst: boo
 
         <Field control={control} name="city" label={t('address.city')} />
         <Field control={control} name="commune" label={t('address.commune')} optional />
-        <Field control={control} name="neighborhood" label={t('address.neighborhood')} optional />
+        <Field control={control} name="neighborhood" label={t('address.neighborhood')} />
         <Field control={control} name="landmark" label={t('address.landmark')} hint={t('address.landmarkHint')} optional multiline />
         <Field control={control} name="directions" label={t('address.directions')} hint={t('address.directionsHint')} optional multiline />
 

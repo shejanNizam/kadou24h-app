@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { AppText } from "@/components/ui/AppText";
 import { Colors, Radius, Spacing } from "@/constants/theme";
 
-import { addressLine, type Address } from "../api";
+import { addressLine, needsNeighborhood, type Address } from "../api";
 import { img } from "@/lib/image";
 
 const LABEL_ICON = {
@@ -80,6 +80,14 @@ export function AddressCard({
               {address.landmark}
             </AppText>
           ) : null}
+          {needsNeighborhood(address) ? (
+            <View style={styles.missing}>
+              <Feather name="alert-circle" size={12} color={Colors.warningText} />
+              <AppText variant="caption" color={Colors.warningText}>
+                {t("address.neighborhoodMissing")}
+              </AppText>
+            </View>
+          ) : null}
           <AppText variant="caption" color={Colors.textSubtle}>
             {address.fullName}
           </AppText>
@@ -98,6 +106,7 @@ export function AddressCard({
 }
 
 const styles = StyleSheet.create({
+  missing: { flexDirection: "row", alignItems: "center", gap: 4 },
   card: {
     flexDirection: "row",
     alignItems: "flex-start",

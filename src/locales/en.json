@@ -471,10 +471,11 @@
     "deleteAll": "Delete all",
     "deleteTitle": "Delete this notification?",
     "deleteAllTitle": "Delete all notifications?",
-    "deleteAllText": "They can't be recovered.",
+    "deleteAllText": "They can't be recovered. Important ones (refunds, cancellations, payments, security, Kadou24h team) stay.",
     "deleted": "Notification deleted",
     "deletedAll": "Notifications deleted",
-    "holdHint": "Press and hold a notification to delete it."
+    "holdHint": "Press and hold a notification to delete it. Those with a lock are important and stay.",
+    "kept": "Important notification: it stays in your history."
   },
   "worker": {
     "experience": "Experience",
@@ -680,6 +681,10 @@
     "customLabelHint": "e.g. Mum's place",
     "city": "City",
     "cityRequired": "Enter the city",
+    "neighborhoodRequired": "Enter your neighbourhood",
+    "neighborhoodMissing": "Neighbourhood to add",
+    "completeNeighborhood": "Add your neighbourhood to this address: the rider or worker needs it to find you.",
+    "complete": "Complete the address",
     "commune": "Commune",
     "neighborhood": "Neighbourhood",
     "landmark": "Landmark",
@@ -1653,6 +1658,7 @@
       "rejected": "Declined"
     },
     "pending": "{{amount}} will be refunded to you. The Kadou24h team checks the request and sends the money back to the payment method you used.",
+    "dueBy": "Refund within 1 to 7 days, by {{date}} at the latest.",
     "completed": "{{amount}} has been refunded to you.",
     "rejected": "The refund of {{amount}} was declined:",
     "reference": "Transfer reference: {{ref}}"

@@ -49,7 +49,8 @@ const isToday = (iso: string) => new Date(iso).toDateString() === new Date().toD
 
 /**
  * Read/unread, grouped Today / Earlier, "mark all read". Deep links follow with their screens.
- * Long press deletes one, "Delete all" empties the list (client, 2026-10-30).
+ * Long press deletes one, "Delete all" empties the list (client, 2026-10-30); important ones
+ * (lock icon) stay (client, 2026-11-24).
  */
 export default function NotificationsScreen() {
   const { t, i18n } = useTranslation();
@@ -75,6 +76,9 @@ export default function NotificationsScreen() {
     { title: t('notifications.earlier'), data: items.filter((n) => !isToday(n.createdAt)) },
   ].filter((s) => s.data.length > 0);
   const hasUnread = items.some((n) => !n.isRead);
+  // Important ones (refund, cancellation, payment, security, team) stay (client, 2026-11-24)
+  const canDelete = (n: AppNotification) => n.canDelete !== false;
+  const hold = (n: AppNotification) => (canDelete(n) ? setDeleting(n._id) : toast.show(t('notifications.kept')));
 
   const confirmDelete = async () => {
     try {
@@ -101,7 +105,7 @@ export default function NotificationsScreen() {
           right={
             hasUnread ? (
               <TextLink title={t('notifications.markAll')} onPress={() => markAll({ mode })} disabled={markAllState.isLoading} />
-            ) : items.length > 0 ? (
+            ) : items.some(canDelete) ? (
               <TextLink title={t('notifications.deleteAll')} onPress={() => setDeleting('all')} />
             ) : undefined
           }
@@ -131,7 +135,7 @@ export default function NotificationsScreen() {
           renderItem={({ item }) => (
             <Pressable
               onPress={() => open(item)}
-              onLongPress={() => setDeleting(item._id)}
+              onLongPress={() => hold(item)}
               delayLongPress={400}
               accessibilityRole="button"
               accessibilityState={{ selected: !item.isRead }}
@@ -157,7 +161,10 @@ export default function NotificationsScreen() {
                   {new Date(item.createdAt).toLocaleString(i18n.language, { dateStyle: 'short', timeStyle: 'short' })}
                 </AppText>
               </View>
-              {!item.isRead && <View style={styles.dot} accessibilityLabel={t('notifications.unread')} />}
+              <View style={styles.side}>
+                {!item.isRead && <View style={styles.dot} accessibilityLabel={t('notifications.unread')} />}
+                {!canDelete(item) && <Feather name="lock" size={12} color={Colors.textSubtle} accessibilityLabel={t('notifications.kept')} />}
+              </View>
             </Pressable>
           )}
           ListEmptyComponent={
@@ -219,6 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     marginBottom: 2,
   },
+  side: { alignItems: 'center', gap: Spacing.sm },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: Colors.primary, marginTop: 6 },
   loading: { marginTop: Spacing.xxxl },
 });
