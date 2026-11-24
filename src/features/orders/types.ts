@@ -175,6 +175,13 @@ export interface Order {
 /** GET /orders/my-orders row */
 export interface OrderListItem extends Order {
   subOrders: Pick<SubOrder, '_id' | 'subOrderNumber' | 'vendorId' | 'status' | 'total' | 'items'>[];
+  /** Money coming back: pending if any, else refunded, else the last refusal */
+  refund?: RefundSummary;
+}
+
+export interface RefundSummary {
+  status: RefundStatus;
+  amount: number;
 }
 
 export type RefundStatus = 'pending' | 'completed' | 'rejected';

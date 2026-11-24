@@ -14,7 +14,7 @@ import { StatusPill } from '@/components/ui/StatusPill';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { ORDER_TABS, useGetMyOrdersInfiniteQuery, type OrdersTab } from '@/features/orders/api';
-import { ORDER_TONE } from '@/features/orders/status';
+import { ORDER_TONE, paymentBadge } from '@/features/orders/status';
 import type { OrderListItem } from '@/features/orders/types';
 import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import { formatGNF } from '@/lib/format';
@@ -62,7 +62,10 @@ function Orders() {
       <FlatList
         data={orders}
         keyExtractor={(o) => o._id}
-        renderItem={({ item }) => <OrderCard order={item} onDelete={item.status !== 'active' ? () => remove.ask(item._id) : undefined} />}
+        renderItem={({ item }) => (
+          // Not while money is still coming back (the server refuses it too)
+          <OrderCard order={item} onDelete={item.status !== 'active' && item.refund?.status !== 'pending' ? () => remove.ask(item._id) : undefined} />
+        )}
         ListHeaderComponent={
           orders.some((o) => o.status !== 'active') ? (
             <AppText variant="caption" color={Colors.textSubtle}>
@@ -108,6 +111,9 @@ function OrderCard({ order, onDelete }: { order: OrderListItem; onDelete?: () =>
   const count = items.reduce((n, i) => n + i.qty, 0);
   const stores = order.subOrders.map((s) => s.vendorId?.storeName).filter(Boolean).join(', ');
   const date = new Date(order.placedAt ?? order.createdAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short' });
+  // Money coming back is visible from the list (client, 2026-11-25)
+  const badge = order.refund ? paymentBadge(order, order.refund) : undefined;
+  const refundBadge = badge?.amount || badge?.key === 'refundRejected' ? badge : undefined;
 
   return (
     <Pressable
@@ -126,6 +132,11 @@ function OrderCard({ order, onDelete }: { order: OrderListItem; onDelete?: () =>
         </View>
         <StatusPill label={t(`status.order.${order.status}`)} tone={ORDER_TONE[order.status]} />
       </View>
+      {refundBadge && (
+        <View style={styles.refund}>
+          <StatusPill label={t(`status.payment.${refundBadge.key}`, { amount: formatGNF(refundBadge.amount ?? 0) })} tone={refundBadge.tone} />
+        </View>
+      )}
       <View style={styles.thumbs}>
         {items.slice(0, 4).map((i) => (
           <View key={i._id} style={styles.thumb}>
@@ -169,4 +180,5 @@ const styles = StyleSheet.create({
   thumb: { width: 52, height: 52, borderRadius: Radius.md, backgroundColor: Colors.surface, overflow: 'hidden' },
   thumbImg: { width: 52, height: 52 },
   more: { alignItems: 'center', justifyContent: 'center' },
+  refund: { flexDirection: 'row' },
 });

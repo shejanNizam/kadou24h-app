@@ -959,7 +959,9 @@
       "paid": "Payée",
       "partially_refunded": "Part. remboursée",
       "refunded": "Remboursée",
-      "refundPending": "Remboursement en cours",
+      "refundPending": "Remboursement {{amount}} en cours",
+      "refundedAmount": "Remboursé {{amount}}",
+      "refundRejected": "Remboursement refusé",
       "nothingToPay": "Rien à payer"
     },
     "delivery": {
@@ -1657,8 +1659,9 @@
   },
   "refund": {
     "title": "Remboursement",
+    "titleAmount": "Remboursement de {{amount}}",
     "status": {
-      "pending": "En vérification",
+      "pending": "En cours",
       "completed": "Remboursé",
       "rejected": "Refusé"
     },

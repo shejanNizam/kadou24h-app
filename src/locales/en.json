@@ -959,7 +959,9 @@
       "paid": "Paid",
       "partially_refunded": "Partly refunded",
       "refunded": "Refunded",
-      "refundPending": "Refund in progress",
+      "refundPending": "Refund of {{amount}} in progress",
+      "refundedAmount": "Refunded {{amount}}",
+      "refundRejected": "Refund declined",
       "nothingToPay": "Nothing to pay"
     },
     "delivery": {
@@ -1657,8 +1659,9 @@
   },
   "refund": {
     "title": "Refund",
+    "titleAmount": "Refund of {{amount}}",
     "status": {
-      "pending": "Being checked",
+      "pending": "In progress",
       "completed": "Refunded",
       "rejected": "Declined"
     },
