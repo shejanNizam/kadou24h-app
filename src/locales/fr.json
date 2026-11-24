@@ -850,7 +850,7 @@
       "line_haul": "Véhicule",
       "last_mile": "Moto"
     },
-    "storeTotal": "Total boutique (livraison incluse)",
+    "storeTotal": "Boutique (livraison incluse)",
     "payRider": "À payer au livreur : {{amount}}",
     "track": "Suivre",
     "chatStore": "Écrire à la boutique",
@@ -859,8 +859,11 @@
     "deliverTo": "Livraison à",
     "pickupBy": "Retrait par",
     "cancel": "Annuler la commande",
-    "cannotCancel": "Annulation impossible : une boutique prépare déjà votre commande. Signalez un problème si besoin.",
+    "cannotCancel": "Annulation impossible : une boutique prépare déjà votre commande.",
     "reportProblem": "Signaler un problème",
+    "disputeOnlyPayment": "Rien n'a encore été livré ici : seul un problème de paiement peut être signalé.",
+    "deleteAfterRefund": "Vous pourrez supprimer cette commande une fois le remboursement terminé.",
+    "deleteAfterDispute": "Vous pourrez supprimer cette commande une fois le problème signalé traité.",
     "cancelTitle": "Annuler la commande ?",
     "cancelText": "Toute la commande sera annulée. Si vous avez payé en ligne, un remboursement est demandé automatiquement : l'équipe Kadou24h le vérifie puis vous renvoie l'argent.",
     "cancelReason": {
@@ -894,11 +897,11 @@
     "wholeOrder": "Toute la commande",
     "disputeWhat": "Que s’est-il passé ?",
     "disputeReason": {
-      "notReceived": "Colis non reçu",
+      "not_received": "Colis non reçu",
       "damaged": "Produit abîmé",
-      "wrongItem": "Mauvais produit",
-      "missingItem": "Article manquant",
-      "charged": "Problème de paiement"
+      "wrong_item": "Mauvais produit",
+      "missing_item": "Article manquant",
+      "payment": "Paiement / remboursement"
     },
     "disputeDetails": "Détails",
     "disputeDetailsHint": "Expliquez ce qui ne va pas",
@@ -955,7 +958,9 @@
       "unpaid": "À payer",
       "paid": "Payée",
       "partially_refunded": "Part. remboursée",
-      "refunded": "Remboursée"
+      "refunded": "Remboursée",
+      "refundPending": "Remboursement en cours",
+      "nothingToPay": "Rien à payer"
     },
     "delivery": {
       "pending_assignment": "En attente",

@@ -28,7 +28,7 @@ import {
 import { CancelSheet, DisputeSheet, ReviewSheet } from '@/features/orders/components/OrderSheets';
 import { PriceSummary } from '@/features/orders/components/PriceSummary';
 import { SubOrderCard } from '@/features/orders/components/SubOrderCard';
-import { DISPUTE_TONE, ORDER_TONE, PAYMENT_TONE, REFUND_TONE } from '@/features/orders/status';
+import { DISPUTE_TONE, ORDER_TONE, paymentBadge, REFUND_TONE } from '@/features/orders/status';
 import { useDeleteFromHistory } from '@/features/history/useDeleteFromHistory';
 import type { PaymentMethod, SubOrder } from '@/features/orders/types';
 import { getApiErrorMessage } from '@/lib/api/errors';
@@ -78,6 +78,10 @@ export default function OrderScreen() {
   }
 
   const { order, subOrders } = data;
+  const payBadge = paymentBadge(order, data.refunds);
+  const disputable = data.disputable ?? [];
+  // Older servers did not send canDelete: a finished order could be deleted
+  const canDelete = data.canDelete ?? order.status !== 'active';
   const address = order.addressSnapshot;
   const unpaidOnline = needsOnlinePayment(order);
   const isCod = order.paymentMethod === 'cod';
@@ -132,7 +136,7 @@ export default function OrderScreen() {
             <AppText variant="small" color={Colors.textMuted} style={styles.flex}>
               {t(`payment.method.${order.paymentMethod}`)} · {t(`checkout.type.${order.deliveryType}`)}
             </AppText>
-            <StatusPill label={t(`status.payment.${order.paymentStatus}`)} tone={PAYMENT_TONE[order.paymentStatus]} />
+            <StatusPill label={t(`status.payment.${payBadge.key}`)} tone={payBadge.tone} />
           </View>
         </View>
 
@@ -257,6 +261,7 @@ export default function OrderScreen() {
               </AppText>
               <StatusPill label={t(`status.dispute.${d.status}`)} tone={DISPUTE_TONE[d.status]} />
             </View>
+            {d.type ? <AppText variant="bodyMedium">{t(`order.disputeReason.${d.type}`)}</AppText> : null}
             <AppText variant="small" color={Colors.textMuted}>
               {d.reason}
             </AppText>
@@ -273,14 +278,20 @@ export default function OrderScreen() {
                 {t('order.cannotCancel')}
               </AppText>
             ))}
-          <Button title={t('order.reportProblem')} variant="ghost" icon="alert-triangle" onPress={() => setDisputeOpen(true)} />
-          {order.status !== 'active' && <Button title={t('history.deleteAction')} variant="ghost" icon="trash-2" onPress={() => remove.ask(order._id)} />}
+          {disputable.length > 0 && <Button title={t('order.reportProblem')} variant="ghost" icon="alert-triangle" onPress={() => setDisputeOpen(true)} />}
+          {canDelete ? (
+            <Button title={t('history.deleteAction')} variant="ghost" icon="trash-2" onPress={() => remove.ask(order._id)} />
+          ) : data.deleteBlock && data.deleteBlock !== 'ORDER_DELETE_IN_PROGRESS' ? (
+            <AppText variant="caption" color={Colors.textMuted} align="center">
+              {t(data.deleteBlock === 'ORDER_DELETE_REFUND_PENDING' ? 'order.deleteAfterRefund' : 'order.deleteAfterDispute')}
+            </AppText>
+          ) : null}
         </View>
       </ScrollView>
 
       <CancelSheet orderId={order._id} visible={cancelOpen} onClose={() => setCancelOpen(false)} />
       <CancelSheet orderId={order._id} visible={Boolean(cancelPart)} part={cancelPart} onClose={() => setCancelPart(null)} />
-      <DisputeSheet orderId={order._id} subOrders={subOrders} visible={disputeOpen} onClose={() => setDisputeOpen(false)} />
+      <DisputeSheet orderId={order._id} subOrders={subOrders} targets={disputable} visible={disputeOpen} onClose={() => setDisputeOpen(false)} />
       <ReviewSheet subOrder={reviewFor} onClose={() => setReviewFor(null)} />
       {remove.dialog}
     </SafeAreaView>

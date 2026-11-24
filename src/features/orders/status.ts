@@ -3,7 +3,7 @@
  */
 import type { StatusTone } from '@/components/ui/StatusPill';
 
-import type { DeliveryStatus, DisputeStatus, OrderPaymentStatus, OrderStatus, RefundStatus, SubOrderStatus } from './types';
+import type { DeliveryStatus, DisputeStatus, Order, OrderPaymentStatus, OrderRefund, OrderStatus, RefundStatus, SubOrderStatus } from './types';
 
 export const SUB_ORDER_TONE: Record<SubOrderStatus, StatusTone> = {
   pending_payment: 'amber',
@@ -29,6 +29,20 @@ export const PAYMENT_TONE: Record<OrderPaymentStatus, StatusTone> = {
   partially_refunded: 'orange',
   refunded: 'grey',
 };
+
+/**
+ * The money badge on an order (client, 2026-11-24): a cancelled order never says "to pay".
+ * It shows where the refund stands, or that there is nothing to pay. The key is under
+ * status.payment.
+ */
+export function paymentBadge(order: Pick<Order, 'status' | 'paymentMethod' | 'paymentStatus' | 'feesPaidAt'>, refunds: Pick<OrderRefund, 'status'>[] = []): { key: string; tone: StatusTone } {
+  if (order.status !== 'cancelled') return { key: order.paymentStatus, tone: PAYMENT_TONE[order.paymentStatus] };
+  const paidOnline = order.paymentMethod === 'cod' ? Boolean(order.feesPaidAt) : order.paymentStatus !== 'unpaid';
+  if (refunds.some((r) => r.status === 'pending')) return { key: 'refundPending', tone: 'amber' };
+  if (!paidOnline) return { key: 'nothingToPay', tone: 'grey' };
+  if (order.paymentStatus === 'refunded' || refunds.some((r) => r.status === 'completed')) return { key: 'refunded', tone: 'grey' };
+  return { key: 'paid', tone: PAYMENT_TONE.paid };
+}
 
 export const REFUND_TONE: Record<RefundStatus, StatusTone> = {
   pending: 'amber',

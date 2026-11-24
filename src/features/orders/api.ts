@@ -9,6 +9,7 @@ import type {
   CheckoutInput,
   CheckoutSummary,
   Dispute,
+  DisputeType,
   Order,
   OrderDetails,
   OrderListItem,
@@ -114,10 +115,11 @@ export const ordersApi = api.injectEndpoints({
       transformResponse: unwrapPage<Dispute>,
       providesTags: ['Dispute'],
     }),
-    createDispute: build.mutation<Dispute, { orderId: string; subOrderId?: string; reason: string }>({
+    createDispute: build.mutation<Dispute, { orderId: string; subOrderId?: string; type: DisputeType; reason: string }>({
       query: (body) => ({ url: '/payments/disputes', method: 'POST', body }),
       transformResponse: unwrap<Dispute>,
-      invalidatesTags: ['Dispute'],
+      // The order says where a problem can still be reported
+      invalidatesTags: ['Dispute', 'Order'],
     }),
 
     // ── Tracking ───────────────────────────────────────────────────

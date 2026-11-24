@@ -850,7 +850,7 @@
       "line_haul": "Car",
       "last_mile": "Moto"
     },
-    "storeTotal": "Store total (delivery included)",
+    "storeTotal": "Store (delivery included)",
     "payRider": "To pay the rider: {{amount}}",
     "track": "Track",
     "chatStore": "Message the store",
@@ -859,8 +859,11 @@
     "deliverTo": "Delivery to",
     "pickupBy": "Pickup by",
     "cancel": "Cancel order",
-    "cannotCancel": "Can't cancel: a store is already preparing your order. Report a problem if needed.",
+    "cannotCancel": "Can't cancel: a store is already preparing your order.",
     "reportProblem": "Report a problem",
+    "disputeOnlyPayment": "Nothing has been delivered here yet: only a payment problem can be reported.",
+    "deleteAfterRefund": "You can delete this order once the refund is done.",
+    "deleteAfterDispute": "You can delete this order once the problem you reported is handled.",
     "cancelTitle": "Cancel the order?",
     "cancelText": "The whole order will be cancelled. If you paid online, a refund is requested automatically: the Kadou24h team checks it and sends your money back.",
     "cancelReason": {
@@ -894,11 +897,11 @@
     "wholeOrder": "Whole order",
     "disputeWhat": "What happened?",
     "disputeReason": {
-      "notReceived": "Parcel not received",
+      "not_received": "Parcel not received",
       "damaged": "Damaged product",
-      "wrongItem": "Wrong product",
-      "missingItem": "Missing item",
-      "charged": "Payment problem"
+      "wrong_item": "Wrong product",
+      "missing_item": "Missing item",
+      "payment": "Payment / refund"
     },
     "disputeDetails": "Details",
     "disputeDetailsHint": "Explain what's wrong",
@@ -955,7 +958,9 @@
       "unpaid": "To be paid",
       "paid": "Paid",
       "partially_refunded": "Partly refunded",
-      "refunded": "Refunded"
+      "refunded": "Refunded",
+      "refundPending": "Refund in progress",
+      "nothingToPay": "Nothing to pay"
     },
     "delivery": {
       "pending_assignment": "Waiting",

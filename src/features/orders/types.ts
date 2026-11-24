@@ -198,6 +198,12 @@ export interface OrderDetails {
   order: Order;
   subOrders: SubOrder[];
   refunds?: OrderRefund[];
+  /** Where the buyer may report which problem (server rules); empty → nothing to report */
+  disputable?: DisputeTarget[];
+  /** Can be deleted from the history now */
+  canDelete?: boolean;
+  /** Why not (error code): still in progress, refund pending, problem open */
+  deleteBlock?: 'ORDER_DELETE_IN_PROGRESS' | 'ORDER_DELETE_REFUND_PENDING' | 'ORDER_DELETE_DISPUTE_OPEN';
 }
 
 // ── Checkout ─────────────────────────────────────────────────────────
@@ -296,12 +302,21 @@ export interface Payment {
 
 // ── Disputes, reviews, tracking ──────────────────────────────────────
 export type DisputeStatus = 'open' | 'resolved' | 'rejected';
+/** Delivery problems only on a delivered store part; payment only when paid online */
+export type DisputeType = 'not_received' | 'damaged' | 'wrong_item' | 'missing_item' | 'payment';
+
+export interface DisputeTarget {
+  /** null = the whole order */
+  subOrderId: string | null;
+  types: DisputeType[];
+}
 
 export interface Dispute {
   _id: string;
   orderId: string | { _id: string; orderNumber: string };
   subOrderId?: string;
   amount?: number;
+  type?: DisputeType;
   reason: string;
   adminResolution?: string;
   status: DisputeStatus;

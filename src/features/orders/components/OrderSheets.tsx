@@ -14,10 +14,9 @@ import { Colors, MinTouch, Spacing } from '@/constants/theme';
 import { getApiErrorMessage } from '@/lib/api/errors';
 
 import { useCancelOrderMutation, useCancelStorePartMutation, useCreateDisputeMutation, useCreateReviewMutation } from '../api';
-import type { SubOrder } from '../types';
+import type { DisputeTarget, DisputeType, SubOrder } from '../types';
 
 const CANCEL_REASONS = ['changedMind', 'tooLong', 'wrongItems', 'betterPrice'] as const;
-const DISPUTE_REASONS = ['notReceived', 'damaged', 'wrongItem', 'missingItem', 'charged'] as const;
 
 /**
  * Cancel the whole order (server rule: only before any store starts preparing), or —
@@ -157,32 +156,46 @@ export function ReviewSheet({ subOrder, onClose }: { subOrder: SubOrder | null; 
   );
 }
 
-/** "Signaler un problème": goes to the admin team, answer comes back here. */
+/**
+ * "Signaler un problème": goes to the admin team, answer comes back here. Only what the
+ * server allows is offered (client, 2026-11-24): a delivery problem on a delivered store
+ * part, a payment problem when money was paid online, one open problem per part.
+ */
 export function DisputeSheet({
   orderId,
   subOrders,
+  targets,
   visible,
   onClose,
 }: {
   orderId: string;
   subOrders: SubOrder[];
+  targets: DisputeTarget[];
   visible: boolean;
   onClose: () => void;
 }) {
   const { t } = useTranslation();
   const toast = useToast();
-  const [subOrderId, setSubOrderId] = useState<string | undefined>();
-  const [chip, setChip] = useState<(typeof DISPUTE_REASONS)[number] | null>(null);
+  const [target, setTarget] = useState<DisputeTarget | null>(null);
+  const [type, setType] = useState<DisputeType | null>(null);
   const [text, setText] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [create, { isLoading }] = useCreateDisputeMutation();
 
-  const reason = [chip ? t(`order.disputeReason.${chip}`) : '', text.trim()].filter(Boolean).join(' — ');
+  const storeName = (id: string | null) => (id ? subOrders.find((s) => s._id === id)?.vendorId.storeName : undefined) ?? t('order.wholeOrder');
+  const reason = [type ? t(`order.disputeReason.${type}`) : '', text.trim()].filter(Boolean).join(' — ');
+
+  const pick = (next: DisputeTarget) => {
+    setTarget(next);
+    // The kind chosen may not exist for this part (e.g. nothing delivered there)
+    setType((current) => (current && next.types.includes(current) ? current : next.types.length === 1 ? next.types[0] : null));
+  };
 
   const submit = async () => {
+    if (!target || !type) return;
     setError(null);
     try {
-      await create({ orderId, subOrderId, reason }).unwrap();
+      await create({ orderId, ...(target.subOrderId && { subOrderId: target.subOrderId }), type, reason }).unwrap();
       toast.show(t('order.disputeSent'));
       onClose();
     } catch (e) {
@@ -196,29 +209,40 @@ export function DisputeSheet({
       title={t('order.disputeTitle')}
       onClose={onClose}
       onShow={() => {
-        setSubOrderId(subOrders.length === 1 ? subOrders[0]._id : undefined);
-        setChip(null);
+        const only = targets.length === 1 ? targets[0] : null;
+        setTarget(only);
+        setType(only?.types.length === 1 ? only.types[0] : null);
         setText('');
         setError(null);
       }}
-      footer={<Button title={t('order.disputeSend')} loading={isLoading} disabled={reason.length < 5} onPress={() => void submit()} />}>
-      {subOrders.length > 1 && (
+      footer={
+        <Button title={t('order.disputeSend')} loading={isLoading} disabled={!target || !type || reason.length < 5} onPress={() => void submit()} />
+      }>
+      {targets.length > 1 && (
         <>
           <AppText variant="label">{t('order.disputeStore')}</AppText>
           <View style={styles.chips}>
-            <Chip label={t('order.wholeOrder')} selected={!subOrderId} onPress={() => setSubOrderId(undefined)} />
-            {subOrders.map((s) => (
-              <Chip key={s._id} label={s.vendorId.storeName} selected={subOrderId === s._id} onPress={() => setSubOrderId(s._id)} />
+            {targets.map((tg) => (
+              <Chip key={tg.subOrderId ?? 'all'} label={storeName(tg.subOrderId)} selected={target?.subOrderId === tg.subOrderId} onPress={() => pick(tg)} />
             ))}
           </View>
         </>
       )}
-      <AppText variant="label">{t('order.disputeWhat')}</AppText>
-      <View style={styles.chips}>
-        {DISPUTE_REASONS.map((r) => (
-          <Chip key={r} label={t(`order.disputeReason.${r}`)} selected={chip === r} onPress={() => setChip(r)} />
-        ))}
-      </View>
+      {target && (
+        <>
+          <AppText variant="label">{t('order.disputeWhat')}</AppText>
+          <View style={styles.chips}>
+            {target.types.map((r) => (
+              <Chip key={r} label={t(`order.disputeReason.${r}`)} selected={type === r} onPress={() => setType(r)} />
+            ))}
+          </View>
+          {!target.types.includes('missing_item') && (
+            <AppText variant="caption" color={Colors.textMuted}>
+              {t('order.disputeOnlyPayment')}
+            </AppText>
+          )}
+        </>
+      )}
       <TextField label={t('order.disputeDetails')} placeholder={t('order.disputeDetailsHint')} value={text} onChangeText={setText} multiline maxLength={1000} style={styles.multiline} />
       <AppText variant="caption" color={Colors.textMuted}>
         {t('order.disputeInfo')}
