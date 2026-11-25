@@ -230,6 +230,8 @@ export interface StationRoute {
   toStationName: string;
   toCity: string;
   estimatedHours?: number;
+  /** Who gets what: moto → bus → moto (lastMile 0 for pickup at the station) */
+  legFees?: { firstMile: number; lineHaul: number; lastMile: number };
 }
 
 export interface CheckoutSplit {

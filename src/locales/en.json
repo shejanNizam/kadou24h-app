@@ -722,6 +722,11 @@
     "eta_one": "about {{count}} h",
     "eta_other": "about {{count}} h",
     "legsIntercity": "3 legs: moto → car → moto. Each leg is tracked in the order.",
+    "addressInArrivalCity": "The parcel arrives in {{city}}: the delivery address must be in {{city}}. Add your address there (or choose another one).",
+    "addAddressIn": "Add an address in {{city}}",
+    "addressUsedForCity": "Your address in {{city}} is used for this delivery.",
+    "legsShare": "Moto {{first}} → bus {{bus}} → moto {{last}}",
+    "legsSharePickup": "Moto {{first}} → bus {{bus}}",
     "legsPickup": "2 legs: moto → car. We'll let you know when it reaches the station.",
     "instructions": "Special instructions",
     "instructionsHint": "e.g. call when you arrive, ring at the gate",
@@ -1464,7 +1469,13 @@
       "title": "Progress",
       "riderName": "Handed to {{name}}",
       "riderComing": "{{name}} is coming to collect it",
-      "leg": "Leg {{n}} of {{total}} · to {{to}}",
+      "legEarns": "earns {{amount}}",
+      "legNoRider": "No rider yet",
+      "legToCustomer": "Moto to the customer",
+      "legTo": {
+        "first_mile": "Moto to {{to}}",
+        "line_haul": "Bus to {{to}}"
+      },
       "paidAmount": "+ {{amount}} in your wallet",
       "awaitingCod": "The rider must first hand the cash collected to Kadou24h",
       "releasing": "Payment on its way",
@@ -1872,6 +1883,10 @@
     "noResults": "No stores found"
   },
   "kycRider": {
+    "deleteDraft": "Delete the application",
+    "deleteDraftTitle": "Delete this application?",
+    "deleteDraftText": "Your application was not sent. Everything you filled in will be erased, and you can start a new one later.",
+    "draftDeleted": "Application deleted",
     "steps": {
       "type": "Partner type",
       "vehicle": "Vehicle",

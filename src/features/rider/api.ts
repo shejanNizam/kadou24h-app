@@ -42,6 +42,11 @@ export const riderApi = api.injectEndpoints({
       transformResponse: unwrap<MyRider>,
       invalidatesTags: ['Rider', 'Me'],
     }),
+    /** A draft never sent (client, 2026-11-25): the profile offers "Devenir livreur" again */
+    deleteRiderDraft: build.mutation<void, void>({
+      query: () => ({ url: '/riders/me/application', method: 'DELETE' }),
+      invalidatesTags: ['Rider', 'Me'],
+    }),
     updateMyRider: build.mutation<MyRider, RiderUpdate>({
       query: (body) => ({ url: '/riders/me', method: 'PATCH', body }),
       transformResponse: unwrap<MyRider>,
@@ -173,6 +178,7 @@ export const {
   useGetMyRiderQuery,
   useSaveRiderApplicationMutation,
   useSubmitRiderApplicationMutation,
+  useDeleteRiderDraftMutation,
   useUpdateMyRiderMutation,
   useSetOnlineMutation,
   useSendLocationMutation,

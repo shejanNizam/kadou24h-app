@@ -49,14 +49,35 @@ const timeOf = (timeline: TimelineEntry[], step: Step): string | undefined =>
 /** The rider doing the store's leg (first leg); later legs are other drivers */
 const firstRider = (legs: VendorLeg[]) => legs.find((l) => l.legNumber === 1)?.riderId?.userId?.name;
 
+/** One row of the timeline */
+interface Item {
+  key: string;
+  icon: keyof typeof Feather.glyphMap;
+  label: string;
+  state: State;
+  at?: string;
+  detail?: string;
+  paidRow?: boolean;
+}
+
+const LEG_ICON: Record<VendorLeg['legType'], keyof typeof Feather.glyphMap> = {
+  local: 'navigation',
+  first_mile: 'navigation',
+  line_haul: 'truck',
+  last_mile: 'navigation',
+};
+
 /**
  * Where the order is, step by step, up to the money landing in the store's wallet.
+ * Another city (client, 2026-11-25): one row per leg (moto → bus → moto) with who carries
+ * it and what they earn, so nobody confuses the three partners.
  * Everything comes from the server: status, timeline, deliveries and settlement.
  */
 export function OrderProgress({ data }: { data: VendorSubOrderDetails }) {
   const { t, i18n } = useTranslation();
   const { subOrder: so, deliveries } = data;
   const cancelled = so.status === 'cancelled';
+  const relay = deliveries.length > 1;
   const time = (at?: string) =>
     at ? new Date(at).toLocaleString(i18n.language, { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : undefined;
 
@@ -80,10 +101,6 @@ export function OrderProgress({ data }: { data: VendorSubOrderDetails }) {
       if (!name) return undefined;
       return state === 'done' ? t('vendorOrders.progress.riderName', { name }) : t('vendorOrders.progress.riderComing', { name });
     }
-    if (step === 'on_the_way' && state === 'current' && deliveries.length > 1) {
-      const leg = deliveries.find((l) => l._id === so.currentLegId) ?? deliveries.find((l) => l.status !== 'delivered');
-      return leg ? t('vendorOrders.progress.leg', { n: leg.legNumber, total: deliveries.length, to: leg.toName }) : undefined;
-    }
     if (step === 'paid') {
       if (paid) return t('vendorOrders.progress.paidAmount', { amount: formatGNF(so.vendorEarning) });
       if (so.settlement === 'awaiting_cod') return t('vendorOrders.progress.awaitingCod');
@@ -92,45 +109,79 @@ export function OrderProgress({ data }: { data: VendorSubOrderDetails }) {
     return undefined;
   };
 
-  const steps = STEPS.map((step, i) => {
-    const state = stateOf(i);
+  const stepItem = (step: Step): Item => {
+    const state = stateOf(STEPS.indexOf(step));
     return {
-      step,
+      key: step,
+      icon: ICONS[step],
+      label: t(`vendorOrders.progress.step.${step}`),
       state,
       at: step === 'paid' ? so.releasedAt : timeOf(so.timeline, step),
       detail: detail(step, state),
+      paidRow: step === 'paid',
     };
-  }).filter((s) => !cancelled || s.state === 'done');
+  };
+
+  // Relay: the open leg is the one moving now (once the store has the parcel ready)
+  const legs = [...deliveries].sort((a, b) => a.legNumber - b.legNumber);
+  const openLeg = legs.find((l) => l.status !== 'delivered' && l.status !== 'cancelled');
+  const legItem = (leg: VendorLeg): Item => {
+    const state: State =
+      leg.status === 'delivered' ? 'done' : !cancelled && leg === openLeg && reached >= STEPS.indexOf('ready_for_pickup') ? 'current' : 'todo';
+    const who = leg.riderId?.userId?.name;
+    const earn = leg.fee !== undefined ? t('vendorOrders.progress.legEarns', { amount: formatGNF(leg.fee) }) : undefined;
+    return {
+      key: leg._id,
+      icon: LEG_ICON[leg.legType],
+      label:
+        leg.legType === 'last_mile' ? t('vendorOrders.progress.legToCustomer') : t(`vendorOrders.progress.legTo.${leg.legType}`, { to: leg.toName }),
+      state,
+      at: leg.deliveredAt,
+      detail: [who ?? (state !== 'done' ? t('vendorOrders.progress.legNoRider') : undefined), earn].filter(Boolean).join(' · ') || undefined,
+    };
+  };
+
+  const items: Item[] = relay
+    ? [
+        ...(['received', 'accepted', 'preparing', 'ready_for_pickup'] as const).map(stepItem),
+        ...legs.map(legItem),
+        stepItem('delivered'),
+        stepItem('paid'),
+      ]
+    : STEPS.map(stepItem);
+  const shown = items.filter((s) => !cancelled || s.state === 'done');
 
   return (
     <View accessibilityRole="list">
-      {steps.map((s, i) => (
-        <Row key={s.step} {...s} label={t(`vendorOrders.progress.step.${s.step}`)} time={time(s.at)} last={i === steps.length - 1 && !cancelled} />
+      {shown.map(({ key, ...s }, i) => (
+        <Row key={key} {...s} time={time(s.at)} last={i === shown.length - 1 && !cancelled} />
       ))}
-      {cancelled && <Row step="received" state="cancelled" label={t('status.subOrder.cancelled')} time={time(so.cancellation?.at)} last />}
+      {cancelled && <Row icon="x" state="cancelled" label={t('status.subOrder.cancelled')} time={time(so.cancellation?.at)} last />}
     </View>
   );
 }
 
 function Row({
-  step,
+  icon: stepIcon,
   state,
   label,
   time,
   detail,
+  paidRow,
   last,
 }: {
-  step: Step;
+  icon: keyof typeof Feather.glyphMap;
   state: State | 'cancelled';
   label: string;
   time?: string;
   detail?: string;
+  paidRow?: boolean;
   last: boolean;
 }) {
   const { t } = useTranslation();
   const done = state === 'done';
   const current = state === 'current';
-  const icon = state === 'cancelled' ? 'x' : done ? 'check' : ICONS[step];
+  const icon = state === 'cancelled' ? 'x' : done ? 'check' : stepIcon;
   return (
     <View
       style={styles.row}
@@ -157,7 +208,7 @@ function Row({
           ) : null}
         </View>
         {detail ? (
-          <AppText variant="caption" color={step === 'paid' && done ? Colors.success : Colors.textMuted}>
+          <AppText variant="caption" color={paidRow && done ? Colors.success : Colors.textMuted}>
             {detail}
           </AppText>
         ) : null}

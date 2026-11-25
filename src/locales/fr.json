@@ -722,6 +722,11 @@
     "eta_one": "environ {{count}} h",
     "eta_other": "environ {{count}} h",
     "legsIntercity": "3 étapes : moto → véhicule → moto. Suivi de chaque étape dans la commande.",
+    "addressInArrivalCity": "Le colis arrive à {{city}} : l'adresse de livraison doit être à {{city}}. Ajoutez votre adresse là-bas (ou choisissez-en une autre).",
+    "addAddressIn": "Ajouter une adresse à {{city}}",
+    "addressUsedForCity": "Votre adresse à {{city}} est utilisée pour cette livraison.",
+    "legsShare": "Moto {{first}} → car {{bus}} → moto {{last}}",
+    "legsSharePickup": "Moto {{first}} → car {{bus}}",
     "legsPickup": "2 étapes : moto → véhicule. Nous vous prévenons à l’arrivée en gare.",
     "instructions": "Instructions spéciales",
     "instructionsHint": "Ex. : appeler en arrivant, sonner au portail",
@@ -1464,7 +1469,13 @@
       "title": "Suivi",
       "riderName": "Remise à {{name}}",
       "riderComing": "{{name}} arrive pour la récupérer",
-      "leg": "Étape {{n}} sur {{total}} · vers {{to}}",
+      "legEarns": "gain {{amount}}",
+      "legNoRider": "Pas encore de livreur",
+      "legToCustomer": "Moto jusqu'au client",
+      "legTo": {
+        "first_mile": "Moto jusqu'à {{to}}",
+        "line_haul": "Car jusqu'à {{to}}"
+      },
       "paidAmount": "+ {{amount}} dans votre portefeuille",
       "awaitingCod": "Le livreur doit d'abord remettre l'argent encaissé à Kadou24h",
       "releasing": "Versement en cours",
@@ -1872,6 +1883,10 @@
     "noResults": "Aucune boutique trouvée"
   },
   "kycRider": {
+    "deleteDraft": "Supprimer la demande",
+    "deleteDraftTitle": "Supprimer cette demande ?",
+    "deleteDraftText": "Votre demande n'a pas été envoyée. Tout ce que vous avez rempli sera effacé, et vous pourrez en recommencer une plus tard.",
+    "draftDeleted": "Demande supprimée",
     "steps": {
       "type": "Type de livreur",
       "vehicle": "Véhicule",

@@ -10,6 +10,7 @@ import { AppText } from '@/components/ui/AppText';
 import { Banner } from '@/components/ui/Banner';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Chip } from '@/components/ui/Chip';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -21,7 +22,7 @@ import { useToast } from '@/components/ui/Toast';
 import { Colors, MaxContentWidth, Radius, Spacing } from '@/constants/theme';
 import { useSwitchModeMutation } from '@/features/auth/api';
 import { homeFor } from '@/features/auth/session';
-import { useGetMyRiderQuery, useSaveRiderApplicationMutation, useSubmitRiderApplicationMutation } from '@/features/rider/api';
+import { useDeleteRiderDraftMutation, useGetMyRiderQuery, useSaveRiderApplicationMutation, useSubmitRiderApplicationMutation } from '@/features/rider/api';
 import { RoutesEditor, routesFrom, routesPayload, type RouteDraft } from '@/features/rider/components/RoutesEditor';
 import { RIDER_DOCS, safetyIdsNeeded, VEHICLES_BY_PARTNER, type MyRider, type PartnerType, type RiderDocumentType, type VehicleType } from '@/features/rider/types';
 import { APPLICATION_TONE } from '@/features/vendor/status';
@@ -115,6 +116,8 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [save, saveState] = useSaveRiderApplicationMutation();
   const [submit, submitState] = useSubmitRiderApplicationMutation();
+  const [deleteDraft, deleteState] = useDeleteRiderDraftMutation();
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // Step 1 — partner type
   const [partnerType, setPartnerType] = useState<PartnerType | undefined>(rider?.partnerType);
@@ -186,6 +189,19 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
       await save(body).unwrap();
       go(steps[index + 1]);
     } catch (e) {
+      setFormError(getApiErrorMessage(e, t));
+    }
+  };
+
+  /** A draft never sent can be thrown away (client, 2026-11-25) */
+  const onDelete = async () => {
+    try {
+      await deleteDraft().unwrap();
+      setConfirmDelete(false);
+      toast.show(t('kycRider.draftDeleted'), 'success');
+      router.back();
+    } catch (e) {
+      setConfirmDelete(false);
       setFormError(getApiErrorMessage(e, t));
     }
   };
@@ -380,6 +396,9 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
             <Banner tone="info" message={t('kycRider.reviewNote')} />
           </>
         )}
+        {rider?.approvalStatus === 'draft' && (
+          <Button title={t('kycRider.deleteDraft')} variant="ghost" icon="trash-2" onPress={() => setConfirmDelete(true)} />
+        )}
       </KeyboardScroll>
 
       <View style={[styles.inner, styles.footer]}>
@@ -392,6 +411,18 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
           <Button title={t('common.continue')} style={styles.flex} loading={saveState.isLoading} onPress={() => void saveAndNext()} />
         )}
       </View>
+
+      <ConfirmDialog
+        visible={confirmDelete}
+        title={t('kycRider.deleteDraftTitle')}
+        message={t('kycRider.deleteDraftText')}
+        confirmLabel={t('kycRider.deleteDraft')}
+        destructive
+        icon="trash-2"
+        loading={deleteState.isLoading}
+        onConfirm={() => void onDelete()}
+        onCancel={() => setConfirmDelete(false)}
+      />
 
       <BottomSheet visible={payoutSheet} title={t('payout.add')} onClose={() => setPayoutSheet(false)}>
         <PayoutMethodForm mode="rider" defaultName={user?.name} onDone={() => setPayoutSheet(false)} />

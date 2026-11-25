@@ -18,7 +18,7 @@ import { StackHeader } from '@/components/ui/StackHeader';
 import { TextField } from '@/components/ui/TextField';
 import { KeyboardScroll } from '@/components/ui/KeyboardScroll';
 import { Colors, MaxContentWidth, MinTouch, Radius, Spacing } from '@/constants/theme';
-import { needsNeighborhood, pickDefaultAddress, useGetAddressesQuery } from '@/features/address/api';
+import { needsNeighborhood, pickDefaultAddress, useGetAddressesQuery, type Address } from '@/features/address/api';
 import { AddressCard } from '@/features/address/components/AddressCard';
 import { SignInPrompt } from '@/features/auth/components/SignInPrompt';
 import { useGetCartQuery } from '@/features/cart/api';
@@ -33,7 +33,9 @@ import {
 import { PriceSummary } from '@/features/orders/components/PriceSummary';
 import type { CheckoutInput, DeliveryType, PaymentMethod, TransitStation } from '@/features/orders/types';
 import { useDebounced } from '@/hooks/useDebounced';
+import { useGetPublicSettingsQuery } from '@/features/profile/api';
 import { getApiErrorMessage } from '@/lib/api/errors';
+import { distanceKm } from '@/lib/geo';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
 
@@ -66,10 +68,18 @@ function Checkout() {
   const cart = useGetCartQuery();
   const addresses = useGetAddressesQuery();
   const stations = useGetStationsQuery();
-  const address = pickDefaultAddress(addresses.data);
+  const settings = useGetPublicSettingsQuery();
+  const defaultAddress = pickDefaultAddress(addresses.data);
 
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('local');
   const [station, setStation] = useState<TransitStation | undefined>();
+  // Another city (client, 2026-11-25): the last moto leaves the arrival station, so the address
+  // must be in that city. The default (often Conakry) is skipped for one there; none → add one.
+  const arrival = deliveryType === 'intercity' ? station : undefined;
+  const maxKm = settings.data?.intercity?.maxAddressKm;
+  const inArrivalCity = (a: Address) => !arrival || !maxKm || distanceKm(a.location, arrival.location) <= maxKm;
+  const address = defaultAddress && inArrivalCity(defaultAddress) ? defaultAddress : addresses.data?.find(inArrivalCity);
+  const noAddressThere = Boolean(arrival && maxKm && !address && defaultAddress);
   const [stationSheet, setStationSheet] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
   const [feesMethod, setFeesMethod] = useState<Exclude<PaymentMethod, 'cod'>>('orange_money');
@@ -148,9 +158,19 @@ function Checkout() {
         <Section title={t('checkout.address')} action={address ? t('common.change') : undefined} onAction={() => router.push({ pathname: '/addresses', params: { select: '1' } })}>
           {addresses.isLoading ? (
             <Skeleton height={88} radius={Radius.lg} />
+          ) : noAddressThere && arrival ? (
+            <>
+              <Banner tone="warning" message={t('checkout.addressInArrivalCity', { city: arrival.city })} />
+              <Button title={t('checkout.addAddressIn', { city: arrival.city })} icon="map-pin" variant="outline" onPress={() => router.push('/address-edit')} />
+            </>
           ) : address ? (
             <>
               <AddressCard address={address} />
+              {address !== defaultAddress && arrival && (
+                <AppText variant="caption" color={Colors.textMuted}>
+                  {t('checkout.addressUsedForCity', { city: arrival.city })}
+                </AppText>
+              )}
               {/* The quartier is mandatory (client, 2026-11-24): an older address is completed first */}
               {noNeighborhood && (
                 <>
@@ -205,6 +225,18 @@ function Checkout() {
               <AppText variant="caption" color={Colors.textMuted}>
                 {deliveryType === 'intercity' ? t('checkout.legsIntercity') : t('checkout.legsPickup')}
               </AppText>
+              {/* Who gets what (one store: one route) */}
+              {splits.length === 1 && route.legFees ? (
+                <AppText variant="caption" color={Colors.textMuted}>
+                  {route.legFees.lastMile
+                    ? t('checkout.legsShare', {
+                        first: formatGNF(route.legFees.firstMile),
+                        bus: formatGNF(route.legFees.lineHaul),
+                        last: formatGNF(route.legFees.lastMile),
+                      })
+                    : t('checkout.legsSharePickup', { first: formatGNF(route.legFees.firstMile), bus: formatGNF(route.legFees.lineHaul) })}
+                </AppText>
+              ) : null}
             </View>
           )}
         </Section>

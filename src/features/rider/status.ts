@@ -6,6 +6,7 @@ import type { TFunction } from 'i18next';
 
 import type { StatusTone } from '@/components/ui/StatusPill';
 import type { DeliveryStatus, GeoPoint } from '@/features/orders/types';
+import { distanceKm } from '@/lib/geo';
 
 import type { RiderDelivery } from './types';
 
@@ -82,15 +83,8 @@ export const cashToCollect = (d: Pick<RiderDelivery, 'collectsCash' | 'subOrderI
 export const directionsUrl = (p: GeoPoint) =>
   `https://www.google.com/maps/dir/?api=1&destination=${p.coordinates[1]},${p.coordinates[0]}&travelmode=driving`;
 
-/** Straight-line distance in km (good enough for "2.4 km" on a card) */
-export function distanceKm(a: { lat: number; lng: number }, b: GeoPoint): number {
-  const toRad = (v: number) => (v * Math.PI) / 180;
-  const [lng, lat] = b.coordinates;
-  const dLat = toRad(lat - a.lat);
-  const dLng = toRad(lng - a.lng);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(lat)) * Math.sin(dLng / 2) ** 2;
-  return 6371 * 2 * Math.asin(Math.sqrt(h));
-}
+/** Moved to lib/geo (checkout uses it too); kept here for the rider screens */
+export { distanceKm };
 
 /** Pickup → drop distance of a leg */
 export const legKm = (d: Pick<RiderDelivery, 'fromLocation' | 'toLocation'>) =>

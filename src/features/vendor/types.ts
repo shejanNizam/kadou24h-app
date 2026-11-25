@@ -150,6 +150,10 @@ export type SettlementStatus = 'held' | 'awaiting_cod' | 'released' | 'refunded'
 
 export interface VendorLeg extends Omit<DeliveryLegSummary, 'riderId'> {
   riderId?: StoreRider | null;
+  /** What this partner earns for the leg (another city: moto → bus → moto) */
+  fee?: number;
+  pickedUpAt?: string;
+  deliveredAt?: string;
   /** Open dispatch: nearby riders see it since (first to accept takes it) */
   offerOpenedAt?: string;
   /** Sent to one rider: they must accept before this */

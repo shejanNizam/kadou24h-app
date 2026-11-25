@@ -58,6 +58,8 @@ export interface PublicSettings {
   pricing?: { jobPublishFee: number; cvUnlockFee: number; spontaneousApplicationFee: number };
   /** A store must accept a new order within acceptMinutes, or it is cancelled automatically */
   orders?: { acceptMinutes: number };
+  /** Another city: motos' share of the route fare; the address must be within maxAddressKm of the arrival station */
+  intercity?: { firstMileFee: number; lastMileFee: number; maxAddressKm: number };
   /** Chat messages older than this are deleted (client, 2026-11-22) */
   chat?: { retentionDays: number };
 }
