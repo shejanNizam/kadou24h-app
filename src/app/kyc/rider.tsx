@@ -128,6 +128,8 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
   const [plate, setPlate] = useState(rider?.vehicle?.plateNumber ?? '');
   const [vest, setVest] = useState(rider?.vestNumber ?? '');
   const needs = safetyIdsNeeded(partnerType, vehicleType);
+  // Car / bus brands for drivers, moto brands for riders (client, 2026-11-26)
+  const fourWheels = vehicleType ? ['car', 'bus', 'minibus'].includes(vehicleType) : partnerType === 'transit';
   // Step 3 — identity
   const [cityArea, setCityArea] = useState(rider?.cityArea ?? '');
   const [nationalId, setNationalId] = useState(rider?.nationalIdNumber ?? '');
@@ -276,7 +278,7 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
               </View>
               <FieldError text={errors.vehicleType} />
             </View>
-            <TextField label={t('kycRider.brand')} hint={t('kycRider.brandHint')} optional value={brand} onChangeText={setBrand} maxLength={40} />
+            <TextField label={t('kycRider.brand')} hint={t(fourWheels ? 'kycRider.brandHintCar' : 'kycRider.brandHint')} optional value={brand} onChangeText={setBrand} maxLength={40} />
             <TextField label={t('kycRider.color')} optional value={color} onChangeText={setColor} maxLength={30} />
             <TextField
               label={t('kycRider.plate')}
@@ -304,7 +306,14 @@ function ApplicationForm({ rider }: { rider?: MyRider }) {
 
         {step === 'identity' && (
           <>
-            <TextField label={t('kycRider.cityArea')} hint={t('kycRider.cityAreaHint')} value={cityArea} onChangeText={setCityArea} error={errors.cityArea} maxLength={80} />
+            <TextField
+              label={t(partnerType === 'transit' ? 'kycRider.cityAreaTransit' : 'kycRider.cityArea')}
+              hint={t(partnerType === 'transit' ? 'kycRider.cityAreaTransitHint' : 'kycRider.cityAreaHint')}
+              value={cityArea}
+              onChangeText={setCityArea}
+              error={errors.cityArea}
+              maxLength={80}
+            />
             <TextField label={t('kycRider.nationalId')} value={nationalId} onChangeText={setNationalId} error={errors.nationalId} autoCapitalize="characters" maxLength={40} />
             <AppText variant="caption" color={Colors.textMuted} style={styles.privacy}>
               {t('kycRider.idPrivate')}

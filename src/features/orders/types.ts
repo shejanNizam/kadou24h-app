@@ -287,7 +287,8 @@ export interface TransitStation {
   name: string;
   city: string;
   region?: string;
-  location: GeoPoint;
+  /** The server sends stations as { lat, lng } (not GeoJSON) */
+  location?: { lat: number; lng: number };
 }
 
 // ── Payments ─────────────────────────────────────────────────────────

@@ -35,7 +35,7 @@ import type { CheckoutInput, DeliveryType, PaymentMethod, TransitStation } from 
 import { useDebounced } from '@/hooks/useDebounced';
 import { useGetPublicSettingsQuery } from '@/features/profile/api';
 import { getApiErrorMessage } from '@/lib/api/errors';
-import { distanceKm } from '@/lib/geo';
+import { kmBetween } from '@/lib/geo';
 import { formatGNF } from '@/lib/format';
 import { useAppSelector } from '@/store/hooks';
 
@@ -77,9 +77,10 @@ function Checkout() {
   // must be in that city. The default (often Conakry) is skipped for one there; none → add one.
   const arrival = deliveryType === 'intercity' ? station : undefined;
   const maxKm = settings.data?.intercity?.maxAddressKm;
-  const inArrivalCity = (a: Address) => !arrival || !maxKm || distanceKm(a.location, arrival.location) <= maxKm;
+  const arrivalAt = arrival?.location;
+  const inArrivalCity = (a: Address) => !arrivalAt || !maxKm || !a.location || kmBetween(a.location, arrivalAt) <= maxKm;
   const address = defaultAddress && inArrivalCity(defaultAddress) ? defaultAddress : addresses.data?.find(inArrivalCity);
-  const noAddressThere = Boolean(arrival && maxKm && !address && defaultAddress);
+  const noAddressThere = Boolean(arrivalAt && maxKm && !address && defaultAddress);
   const [stationSheet, setStationSheet] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod');
   const [feesMethod, setFeesMethod] = useState<Exclude<PaymentMethod, 'cod'>>('orange_money');

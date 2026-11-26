@@ -1100,7 +1100,7 @@
     "becomeVendor": "Become a vendor",
     "becomeVendorHint": "Open your store and sell on Kadou24h",
     "becomeRider": "Become a rider",
-    "becomeRiderHint": "Deliver by moto or as a car driver and earn money",
+    "becomeRiderHint": "Deliveries, moto-taxi or transport between cities: earn money",
     "vendorApplication": "Vendor application",
     "riderApplication": "Rider application",
     "status": {
@@ -1916,6 +1916,9 @@
     "vestHint": "If you have a moto-taxi vest",
     "cityArea": "City / area where you deliver",
     "cityAreaHint": "E.g. Conakry, Ratoma",
+    "brandHintCar": "E.g. Toyota, Hyundai",
+    "cityAreaTransit": "City where you are based",
+    "cityAreaTransitHint": "E.g. Conakry. You choose your routes in the next step.",
     "cityRequired": "Enter your city or area",
     "nationalId": "ID card number",
     "nationalIdRequired": "Enter your ID card number",
