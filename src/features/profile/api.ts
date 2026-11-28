@@ -62,6 +62,8 @@ export interface PublicSettings {
   intercity?: { firstMileFee: number; lastMileFee: number; maxAddressKm: number };
   /** Chat messages older than this are deleted (client, 2026-11-22) */
   chat?: { retentionDays: number };
+  /** Help assistant (AI): offered only when the team switched it on and the server has a key */
+  assistant?: { available: boolean; dailyLimitPerUser: number };
 }
 
 const nextPage = <T>(last: Paginated<T>) => (last.meta.page < last.meta.totalPage ? last.meta.page + 1 : undefined);

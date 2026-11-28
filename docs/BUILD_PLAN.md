@@ -208,6 +208,7 @@ Screen details are in [APP_SPEC.md](APP_SPEC.md) and endpoints in [API_MAP.md](A
 - [ ] (❓) Block user API, coupon logic — only if the client confirms
 
 ## Log
+- 2026-11-28 — Help assistant (AI): `app/assistant.tsx` (from Help & support when the server says it is available), suggestions per mode, "Send to the team" creates a support ticket with the conversation. Server module `ai_assistant` (OpenAI server-side, daily limits, admin settings + transcript in the ticket).
 - 2026-11-21 — Client corrections: wording, store accept delay with auto-cancel, negotiable moto-taxi price (riders bid, passenger chooses or counter-offers).
 - 2026-10-24 — Client wording + motorbike icons; moto-taxi rider subscription (off by default); payment gateway adapter; phone uploads via XMLHttpRequest (expo/fetch rejects uri parts); voice notes recorded as AAC and played as MP3.
 - 2026-10-23 — Moto-taxi (A → B rides): price first, nearest riders, cash, ratings; dashboard page + prices.

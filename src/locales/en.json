@@ -2717,5 +2717,43 @@
     "deleted": "Deleted from your history",
     "holdHintOrders": "Press and hold a finished order to delete it from your history.",
     "holdHintRides": "Press and hold a finished ride to delete it from your history."
+  },
+  "assistant": {
+    "title": "Kadou24h assistant",
+    "entryTitle": "Ask the assistant",
+    "entryText": "Instant answers, 24/7. Otherwise it passes you to our team.",
+    "welcome": "Hello! I am the Kadou24h assistant. Ask me about your orders, delivery, payments or the app.",
+    "notice": "Automatic answers: they may contain mistakes. Never share a password, an SMS code or a delivery code.",
+    "placeholder": "Type your question…",
+    "thinking": "The assistant is typing…",
+    "needsHuman": "Our team can take care of this. Send them this conversation.",
+    "handOff": "Send to the team",
+    "talkToPerson": "Talk to a person",
+    "handOffTitle": "Send to the Kadou24h team",
+    "handOffText": "Your conversation with the assistant will be sent to our team. They will answer in Help & support and you will get a notification.",
+    "noteLabel": "Add a message",
+    "notePlaceholder": "E.g. order number, what you expect…",
+    "handOffSend": "Send",
+    "handOffSent": "Request {{number}} sent to the team",
+    "restart": "Start again",
+    "restartTitle": "New conversation?",
+    "restartText": "The current conversation will be cleared from this screen.",
+    "questionsLeft_one": "{{count}} question left today",
+    "questionsLeft_other": "{{count}} questions left today",
+    "noQuestionsLeft": "No more questions for today. Come back tomorrow or talk to a person.",
+    "unavailableTitle": "Assistant unavailable",
+    "unavailableText": "The assistant is not available right now. Our team can help you.",
+    "suggest": {
+      "whereOrder": "Where is my order?",
+      "cashOnDelivery": "How does cash on delivery work?",
+      "refund": "When will I get my refund?",
+      "becomeSeller": "How do I become a seller?",
+      "whenPaid": "When will I receive my money?",
+      "acceptOrder": "How long do I have to accept an order?",
+      "commission": "What is the commission?",
+      "getDeliveries": "How do I get deliveries?",
+      "withdraw": "How do I withdraw my earnings?",
+      "deliveryCode": "What is the delivery code for?"
+    }
   }
 }

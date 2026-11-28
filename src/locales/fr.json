@@ -2717,5 +2717,43 @@
     "deleted": "Supprimé de votre historique",
     "holdHintOrders": "Appuyez longuement sur une commande terminée pour la supprimer de votre historique.",
     "holdHintRides": "Appuyez longuement sur une course terminée pour la supprimer de votre historique."
+  },
+  "assistant": {
+    "title": "Assistant Kadou24h",
+    "entryTitle": "Poser une question à l'assistant",
+    "entryText": "Réponse immédiate, 24 h/24. Sinon, il transmet à notre équipe.",
+    "welcome": "Bonjour ! Je suis l'assistant Kadou24h. Posez-moi une question sur vos commandes, la livraison, les paiements ou l'application.",
+    "notice": "Réponses automatiques : elles peuvent contenir des erreurs. Ne partagez jamais un mot de passe, un code SMS ou un code de livraison.",
+    "placeholder": "Écrivez votre question…",
+    "thinking": "L'assistant écrit…",
+    "needsHuman": "Notre équipe peut s'en occuper. Envoyez-lui cette conversation.",
+    "handOff": "Envoyer à l'équipe",
+    "talkToPerson": "Parler à une personne",
+    "handOffTitle": "Envoyer à l'équipe Kadou24h",
+    "handOffText": "Votre conversation avec l'assistant sera envoyée à notre équipe. Elle vous répondra dans Aide et support et vous recevrez une notification.",
+    "noteLabel": "Ajouter un message",
+    "notePlaceholder": "Ex. : n° de commande, ce que vous attendez…",
+    "handOffSend": "Envoyer",
+    "handOffSent": "Demande {{number}} envoyée à l'équipe",
+    "restart": "Recommencer",
+    "restartTitle": "Nouvelle conversation ?",
+    "restartText": "La conversation actuelle sera effacée de cet écran.",
+    "questionsLeft_one": "Encore {{count}} question aujourd'hui",
+    "questionsLeft_other": "Encore {{count}} questions aujourd'hui",
+    "noQuestionsLeft": "Plus de questions pour aujourd'hui. Revenez demain ou parlez à une personne.",
+    "unavailableTitle": "Assistant indisponible",
+    "unavailableText": "L'assistant n'est pas disponible pour le moment. Notre équipe peut vous aider.",
+    "suggest": {
+      "whereOrder": "Où en est ma commande ?",
+      "cashOnDelivery": "Comment marche le paiement à la livraison ?",
+      "refund": "Quand serai-je remboursé ?",
+      "becomeSeller": "Comment devenir vendeur ?",
+      "whenPaid": "Quand vais-je recevoir mon argent ?",
+      "acceptOrder": "Combien de temps pour accepter une commande ?",
+      "commission": "Quelle est la commission ?",
+      "getDeliveries": "Comment recevoir des livraisons ?",
+      "withdraw": "Comment retirer mes gains ?",
+      "deliveryCode": "À quoi sert le code de livraison ?"
+    }
   }
 }

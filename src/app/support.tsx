@@ -1,3 +1,4 @@
+import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { ActivityIndicator, FlatList, Linking, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -47,6 +48,23 @@ function Support() {
             <AppText variant="body" color={Colors.textMuted}>
               {t('support.intro')}
             </AppText>
+            {settings.data?.assistant?.available && (
+              <Pressable
+                onPress={() => router.push('/assistant')}
+                accessibilityRole="button"
+                style={({ pressed }) => [styles.assistant, pressed && styles.pressed]}>
+                <View style={styles.assistantIcon}>
+                  <Feather name="cpu" size={20} color={Colors.primary} />
+                </View>
+                <View style={styles.flex}>
+                  <AppText variant="title">{t('assistant.entryTitle')}</AppText>
+                  <AppText variant="small" color={Colors.textMuted}>
+                    {t('assistant.entryText')}
+                  </AppText>
+                </View>
+                <Feather name="chevron-right" size={20} color={Colors.textMuted} />
+              </Pressable>
+            )}
             {whatsapp ? (
               <Button title={t('support.whatsapp')} variant="outline" icon="message-circle" onPress={() => void Linking.openURL(`https://wa.me/${whatsapp}`)} />
             ) : null}
@@ -116,5 +134,7 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.85 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   flex: { flex: 1 },
+  assistant: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1, borderColor: Colors.primaryBorder, backgroundColor: Colors.primarySoft },
+  assistantIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
   footer: { paddingVertical: Spacing.md, borderTopWidth: 1, borderTopColor: Colors.border },
 });

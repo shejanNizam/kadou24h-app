@@ -196,6 +196,10 @@ PATCH  /notifications/:id/read  [...ALL_ROLES]
 POST   /support-tickets  [...ALL_ROLES]
 GET    /support-tickets/me  [...ALL_ROLES]
 GET    /support-tickets/me/:id  [...ALL_ROLES]
+GET    /assistant/conversation  [...ALL_ROLES]   (help assistant: conversation, available, quota)
+DELETE /assistant/conversation  [...ALL_ROLES]   (start again)
+POST   /assistant/messages  [...ALL_ROLES]   { text, mode }
+POST   /assistant/conversation/hand-off  [...ALL_ROLES]   { note?, mode } → support ticket
 GET    /advertisements  [public]
 POST   /advertisements/:id/impression  [public]
 POST   /advertisements/:id/click  [public]
