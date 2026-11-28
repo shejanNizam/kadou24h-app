@@ -13,6 +13,7 @@
  */
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 
 const [channel, ...words] = process.argv.slice(2);
 const eas = JSON.parse(fs.readFileSync(new URL('../eas.json', import.meta.url), 'utf8'));
@@ -42,7 +43,14 @@ child.on('exit', (code) => {
     console.warn('No SENTRY_AUTH_TOKEN: source maps not sent, errors from this update will show minified code.');
     process.exit(0);
   }
-  const upload = spawn('npx', ['sentry-expo-upload-sourcemaps', 'dist'], { stdio: 'inherit', shell: true });
+  // The uploader spawns bin/sentry-cli (a Node launcher) without a shell, which fails on Windows (ENOENT):
+  // hand it the real binary (sentry-cli.exe on Windows) through the variable it supports
+  const sentryCli = process.env.SENTRY_CLI_EXECUTABLE || createRequire(import.meta.url)('@sentry/cli').SentryCli.getPath();
+  const upload = spawn('npx', ['sentry-expo-upload-sourcemaps', 'dist'], {
+    stdio: 'inherit',
+    shell: true,
+    env: { ...process.env, SENTRY_CLI_EXECUTABLE: sentryCli },
+  });
   upload.on('exit', (uploadCode) => {
     if (uploadCode !== 0) console.warn('The update is live, but its source maps did not reach Sentry.');
     process.exit(0);
